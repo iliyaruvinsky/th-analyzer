@@ -32,40 +32,79 @@ Team: *gets accurate, consistent results*
 Manager: "AI costs down 40%, quality up 60%"
 ```
 
-## Quick Start
+## Quick Start for DevOps Teams
 
-### 1. Browse Available Plugins
+### Step 1: Clone This Marketplace (One-Time Setup)
 
 ```bash
-node scripts/list-plugins.js
+git clone https://github.com/iliyaruvinsky/skywind-plugin-marketplace.git
 ```
 
-### 2. Install a Plugin
+### Step 2: Navigate to Your Project
 
-**For Claude Code:**
 ```bash
-./scripts/install.sh anti-hallucination/strict-verification
+cd /path/to/your/project
 ```
 
-**For Cursor:**
+### Step 3: Install a Plugin
+
+**For Cursor (Windows):**
+```powershell
+C:\path\to\skywind-plugin-marketplace\scripts\install.ps1 -PluginId anti-hallucination/strict-verification -Tool cursor
+```
+
+**For Claude Code (Windows):**
+```powershell
+C:\path\to\skywind-plugin-marketplace\scripts\install.ps1 -PluginId anti-hallucination/strict-verification
+```
+
+**For Cursor (Mac/Linux):**
 ```bash
-./scripts/install.sh anti-hallucination/strict-verification --tool cursor
+/path/to/skywind-plugin-marketplace/scripts/install.sh anti-hallucination/strict-verification --tool cursor
+```
+
+**For Claude Code (Mac/Linux):**
+```bash
+/path/to/skywind-plugin-marketplace/scripts/install.sh anti-hallucination/strict-verification
 ```
 
 **For Windsurf:**
 ```bash
-./scripts/install.sh anti-hallucination/strict-verification --tool windsurf
+# Windows
+C:\path\to\skywind-plugin-marketplace\scripts\install.ps1 -PluginId anti-hallucination/strict-verification -Tool windsurf
+
+# Mac/Linux
+/path/to/skywind-plugin-marketplace/scripts/install.sh anti-hallucination/strict-verification --tool windsurf
 ```
 
-**On Windows (PowerShell):**
-```powershell
-.\scripts\install.ps1 -PluginId anti-hallucination/strict-verification
-.\scripts\install.ps1 -PluginId anti-hallucination/strict-verification -Tool cursor
+### Step 4: Restart Your AI Assistant
+
+Close and reopen Claude Code, Cursor, or Windsurf. The plugin rules will now be active!
+
+---
+
+## Alternative: Manual Installation
+
+If you prefer not to use the installation script:
+
+1. **Browse to the plugin**: [strict-verification rules](https://github.com/iliyaruvinsky/skywind-plugin-marketplace/blob/main/plugins/anti-hallucination/strict-verification/rules.md)
+2. **Copy the content** of `rules.md`
+3. **Paste into your project**:
+   - **Claude Code**: Create/edit `.claude/rules/strict-verification.md`
+   - **Cursor**: Append to `.cursorrules` file in project root
+   - **Windsurf**: Create/edit `.windsurf/rules/strict-verification.md`
+4. **Restart your AI assistant**
+
+---
+
+## Browse Available Plugins
+
+After cloning the marketplace, you can list all available plugins:
+
+```bash
+cd skywind-plugin-marketplace
+node scripts/list-plugins.js
 ```
-
-### 3. Start Coding
-
-That's it! Your AI assistant will now follow the plugin rules automatically.
 
 ## Available Plugin Categories
 
