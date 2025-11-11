@@ -1,0 +1,204 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Skywind Plugin Metadata Schema",
+  "description": "Metadata schema for Skywind AI coding assistant plugins",
+  "type": "object",
+  "required": [
+    "id",
+    "name",
+    "version",
+    "description",
+    "category",
+    "compatibility",
+    "author"
+  ],
+  "properties": {
+    "id": {
+      "type": "string",
+      "description": "Unique plugin identifier (category/plugin-name)",
+      "pattern": "^[a-z0-9-]+/[a-z0-9-]+$",
+      "examples": ["anti-hallucination/strict-verification"]
+    },
+    "name": {
+      "type": "string",
+      "description": "Human-readable plugin name",
+      "minLength": 3,
+      "maxLength": 50,
+      "examples": ["Strict Verification Rules"]
+    },
+    "version": {
+      "type": "string",
+      "description": "Semantic version number",
+      "pattern": "^\\d+\\.\\d+\\.\\d+$",
+      "examples": ["1.0.0", "2.1.3"]
+    },
+    "description": {
+      "type": "string",
+      "description": "Brief description of plugin purpose",
+      "minLength": 10,
+      "maxLength": 200
+    },
+    "category": {
+      "type": "string",
+      "description": "Plugin category",
+      "enum": [
+        "anti-hallucination",
+        "code-quality",
+        "security",
+        "workflow",
+        "performance",
+        "testing",
+        "documentation",
+        "other"
+      ]
+    },
+    "compatibility": {
+      "type": "object",
+      "description": "Compatible AI coding assistants",
+      "properties": {
+        "claudeCode": {
+          "type": "boolean",
+          "description": "Works with Claude Code"
+        },
+        "cursor": {
+          "type": "boolean",
+          "description": "Works with Cursor"
+        },
+        "windsurf": {
+          "type": "boolean",
+          "description": "Works with Windsurf"
+        },
+        "copilot": {
+          "type": "boolean",
+          "description": "Works with GitHub Copilot"
+        },
+        "other": {
+          "type": "array",
+          "items": {
+            "type": "string"
+          },
+          "description": "Other compatible tools"
+        }
+      },
+      "required": ["claudeCode", "cursor"]
+    },
+    "author": {
+      "type": "object",
+      "required": ["name"],
+      "properties": {
+        "name": {
+          "type": "string",
+          "description": "Author or organization name"
+        },
+        "email": {
+          "type": "string",
+          "format": "email",
+          "description": "Contact email"
+        },
+        "url": {
+          "type": "string",
+          "format": "uri",
+          "description": "Website or profile URL"
+        }
+      }
+    },
+    "keywords": {
+      "type": "array",
+      "description": "Search keywords for plugin discovery",
+      "items": {
+        "type": "string"
+      },
+      "minItems": 1,
+      "maxItems": 10,
+      "examples": [["verification", "accuracy", "hallucination", "testing"]]
+    },
+    "license": {
+      "type": "string",
+      "description": "Plugin license",
+      "default": "MIT",
+      "examples": ["MIT", "Apache-2.0", "GPL-3.0", "Proprietary"]
+    },
+    "repository": {
+      "type": "string",
+      "format": "uri",
+      "description": "Source code repository URL"
+    },
+    "homepage": {
+      "type": "string",
+      "format": "uri",
+      "description": "Plugin homepage or documentation URL"
+    },
+    "installationPath": {
+      "type": "object",
+      "description": "Where to install rules for each tool",
+      "properties": {
+        "claudeCode": {
+          "type": "string",
+          "description": "Relative path for Claude Code (e.g., .claude/rules/)",
+          "default": ".claude/rules/"
+        },
+        "cursor": {
+          "type": "string",
+          "description": "Relative path for Cursor (e.g., .cursorrules or .cursor/)",
+          "default": ".cursorrules"
+        },
+        "windsurf": {
+          "type": "string",
+          "description": "Relative path for Windsurf",
+          "default": ".windsurf/rules/"
+        }
+      }
+    },
+    "dependencies": {
+      "type": "array",
+      "description": "Other plugins this plugin depends on",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+/[a-z0-9-]+@\\d+\\.\\d+\\.\\d+$"
+      },
+      "examples": [["anti-hallucination/truth-priority@1.0.0"]]
+    },
+    "conflictsWith": {
+      "type": "array",
+      "description": "Plugins that conflict with this one",
+      "items": {
+        "type": "string",
+        "pattern": "^[a-z0-9-]+/[a-z0-9-]+$"
+      }
+    },
+    "tags": {
+      "type": "array",
+      "description": "Classification tags",
+      "items": {
+        "type": "string",
+        "enum": [
+          "beginner-friendly",
+          "advanced",
+          "enterprise",
+          "experimental",
+          "stable",
+          "recommended",
+          "strict",
+          "flexible",
+          "language-specific",
+          "framework-specific"
+        ]
+      }
+    },
+    "changelog": {
+      "type": "string",
+      "description": "Path to CHANGELOG.md file",
+      "default": "CHANGELOG.md"
+    },
+    "createdAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Plugin creation timestamp"
+    },
+    "updatedAt": {
+      "type": "string",
+      "format": "date-time",
+      "description": "Last update timestamp"
+    }
+  }
+}

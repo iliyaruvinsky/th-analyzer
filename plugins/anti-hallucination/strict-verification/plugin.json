@@ -1,0 +1,45 @@
+{
+  "id": "anti-hallucination/strict-verification",
+  "name": "Strict Verification Rules",
+  "version": "1.0.0",
+  "description": "Comprehensive anti-hallucination rules that enforce verification before claiming, honest reporting, and truth as the highest value for AI coding assistants.",
+  "category": "anti-hallucination",
+  "compatibility": {
+    "claudeCode": true,
+    "cursor": true,
+    "windsurf": true,
+    "copilot": false,
+    "other": ["Cline", "Aider"]
+  },
+  "author": {
+    "name": "Skywind Platform",
+    "email": "devops@skywind.com"
+  },
+  "keywords": [
+    "verification",
+    "accuracy",
+    "hallucination",
+    "testing",
+    "truth",
+    "honest-reporting",
+    "file-verification",
+    "cost-consciousness"
+  ],
+  "license": "MIT",
+  "installationPath": {
+    "claudeCode": ".claude/rules/",
+    "cursor": ".cursorrules",
+    "windsurf": ".windsurf/rules/"
+  },
+  "dependencies": [],
+  "conflictsWith": [],
+  "tags": [
+    "recommended",
+    "stable",
+    "enterprise",
+    "strict"
+  ],
+  "changelog": "CHANGELOG.md",
+  "createdAt": "2025-10-14T00:00:00Z",
+  "updatedAt": "2025-10-14T00:00:00Z"
+}

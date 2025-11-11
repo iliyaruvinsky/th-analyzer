@@ -18,6 +18,8 @@ treasure-hunt-analyzer/
 ├── backend/          # FastAPI backend
 ├── frontend/          # React frontend
 ├── ml_models/        # Trained ML models
+├── docs/             # Documentation and context
+├── scripts/          # Utility scripts
 └── docker-compose.yml
 ```
 
@@ -66,7 +68,17 @@ Once the backend is running, visit:
 - Swagger UI: http://localhost:8000/docs
 - ReDoc: http://localhost:8000/redoc
 
+## Documentation
+
+- [Quick Start Guide](QUICK_START.md)
+- [Testing Guide](TESTING_GUIDE.md)
+- [Validation Report](VALIDATION_REPORT.md)
+- [Merge Strategy](MERGE_STRATEGY.md)
+
+## Related Projects
+
+This repository also contains the [Skywind Plugin Marketplace](plugins/) - a collection of AI coding assistant plugins for Cursor, Claude Code, and Windsurf.
+
 ## License
 
 Proprietary - Skywind Software Group
-
