@@ -225,6 +225,116 @@ async def upload_file(
         )
 
 
+@router.post("/upload-artifacts")
+async def upload_artifacts(
+    request: Request,
+    files: List[UploadFile] = File(...),
+    db: Session = Depends(get_db)
+):
+    """
+    Upload multiple artifact files for a single alert (Code, Explanation, Metadata, Summary).
+
+    This endpoint accepts multiple files at once and groups them by alert.
+    Files should be named:
+    - Code_*.txt
+    - Explanation_*.txt
+    - Metadata_*.txt
+    - Summary_*.xlsx (or .csv, .txt)
+    """
+    if not files:
+        raise HTTPException(
+            status_code=status.HTTP_400_BAD_REQUEST,
+            detail="No files provided"
+        )
+
+    # Create storage directory
+    storage_path = Path(settings.STORAGE_PATH)
+    artifacts_path = storage_path / "artifacts" / f"{datetime.utcnow().timestamp()}"
+    artifacts_path.mkdir(parents=True, exist_ok=True)
+
+    saved_files = []
+    artifact_types = {"code": None, "explanation": None, "metadata": None, "summary": None}
+
+    for file in files:
+        if not file.filename:
+            continue
+
+        # Determine artifact type
+        filename_lower = file.filename.lower()
+        artifact_type = None
+        if filename_lower.startswith("code_"):
+            artifact_type = "code"
+        elif filename_lower.startswith("explanation_"):
+            artifact_type = "explanation"
+        elif filename_lower.startswith("metadata_"):
+            artifact_type = "metadata"
+        elif filename_lower.startswith("summary_"):
+            artifact_type = "summary"
+
+        # Save file
+        file_path = artifacts_path / file.filename
+        try:
+            content = await file.read()
+            with open(file_path, "wb") as f:
+                f.write(content)
+
+            saved_files.append({
+                "filename": file.filename,
+                "path": str(file_path),
+                "type": artifact_type,
+                "size": len(content)
+            })
+
+            if artifact_type:
+                artifact_types[artifact_type] = str(file_path)
+
+        except Exception as e:
+            raise HTTPException(
+                status_code=status.HTTP_500_INTERNAL_SERVER_ERROR,
+                detail=f"Error saving file {file.filename}: {str(e)}"
+            )
+
+    # Extract alert info from filenames
+    alert_name = "Unknown Alert"
+    alert_id = "unknown"
+    for f in saved_files:
+        if f["type"] == "summary" or f["type"] == "explanation":
+            # Try to extract alert name from filename
+            import re
+            # Pattern: Type_AlertName_ID.ext
+            match = re.match(r'^(?:summary|explanation|code|metadata)_(.+?)_(\d+_\d+)', f["filename"], re.IGNORECASE)
+            if match:
+                alert_name = match.group(1).replace('_', ' ')
+                alert_id = match.group(2)
+                break
+
+    # Create data source record for the artifact bundle
+    data_source = DataSource(
+        filename=f"Artifacts: {alert_name}",
+        original_filename=", ".join([f["filename"] for f in saved_files]),
+        file_format=FileFormat.XLSX if artifact_types["summary"] and ".xlsx" in artifact_types["summary"] else FileFormat.TXT,
+        data_type=DataSourceType.ALERT,
+        file_size=sum(f["size"] for f in saved_files),
+        file_path=str(artifacts_path),
+        status="completed",
+        alert_id=alert_id
+    )
+
+    db.add(data_source)
+    db.commit()
+    db.refresh(data_source)
+
+    return {
+        "data_source_id": data_source.id,
+        "alert_name": alert_name,
+        "alert_id": alert_id,
+        "artifacts_path": str(artifacts_path),
+        "files": saved_files,
+        "artifact_types": {k: v is not None for k, v in artifact_types.items()},
+        "message": f"Successfully uploaded {len(saved_files)} files. Use /content-analysis/analyze-directory to analyze."
+    }
+
+
 @router.get("/data-sources", response_model=List[DataSourceResponse])
 async def list_data_sources(
     skip: int = 0,

@@ -9,6 +9,7 @@ class FocusAreaClassifier:
     """Classify alerts/reports into one of the 6 focus areas"""
     
     # Keywords and patterns for each focus area
+    # Extended patterns to match real-world Skywind 4C alerts
     FOCUS_AREA_PATTERNS = {
         "BUSINESS_PROTECTION": [
             r"fraud",
@@ -19,6 +20,12 @@ class FocusAreaClassifier:
             r"vendor.*payment.*diversion",
             r"backdated.*purchase",
             r"one.*time.*vendor",
+            r"retroactiv",  # Retroactively created documents = potential fraud
+            r"duplicate.*payment",
+            r"suspicious",
+            r"irregular",
+            r"manipulation",
+            r"falsif",
         ],
         "BUSINESS_CONTROL": [
             r"bottleneck",
@@ -28,6 +35,21 @@ class FocusAreaClassifier:
             r"data.*exchange.*failure",
             r"process.*observability",
             r"business.*anomal",
+            r"waiting.*approval",  # PO/PR waiting for approval
+            r"pending.*approval",
+            r"approval.*delay",
+            r"negative.*profit",  # Negative profit deals
+            r"profit.*deal",
+            r"margin",
+            r"pricing.*issue",
+            r"purchase.*order",
+            r"sales.*order",
+            r"delivery.*block",
+            r"blocked.*order",
+            r"overdue",
+            r"delay",
+            r"pur\s+po",  # PUR PO pattern
+            r"goods.*receipt",
         ],
         "ACCESS_GOVERNANCE": [
             r"segregation.*duties",
@@ -39,6 +61,10 @@ class FocusAreaClassifier:
             r"self.*approval",
             r"access.*review",
             r"user.*activity",
+            r"privilege",
+            r"permission",
+            r"role.*assign",
+            r"critical.*transaction",
         ],
         "TECHNICAL_CONTROL": [
             r"system.*dump",
@@ -48,6 +74,12 @@ class FocusAreaClassifier:
             r"configuration.*drift",
             r"infrastructure",
             r"technical.*anomal",
+            r"runtime.*error",
+            r"abap.*dump",
+            r"short.*dump",
+            r"performance.*issue",
+            r"memory",
+            r"cpu.*usage",
         ],
         "JOBS_CONTROL": [
             r"job.*performance",
@@ -56,6 +88,8 @@ class FocusAreaClassifier:
             r"background.*job",
             r"resource.*utilization",
             r"job.*overlap",
+            r"batch.*process",
+            r"scheduled.*task",
         ],
         "S4HANA_EXCELLENCE": [
             r"s4.*hana",
@@ -64,8 +98,13 @@ class FocusAreaClassifier:
             r"fiori.*interface",
             r"universal.*journal",
             r"migration.*safeguard",
+            r"hana.*performance",
+            r"cds.*view",
         ],
     }
+
+    # Default focus area when no patterns match
+    DEFAULT_FOCUS_AREA = "BUSINESS_CONTROL"
     
     def __init__(self, db: Session):
         self.db = db
@@ -124,8 +163,13 @@ class FocusAreaClassifier:
         
         # Get focus area with highest score
         if not scores or max(scores.values()) == 0:
+            # Return default focus area with low confidence instead of None
+            # This ensures findings are always created for uploaded data
+            default_fa = self._focus_areas.get(self.DEFAULT_FOCUS_AREA)
+            if default_fa:
+                return default_fa, 0.3  # Low confidence for default classification
             return None, 0.0
-        
+
         best_focus_code = max(scores, key=scores.get)
         confidence = scores[best_focus_code]
         
