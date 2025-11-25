@@ -3,6 +3,7 @@ from fastapi.middleware.cors import CORSMiddleware
 from app.core.config import settings
 from app.api import router
 from app.api.maintenance import router as maintenance_router
+from app.api.content_analysis import router as content_analysis_router
 
 app = FastAPI(
     title=settings.PROJECT_NAME,
@@ -31,6 +32,7 @@ app.add_middleware(
 # Include routers
 app.include_router(router, prefix=settings.API_V1_PREFIX)
 app.include_router(maintenance_router, prefix=settings.API_V1_PREFIX)
+app.include_router(content_analysis_router, prefix=settings.API_V1_PREFIX)
 
 
 @app.get("/")
