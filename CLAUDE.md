@@ -2,6 +2,8 @@
 
 This document provides AI assistants with essential context for working effectively with this codebase.
 
+> **Important:** Also read [`llm_handover.md`](llm_handover.md) for detailed operational context, recent milestones, known issues, and project state. That document is updated after each verified milestone.
+
 ## Project Overview
 
 **Treasure Hunt Analyzer (THA)** is an enterprise system for analyzing Skywind platform alerts and reports. It provides insights across 6 focus areas with advanced visualization, risk assessment, and financial impact analysis.
@@ -168,6 +170,15 @@ Findings with Risk & Financial Data → Dashboard
 | `AnalysisRun` | Execution tracking |
 | `AuditLog` | Audit trail |
 
+### Database Relationships
+```
+findings → focus_areas (many-to-one)
+findings → issue_types (many-to-one)
+findings → risk_assessments (one-to-one)
+findings → money_loss_calculations (one-to-one)
+analysis_runs → data_sources (many-to-one)
+```
+
 ## API Endpoints
 
 ### Ingestion
@@ -282,6 +293,15 @@ npm run lint     # ESLint
 | `frontend/src/services/api.ts` | All API client functions |
 | `frontend/src/pages/Dashboard.tsx` | Main dashboard logic |
 | `docker-compose.yml` | Container orchestration |
+| `llm_handover.md` | **AI handover doc - read first!** |
+
+### Critical Files - Do Not Break
+These files are essential for system operation. Exercise extra caution when modifying:
+- `backend/app/core/database.py` - Database connection
+- `backend/app/main.py` - FastAPI app initialization
+- `frontend/src/services/api.ts` - API client
+- `docker-compose.yml` - Service orchestration
+- `backend/app/utils/init_db.py` - Database initialization
 
 ## Configuration
 
@@ -344,12 +364,32 @@ docker-compose up -d
 # Check logs
 docker-compose logs -f backend
 docker-compose logs -f frontend
+
+# Full reset with volume cleanup
+docker-compose down -v
+docker-compose up -d --build
+docker-compose exec backend python -m app.utils.init_db
 ```
 
 ### Database Connection Issues
-- Verify PostgreSQL container is running
-- Check DATABASE_URL format
+- Verify PostgreSQL container is running: `docker-compose ps`
+- Check DATABASE_URL format in backend/.env
 - Ensure port 5433 is available
+- Try database shell: `docker-compose exec postgres psql -U tha_user -d treasure_hunt_analyzer`
+
+### Backend 500 Errors
+- Check database schema matches models
+- View logs: `docker-compose logs backend`
+- Common fix - schema mismatch:
+```bash
+# Add missing columns manually if needed
+docker-compose exec backend python -c "from app.core.database import engine; from sqlalchemy import text; engine.connect().execute(text('ALTER TABLE analysis_runs ADD COLUMN IF NOT EXISTS data_source_id INTEGER REFERENCES data_sources(id)'))"
+```
+
+### Frontend Can't Connect to Backend
+1. Verify backend is running: http://localhost:3011/health
+2. Check CORS configuration in `backend/app/main.py`
+3. Ensure `VITE_API_BASE_URL` is set to `http://localhost:3011/api/v1`
 
 ### File Upload Issues
 - Check supported formats: PDF, CSV, DOCX, XLSX
@@ -373,6 +413,74 @@ Refer to `aws/README.md` for production deployment:
 4. **Authentication:** JWT infrastructure ready but not enforced
 5. **Sample Data:** Located in `docs/` subdirectories for testing
 
+## Data Flow Details
+
+### Upload Flow
+1. User uploads file via `/upload` page
+2. Frontend: `POST /api/v1/ingestion/upload` with FormData
+3. Backend: File saved to storage, metadata in `data_sources` table
+4. Parser (CSV/Excel/PDF) extracts findings
+5. Data stored in `findings` table with relationships
+
+### Analysis Flow
+1. User triggers analysis on data source
+2. Frontend: `POST /api/v1/analysis/run` with `data_source_id`
+3. Backend `Analyzer` service:
+   - Fetches findings from data source
+   - Classifies focus areas and issue types
+   - Hybrid engine calculates money loss (LLM + ML)
+   - Risk assessment scoring
+   - Creates `analysis_run` record with aggregated results
+4. Frontend displays results in dashboard
+
+### Dashboard Data Flow
+1. Dashboard loads: 3 parallel API calls
+   - `GET /api/v1/dashboard/kpis` - Summary metrics
+   - `GET /api/v1/analysis/findings` - Individual findings
+   - `GET /api/v1/analysis/runs` - Analysis run history
+2. Data refreshes every 5 seconds (React Query)
+3. Charts aggregate findings data client-side
+4. Filters trigger new API calls with query parameters
+
+## AI Agent Guidelines
+
+### Before Starting Work
+1. **Read `llm_handover.md` completely** - Contains current project state
+2. **Check git status** - Understand uncommitted changes
+3. **Verify Docker environment** - `docker compose ps`
+4. **Test current functionality** - Ensure nothing is broken
+5. **Review recent changes** in git log
+
+### When Making Changes
+1. **Update `llm_handover.md`** after verified milestones
+2. **Test thoroughly** before marking as complete
+3. **Document breaking changes** clearly
+4. **Commit frequently** with descriptive messages
+5. **Update relevant .md files** (README, documentation)
+
+### Handover Document Maintenance
+The `llm_handover.md` must be updated when:
+- A feature is completed and tested
+- A bug is fixed and verified
+- Database schema changes
+- API endpoint changes
+- Configuration changes
+- Known issues discovered or resolved
+
+**Rule:** Do not mark a task complete without updating `llm_handover.md`.
+
+See `.claude/rules/llm-handover-maintenance.md` for detailed update guidelines.
+
+### Testing Checklist
+Before considering work complete, verify:
+- [ ] Docker containers start successfully
+- [ ] Database initialization works
+- [ ] Frontend loads correctly
+- [ ] Backend API accessible
+- [ ] Dashboard displays data
+- [ ] API endpoints return expected responses
+- [ ] No console errors in browser
+
 ## Related Documentation
 
 - [README.md](README.md) - Project overview
@@ -381,3 +489,5 @@ Refer to `aws/README.md` for production deployment:
 - [TESTING_GUIDE.md](TESTING_GUIDE.md) - Testing details
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Plugin contributions
 - [aws/README.md](aws/README.md) - AWS deployment
+- [llm_handover.md](llm_handover.md) - **AI handover document (read first!)**
+- [.claude/rules/llm-handover-maintenance.md](.claude/rules/llm-handover-maintenance.md) - Handover update rules
