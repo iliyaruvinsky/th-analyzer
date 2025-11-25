@@ -13,16 +13,19 @@ Key Components:
 - ScoringEngine: Qualitative and quantitative scoring
 """
 
-from .analyzer import ContentAnalyzer
-from .context_loader import ContextLoader
-from .artifact_reader import ArtifactReader
+from .analyzer import ContentAnalyzer, create_content_analyzer
+from .context_loader import ContextLoader, get_context_loader
+from .artifact_reader import ArtifactReader, AlertArtifacts
 from .llm_classifier import LLMClassifier
 from .scoring_engine import ScoringEngine
 
 __all__ = [
     "ContentAnalyzer",
+    "create_content_analyzer",
     "ContextLoader",
+    "get_context_loader",
     "ArtifactReader",
+    "AlertArtifacts",
     "LLMClassifier",
     "ScoringEngine",
 ]
