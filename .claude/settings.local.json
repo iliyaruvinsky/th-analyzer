@@ -14,7 +14,8 @@
       "Bash(nul)",
       "Bash(findstr:*)",
       "Bash(powershell:*)",
-      "Bash(python:*)"
+      "Bash(python:*)",
+      "Bash(git add:*)"
     ],
     "deny": [],
     "ask": []

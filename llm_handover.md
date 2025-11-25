@@ -522,6 +522,15 @@ docker compose exec backend python -m app.utils.init_db
 
 ---
 
+### 2025-11-25
+- **UPDATED**: Frontend now runs on port 3010, backend on port 3011 to avoid conflicts.
+- **UPDATED**: Docker Compose updated with build args and environment variable `VITE_API_BASE_URL` pointing to `http://localhost:3011/api/v1`.
+- **UPDATED**: `frontend/src/services/api.ts` fallback URL changed to `http://localhost:3011/api/v1`.
+- **UPDATED**: Backend CORS middleware now allows `http://localhost:3010`.
+- **UPDATED**: `frontend/Dockerfile.dev` accepts `VITE_API_BASE_URL` build arg.
+- **UPDATED**: Database re‑initialized after schema fix; containers rebuilt.
+- **NOTE**: All containers are healthy; dashboard accessible at `http://localhost:3010`.
+
 **END OF HANDOVER DOCUMENT**
 
 *This document should be updated systematically after each verified milestone, significant change, or project state update. Keep it comprehensive and accurate for seamless AI agent collaboration.*
