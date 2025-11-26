@@ -418,14 +418,18 @@ class ScoringEngine:
             "dates": [],
         }
 
-        # Extract counts
+        # Extract counts (handle comma-separated numbers like 1,943)
         count_patterns = [
-            r'(\d+)\s+(?:records?|items?|entries|rows?|vendors?|customers?|users?)',
-            r'(?:total|count|found)\s*[:\-]?\s*(\d+)',
+            r'([\d,]+)\s+(?:records?|items?|entries|rows?|vendors?|customers?|users?)',
+            r'(?:total|count|found)\s*[:\-]?\s*([\d,]+)',
         ]
         for pattern in count_patterns:
             matches = re.findall(pattern, text, re.IGNORECASE)
-            metrics["counts"].extend([int(m) for m in matches])
+            for m in matches:
+                # Remove commas before converting to int
+                clean_num = m.replace(',', '')
+                if clean_num.isdigit():
+                    metrics["counts"].append(int(clean_num))
 
         # Extract monetary values
         for pattern, currency in self._currency_patterns:

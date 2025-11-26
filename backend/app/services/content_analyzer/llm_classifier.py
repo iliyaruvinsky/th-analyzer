@@ -404,23 +404,25 @@ class LLMClassifier:
         patterns = {
             "BUSINESS_PROTECTION": [
                 "fraud", "cybersecurity", "unauthorized", "manipulation",
-                "suspicious", "irregular", "falsif", "diversion"
+                "suspicious", "irregular", "falsif", "diversion", "theft"
             ],
             "BUSINESS_CONTROL": [
-                "bottleneck", "delay", "approval", "stuck", "unbilled",
-                "incomplete", "anomal", "profit", "volume", "comparison"
+                "vendor", "customer", "master data", "invoice", "payment",
+                "purchase order", "sales order", "balance", "financial",
+                "pricing", "discount", "credit", "bottleneck", "delay",
+                "approval", "stuck", "unbilled", "incomplete", "anomal"
             ],
             "ACCESS_GOVERNANCE": [
-                "sod", "segregation", "privilege", "authorization", "access",
-                "session", "logged", "permission", "role"
+                "sod", "segregation of duties", "privilege", "authorization",
+                "access control", "permission", "role conflict"
             ],
             "TECHNICAL_CONTROL": [
-                "dump", "memory", "cpu", "infrastructure", "performance",
-                "error", "failure", "system"
+                "memory dump", "abap dump", "short dump", "cpu usage",
+                "runtime error", "system crash"
             ],
             "JOBS_CONTROL": [
-                "job", "batch", "background", "scheduled", "running",
-                "resource", "contention"
+                "job failed", "batch job", "background job", "scheduled task",
+                "job runtime", "resource contention"
             ]
         }
 
