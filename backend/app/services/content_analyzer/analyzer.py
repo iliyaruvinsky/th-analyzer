@@ -328,7 +328,9 @@ class ContentAnalyzer:
         if artifacts.summary:
             metrics = self.scoring_engine.extract_metrics_from_text(artifacts.summary)
 
-        total_count = max(metrics.get("counts", [0]))
+        # Handle empty counts list safely
+        counts = metrics.get("counts", [])
+        total_count = max(counts) if counts else 0
         monetary = metrics.get("monetary_values", [])
         monetary_amount = monetary[0]["amount"] if monetary else 0.0
 
