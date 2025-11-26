@@ -1,8 +1,8 @@
 # LLM Handover Document - Treasure Hunt Analyzer (THA)
 
-**Last Updated**: 2025-11-26
-**Project Status**: Development - Content Analyzer Active
-**Current Version**: 1.1.0
+**Last Updated**: 2025-11-26 (Session End)
+**Project Status**: Development - Content Analyzer WORKING, Scoring Rules IN PROGRESS
+**Current Version**: 1.2.0
 
 ---
 
@@ -12,564 +12,389 @@ This document provides comprehensive project context for AI agents working on th
 
 ---
 
+## CRITICAL: Current Work in Progress
+
+### Active Development Focus: Content Analyzer Scoring Rules
+
+The user is working on defining **Focus Area-specific scoring rules** for the Content Analyzer. Each of the 5 Focus Areas will have its own scoring principles.
+
+**Currently discussing:** BUSINESS_PROTECTION focus area scoring
+
+**Key Context the User Provided:**
+
+1. **Severity Base Scores (UPDATED - not yet implemented)**:
+   - Critical: 90 (was 85)
+   - High: 75 (was 65)
+   - Medium: 60 (was 45)
+   - Low: 50 (was 25)
+
+2. **Count Adjustment must consider BACKDAYS parameter**:
+   - Alert parameters are in `Metadata_*` file
+   - BACKDAYS = history depth (e.g., BACKDAYS=1 means yesterday+today)
+   - Raw count alone is MISLEADING - must normalize by BACKDAYS
+   - Example: 1,943 vendors in 1 day vs 1,943 vendors in 30 days = VERY different risk
+
+3. **Money Adjustment thresholds** - User wants explanation/refinement:
+   - $1M+: +20 points
+   - $100K+: +15 points
+   - $10K+: +10 points
+
+4. **Missing Documentation**: User mentioned `docs/about_skywind/TXT` folder with Skywind alert parameter documentation - THIS FOLDER DOES NOT EXIST IN THE REPO. Ask user to provide.
+
+---
+
 ## Project Overview
 
 **Name**: Treasure Hunt Analyzer (THA)
-**Purpose**: Comprehensive system for analyzing Skywind platform alerts and reports, providing insights across 6 focus areas with advanced visualization and reporting capabilities.
+**Purpose**: Enterprise system for analyzing Skywind platform alerts (4C) and reports (SoDA), providing insights across 5 focus areas with risk assessment and financial impact analysis.
 
 **Tech Stack**:
-- **Backend**: FastAPI (Python 3.11), PostgreSQL 15, SQLAlchemy
+- **Backend**: FastAPI (Python 3.11), PostgreSQL 15, SQLAlchemy 2.0
 - **Frontend**: React 18, TypeScript, Vite, Bootstrap 5, Recharts
-- **Infrastructure**: Docker Compose, AWS (CloudFormation, ECS, RDS, Lambda)
-- **AI/ML**: OpenAI/Anthropic LLMs, scikit-learn ML models
+- **Infrastructure**: Docker Compose (dev), AWS (prod)
+- **AI/ML**: OpenAI/Anthropic LLMs (optional), Pattern-based fallback
 
 ---
 
-## Current Project State
+## Current Project State (VERIFIED 2025-11-26)
 
 ### Working Features ✅
 
-1. **Multi-format Data Ingestion**
-   - CSV, Excel (4C & SoDA formats), PDF, DOCX support
-   - File upload via frontend interface
-   - Automatic parsing and data extraction
-   - Storage in PostgreSQL database
+1. **Multi-File Artifact Upload (UI)**
+   - Upload page at http://localhost:3010/upload
+   - Add files one-by-one (Code, Explanation, Metadata, Summary)
+   - Color-coded file categorization (green=found, yellow=pending)
+   - Flexible file name matching (handles spaces after prefix)
+   - Auto-analyze after upload
 
-2. **6 Focus Area Classification**
-   - Business Protection (BP)
-   - Business Control (BC)
-   - Access Governance (AG)
-   - Technical Control (TC)
-   - Jobs Control (JC)
-   - S/4HANA Excellence (S4)
+2. **Content Analyzer (Pattern-Based)**
+   - Reads 4 artifact files from uploaded directory
+   - Extracts text from .txt, .docx, .xlsx files
+   - Classifies into 5 Focus Areas (keyword matching)
+   - Extracts counts (handles comma-separated: "1,943")
+   - Extracts monetary amounts (handles $45M format)
+   - Calculates risk score with breakdown
 
-3. **Issue Type Grouping**
-   - Automatic grouping of findings by issue types
-   - Hierarchical categorization
+3. **End-to-End Flow WORKING**
+   - Upload 4 artifacts via UI → Analyze → Dashboard shows results
+   - Example tested: "Rarely Used Vendors" alert
+   - Result: BUSINESS_CONTROL, 1,943 vendors, $45,000,000 exposure, Risk Score 80
 
-4. **Hybrid Money Loss Calculation**
-   - LLM-based reasoning (OpenAI/Anthropic)
-   - ML-based learning with trained models
-   - Confidence scoring
-
-5. **Interactive Dashboard** (VERIFIED WORKING)
-   - KPI summary cards (Total Findings, Risk Score, Money Loss, Analysis Runs)
+4. **Dashboard (VERIFIED)**
+   - KPI cards: Total Findings, Risk Score, Financial Exposure, Analysis Runs
    - Focus Area distribution chart
-   - Risk Level distribution chart
-   - Money Loss over time chart
-   - Filterable findings table
-   - Real-time data refresh (5-second intervals)
+   - Risk Level analysis chart
+   - Filters (Focus Area, Severity, Status, Date Range)
 
-6. **Multiple Pages**
-   - Dashboard (/)
-   - Upload (/upload)
-   - Findings (/findings)
-   - Finding Detail (/findings/:id)
-   - Reports (/reports)
-   - Maintenance (/maintenance)
-   - Logs (/logs)
+5. **API Endpoints (VERIFIED)**
+   - `POST /api/v1/ingestion/upload-artifacts` - Multi-file upload
+   - `POST /api/v1/content-analysis/analyze-directory` - Analyze without saving
+   - `POST /api/v1/content-analysis/analyze-and-save` - Analyze and persist to DB
+   - `GET /api/v1/dashboard/kpis` - Dashboard metrics
+   - `GET /api/v1/analysis/findings` - Findings list
+   - `DELETE /api/v1/maintenance/data-sources?confirm=true` - Clear all data
 
-7. **Maintenance & Audit**
-   - Data source management
-   - Audit logging system
-   - Bulk delete operations
+### Access Points (CURRENT)
 
-8. **AWS Deployment Infrastructure**
-   - CloudFormation templates
-   - ECS Fargate configurations
-   - RDS PostgreSQL setup
-   - Lambda functions for maintenance
-   - Application Load Balancer
+| Service | URL |
+|---------|-----|
+| Frontend | http://localhost:3010 |
+| Backend API | http://localhost:3011 |
+| Swagger Docs | http://localhost:3011/docs |
+| Health Check | http://localhost:3011/health |
 
 ---
 
-## Recent Milestones (Verified)
+## 5 Focus Areas (Classification)
 
-### 2025-11-26: Intelligent Content Analyzer ✅
-- **NEW**: Content Analyzer module (`backend/app/services/content_analyzer/`)
-  - `analyzer.py` - Main orchestrator for 4-artifact analysis
-  - `artifact_reader.py` - Parses Code, Explanation, Metadata, Summary files
-  - `llm_classifier.py` - LLM-based focus area classification
-  - `scoring_engine.py` - Qualitative + quantitative scoring
-  - `context_loader.py` - Loads TH principles from docs
-  - `prompts.py` - Versioned LLM prompts
-- **NEW**: Content Analysis API endpoints (`/api/v1/content-analysis/`)
-  - `POST /analyze` - Analyze alert from text content
-  - `POST /analyze-directory` - Analyze from directory with artifact files
-  - `POST /analyze-sample/{sample_name}` - Analyze sample alerts
-  - `GET /samples` - List available sample alerts
-  - `POST /feedback` - Submit feedback for iterative improvement
-  - `GET /status` - Get analyzer status
-- **NEW**: Multi-file upload endpoint (`POST /api/v1/ingestion/upload-artifacts`)
-  - Upload all 4 artifacts (Code, Explanation, Metadata, Summary) at once
-  - Files stored in `/app/storage/artifacts/{timestamp}/`
-- **FIXED**: Content analyzer `__init__.py` missing exports (create_content_analyzer, AlertArtifacts)
-- **5 Focus Areas**: BUSINESS_PROTECTION, BUSINESS_CONTROL, ACCESS_GOVERNANCE, TECHNICAL_CONTROL, JOBS_CONTROL
-- **Analysis Approach**: Qualitative (what happened) + Quantitative (how much)
+| Focus Area | Description | Keywords |
+|------------|-------------|----------|
+| **BUSINESS_PROTECTION** | Fraud, cybersecurity, vendor manipulation | fraud, theft, unauthorized, manipulation, suspicious |
+| **BUSINESS_CONTROL** | Process bottlenecks, vendor/customer management | vendor, customer, master data, invoice, payment, balance |
+| **ACCESS_GOVERNANCE** | SoD violations, authorization control | sod, segregation of duties, privilege, authorization |
+| **TECHNICAL_CONTROL** | System dumps, infrastructure issues | memory dump, abap dump, cpu usage, system crash |
+| **JOBS_CONTROL** | Job performance, resource utilization | job failed, batch job, background job, job runtime |
 
-### 2025-11-23: Docker Environment Setup & Dashboard Fix ✅
-- **Fixed**: Docker Desktop connectivity issues
-- **Resolved**: Database schema mismatch (missing `data_source_id` column in `analysis_runs` table)
-- **Verified**: All Docker containers running (postgres, backend, frontend)
-- **Verified**: Dashboard fully functional with live data
-  - 46,586 total findings
-  - 29 analysis runs
-  - $25.6M total money loss
-  - 2.35M total risk score
-- **Access Points**:
-  - Frontend: http://localhost:3001
-  - Backend: http://localhost:8080
-  - API Docs: http://localhost:8080/docs
-
-### 2025-11-23: Dashboard Redesign - Skywind.ai Style ✅
-- **REDESIGNED**: Complete UI overhaul from industrial-brutalist to Skywind professional aesthetic
-- **Color Palette**: Changed from dark (#0a0e14) to light (#f8f9fa) with Skywind red (#C41E3A) accents
-- **Typography**: Replaced Orbitron/JetBrains Mono with professional system fonts
-- **Charts**: Updated all 3 chart components (Focus Area, Risk Level, Money Loss) with Skywind colors
-- **Files Modified**:
-  - `frontend/src/styles/dashboard.css` - Complete rewrite (600+ lines)
-  - `frontend/src/pages/Dashboard.tsx` - Text and structure updates
-  - `frontend/src/components/charts/*.tsx` - All 3 chart components
-  - `frontend/index.html` - Removed custom fonts
-- **Documentation**: Created `DASHBOARD_REDESIGN_SUMMARY.md` with complete design specifications
-- **Claude Skill**: Installed `frontend-design` skill in `.claude/skills/frontend-design/`
-- **Brand Alignment**: Dashboard now matches Skywind.ai corporate identity
-
-### Known Issues Resolved
-1. ~~CORS errors~~ - Fixed (backend CORS middleware properly configured)
-2. ~~Database schema mismatch~~ - Fixed (added `data_source_id` column)
-3. ~~500 errors on /api/v1/analysis/runs~~ - Fixed
-4. ~~Dashboard infinite reload~~ - Fixed
+**Classification Logic**: `backend/app/services/content_analyzer/llm_classifier.py` → `analyze_without_llm()` method
 
 ---
 
-## Architecture Overview
+## Analysis Principles (User-Defined)
 
-### Directory Structure
+### Core Analyzer Workflow
+
 ```
-treasure-hunt-analyzer/
-├── backend/
-│   ├── app/
-│   │   ├── api/            # FastAPI route handlers
-│   │   ├── core/           # Database, config
-│   │   ├── models/         # SQLAlchemy ORM models
-│   │   ├── schemas/        # Pydantic schemas
-│   │   ├── services/       # Business logic
-│   │   │   ├── analysis/   # Analysis engine
-│   │   │   ├── ingestion/  # Data parsers (CSV, Excel, PDF)
-│   │   │   ├── llm_engine/ # LLM integration
-│   │   │   ├── ml_engine/  # ML models
-│   │   │   └── hybrid_engine.py
-│   │   └── utils/          # Utilities, audit logger, init_db
-│   ├── Dockerfile
-│   └── requirements.txt
-├── frontend/
-│   ├── src/
-│   │   ├── components/     # React components
-│   │   │   ├── charts/     # Recharts visualizations
-│   │   │   ├── filters/    # Dashboard filters
-│   │   │   └── tables/     # Data tables
-│   │   ├── pages/          # Page components
-│   │   ├── services/       # API client (axios)
-│   │   └── main.tsx
-│   ├── Dockerfile
-│   ├── Dockerfile.dev
-│   └── package.json
-├── aws/                    # AWS deployment templates
-├── docs/                   # SoDA templates, context files
-├── ml_models/              # Trained ML models
-├── scripts/                # Install scripts
-├── docker-compose.yml      # Development setup
-├── docker-compose.prod.yml # Production setup
-└── *.md                    # Documentation files
+PHASE 1: CONTEXT LOADING
+├── Load general TH knowledge (/docs/th-context/readmore/*)
+└── Alert-specific context from 4 artifacts
+
+PHASE 2: ARTIFACT READING (Sequential)
+├── 1. Code_*       → Alert logic (ABAP/SQL)
+├── 2. Explanation_* → Business context (WHY it matters)
+├── 3. Metadata_*   → Parameters (BACKDAYS, filters)
+└── 4. Summary_*    → ACTUAL OUTPUT TO ANALYZE
+
+PHASE 3: ANALYSIS
+├── Summary_* is PRIMARY data source
+├── Other artifacts provide CONTEXT
+├── Classify into 1 of 5 Focus Areas
+└── Perform Qualitative + Quantitative analysis
+
+PHASE 4: SCORING
+├── Qualitative: "What happened?" → Event description
+└── Quantitative: "How much/many?" → Counts, amounts
 ```
 
-### Database Schema (PostgreSQL)
+### Qualitative vs Quantitative Examples
 
-**Core Tables**:
-- `data_sources` - Uploaded files metadata
-- `focus_areas` - 6 focus area definitions
-- `issue_types` - Issue type classifications
-- `field_mappings` - Column mapping configurations
-- `findings` - Individual security findings
-- `analysis_runs` - Analysis execution records
-- `risk_assessments` - Risk scoring data
-- `money_loss_calculations` - Financial impact calculations
-- `audit_logs` - System audit trail
-
-**Key Relationships**:
-- `findings` → `focus_areas` (many-to-one)
-- `findings` → `issue_types` (many-to-one)
-- `findings` → `risk_assessments` (one-to-one)
-- `findings` → `money_loss_calculations` (one-to-one)
-- `analysis_runs` → `data_sources` (many-to-one)
+| Type | Alert | Key Indicator |
+|------|-------|---------------|
+| Qualitative | "Inactive Vendor" | Problem description, cleanup needed |
+| Quantitative | "Inactive Vendor with High Balance" | **$6.7M** at risk, specific amounts |
 
 ---
 
-## API Endpoints
+## Recent Session Work (2025-11-26)
 
-### Analysis (`/api/v1/analysis`)
-- `POST /run` - Run analysis on data source
-- `GET /runs` - List all analysis runs
-- `GET /runs/{id}` - Get specific analysis run
-- `GET /findings` - Get findings with filters
+### Files Modified
 
-### Ingestion (`/api/v1/ingestion`)
-- `POST /upload` - Upload data file
-- `GET /data-sources` - List uploaded files
+1. **backend/app/api/content_analysis.py**
+   - Added `analyze-and-save` endpoint
+   - Fixed DataSource model fields (file_format, data_type instead of file_type)
+   - Uses correct API for persisting findings to database
 
-### Dashboard (`/api/v1/dashboard`)
-- `GET /kpis` - Get summary KPIs
+2. **backend/app/services/content_analyzer/analyzer.py**
+   - Fixed `_fallback_analysis()` to extract metrics from ALL artifacts (not just summary)
+   - Added `monetary_amount` to quantitative_analysis dict
+   - Improved `_fallback_classification()` keywords
 
-### Maintenance (`/api/v1/maintenance`)
-- `GET /data-sources` - List data sources
-- `DELETE /data-sources/{id}` - Delete data source
-- `DELETE /data-sources` - Bulk delete
-- `GET /logs` - Get audit logs
+3. **backend/app/services/content_analyzer/llm_classifier.py**
+   - Updated `analyze_without_llm()` keywords:
+     - Added vendor/customer/balance/financial to BUSINESS_CONTROL
+     - Made TECHNICAL_CONTROL keywords more specific (avoid generic "system")
 
-### Content Analysis (`/api/v1/content-analysis`) **NEW**
-- `POST /analyze` - Analyze alert from text content
-- `POST /analyze-directory` - Analyze from directory with artifact files
-- `POST /analyze-sample/{sample_name}` - Analyze sample alerts from docs
-- `GET /samples` - List available sample alerts
-- `POST /feedback` - Submit feedback on analysis results
-- `GET /status` - Get analyzer status (LLM enabled, provider, etc.)
+4. **backend/app/services/content_analyzer/scoring_engine.py**
+   - Fixed count regex to handle comma-separated numbers ("1,943" → 1943)
+   - Pattern: `r'([\d,]+)\s+(?:records?|items?|vendors?|...)'`
+
+5. **frontend/src/pages/Upload.tsx**
+   - Added multi-file artifact upload section
+   - Add files one-by-one workflow
+   - Color-coded categorization (Code/Explanation/Metadata/Summary)
+   - Fixed API URLs to use `http://localhost:3011/api/v1`
+   - Flexible file name matching (handles "Metadata " with space)
+
+### Commits Made (Branch: claude/claude-md-miecwc4mecipjiww-01E2YVoZHeHvYiRZUEUYKn4j)
+
+1. `Fix DataSource model fields in analyze-and-save endpoint`
+2. `Improve quantitative extraction and focus area classification`
+3. `Fix classification keywords and count regex for comma-separated numbers`
+4. `Add multi-file artifact upload to Upload page`
+5. `Update Upload page to add artifact files one-by-one`
+6. `Fix API URLs in Upload page to use correct backend URL`
+7. `Make artifact file categorization more flexible (handle spaces after prefix)`
 
 ---
 
-## Environment Configuration
+## Testing Commands
 
-### Backend Environment Variables
+### Test Content Analyzer (CLI)
+
 ```bash
-DATABASE_URL=postgresql://tha_user:tha_password@postgres:5432/treasure_hunt_analyzer
-STORAGE_TYPE=local
-STORAGE_PATH=/app/storage
-SECRET_KEY=dev-secret-key-change-in-production
-DEBUG=True
-ENVIRONMENT=development
-OPENAI_API_KEY=<your-key>
-ANTHROPIC_API_KEY=<your-key>
-LLM_PROVIDER=openai
+# Upload artifacts via Swagger UI first, get artifacts_path
+
+# Analyze without saving (see full output)
+curl -X POST "http://localhost:3011/api/v1/content-analysis/analyze-directory" \
+  -H "Content-Type: application/json" \
+  -d '{"directory_path": "/app/storage/artifacts/YOUR_PATH", "use_llm": false}'
+
+# Analyze and save to database
+curl -X POST "http://localhost:3011/api/v1/content-analysis/analyze-and-save" \
+  -H "Content-Type: application/json" \
+  -d '{"directory_path": "/app/storage/artifacts/YOUR_PATH", "use_llm": false}'
 ```
 
-### Frontend Environment Variables
+### Clear Database and Re-test
+
 ```bash
-VITE_API_BASE_URL=http://localhost:8080/api/v1
-```
+# Clear all data
+curl -X DELETE "http://localhost:3011/api/v1/maintenance/data-sources?confirm=true"
 
-### Docker Compose Ports
-- PostgreSQL: 5432
-- Backend: 8080 → 8000 (internal)
-- Frontend: 3001 → 3000 (internal)
-
----
-
-## Development Workflow
-
-### Starting the Application
-```bash
-# Navigate to project
-cd "G:\My Drive\SW_PLATFORM\4. MARKETING\PRESENTATIONS\CURRENT\14. Treasure Hunting\treasure-hunt-analyzer"
-
-# Start all services
-docker compose up -d
-
-# Check status
-docker compose ps
-
-# Initialize database (first time only)
-docker compose exec backend python -m app.utils.init_db
-
-# View logs
-docker compose logs -f
-```
-
-### Stopping the Application
-```bash
-docker compose down
-```
-
-### Rebuilding After Code Changes
-```bash
-docker compose up -d --build
-```
-
-### Database Operations
-```bash
-# Initialize/reset database
-docker compose exec backend python -m app.utils.init_db
-
-# Check data
-docker compose exec backend python backend/check_data.py
-
-# Access PostgreSQL directly
-docker compose exec postgres psql -U tha_user -d treasure_hunt_analyzer
-```
-
----
-
-## Git & Version Control Status
-
-### Current Branch
-- Local: `main`
-- Remote Default: `feature/add-plugin-dev-agent-to-marketplace` (MIXED CONTENT - needs cleanup)
-
-### Uncommitted Changes (as of 2025-11-23)
-- **32 modified files** in backend/, frontend/, docker-compose.yml
-- **50+ untracked files** including:
-  - AWS deployment infrastructure (aws/)
-  - Documentation files (*.md)
-  - New API endpoints (dashboard.py, maintenance.py)
-  - Frontend components (charts/, filters/, tables/)
-  - Audit logging system
-
-### GitHub Repository Status
-- **URL**: https://github.com/iliyaruvinsky/treasure_hunt
-- **Sync Status**: LOCAL IS AHEAD - GitHub has ~30-40% of local functionality
-- **Critical Missing on GitHub**:
-  - Dashboard charts and visualizations
-  - Maintenance & audit systems
-  - AWS deployment templates
-  - 12+ documentation files
-  - Enhanced UI components
-
-**ACTION REQUIRED**: Commit and push local changes to GitHub for backup and team collaboration.
-
----
-
-## Data Flow
-
-### Upload Flow
-1. User uploads file via `/upload` page
-2. Frontend: `POST /api/v1/ingestion/upload` with FormData
-3. Backend: File saved to storage, metadata in `data_sources` table
-4. Parser (CSV/Excel/PDF) extracts findings
-5. Data stored in `findings` table with relationships
-
-### Analysis Flow
-1. User triggers analysis on data source
-2. Frontend: `POST /api/v1/analysis/run` with `data_source_id`
-3. Backend `Analyzer` service:
-   - Fetches findings from data source
-   - Classifies focus areas and issue types
-   - Hybrid engine calculates money loss (LLM + ML)
-   - Risk assessment scoring
-   - Creates `analysis_run` record with aggregated results
-4. Frontend displays results in dashboard
-
-### Dashboard Data Flow
-1. Dashboard loads: 3 parallel API calls
-   - `GET /api/v1/dashboard/kpis` - Summary metrics
-   - `GET /api/v1/analysis/findings` - Individual findings
-   - `GET /api/v1/analysis/runs` - Analysis run history
-2. Data refreshes every 5 seconds (React Query)
-3. Charts aggregate findings data client-side
-4. Filters trigger new API calls with query parameters
-
----
-
-## Key Dependencies
-
-### Backend (requirements.txt)
-- fastapi==0.104.1
-- uvicorn==0.24.0
-- sqlalchemy==2.0.23
-- psycopg2-binary==2.9.9
-- pydantic==2.5.0
-- openai==1.3.5
-- anthropic==0.7.1
-- scikit-learn==1.3.2
-- pandas==2.1.3
-- openpyxl==3.1.2
-- python-multipart==0.0.6
-
-### Frontend (package.json)
-- react==18.2.0
-- typescript==5.2.2
-- vite==5.0.0
-- axios==1.6.2
-- @tanstack/react-query==5.8.4
-- react-router-dom==6.20.0
-- recharts==2.10.3
-- bootstrap==5.3.2
-
----
-
-## Testing & Validation
-
-### Manual Testing Checklist
-- [x] Docker containers start successfully
-- [x] Database initialization works
-- [x] Frontend loads at localhost:3001
-- [x] Backend API accessible at localhost:8080
-- [x] Dashboard displays data correctly
-- [x] KPI cards show accurate totals
-- [x] Charts render properly
-- [x] API endpoints return 200 responses
-- [ ] File upload works (CSV, Excel, PDF)
-- [ ] Analysis run completes successfully
-- [ ] Filters update dashboard data
-- [ ] Finding detail page loads
-- [ ] Maintenance operations work
-- [ ] Audit logs are recorded
-
-### Known Working Endpoints (Verified 2025-11-23)
-- ✅ `GET /health` - Returns healthy status
-- ✅ `GET /api/v1/dashboard/kpis` - Returns correct totals
-- ✅ `GET /api/v1/analysis/runs` - Returns analysis run list
-- ✅ `GET /api/v1/analysis/findings` - Returns findings with filters
-
----
-
-## Common Issues & Solutions
-
-### Issue: Docker containers won't start
-**Solution**:
-1. Ensure Docker Desktop is running
-2. Check ports 3001, 8080, 5432 are not in use
-3. Run `docker compose down -v` then `docker compose up -d --build`
-
-### Issue: Backend 500 errors
-**Solution**:
-1. Check database schema matches models
-2. Run database migration if needed
-3. View logs: `docker compose logs backend`
-
-### Issue: Frontend can't connect to backend
-**Solution**:
-1. Verify backend is running: http://localhost:8080/health
-2. Check CORS configuration in `backend/app/main.py`
-3. Ensure `VITE_API_BASE_URL` is set correctly
-
-### Issue: Database schema mismatch
-**Solution**:
-```bash
-# Add missing columns manually
-docker compose exec backend python -c "from app.core.database import engine; from sqlalchemy import text; engine.connect().execute(text('ALTER TABLE analysis_runs ADD COLUMN IF NOT EXISTS data_source_id INTEGER REFERENCES data_sources(id)'))"
-
-# Or recreate database (loses data)
-docker compose down -v
-docker compose up -d
+# Re-initialize with seed data (optional)
 docker compose exec backend python -m app.utils.init_db
 ```
 
----
+### Rebuild After Code Changes
 
-## Next Steps & Roadmap
+```bash
+# Pull latest code
+git pull origin claude/claude-md-miecwc4mecipjiww-01E2YVoZHeHvYiRZUEUYKn4j
 
-### Immediate Priorities
-1. **Git Sync**: Commit and push all local changes to GitHub
-2. **Branch Cleanup**: Separate THA and Plugin Marketplace projects
-3. **Testing**: Complete manual testing checklist
-4. **Documentation**: Update README with latest features
+# Rebuild backend (fast - uses cache)
+docker compose build backend && docker compose up -d backend
 
-### Feature Enhancements (Planned)
-- [ ] Advanced filtering (date ranges, multi-select)
-- [ ] Export reports (PDF, Excel)
-- [ ] User authentication & authorization
-- [ ] Real-time analysis progress tracking
-- [ ] Batch upload processing
-- [ ] Enhanced ML model training interface
-- [ ] Custom risk scoring rules
-- [ ] Integration with Skywind APIs
+# Rebuild frontend (fast - uses cache)
+docker compose build frontend && docker compose up -d frontend
 
-### Infrastructure Improvements
-- [ ] CI/CD pipeline (GitHub Actions)
-- [ ] Automated testing (pytest, Jest)
-- [ ] Production deployment to AWS
-- [ ] Monitoring & alerting (CloudWatch)
-- [ ] Database backups & recovery
-- [ ] Performance optimization
-- [ ] Security hardening
+# Full rebuild (slow - no cache)
+docker compose build --no-cache backend && docker compose up -d backend
+```
 
 ---
 
-## Important Notes for AI Agents
+## Current Scoring Logic (TO BE REFINED)
 
-### Before Starting Work
-1. **Read this handover document completely**
-2. **Check git status** - understand uncommitted changes
-3. **Verify Docker environment is running** - `docker compose ps`
-4. **Test current functionality** - ensure nothing is broken
-5. **Review recent changes** in git log and this document
+### Risk Score Calculation
 
-### When Making Changes
-1. **Update this handover document** after verified milestones
-2. **Test thoroughly** before marking as complete
-3. **Document breaking changes** clearly
-4. **Commit frequently** with descriptive messages
-5. **Update relevant .md files** (README, documentation)
+```python
+# scoring_engine.py
 
-### Code Style & Conventions
-- **Backend**: Follow FastAPI best practices, use type hints
-- **Frontend**: TypeScript strict mode, functional components with hooks
-- **Database**: Use SQLAlchemy ORM, no raw SQL unless necessary
-- **API**: RESTful conventions, proper status codes
-- **Error Handling**: Try/except with audit logging
-- **Documentation**: Docstrings for all functions/classes
+# Base scores by severity
+SEVERITY_BASE_SCORES = {
+    "Critical": 85,  # USER WANTS: 90
+    "High": 65,      # USER WANTS: 75
+    "Medium": 45,    # USER WANTS: 60
+    "Low": 25,       # USER WANTS: 50
+}
 
-### Critical Files - Do Not Break
-- `backend/app/core/database.py` - Database connection
-- `backend/app/main.py` - FastAPI app initialization
-- `frontend/src/services/api.ts` - API client
-- `docker-compose.yml` - Service orchestration
-- `backend/app/utils/init_db.py` - Database initialization
+# Count adjustment
+if count >= 1000: +15
+elif count >= 500: +10
+elif count >= 100: +5
+
+# Money adjustment
+if amount >= 1_000_000: +20
+elif amount >= 100_000: +15
+elif amount >= 10_000: +10
+elif amount >= 1_000: +5
+
+# Focus area multiplier
+FOCUS_AREA_MULTIPLIERS = {
+    "BUSINESS_PROTECTION": 1.2,
+    "BUSINESS_CONTROL": 1.0,
+    "ACCESS_GOVERNANCE": 1.15,
+    "TECHNICAL_CONTROL": 0.9,
+    "JOBS_CONTROL": 0.85,
+}
+
+final_score = (base + count_adj + money_adj) * multiplier
+```
+
+### PENDING: Normalize Count by BACKDAYS
+
+The user explained that raw count must be normalized by BACKDAYS parameter from Metadata file:
+
+```
+Normalized_Count = Raw_Count / BACKDAYS
+Risk = f(Normalized_Count, ...)
+```
+
+**This is NOT YET IMPLEMENTED.**
 
 ---
 
-## Contact & Resources
+## Key Files Reference
 
-### Documentation Files
-- `README.md` - Project overview
-- `START_SERVERS.md` - Server startup guide
-- `DOCKER_SETUP_GUIDE.md` - Docker configuration
-- `TESTING_CHECKLIST.md` - Testing procedures
-- `DEPLOYMENT.md` - AWS deployment guide
-- `QUICK_TEST.md` - Quick testing guide
+| File | Purpose |
+|------|---------|
+| `backend/app/api/content_analysis.py` | Content analysis endpoints |
+| `backend/app/services/content_analyzer/analyzer.py` | Main analysis orchestrator |
+| `backend/app/services/content_analyzer/llm_classifier.py` | Focus area classification |
+| `backend/app/services/content_analyzer/scoring_engine.py` | Risk scoring logic |
+| `backend/app/services/content_analyzer/artifact_reader.py` | File parsing (txt, docx, xlsx) |
+| `frontend/src/pages/Upload.tsx` | Multi-file upload UI |
+| `frontend/src/pages/Dashboard.tsx` | Dashboard display |
+| `docs/th-context/readmore/*.md` | Focus Area definitions |
 
-### External Resources
-- FastAPI Docs: https://fastapi.tiangolo.com
-- React Docs: https://react.dev
-- SQLAlchemy Docs: https://docs.sqlalchemy.org
-- Docker Compose Docs: https://docs.docker.com/compose
+---
 
-### GitHub Repository
-- URL: https://github.com/iliyaruvinsky/treasure_hunt
-- Status: Needs sync with local changes
+## Next Steps (Prioritized)
+
+### Immediate
+
+1. **Implement updated severity base scores** (90/75/60/50)
+2. **Add BACKDAYS parameter extraction** from Metadata_* file
+3. **Normalize count by BACKDAYS** for meaningful risk scoring
+4. **Define BUSINESS_PROTECTION specific scoring rules**
+
+### Short-term
+
+5. **Create rules database structure** for storing scoring logic
+6. **Define scoring rules for each Focus Area** (5 total)
+7. **Improve qualitative analysis** (severity reasoning, what_happened)
+
+### Medium-term
+
+8. **Enable LLM mode** for better classification (requires API key)
+9. **Add SoDA report support** (different artifact structure)
+10. **Create feedback loop** for iterative improvement
+
+---
+
+## Known Issues
+
+1. **Metadata parameter extraction not implemented** - BACKDAYS not used
+2. **Severity always defaults to "Medium"** - not derived from content
+3. **Money adjustment thresholds are arbitrary** - need business input
+4. **LLM mode disabled** - no API key configured in Docker env
+
+---
+
+## Context Documents (User Mentioned but NOT in Repo)
+
+- `docs/about_skywind/TXT/*` - Skywind alert parameter documentation
+- `Core Principles of THA Analysis.md` - On user's Windows machine
+
+**Ask user to provide these documents or copy to repo.**
+
+---
+
+## Git Branch
+
+**Working Branch**: `claude/claude-md-miecwc4mecipjiww-01E2YVoZHeHvYiRZUEUYKn4j`
+
+All commits from this session are on this branch. To continue:
+
+```bash
+git checkout claude/claude-md-miecwc4mecipjiww-01E2YVoZHeHvYiRZUEUYKn4j
+git pull origin claude/claude-md-miecwc4mecipjiww-01E2YVoZHeHvYiRZUEUYKn4j
+```
 
 ---
 
 ## Changelog
 
+### 2025-11-26 (Session End)
+- **WORKING**: End-to-end flow: Upload 4 artifacts → Analyze → Dashboard shows results
+- **WORKING**: Multi-file upload UI (add files one-by-one)
+- **WORKING**: Content Analyzer with pattern-based classification
+- **FIXED**: Quantitative extraction ($45M, 1,943 vendors from text)
+- **FIXED**: Focus area classification (vendor alerts → BUSINESS_CONTROL)
+- **FIXED**: Comma-separated number parsing (1,943 not 943)
+- **FIXED**: API URLs in Upload page (port 3011)
+- **FIXED**: File categorization (handles "Metadata " with space)
+- **TESTED**: "Rarely Used Vendors" alert → $45M exposure, Risk 80
+- **IN PROGRESS**: Defining BUSINESS_PROTECTION scoring rules
+- **PENDING**: BACKDAYS parameter extraction and normalization
+- **PENDING**: Updated severity base scores (90/75/60/50)
+
+### 2025-11-26 (Earlier)
+- **ADDED**: Intelligent Content Analyzer module
+- **ADDED**: Content Analysis API endpoints
+- **ADDED**: Multi-file upload endpoint
+- **FIXED**: Content analyzer `__init__.py` missing exports
+
+### 2025-11-25
+- **UPDATED**: Frontend port 3010, Backend port 3011
+- **UPDATED**: Docker Compose with VITE_API_BASE_URL
+
 ### 2025-11-23
-- **CREATED**: Initial LLM handover document
-- **FIXED**: Docker environment setup (Desktop connectivity)
-- **FIXED**: Database schema mismatch (analysis_runs.data_source_id)
-- **VERIFIED**: Dashboard fully functional with live data
-- **VERIFIED**: All API endpoints working correctly
-- **DOCUMENTED**: Current project state and git status
-- **IDENTIFIED**: GitHub sync gap (local ahead by ~60% functionality)
+- **FIXED**: Docker environment setup
+- **FIXED**: Database schema mismatch
+- **VERIFIED**: Dashboard fully functional
 
 ---
 
-### 2025-11-26
-- **ADDED**: Intelligent Content Analyzer module for 4-artifact analysis
-- **ADDED**: Content Analysis API endpoints (`/api/v1/content-analysis/`)
-- **ADDED**: Multi-file upload endpoint for 4 artifacts (`/api/v1/ingestion/upload-artifacts`)
-- **ADDED**: LLM-based focus area classification with fallback pattern matching
-- **ADDED**: Qualitative + Quantitative scoring engine
-- **FIXED**: Content analyzer `__init__.py` missing exports
-- **VERIFIED**: Content analysis status endpoint working
-
-### 2025-11-25
-- **UPDATED**: Frontend now runs on port 3010, backend on port 3011 to avoid conflicts.
-- **UPDATED**: Docker Compose updated with build args and environment variable `VITE_API_BASE_URL` pointing to `http://localhost:3011/api/v1`.
-- **UPDATED**: `frontend/src/services/api.ts` fallback URL changed to `http://localhost:3011/api/v1`.
-- **UPDATED**: Backend CORS middleware now allows `http://localhost:3010`.
-- **UPDATED**: `frontend/Dockerfile.dev` accepts `VITE_API_BASE_URL` build arg.
-- **UPDATED**: Database re‑initialized after schema fix; containers rebuilt.
-- **NOTE**: All containers are healthy; dashboard accessible at `http://localhost:3010`.
-
 **END OF HANDOVER DOCUMENT**
 
-*This document should be updated systematically after each verified milestone, significant change, or project state update. Keep it comprehensive and accurate for seamless AI agent collaboration.*
+*This document should be updated after each verified milestone. Keep it accurate for seamless AI agent collaboration.*
