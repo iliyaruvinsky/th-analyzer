@@ -16,6 +16,11 @@ from app.core.database import get_db
 from app.core.config import settings
 from app.services.content_analyzer import ContentAnalyzer, create_content_analyzer
 from app.services.content_analyzer.artifact_reader import ArtifactReader, AlertArtifacts
+from app.models.finding import Finding
+from app.models.focus_area import FocusArea
+from app.models.risk_assessment import RiskAssessment
+from app.models.money_loss import MoneyLossCalculation
+from app.models.data_source import DataSource
 
 logger = logging.getLogger(__name__)
 
@@ -198,6 +203,129 @@ async def analyze_directory(
     except Exception as e:
         logger.error(f"Analysis failed: {e}")
         raise HTTPException(status_code=500, detail=f"Analysis failed: {str(e)}")
+
+
+class SavedFindingResponse(BaseModel):
+    """Response after saving a finding to database."""
+    finding_id: int
+    message: str
+    focus_area: str
+    severity: str
+    risk_score: int
+    money_loss_estimate: float
+
+
+@router.post("/analyze-and-save", response_model=SavedFindingResponse)
+async def analyze_and_save(
+    request: AnalyzeDirectoryRequest,
+    db: Session = Depends(get_db)
+):
+    """
+    Analyze alert from directory AND save to database.
+
+    This endpoint:
+    1. Runs the Content Analyzer on the artifact files
+    2. Saves the finding to the database
+    3. Creates associated RiskAssessment and MoneyLossCalculation records
+
+    The saved finding will appear in the Dashboard.
+    """
+    try:
+        if not os.path.exists(request.directory_path):
+            raise HTTPException(status_code=404, detail=f"Directory not found: {request.directory_path}")
+
+        analyzer = get_content_analyzer()
+
+        # Override LLM setting if requested
+        original_use_llm = analyzer.use_llm
+        if not request.use_llm:
+            analyzer.use_llm = False
+
+        try:
+            content_finding = analyzer.analyze_from_directory(request.directory_path, include_raw=True)
+        finally:
+            analyzer.use_llm = original_use_llm
+
+        # Get or create the focus area
+        focus_area = db.query(FocusArea).filter(FocusArea.code == content_finding.focus_area).first()
+        if not focus_area:
+            # Create the focus area if it doesn't exist
+            focus_area = FocusArea(
+                code=content_finding.focus_area,
+                name=content_finding.focus_area.replace("_", " ").title(),
+                description=f"Auto-created for {content_finding.focus_area}"
+            )
+            db.add(focus_area)
+            db.flush()
+
+        # Get or create a data source for this artifact directory
+        data_source = db.query(DataSource).filter(
+            DataSource.original_filename == request.directory_path
+        ).first()
+        if not data_source:
+            data_source = DataSource(
+                original_filename=request.directory_path,
+                file_type="artifacts",
+                file_path=request.directory_path,
+                file_size=0,
+                status="processed"
+            )
+            db.add(data_source)
+            db.flush()
+
+        # Create the Finding
+        finding = Finding(
+            data_source_id=data_source.id,
+            focus_area_id=focus_area.id,
+            title=content_finding.title,
+            description=content_finding.description[:4000] if content_finding.description else None,
+            severity=content_finding.severity,
+            classification_confidence=content_finding.focus_area_confidence,
+            status="new"
+        )
+        db.add(finding)
+        db.flush()
+
+        # Create RiskAssessment
+        risk_assessment = RiskAssessment(
+            finding_id=finding.id,
+            risk_score=content_finding.risk_score,
+            risk_level=content_finding.risk_level,
+            risk_category=content_finding.focus_area,
+            risk_description=content_finding.severity_reasoning,
+            risk_factors=content_finding.risk_factors,
+            potential_impact=content_finding.business_impact
+        )
+        db.add(risk_assessment)
+
+        # Create MoneyLossCalculation
+        money_loss = MoneyLossCalculation(
+            finding_id=finding.id,
+            estimated_loss=content_finding.money_loss_estimate,
+            confidence_score=content_finding.money_loss_confidence,
+            calculation_method="content_analyzer",
+            final_estimate=content_finding.money_loss_estimate,
+            reasoning=f"Estimated from {content_finding.alert_name} analysis"
+        )
+        db.add(money_loss)
+
+        db.commit()
+
+        return SavedFindingResponse(
+            finding_id=finding.id,
+            message=f"Finding saved successfully for alert: {content_finding.alert_name}",
+            focus_area=content_finding.focus_area,
+            severity=content_finding.severity,
+            risk_score=content_finding.risk_score,
+            money_loss_estimate=content_finding.money_loss_estimate
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Analysis and save failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Analysis and save failed: {str(e)}")
 
 
 @router.post("/analyze-sample/{sample_name}", response_model=FindingResponse)
