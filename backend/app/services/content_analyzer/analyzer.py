@@ -310,29 +310,57 @@ class ContentAnalyzer:
         text = f"{artifacts.alert_name} {artifacts.explanation or ''}"
         text_lower = text.lower()
 
-        if any(kw in text_lower for kw in ["fraud", "security", "unauthorized", "suspicious"]):
-            return "BUSINESS_PROTECTION", 0.6, "Keyword match: security/fraud terms"
-        elif any(kw in text_lower for kw in ["sod", "segregation", "access", "privilege", "authorization"]):
-            return "ACCESS_GOVERNANCE", 0.6, "Keyword match: access/governance terms"
-        elif any(kw in text_lower for kw in ["job", "batch", "background", "scheduled"]):
-            return "JOBS_CONTROL", 0.6, "Keyword match: job-related terms"
-        elif any(kw in text_lower for kw in ["dump", "memory", "cpu", "system", "error"]):
-            return "TECHNICAL_CONTROL", 0.6, "Keyword match: technical terms"
+        # Check for security/fraud (highest priority)
+        if any(kw in text_lower for kw in ["fraud", "security breach", "unauthorized transaction", "suspicious activity", "theft"]):
+            return "BUSINESS_PROTECTION", 0.7, "Keyword match: security/fraud terms"
+
+        # Check for access governance
+        elif any(kw in text_lower for kw in ["sod", "segregation of duties", "access control", "privilege", "authorization", "role conflict"]):
+            return "ACCESS_GOVERNANCE", 0.7, "Keyword match: access/governance terms"
+
+        # Check for job control
+        elif any(kw in text_lower for kw in ["job failed", "batch job", "background job", "scheduled task", "job runtime"]):
+            return "JOBS_CONTROL", 0.7, "Keyword match: job-related terms"
+
+        # Check for technical control (more specific keywords)
+        elif any(kw in text_lower for kw in ["memory dump", "cpu usage", "system crash", "runtime error", "abap dump", "short dump"]):
+            return "TECHNICAL_CONTROL", 0.7, "Keyword match: technical terms"
+
+        # Check for business control (vendor, customer, financial, master data)
+        elif any(kw in text_lower for kw in ["vendor", "customer", "master data", "invoice", "payment", "purchase order",
+                                              "sales order", "balance", "financial", "pricing", "discount", "credit"]):
+            return "BUSINESS_CONTROL", 0.7, "Keyword match: business process terms"
+
         else:
             return "BUSINESS_CONTROL", 0.4, "Default classification"
 
     def _fallback_analysis(self, artifacts: AlertArtifacts) -> AnalysisResult:
         """Fallback analysis when LLM is not available."""
-        # Extract metrics from summary if available
-        metrics = {}
+        # Extract metrics from ALL available text sources
+        all_counts = []
+        all_monetary = []
+
+        # Check summary
         if artifacts.summary:
             metrics = self.scoring_engine.extract_metrics_from_text(artifacts.summary)
+            all_counts.extend(metrics.get("counts", []))
+            all_monetary.extend(metrics.get("monetary_values", []))
 
-        # Handle empty counts list safely
-        counts = metrics.get("counts", [])
-        total_count = max(counts) if counts else 0
-        monetary = metrics.get("monetary_values", [])
-        monetary_amount = monetary[0]["amount"] if monetary else 0.0
+        # Check explanation (often has the key numbers)
+        if artifacts.explanation:
+            metrics = self.scoring_engine.extract_metrics_from_text(artifacts.explanation)
+            all_counts.extend(metrics.get("counts", []))
+            all_monetary.extend(metrics.get("monetary_values", []))
+
+        # Check metadata
+        if artifacts.metadata:
+            metrics = self.scoring_engine.extract_metrics_from_text(artifacts.metadata)
+            all_counts.extend(metrics.get("counts", []))
+            all_monetary.extend(metrics.get("monetary_values", []))
+
+        # Get the highest values found
+        total_count = max(all_counts) if all_counts else 0
+        monetary_amount = max((m["amount"] for m in all_monetary), default=0.0)
 
         return AnalysisResult(
             findings_summary=artifacts.explanation or f"Alert: {artifacts.alert_name}",
@@ -343,6 +371,7 @@ class ContentAnalyzer:
             },
             quantitative_analysis={
                 "total_count": total_count,
+                "monetary_amount": monetary_amount,
                 "key_metrics": {},
                 "notable_items": []
             },
