@@ -164,7 +164,7 @@ const Upload: React.FC = () => {
     }
   };
 
-  // Categorize selected artifact files
+  // Categorize selected artifact files - more flexible matching
   const categorizeFiles = () => {
     const categories = {
       code: null as File | null,
@@ -176,13 +176,14 @@ const Upload: React.FC = () => {
 
     artifactFiles.forEach(file => {
       const name = file.name.toLowerCase();
-      if (name.startsWith('code_') || name.includes('_code')) {
+      // More flexible matching - handle spaces, underscores, or direct prefix
+      if (name.startsWith('code') || name.includes('_code')) {
         categories.code = file;
-      } else if (name.startsWith('explanation_') || name.includes('_explanation')) {
+      } else if (name.startsWith('explanation') || name.includes('_explanation')) {
         categories.explanation = file;
-      } else if (name.startsWith('metadata_') || name.includes('_metadata')) {
+      } else if (name.startsWith('metadata') || name.includes('_metadata')) {
         categories.metadata = file;
-      } else if (name.startsWith('summary_') || name.includes('_summary')) {
+      } else if (name.startsWith('summary') || name.includes('_summary')) {
         categories.summary = file;
       } else {
         categories.other.push(file);
