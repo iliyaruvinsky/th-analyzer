@@ -124,18 +124,33 @@ class ArtifactReader:
         if not os.path.exists(directory_path):
             raise ValueError(f"Directory not found: {directory_path}")
 
-        # Extract alert info from directory name
-        dir_name = os.path.basename(directory_path)
-        alert_id, alert_name = self._parse_directory_name(dir_name)
+        # Find and read each artifact type
+        files = os.listdir(directory_path)
+
+        # First pass: extract alert info from filenames
+        alert_id = None
+        alert_name = None
+        for filename in files:
+            parsed_id, parsed_name = self._parse_filename(filename)
+            if parsed_id and not alert_id:
+                alert_id = parsed_id
+            if parsed_name and not alert_name:
+                alert_name = parsed_name
+
+        # Fallback to directory name if nothing found in filenames
+        if not alert_id or not alert_name:
+            dir_name = os.path.basename(directory_path)
+            if not alert_id:
+                alert_id = dir_name
+            if not alert_name:
+                alert_name = dir_name
 
         artifacts = AlertArtifacts(
             alert_id=alert_id,
             alert_name=alert_name
         )
 
-        # Find and read each artifact type
-        files = os.listdir(directory_path)
-
+        # Second pass: read file contents
         for filename in files:
             filepath = os.path.join(directory_path, filename)
             filename_lower = filename.lower()
@@ -149,7 +164,7 @@ class ArtifactReader:
                 artifacts.explanation = self._read_file(filepath)
                 artifacts.explanation_path = filepath
 
-            elif filename_lower.startswith("metadata_"):
+            elif filename_lower.startswith("metadata"):  # Handle "Metadata " with space
                 artifacts.metadata = self._read_file(filepath)
                 artifacts.metadata_path = filepath
                 artifacts.parameters = self._parse_metadata(artifacts.metadata)
@@ -159,6 +174,39 @@ class ArtifactReader:
                 artifacts.summary_path = filepath
 
         return artifacts
+
+    def _parse_filename(self, filename: str) -> tuple:
+        """
+        Parse alert ID and name from artifact filename.
+
+        Expected formats:
+        - Code_Alert Name_200025_001372.txt
+        - Summary_Alert Name_200025_001372.xlsx
+
+        Returns:
+            Tuple of (alert_id, alert_name) or (None, None) if not parseable
+        """
+        # Remove file extension
+        name_without_ext = re.sub(r'\.(txt|csv|xlsx|docx|pdf)$', '', filename, flags=re.IGNORECASE)
+
+        # Remove artifact prefix (Code_, Explanation_, Metadata_, Summary_)
+        for prefix in self.ARTIFACT_PREFIXES:
+            if name_without_ext.lower().startswith(prefix.lower()):
+                name_without_ext = name_without_ext[len(prefix):]
+                break
+
+        # Also handle "Metadata " with space
+        if name_without_ext.lower().startswith("metadata "):
+            name_without_ext = name_without_ext[9:]
+
+        # Try to extract alert ID (format: 200025_001372)
+        match = re.search(r'_(\d{6}_\d{6})$', name_without_ext)
+        if match:
+            alert_id = match.group(1)
+            alert_name = name_without_ext[:match.start()].strip('_').replace('_', ' ')
+            return alert_id, alert_name
+
+        return None, None
 
     def read_from_files(
         self,
@@ -268,7 +316,18 @@ class ArtifactReader:
         return dir_name, dir_name
 
     def _read_file(self, filepath: str) -> Optional[str]:
-        """Read file content with encoding handling."""
+        """Read file content with encoding handling and format detection."""
+        filename_lower = filepath.lower()
+
+        # Handle Word documents (.docx)
+        if filename_lower.endswith('.docx'):
+            return self._read_docx(filepath)
+
+        # Handle Excel files (.xlsx)
+        if filename_lower.endswith('.xlsx'):
+            return self._read_xlsx(filepath)
+
+        # Handle plain text files
         encodings = ['utf-8', 'latin-1', 'cp1252']
 
         for encoding in encodings:
@@ -283,6 +342,46 @@ class ArtifactReader:
 
         logger.error(f"Could not read {filepath} with any encoding")
         return None
+
+    def _read_docx(self, filepath: str) -> Optional[str]:
+        """Read text content from a Word document."""
+        try:
+            from docx import Document
+            doc = Document(filepath)
+            paragraphs = [p.text for p in doc.paragraphs if p.text.strip()]
+            return "\n\n".join(paragraphs)
+        except ImportError:
+            logger.warning("python-docx not installed, cannot read .docx files")
+            return None
+        except Exception as e:
+            logger.error(f"Error reading docx {filepath}: {e}")
+            return None
+
+    def _read_xlsx(self, filepath: str) -> Optional[str]:
+        """Read content from an Excel file as text summary."""
+        try:
+            import pandas as pd
+            # Read all sheets
+            xlsx = pd.ExcelFile(filepath)
+            all_content = []
+
+            for sheet_name in xlsx.sheet_names:
+                df = pd.read_excel(xlsx, sheet_name=sheet_name)
+                if not df.empty:
+                    all_content.append(f"=== Sheet: {sheet_name} ===")
+                    all_content.append(f"Rows: {len(df)}, Columns: {len(df.columns)}")
+                    all_content.append(f"Columns: {', '.join(df.columns.astype(str))}")
+                    # Add first few rows as sample
+                    sample = df.head(10).to_string()
+                    all_content.append(sample)
+
+            return "\n\n".join(all_content)
+        except ImportError:
+            logger.warning("pandas/openpyxl not installed, cannot read .xlsx files")
+            return None
+        except Exception as e:
+            logger.error(f"Error reading xlsx {filepath}: {e}")
+            return None
 
     def _parse_metadata(self, metadata_content: Optional[str]) -> Dict[str, str]:
         """
