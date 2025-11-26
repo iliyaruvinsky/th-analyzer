@@ -3,6 +3,8 @@ import { useMutation, useQueryClient } from '@tanstack/react-query';
 import { useNavigate } from 'react-router-dom';
 import { api } from '../services/api';
 
+const API_BASE_URL = import.meta.env.VITE_API_BASE_URL || 'http://localhost:3011/api/v1';
+
 const Upload: React.FC = () => {
   const navigate = useNavigate();
   const queryClient = useQueryClient();
@@ -107,7 +109,7 @@ const Upload: React.FC = () => {
         formData.append('files', file);
       });
 
-      const uploadResponse = await fetch('/api/v1/ingestion/upload-artifacts', {
+      const uploadResponse = await fetch(`${API_BASE_URL}/ingestion/upload-artifacts`, {
         method: 'POST',
         body: formData,
       });
@@ -121,7 +123,7 @@ const Upload: React.FC = () => {
       setArtifactUploadProgress(50);
 
       // Step 2: Analyze and save
-      const analyzeResponse = await fetch('/api/v1/content-analysis/analyze-and-save', {
+      const analyzeResponse = await fetch(`${API_BASE_URL}/content-analysis/analyze-and-save`, {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
