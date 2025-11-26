@@ -67,14 +67,30 @@ const Upload: React.FC = () => {
     }
   };
 
-  // Multi-file artifact handlers
-  const handleArtifactFilesChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files) {
-      const files = Array.from(e.target.files);
-      setArtifactFiles(files);
+  // Multi-file artifact handlers - add files one by one
+  const handleAddArtifactFile = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files[0]) {
+      const newFile = e.target.files[0];
+      // Check if file with same name already exists
+      const exists = artifactFiles.some(f => f.name === newFile.name);
+      if (!exists) {
+        setArtifactFiles(prev => [...prev, newFile]);
+      }
       setArtifactError(null);
       setArtifactSuccess(null);
+      // Reset the input so same file can be re-selected if removed
+      e.target.value = '';
     }
+  };
+
+  const handleRemoveArtifactFile = (fileName: string) => {
+    setArtifactFiles(prev => prev.filter(f => f.name !== fileName));
+  };
+
+  const handleClearArtifactFiles = () => {
+    setArtifactFiles([]);
+    setArtifactError(null);
+    setArtifactSuccess(null);
   };
 
   const handleArtifactUpload = async () => {
@@ -192,40 +208,60 @@ const Upload: React.FC = () => {
           </p>
 
           <div className="mb-3">
-            <label className="form-label">Select Artifact Files</label>
+            <label className="form-label">Add Artifact Files (one by one)</label>
             <input
               type="file"
               className="form-control"
               accept=".txt,.csv,.xlsx,.docx,.pdf"
-              multiple
-              onChange={handleArtifactFilesChange}
+              onChange={handleAddArtifactFile}
             />
             <small className="form-text text-muted">
-              Select all 4 files at once (Ctrl+Click or Shift+Click)
+              Add each file one at a time. Files: Code_*, Explanation_*, Metadata_*, Summary_*
             </small>
           </div>
 
           {artifactFiles.length > 0 && (
             <div className="mb-3">
-              <h6>Selected Files ({artifactFiles.length}):</h6>
+              <div className="d-flex justify-content-between align-items-center mb-2">
+                <h6 className="mb-0">Added Files ({artifactFiles.length}/4):</h6>
+                <button
+                  className="btn btn-sm btn-outline-danger"
+                  onClick={handleClearArtifactFiles}
+                >
+                  Clear All
+                </button>
+              </div>
               <ul className="list-group list-group-flush">
-                <li className={`list-group-item ${fileCategories.code ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <strong>Code:</strong> {fileCategories.code?.name || '(not found)'}
+                <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.code ? 'list-group-item-success' : 'list-group-item-warning'}`}>
+                  <span><strong>Code:</strong> {fileCategories.code?.name || '(not added yet)'}</span>
+                  {fileCategories.code && (
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.code!.name)}>×</button>
+                  )}
                 </li>
-                <li className={`list-group-item ${fileCategories.explanation ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <strong>Explanation:</strong> {fileCategories.explanation?.name || '(not found)'}
+                <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.explanation ? 'list-group-item-success' : 'list-group-item-warning'}`}>
+                  <span><strong>Explanation:</strong> {fileCategories.explanation?.name || '(not added yet)'}</span>
+                  {fileCategories.explanation && (
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.explanation!.name)}>×</button>
+                  )}
                 </li>
-                <li className={`list-group-item ${fileCategories.metadata ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <strong>Metadata:</strong> {fileCategories.metadata?.name || '(not found)'}
+                <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.metadata ? 'list-group-item-success' : 'list-group-item-warning'}`}>
+                  <span><strong>Metadata:</strong> {fileCategories.metadata?.name || '(not added yet)'}</span>
+                  {fileCategories.metadata && (
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.metadata!.name)}>×</button>
+                  )}
                 </li>
-                <li className={`list-group-item ${fileCategories.summary ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <strong>Summary:</strong> {fileCategories.summary?.name || '(not found)'}
+                <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.summary ? 'list-group-item-success' : 'list-group-item-warning'}`}>
+                  <span><strong>Summary:</strong> {fileCategories.summary?.name || '(not added yet)'}</span>
+                  {fileCategories.summary && (
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.summary!.name)}>×</button>
+                  )}
                 </li>
-                {fileCategories.other.length > 0 && (
-                  <li className="list-group-item list-group-item-info">
-                    <strong>Other:</strong> {fileCategories.other.map(f => f.name).join(', ')}
+                {fileCategories.other.length > 0 && fileCategories.other.map(f => (
+                  <li key={f.name} className="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
+                    <span><strong>Other:</strong> {f.name}</span>
+                    <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(f.name)}>×</button>
                   </li>
-                )}
+                ))}
               </ul>
             </div>
           )}
