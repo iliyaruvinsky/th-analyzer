@@ -20,7 +20,7 @@ from app.models.finding import Finding
 from app.models.focus_area import FocusArea
 from app.models.risk_assessment import RiskAssessment
 from app.models.money_loss import MoneyLossCalculation
-from app.models.data_source import DataSource
+from app.models.data_source import DataSource, DataSourceType, FileFormat
 
 logger = logging.getLogger(__name__)
 
@@ -263,9 +263,13 @@ async def analyze_and_save(
             DataSource.original_filename == request.directory_path
         ).first()
         if not data_source:
+            # Extract a filename from the directory path
+            dir_name = os.path.basename(request.directory_path.rstrip('/'))
             data_source = DataSource(
+                filename=f"artifacts_{dir_name}",
                 original_filename=request.directory_path,
-                file_type="artifacts",
+                file_format=FileFormat.JSON,  # Use JSON as format for artifact bundles
+                data_type=DataSourceType.ALERT,  # These are alert artifacts
                 file_path=request.directory_path,
                 file_size=0,
                 status="processed"
