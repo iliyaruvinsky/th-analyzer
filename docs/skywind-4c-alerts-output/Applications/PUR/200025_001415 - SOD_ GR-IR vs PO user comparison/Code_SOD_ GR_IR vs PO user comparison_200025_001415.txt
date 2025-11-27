@@ -1,0 +1,356 @@
+FUNCTION /SKN/F_SW_10_06_MD_CHNG_PO .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_03_MD_CHNG_PO
+*"----------------------------------------------------------------------
+  INCLUDE /SKN/PC_SQL_DATA.
+  TYPES: BEGIN OF TY_EKBE,
+           EBELN TYPE EKBE-EBELN,
+           EBELP TYPE EKBE-EBELP,
+           VGABE TYPE EKBE-VGABE,
+           GJAHR TYPE EKBE-GJAHR,
+           BELNR TYPE EKBE-BELNR,
+           BUDAT TYPE EKBE-BUDAT,
+           CPUDT TYPE EKBE-CPUDT,
+           MENGE TYPE EKBE-MENGE,
+           MEINS TYPE EKPO-MEINS,
+           BPMNG TYPE EKBE-BPMNG,
+           BPRME TYPE EKPO-BPRME,
+           WRBTR TYPE EKBE-WRBTR,
+           WAERS TYPE EKBE-WAERS,
+           WERKS TYPE EKBE-WERKS,
+           ERNAM TYPE EKBE-ERNAM,
+           BUKRS TYPE EKKO-BUKRS,
+           BUTXT TYPE T001-BUTXT,
+           LIFNR TYPE EKKO-LIFNR,
+           EKORG TYPE EKKO-EKORG,
+* CDHDR
+           OBJECTCLAS TYPE CDHDR-OBJECTCLAS,
+           OBJECTID   TYPE CDHDR-OBJECTID,
+           CHANGENR   TYPE CDHDR-CHANGENR,
+           USERNAME   TYPE CDHDR-USERNAME,
+           UDATE      TYPE CDHDR-UDATE,
+           UTIME      TYPE CDHDR-UTIME,
+           TCODE      TYPE CDHDR-TCODE,
+         END OF TY_EKBE,
+         TT_EKBE TYPE TABLE OF TY_EKBE.
+  "-----------------------------------------------
+  " 1. Parameters Definition                     "
+  "-----------------------------------------------
+  DATA_SINGLE: SW_DEST             RFCDEST,
+               MANAGE_IN_UTC       CHAR1 ,
+               LANGU               LANGU,
+               BACKDAYS            INT4,
+               BACKDAYS_CHANGE     INT4,
+               DURATION_D          /SKN/E_SW_DURATION_D,
+               DURATION_UNIT       /SKN/E_SW_DURATION_UNIT,
+               DATE_REF_FLD        NAME_FELD,
+               DATE_REF_FLD_MD     NAME_FELD,
+               CONVERT_KEY         CHAR1,
+               HEADER_ONLY         CHAR1.
+  DATA_MULTY:   LIFNR             LIFNR,
+                EBELN             EBELN,
+                EBELP             EBELP,
+                VGABE             VGABE,
+                GJAHR             GJAHR,
+                BELNR             MBLNR,
+                BUDAT             BUDAT,
+                CPUDT             CPUDT,
+                WERKS             WERKS_D,
+                ERNAM             ERNAM,
+                BUKRS             BUKRS,
+                EKORG             EKORG,
+                OBJECTCLAS        CDOBJECTCL,
+                OBJECTID          CDOBJECTV,
+                CHANGENR          CDCHANGENR,
+                TCODE             CDTCODE,
+                CHANGE_IND        CDCHNGINDH,
+                TABNAME           TABNAME,
+                FNAME             FIELDNAME,
+                CHNGIND           CDCHNGIND,
+                VALUE_NEW         CDFLDVALN,
+                VALUE_OLD         CDFLDVALO,
+                UDATE             CDDATUM,
+                USERNAME          CDUSERNAME,
+                DATUM             SYDATUM,
+                DURATION          /SKN/E_SW_DURATION.
+  CONSTANTS: C_LFA1 TYPE TABNAME VALUE 'LFA1'.
+  DATA: SY_DATLO LIKE SY-DATLO ,
+        SY_TIMLO LIKE SY-TIMLO .
+  DATA: TIME_DIFF TYPE INT4.
+  DATA: FLD(60) TYPE C.
+  DATA: REF_DATE TYPE D.
+  DATA: SY_TABIX  LIKE SY-TABIX,
+        DATE_FROM LIKE SY-DATUM .
+  DATA: LV_SHIFT      TYPE DDLENG,
+        LV_LENG       TYPE DDLENG,
+        LV_DOMNAME    TYPE DD07V-DOMNAME,
+        LV_DOMVALUE   TYPE DD07V-DOMVALUE_L,
+        LV_DDTEXT     TYPE DD07V-DDTEXT,
+        LV_OBJECT     TYPE CDOBJECTV,
+        LV_LIFNR      TYPE LIFNR,
+        LV_STRUCTURE  TYPE DDOBJNAME,
+        LV_INDEX      TYPE I,
+        LV_OBJECTCLAS TYPE CDOBJECTCL,
+        LV_DOC        TYPE CDCHANGENR,
+        LV_COUNT_TMP  TYPE I,
+        LV_OBJECTID   TYPE CDHDR-OBJECTID,
+        LV_LINES      TYPE I.
+  DATA: LS_DATA  LIKE LINE OF T_DATA[],
+        LS_CDPOS TYPE CDPOS,
+        LS_LIFNR TYPE /SKN/S_SW_10_LIFNR,
+        LS_EKBE  TYPE TY_EKBE.
+  DATA: LT_DATA    LIKE TABLE OF T_DATA,
+        LT_CDPOS TYPE TABLE OF CDPOS,
+        LT_LIFNR TYPE TABLE OF /SKN/S_SW_10_LIFNR,
+        LT_EKBE    TYPE TT_EKBE.
+  FIELD-SYMBOLS: <FS_DATA>    LIKE LINE OF T_DATA[],
+                          TYPE ANY.
+* Set default parameter
+  LV_BACKDAYS        = 10.            " Backdays for calc. date of MD document
+*  lv_backdays_change = 10.            " Backdays for calc. date of doc. change
+  LV_DURATION_UNIT   = 'D'.
+  LV_DATE_REF_FLD    = 'CPUDT'.       " Default date of document
+  LV_DATE_REF_FLD_MD = 'UDATE'.       " Default date of doc. change
+  LV_LANGU           = 'E'.
+  LV_OBJECTCLAS      = 'EINKBELEG'.   " PO doc. object
+  SELECT_MULTY: LIFNR,
+                EBELN,
+                EBELP,
+                VGABE,
+                GJAHR,
+                BELNR,
+                CPUDT,
+                BUDAT,
+                WERKS,
+                ERNAM,
+                BUKRS,
+                EKORG,
+                OBJECTCLAS,
+                OBJECTID,
+                CHANGENR,
+                TCODE,
+                CHANGE_IND,
+                TABNAME,
+                FNAME,
+                CHNGIND,
+                UDATE,
+                USERNAME,
+                DATUM,
+                DURATION.
+  SELECT_SINGLE: SW_DEST,
+                 LANGU,
+                 MANAGE_IN_UTC,
+                 BACKDAYS,
+                 BACKDAYS_CHANGE,
+                 DATE_REF_FLD,
+                 CONVERT_KEY,
+                 DATE_REF_FLD,
+                 DATE_REF_FLD_MD,
+                 DURATION_D,
+                 DURATION_UNIT,
+                 HEADER_ONLY.
+  "--- Run Cloud Mode -----
+  IF LV_SW_DEST IS NOT INITIAL.
+    CALL FUNCTION '/SKN/FC_SW_10_06_MD_CHNG_PO'
+      IMPORTING
+        IS_ALERT = IS_ALERT
+      TABLES
+        T_SELECT = T_SELECT
+        T_DATA   = T_DATA.
+  ENDIF.
+  CHECK LV_SW_DEST IS INITIAL.
+  "--- Run Cloud Mode -----
+  IF R_DATUM[] IS INITIAL .  " Set default value
+    RS_DATUM-SIGN   = 'I' .
+    RS_DATUM-OPTION = 'GE' .
+    DATE_FROM       = SY-DATUM - LV_BACKDAYS .
+    RS_DATUM-LOW    = DATE_FROM .
+    APPEND RS_DATUM TO R_DATUM.
+  ENDIF .
+  "--- Set Reference Date Field
+  CASE LV_DATE_REF_FLD.
+    WHEN 'CPUDT'.
+      IF R_CPUDT[] IS INITIAL.
+        R_CPUDT[] = R_DATUM[].
+      ENDIF.
+    WHEN 'BUDAT'.
+      R_BUDAT[] = R_DATUM[].
+  ENDCASE.
+* Initial Transaction type
+  IF R_VGABE[] IS INITIAL.
+    REFRESH: R_VGABE[].
+    CLEAR RS_VGABE.
+    RS_VGABE-SIGN   = 'I'.
+    RS_VGABE-OPTION = 'EQ'.
+    RS_VGABE-LOW    = '1'.
+    APPEND RS_VGABE TO R_VGABE[].
+    RS_VGABE-LOW    = '2'.
+    APPEND RS_VGABE TO R_VGABE[].
+  ENDIF.
+  SELECT EKBE~EBELN EKBE~EBELP EKBE~VGABE EKBE~GJAHR EKBE~BELNR EKBE~BUDAT EKBE~CPUDT
+         EKBE~MENGE EKBE~BPMNG EKBE~WRBTR EKBE~WAERS EKBE~WERKS EKBE~ERNAM
+         EKKO~BUKRS EKKO~LIFNR EKKO~EKORG
+         CDHDR~OBJECTCLAS CDHDR~OBJECTID CDHDR~CHANGENR
+         CDHDR~USERNAME CDHDR~UDATE CDHDR~UTIME CDHDR~TCODE
+    FROM EKBE INNER JOIN EKKO      ON  EKBE~EBELN EQ EKKO~EBELN
+              INNER JOIN CDHDR     ON  EKBE~EBELN EQ CDHDR~OBJECTID
+                                   AND EKBE~ERNAM EQ CDHDR~USERNAME
+    INTO CORRESPONDING FIELDS OF TABLE LT_DATA
+    WHERE EKBE~EBELN       IN R_EBELN[]
+    AND   EKBE~EBELP       IN R_EBELP[]
+    AND   EKBE~VGABE       IN R_VGABE[]
+    AND   EKBE~GJAHR       IN R_GJAHR[]
+    AND   EKBE~BELNR       IN R_BELNR[]
+    AND   EKBE~CPUDT       IN R_CPUDT[]
+    AND   EKBE~WERKS       IN R_WERKS[]
+    AND   EKBE~ERNAM       IN R_ERNAM[]
+    AND   EKKO~BUKRS       IN R_BUKRS[]
+    AND   EKKO~LIFNR       IN R_LIFNR[]
+    AND   EKKO~EKORG       IN R_EKORG[]
+    AND   CDHDR~OBJECTCLAS EQ LV_OBJECTCLAS
+    AND   CDHDR~OBJECTID   IN R_OBJECTID[]
+    AND   CDHDR~CHANGENR   IN R_CHANGENR[]
+    AND   CDHDR~UDATE      IN R_UDATE[]
+    AND   CDHDR~TCODE      IN R_TCODE[]
+    AND   CDHDR~USERNAME   IN R_USERNAME[] .
+  CHECK LT_DATA IS NOT INITIAL.
+* Delete duplicates lines of PO - We are looking for all changes of individual PO
+  SORT LT_DATA BY EBELN.
+  DELETE ADJACENT DUPLICATES FROM LT_DATA COMPARING EBELN.
+  LOOP AT LT_DATA INTO LS_DATA.
+    CLEAR: LS_LIFNR.
+    LS_LIFNR-LIFNR = LS_DATA-LIFNR.
+    APPEND LS_LIFNR TO LT_LIFNR.
+  ENDLOOP.
+  SORT LT_LIFNR BY LIFNR.
+  DELETE ADJACENT DUPLICATES FROM LT_LIFNR COMPARING LIFNR.
+*********************************************************************************
+*-- Calculate Status Duration (associating to Reference Field (DATE_REF_FLD)
+  LOOP AT LT_DATA INTO LS_DATA.
+    SY_TABIX = SY-TABIX .
+    CONCATENATE 'LS_DATA-' LV_DATE_REF_FLD INTO FLD .
+    ASSIGN (FLD) TO .
+    CHECK  IS ASSIGNED.
+    REF_DATE =  .
+    IF NOT REF_DATE IS INITIAL.
+      LS_DATA-DURATION_UNIT = LV_DURATION_UNIT.
+      CALL FUNCTION '/SKN/F_SW_GET_TIME_DIFF'
+        EXPORTING
+          D_FROM      = REF_DATE
+          T_FROM      = SY_TIMLO
+          D_TO        = SY_DATLO
+          T_TO        = SY_TIMLO
+          TIME_UNIT   = LV_DURATION_UNIT
+        IMPORTING
+          TIME_DIFF   = TIME_DIFF
+        EXCEPTIONS
+          WRONG_VALUE = 1
+          OTHERS      = 2.
+      IF SY-SUBRC = 0.
+        IF TIME_DIFF < '999999'.
+          LS_DATA-DURATION  = TIME_DIFF .
+        ELSE.
+          LS_DATA-DURATION  = '999999'.
+        ENDIF.
+      ENDIF.
+      MODIFY LT_DATA FROM LS_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+  DELETE LT_DATA WHERE DURATION  NOT IN R_DURATION .
+******************************************************************************
+  IF LT_DATA IS NOT INITIAL.
+    SORT LT_DATA BY OBJECTCLAS OBJECTID CHANGENR.
+    SELECT *
+      FROM CDPOS
+      INTO TABLE LT_CDPOS
+      FOR ALL ENTRIES IN LT_DATA
+      WHERE OBJECTCLAS EQ LT_DATA-OBJECTCLAS
+      AND   OBJECTID   EQ LT_DATA-OBJECTID
+      AND   CHANGENR   EQ LT_DATA-CHANGENR
+      AND   TABNAME    IN R_TABNAME[]
+      AND   FNAME      IN R_FNAME[]
+      AND   VALUE_NEW  IN R_VALUE_NEW[]
+      AND   VALUE_OLD  IN R_VALUE_OLD[].
+  ENDIF.
+***************************************************
+  LOOP AT LT_DATA ASSIGNING <FS_DATA>.
+    CLEAR: LS_DATA.
+    MOVE-CORRESPONDING <FS_DATA> TO LS_DATA.
+    IF LS_DATA-USERNAME IS NOT INITIAL.
+**    "-- Get User name Details
+      CALL FUNCTION '/SKN/F_SW_01_GET_DETAILES_BUF'
+        EXPORTING
+          BNAME      = LS_DATA-USERNAME
+        IMPORTING
+          NAME_FIRST = LS_DATA-NAME_FIRST
+          NAME_LAST  = LS_DATA-NAME_LAST
+          NAME_TEXT  = LS_DATA-NAME_TEXT
+*         WA_ADRP    =
+        EXCEPTIONS
+          NO_DATA    = 1
+          OTHERS     = 2.
+    ENDIF.
+    IF LS_DATA-LIFNR IS NOT INITIAL.
+**    "--- Get  Vendor Decriptions
+      CALL FUNCTION '/SKN/F_SW_10_VENDOR_DESC_ENH'
+        EXPORTING
+          LIFNR        = LS_DATA-LIFNR
+        IMPORTING
+          VENDOR_DESC  = LS_DATA-NAME1
+        TABLES
+          ALL_ENTRIES  = LT_LIFNR
+        EXCEPTIONS
+          WRONG_VENDOR = 1
+          OTHERS       = 2.
+    ENDIF.
+    IF LS_DATA-BUKRS IS NOT INITIAL.
+*    "--- Get  BUKRS Decription
+      CALL FUNCTION '/SKN/F_SW_10_COMP_CODE_DESC'
+        EXPORTING
+          BUKRS          = LS_DATA-BUKRS  " Company Code
+        IMPORTING
+          COMP_CODE_DESC = LS_DATA-BUTXT  " Name of Company Code or Company
+        EXCEPTIONS
+          WRONG_CODE     = 1
+          OTHERS         = 2.
+    ENDIF.
+    IF LS_DATA-EKORG IS NOT INITIAL.
+*   "-- Purch.Org. Desc.
+      CALL FUNCTION '/SKN/F_SW_10_PUR_ORG_DESC'
+        EXPORTING
+          EKORG        = LS_DATA-EKORG
+          LANGU        = LV_LANGU
+        IMPORTING
+          PUR_ORG_DESC = LS_DATA-EKOTX
+        EXCEPTIONS
+          WRONG_CODE   = 1
+          OTHERS       = 2.
+    ENDIF.
+    LOOP AT LT_CDPOS INTO LS_CDPOS WHERE OBJECTCLAS EQ <FS_DATA>-OBJECTCLAS
+                                   AND   OBJECTID   EQ <FS_DATA>-OBJECTID
+                                   AND   CHANGENR   EQ <FS_DATA>-CHANGENR.
+      MOVE-CORRESPONDING LS_CDPOS TO LS_DATA.
+* Get field desc.
+      PERFORM GET_FIELD_DESC USING LS_DATA-TABNAME
+                                   LS_DATA-FNAME
+                                   LV_LANGU
+*                                 lv_sw_dest
+                             CHANGING LS_DATA-FIELD_DESC.
+* Get table desc.
+      PERFORM GET_TAB_DESC USING LS_DATA-TABNAME
+                                 LV_LANGU
+*                               lv_sw_dest
+                           CHANGING LS_DATA-TAB_DESC.
+      APPEND LS_DATA TO T_DATA[].
+    ENDLOOP.
+  ENDLOOP.
+*****************************************************************
+  READ TABLE T_DATA INTO LS_DATA INDEX 1.
+  CHECK SY-TFILL IS NOT INITIAL .
+  IS_ALERT = 'X' .
+ENDFUNCTION.

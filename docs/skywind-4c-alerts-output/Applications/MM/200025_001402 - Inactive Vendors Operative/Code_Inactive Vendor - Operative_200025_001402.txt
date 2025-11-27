@@ -1,0 +1,660 @@
+  FUNCTION /SKN/F_SW_10_06_INACT_VEND.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT OPTIONAL
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_06_INACT_VEND OPTIONAL
+*"----------------------------------------------------------------------
+**** 07/22++
+    CONSTANTS: C_POSSIBLE_APP_TXT TYPE /SKN/E_SW_APP_DESC VALUE 'Transactions in FI and PUR are possible'.
+    TYPES: BEGIN OF TY_VBKPF,
+             AUSBK TYPE VBKPF-AUSBK,
+             BELNR TYPE VBKPF-BELNR,
+             GJAHR TYPE VBKPF-GJAHR,
+             BUDAT TYPE VBKPF-BUDAT,
+             BZKEY TYPE VBSEGK-BZKEY,
+             BUKRS TYPE VBSEGK-BUKRS,
+             SHKZG TYPE VBSEGK-SHKZG,
+             DMBTR TYPE VBSEGK-DMBTR,
+             LIFNR TYPE VBSEGK-LIFNR,
+           END OF TY_VBKPF,
+           TT_VBKPF TYPE STANDARD TABLE OF TY_VBKPF.
+    TYPES: BEGIN OF TY_DATA_SEL,
+             LIFNR TYPE LFA1-LIFNR,
+             BUKRS TYPE T001-BUKRS,
+           END OF TY_DATA_SEL.
+    TYPES: BEGIN OF TY_T024E,
+             BUKRS TYPE T001-BUKRS,
+             EKORG TYPE T024E-EKORG,
+           END OF TY_T024E,
+           TT_T024E TYPE STANDARD TABLE OF TY_T024E.
+**** 07/22++
+    DATA_SINGLE: SW_DEST       RFCDEST,
+                 BACKDAYS      INT4,
+                 LFA1_SPERR    SPERB_X,
+                 LFA1_SPERM    SPERM_X,
+                 LFA1_LOEVM    LOEVM_X,
+                 LFB1_SPERR    SPERB_B,
+                 LFB1_LOEVM    LOEVM_M,
+                 LFM1_SPERM    SPERM_M,
+                 LFM1_LOEVM    LOEVM_M,
+                 WAERS_FR      WAERS.          " Yuri C.++ 11.01.19  Foreign Currency
+    DATA_MULTY: LIFNR      LIFNR,
+                BUKRS      BUKRS,
+                EKORG      EKORG,
+                KTOKK      KTOKK,
+                KONZS      KONZS,
+                FDGRV      FDGRV,
+                ERDAT      ERDAT_RF,
+                BALANCE_FR DMBTR,              " Yuri C.++ 02.02.19  Balance on foreign currency
+                DATUM      SY-DATUM,
+                GJAHR      GJAHR,
+**** 07/22++
+                AUSBK      AUSBK,
+                BELNR      BELNR_D,
+                BZKEY      BUZEI,
+                BUDAT      BUDAT.
+**** 07/22++
+* Set default param.
+    LV_BACKDAYS = 1.
+    LV_WAERS_FR = 'USD'.
+    SELECT_MULTY: LIFNR,
+                  BUKRS,
+                  EKORG,
+                  KTOKK,
+                  KONZS,
+                  FDGRV,
+                  BALANCE_FR,
+                  DATUM,
+**** 07/22++
+                  AUSBK,
+                  BELNR,
+                  BZKEY,
+                  BUDAT.
+**** 07/22++
+    SELECT_SINGLE: SW_DEST,
+                   BACKDAYS,
+                   LFA1_SPERM,
+                   LFA1_LOEVM,
+                   LFB1_SPERR,
+                   LFB1_LOEVM,
+                   LFM1_SPERM,
+                   LFM1_LOEVM,
+                   WAERS_FR.
+    CONVERT_MULTY: BUKRS ALPHA,
+                   LIFNR ALPHA.
+    TYPES: BEGIN OF TY_LFC1,
+      LIFNR TYPE LFB1-LIFNR,
+      BUKRS TYPE LFB1-BUKRS,
+      GJAHR TYPE LFC1-GJAHR,
+      UMSAV TYPE LFC1-UMSAV,
+      UM01S TYPE LFC1-UM01S,
+      UM01H TYPE LFC1-UM01H,
+      UM02S TYPE LFC1-UM02S,
+      UM02H TYPE LFC1-UM02H,
+      UM03S TYPE LFC1-UM03S,
+      UM03H TYPE LFC1-UM03H,
+      UM04S TYPE LFC1-UM04S,
+      UM04H TYPE LFC1-UM04H,
+      UM05S TYPE LFC1-UM05S,
+      UM05H TYPE LFC1-UM05H,
+      UM06S TYPE LFC1-UM06S,
+      UM06H TYPE LFC1-UM06H,
+      UM07S TYPE LFC1-UM07S,
+      UM07H TYPE LFC1-UM07H,
+      UM08S TYPE LFC1-UM08S,
+      UM08H TYPE LFC1-UM08H,
+      UM09S TYPE LFC1-UM09S,
+      UM09H TYPE LFC1-UM09H,
+      UM10S TYPE LFC1-UM10S,
+      UM10H TYPE LFC1-UM10H,
+      UM11S TYPE LFC1-UM11S,
+      UM11H TYPE LFC1-UM11H,
+      UM12S TYPE LFC1-UM12S,
+      UM12H TYPE LFC1-UM12H,
+      WAERS TYPE T001-WAERS,
+    END OF TY_LFC1,
+    TT_LFC1 TYPE STANDARD TABLE OF TY_LFC1.
+    TYPES: BEGIN OF TY_LFC3,
+      BUKRS TYPE LFC3-BUKRS,
+      LIFNR TYPE LFC3-LIFNR,
+      GJAHR TYPE LFC3-GJAHR,
+      SHBKZ TYPE LFC3-SHBKZ,
+      SALDV TYPE LFC3-SALDV,
+      SOLLL TYPE LFC3-SOLLL,
+      HABNL TYPE LFC3-HABNL,
+      WAERS TYPE T001-WAERS,
+    END OF TY_LFC3,
+    TT_LFC3 TYPE STANDARD TABLE OF TY_LFC3.
+    DATA: LV_START_DATE   TYPE ERDAT,
+          LV_START_YEAR   TYPE GJAHR,
+          LV_FIRST_YEAR   TYPE GJAHR,
+          LV_START_MONTH  TYPE MONTH,
+          LV_CURR_YEAR    TYPE GJAHR,
+          LV_CURR_MONTH   TYPE MONTH,
+          LV_COMP         TYPE CHAR10,
+          LV_ACT          TYPE FLAG,
+          LV_TABIX        TYPE I,
+          LV_WHILE        TYPE STRING,
+          LV_QUERY        TYPE STRING,
+          LV_VAL          TYPE STRING,
+          LV_WHERE        TYPE RFC_DB_OPT,
+          LV_CHAR         TYPE CHAR20,
+          LV_VALUE_HIGH   TYPE STRING VALUE '''0.00''',
+          LV_VALUE        TYPE STRING VALUE '''0.00''',
+          LV_COUNTER_TMP  TYPE I,
+          LV_TOTAL_NORMAL TYPE ZWRBTR,
+          LV_TOTAL_SPEC   TYPE ZWRBTR,
+          LV_TOTAL        TYPE ZWRBTR,
+          LV_TOTAL_FR     TYPE ZWRBTR,
+          LV_DEBIT        TYPE SOLLL,
+          LV_CREDIT       TYPE HABNL,
+**** 07/22++
+          LV_ROW          TYPE I,
+          LV_DELETE       TYPE BOOLE_D,
+          LV_BUKRS_EXIST  TYPE BOOLE_D,
+          LV_EKORG_EXIST  TYPE BOOLE_D.
+**** 07/22++
+    DATA: LS_DATA  LIKE LINE OF T_DATA[],
+          LS_LFC1  TYPE TY_LFC1,
+          LS_LFC3  TYPE TY_LFC3,
+**** 07/22++
+          LS_VBKPF     TYPE TY_VBKPF,
+          LS_T024E     TYPE T024E,
+          LS_T024E_EXT TYPE TY_T024E,
+          LS_DATA_SEL  TYPE TY_DATA_SEL,
+          LS_T001      TYPE T001.
+**** 07/22++
+    DATA: LT_DATA     LIKE TABLE OF T_DATA,
+          LT_DATA_TMP LIKE TABLE OF T_DATA,
+          LT_LFC1     TYPE TT_LFC1,
+          LT_LFC1_TMP TYPE TT_LFC1,
+          LT_QUERY    TYPE TABLE OF RFC_DB_OPT,
+          LT_LFC3     TYPE TT_LFC3,
+**** 07/22++
+          LT_VBKPF       TYPE TT_VBKPF,
+          LT_T024E       TYPE STANDARD TABLE OF T024E,
+          LT_T024E_FREE  TYPE STANDARD TABLE OF T024E,
+          LT_T024E_BUKRS TYPE STANDARD TABLE OF T024E,
+          LT_T024E_EXT   TYPE TT_T024E,
+          LT_T001        TYPE STANDARD TABLE OF T001.
+**** 07/22++
+    DATA: BACKDAYS  TYPE I,
+          DATE_FROM LIKE SY-DATUM,
+          DATE_TO   LIKE SY-DATUM,
+          REF_DATE  TYPE D.
+    DATA: TIME_DIFF TYPE  INT4 .
+    DATA: FLD(60) TYPE C.
+    FIELD-SYMBOLS: <FS_VAL>  TYPE ANY,
+                   <FS_DATA> LIKE LINE OF T_DATA[].
+* if sw_dest is empty then on premise, else on cloud
+    IF LV_SW_DEST IS NOT INITIAL.
+      CALL FUNCTION '/SKN/FC_SW_10_06_INACT_VEND'
+        IMPORTING
+          IS_ALERT = IS_ALERT
+        TABLES
+          T_SELECT = T_SELECT
+          T_DATA   = T_DATA.
+    ENDIF.
+    CHECK LV_SW_DEST IS INITIAL.
+*"--- Run Cloud Mode -----
+*--- Retrieve data
+    CLEAR IS_ALERT .
+    REFRESH T_DATA.
+*** Yuri C.++ 30.12.18
+    CONVERT_MULTY: LIFNR ALPHA.
+    IF R_BUKRS IS INITIAL.
+**************************** 07/22-- ************************************
+*      SELECT lfa1~lifnr t001~bukrs
+*        FROM lfa1 INNER JOIN lfb1 ON lfa1~lifnr EQ lfb1~lifnr
+*                  INNER JOIN t001 ON lfb1~bukrs EQ t001~bukrs
+*        INTO  TABLE lt_t001
+*        WHERE lfa1~lifnr IN r_lifnr.
+*
+*      IF lt_t001 IS NOT INITIAL.
+*        SORT lt_t001 BY bukrs.
+*        DELETE ADJACENT DUPLICATES FROM lt_t001 COMPARING bukrs.
+*        LOOP AT lt_t001 INTO ls_t001.
+*          rs_bukrs-sign   = 'I'.
+*          rs_bukrs-option = 'EQ'.
+*          rs_bukrs-low    = ls_t001-bukrs.
+*
+*          APPEND rs_bukrs TO r_bukrs.
+*        ENDLOOP.
+*
+*        SORT r_bukrs BY low.
+*      ENDIF.
+**************************** 07/22-- ************************************
+**** 07/22++
+      SELECT *
+        FROM T024E
+        INTO TABLE LT_T024E
+        WHERE EKORG IN R_EKORG[]
+        AND   BUKRS IN R_BUKRS[].
+      SELECT *
+        FROM T001
+        INTO TABLE LT_T001
+        WHERE BUKRS IN R_BUKRS[].
+      LOOP AT LT_T024E INTO LS_T024E.
+        IF LS_T024E-BUKRS IS NOT INITIAL.
+          APPEND LS_T024E TO LT_T024E_BUKRS.
+          DELETE LT_T001 WHERE BUKRS EQ LS_T024E-BUKRS.
+        ELSE.
+          APPEND LS_T024E TO LT_T024E_FREE.
+        ENDIF.
+      ENDLOOP.
+      LOOP AT LT_T001 INTO LS_T001.
+        CLEAR: LS_T024E_EXT.
+        LS_T024E_EXT-BUKRS = LS_T001-BUKRS.
+        LOOP AT LT_T024E_FREE INTO LS_T024E.
+          LS_T024E_EXT-EKORG = LS_T024E-EKORG.
+          APPEND LS_T024E_EXT TO LT_T024E_EXT.
+        ENDLOOP.
+      ENDLOOP.
+      LOOP AT LT_T024E_BUKRS INTO LS_T024E.
+        READ TABLE LT_T024E_EXT WITH KEY EKORG = LS_T024E-EKORG
+                                         BUKRS = LS_T024E-BUKRS
+                                         TRANSPORTING NO FIELDS.
+        IF SY-SUBRC IS NOT INITIAL.
+          LS_T024E_EXT-EKORG = LS_T024E-EKORG.
+          LS_T024E_EXT-BUKRS = LS_T024E-BUKRS.
+          APPEND LS_T024E_EXT TO LT_T024E_EXT.
+          CLEAR: LS_T024E_EXT.
+        ENDIF.
+      ENDLOOP.
+**** 07/22++
+    ENDIF.
+*** Yuri C.++ 30.12.18
+    SELECT LFB1~LIFNR LFB1~BUKRS LFB1~FDGRV LFB1~SPERR AS LFB1_SPERR LFB1~LOEVM AS LFB1_LOEVM
+           LFM1~EKORG LFM1~SPERM AS LFM1_SPERM LFM1~LOEVM AS LFM1_LOEVM
+           LFA1~NAME1 LFA1~SPERR AS LFA1_SPERR LFA1~SPERM AS LFA1_SPERM
+           LFA1~LOEVM AS LFA1_LOEVM LFA1~KTOKK LFA1~KONZS
+           T001~BUTXT
+      FROM LFB1 INNER JOIN LFA1      ON  LFB1~LIFNR EQ LFA1~LIFNR
+                INNER JOIN T001      ON  LFB1~BUKRS EQ T001~BUKRS
+                LEFT OUTER JOIN LFM1 ON  LFA1~LIFNR EQ LFM1~LIFNR     " 07/22--
+                                     AND LFM1~SPERM EQ LV_LFM1_SPERM
+      INTO CORRESPONDING FIELDS OF TABLE LT_DATA
+      WHERE LFB1~LIFNR  IN R_LIFNR
+      AND   LFB1~SPERR  EQ LV_LFB1_SPERR
+      AND   LFB1~LOEVM  EQ LV_LFB1_LOEVM
+      AND   LFA1~SPERR  EQ LV_LFA1_SPERR
+      AND   LFA1~SPERM  EQ LV_LFA1_SPERM
+      AND   LFA1~LOEVM  EQ LV_LFA1_LOEVM.
+**** 07/22++
+*      AND   lfm1~ekorg  EQ t_t024e_ext-ekorg
+*      AND   lfm1~sperm  EQ lv_lfm1_sperm.
+**** 07/22++
+    IF LT_DATA IS NOT INITIAL.
+      SORT LT_DATA[] BY LIFNR BUKRS.
+      DELETE ADJACENT DUPLICATES FROM LT_DATA COMPARING LIFNR BUKRS.
+    ENDIF.
+    CHECK LT_DATA IS NOT INITIAL.
+**** 07/22++
+*************************************************** Restriction data by Alert parameters ****************************************
+    LT_DATA_TMP = LT_DATA.
+    SORT LT_T024E_EXT BY BUKRS EKORG.
+    LV_ROW = 0.
+    LOOP AT LT_DATA_TMP INTO LS_DATA.
+      LV_TABIX = SY-TABIX.
+      LV_ROW = LV_ROW + 1.
+      IF LV_ROW EQ 1.
+        LS_DATA_SEL-BUKRS = LS_DATA-BUKRS.
+        LS_DATA_SEL-LIFNR = LS_DATA-LIFNR.
+      ELSE.
+        IF LS_DATA_SEL-BUKRS EQ LS_DATA-BUKRS AND
+           LS_DATA_SEL-LIFNR EQ LS_DATA-LIFNR.
+          READ TABLE LT_T024E_EXT WITH KEY BUKRS = LS_DATA-BUKRS
+                                           EKORG = LS_DATA-EKORG
+                                           BINARY SEARCH
+                                           TRANSPORTING NO FIELDS.
+          IF SY-SUBRC IS NOT INITIAL.
+            LV_DELETE = 'X'.
+          ELSEIF LS_DATA-LFM1_SPERM NE LV_LFM1_SPERM OR
+                 LS_DATA-LFM1_LOEVM NE LV_LFM1_LOEVM.
+            LV_DELETE = 'X'.
+          ELSEIF SY-SUBRC IS INITIAL AND LV_ROW GE 2.
+            LV_DELETE = 'X'.
+          ENDIF.
+          IF LV_DELETE EQ 'X'.
+            DELETE LT_DATA_TMP INDEX LV_TABIX.
+            IF SY-SUBRC IS INITIAL.
+              READ TABLE LT_DATA_TMP ASSIGNING <FS_DATA> INDEX LV_TABIX - 1.
+              IF SY-SUBRC IS INITIAL AND <FS_DATA> IS ASSIGNED.
+                <FS_DATA>-LFM1_SPERM = LV_LFM1_SPERM.
+                <FS_DATA>-LFM1_LOEVM = LV_LFM1_LOEVM.
+              ENDIF.
+            ENDIF.
+            CLEAR: LV_DELETE.
+          ENDIF.
+        ELSE.
+          LV_ROW = 1.
+          LS_DATA_SEL-BUKRS = LS_DATA-BUKRS.
+          LS_DATA_SEL-LIFNR = LS_DATA-LIFNR.
+        ENDIF.
+      ENDIF.
+    ENDLOOP.
+    IF LT_DATA_TMP IS NOT INITIAL.
+      LT_DATA = LT_DATA_TMP.
+    ENDIF.
+*************************************************** Restriction data by Alert parameters ****************************************
+    IF R_BUDAT[] IS INITIAL.
+      RS_BUDAT-SIGN   = 'I' .
+      RS_BUDAT-OPTION = 'BT'.
+      DATE_FROM       = SY-DATUM - LV_BACKDAYS.
+      RS_BUDAT-LOW    = DATE_FROM.
+      RS_BUDAT-HIGH   = SY-DATUM.
+      APPEND RS_BUDAT TO R_BUDAT.
+    ENDIF.
+    SELECT VBKPF~AUSBK VBKPF~BELNR VBKPF~GJAHR VBKPF~BUDAT
+           VBSEGK~BZKEY VBSEGK~BUKRS VBSEGK~SHKZG VBSEGK~DMBTR VBSEGK~LIFNR
+      FROM VBKPF INNER JOIN VBSEGK ON  VBKPF~AUSBK EQ VBSEGK~AUSBK
+                                   AND VBKPF~BELNR EQ VBSEGK~BELNR
+                                   AND VBKPF~GJAHR EQ VBSEGK~GJAHR
+                                   AND VBKPF~BUKRS EQ VBSEGK~BUKRS
+      INTO TABLE LT_VBKPF
+      FOR ALL ENTRIES IN LT_DATA
+      WHERE VBKPF~BUKRS  EQ LT_DATA-BUKRS
+      AND   VBSEGK~LIFNR EQ LT_DATA-LIFNR
+      AND   VBKPF~AUSBK  IN R_AUSBK[]
+      AND   VBKPF~BELNR  IN R_BELNR[]
+      AND   VBKPF~GJAHR  IN R_GJAHR[]
+      AND   VBKPF~BUDAT  IN R_BUDAT[]
+      AND   VBSEGK~BZKEY IN R_BZKEY[]
+      AND   VBSEGK~BUKRS IN R_BUKRS[]
+      AND   VBSEGK~LIFNR IN R_LIFNR[].
+    IF SY-SUBRC IS INITIAL.
+      SORT LT_VBKPF BY BUKRS LIFNR ASCENDING BUDAT DESCENDING.
+      DELETE ADJACENT DUPLICATES FROM LT_VBKPF COMPARING BUKRS LIFNR.
+    ENDIF.
+**** 07/22++
+    LV_START_DATE  = SY-DATUM - LV_BACKDAYS.
+    LV_START_YEAR  = LV_START_DATE(4).
+    LV_START_MONTH = LV_START_DATE+4(2).
+    LV_CURR_YEAR  = SY-DATUM(4).
+    LV_CURR_MONTH = SY-DATUM+4(2).
+    LV_START_DATE  = SY-DATUM - LV_BACKDAYS.
+    LV_START_YEAR  = LV_START_DATE(4).
+    LV_FIRST_YEAR  = LV_START_YEAR.
+    LV_START_MONTH = LV_START_DATE+4(2).
+    RS_GJAHR-OPTION = 'EQ'.
+    RS_GJAHR-SIGN   = 'I'.
+    RS_GJAHR-LOW    = LV_START_YEAR.
+    APPEND RS_GJAHR TO R_GJAHR.
+*** Yuri C.++ 06.01.19
+*    IF rs_amount_max-low > 0.
+*      WRITE rs_amount_max-low TO lv_char NO-GROUPING LEFT-JUSTIFIED.
+*      lv_value = lv_char.
+*    ENDIF.
+*    IF rs_amount_max-high > 0.
+*      CLEAR lv_char.
+*      WRITE rs_amount_max-high TO lv_char NO-GROUPING LEFT-JUSTIFIED.
+*      lv_value_high = lv_char.
+*    ENDIF.
+*** Yuri C.++ 06.01.19
+    LV_WHILE = 12.
+    WHILE LV_START_YEAR <= LV_CURR_YEAR.
+*      CHECK lt_data IS NOT INITIAL.
+      IF LT_DATA IS INITIAL.
+        EXIT.
+      ENDIF.
+      CLEAR: LV_WHERE.
+      CONCATENATE 'LFC1~LIFNR' 'EQ' 'lt_data-lifnr'     INTO LV_WHERE
+      SEPARATED BY SPACE.
+      APPEND LV_WHERE TO LT_QUERY.
+      CLEAR LV_WHERE.
+      CONCATENATE 'AND LFC1~BUKRS' 'EQ' 'lt_data-bukrs' INTO LV_WHERE
+      SEPARATED BY SPACE.
+      APPEND LV_WHERE TO LT_QUERY.
+      IF LV_START_YEAR = LV_CURR_YEAR.
+        LV_WHILE = LV_CURR_MONTH.
+      ENDIF.
+      CLEAR: LV_WHERE, LV_TABIX.
+      WHILE LV_START_MONTH <= LV_WHILE .
+        LV_TABIX = LV_TABIX + 1.
+        CLEAR: LV_COMP.
+*
+        IF LV_TABIX = 1.
+          CONCATENATE LV_WHERE 'AND' INTO LV_WHERE SEPARATED BY SPACE.
+          CONCATENATE LV_WHERE 'LFC1~GJAHR' 'EQ' ''''LV_START_YEAR'''' INTO LV_WHERE
+            SEPARATED BY SPACE.
+          CONDENSE LV_WHERE.
+          APPEND LV_WHERE TO LT_QUERY.
+          CLEAR LV_WHERE.
+          CONCATENATE 'AND' '(' INTO LV_WHERE SEPARATED BY SPACE.
+        ELSE.
+          CONCATENATE LV_WHERE 'OR' INTO LV_WHERE SEPARATED BY SPACE.
+        ENDIF.
+        CONCATENATE LV_WHERE '(' INTO LV_WHERE SEPARATED BY SPACE.
+        CONCATENATE 'LFC1~' 'UM' LV_START_MONTH 'S'  INTO LV_COMP.
+        CONCATENATE LV_WHERE LV_COMP 'NE' LV_VAL INTO LV_WHERE
+          SEPARATED BY SPACE.
+        CONCATENATE LV_WHERE 'OR' INTO LV_WHERE SEPARATED BY SPACE.
+        CLEAR LV_COMP.
+        CONCATENATE 'LFC1~' 'UM' LV_START_MONTH 'H' INTO LV_COMP.
+        CONCATENATE LV_WHERE LV_COMP 'NE' LV_VAL INTO LV_WHERE
+          SEPARATED BY SPACE.
+        CONCATENATE LV_WHERE ')' INTO LV_WHERE SEPARATED BY SPACE.
+        IF LV_WHERE IS NOT INITIAL.
+          APPEND LV_WHERE TO LT_QUERY.
+          CLEAR LV_WHERE.
+        ENDIF.
+        LV_START_MONTH = LV_START_MONTH + 1.
+      ENDWHILE.
+      CHECK LT_DATA IS NOT INITIAL.
+***********************************
+      IF LT_QUERY IS NOT INITIAL.
+        LV_WHERE = ')'.
+        APPEND LV_WHERE TO LT_QUERY.
+        IF LT_DATA IS NOT INITIAL.
+          SELECT LFC1~LIFNR LFC1~BUKRS LFC1~GJAHR
+                 LFC1~UMSAV
+                 LFC1~UM01S LFC1~UM01H LFC1~UM02S LFC1~UM02H LFC1~UM03S LFC1~UM03H
+                 LFC1~UM04S LFC1~UM04H LFC1~UM05S LFC1~UM05H LFC1~UM06S LFC1~UM06H
+                 LFC1~UM07S LFC1~UM07H LFC1~UM08S LFC1~UM08H LFC1~UM09S LFC1~UM09H
+                 LFC1~UM10S LFC1~UM10H LFC1~UM11S LFC1~UM11H LFC1~UM12S LFC1~UM12H
+            FROM LFC1 LEFT OUTER JOIN T001 ON LFC1~BUKRS EQ T001~BUKRS
+            INTO CORRESPONDING FIELDS OF TABLE LT_LFC1
+            FOR ALL ENTRIES IN LT_DATA[]
+            WHERE (LT_QUERY).
+        ENDIF.
+        IF SY-SUBRC = 0.
+          SORT LT_LFC1 BY BUKRS LIFNR GJAHR.
+          LOOP AT LT_LFC1 INTO LS_LFC1.
+            DELETE LT_DATA WHERE LIFNR EQ LS_LFC1-LIFNR
+                           AND   BUKRS EQ LS_LFC1-BUKRS.
+          ENDLOOP.
+          CHECK LT_DATA IS NOT INITIAL.
+        ENDIF.
+      ENDIF.
+      LV_START_YEAR  = LV_START_YEAR + 1.
+      LV_START_MONTH = 1.
+      CLEAR: LT_QUERY.
+    ENDWHILE.
+    IF LT_DATA[] IS NOT INITIAL.
+      SORT LT_DATA BY LIFNR BUKRS.
+*** Leon request to change BSIK select by LFC3
+*** 04.02.19--
+*        SELECT bsik~bukrs bsik~lifnr bsik~belnr bsik~shkzg bsik~dmbtr
+*               t001~waers
+*          FROM bsik LEFT OUTER JOIN t001 ON bsik~bukrs EQ t001~bukrs
+*          INTO TABLE lt_bsik
+*          FOR ALL ENTRIES IN lt_data
+*          WHERE bsik~lifnr EQ lt_data-lifnr
+*          AND   bsik~bukrs EQ lt_data-bukrs.
+*** 04.02.19--
+*** Begin 04.02.19++
+* Select all vendors related to T_DATA and for current year
+      CLEAR: LT_LFC1.
+      LV_CURR_YEAR = SY-DATUM(4).
+      SELECT LFC1~LIFNR LFC1~BUKRS LFC1~GJAHR LFC1~UMSAV
+             LFC1~UM01S LFC1~UM01H LFC1~UM02S LFC1~UM02H LFC1~UM03S LFC1~UM03H
+             LFC1~UM04S LFC1~UM04H LFC1~UM05S LFC1~UM05H LFC1~UM06S LFC1~UM06H
+             LFC1~UM07S LFC1~UM07H LFC1~UM08S LFC1~UM08H LFC1~UM09S LFC1~UM09H
+             LFC1~UM10S LFC1~UM10H LFC1~UM11S LFC1~UM11H LFC1~UM12S LFC1~UM12H
+             T001~WAERS
+        FROM LFC1 LEFT OUTER JOIN T001 ON LFC1~BUKRS EQ T001~BUKRS
+        INTO CORRESPONDING FIELDS OF TABLE LT_LFC1
+        FOR ALL ENTRIES IN LT_DATA
+        WHERE LFC1~LIFNR EQ LT_DATA-LIFNR
+        AND   LFC1~BUKRS EQ LT_DATA-BUKRS
+        AND   LFC1~GJAHR EQ LV_CURR_YEAR.
+      SELECT LFC3~LIFNR LFC3~BUKRS LFC3~GJAHR LFC3~SHBKZ LFC3~SALDV LFC3~SOLLL LFC3~HABNL
+             T001~WAERS
+        FROM LFC3 LEFT OUTER JOIN T001 ON LFC3~BUKRS EQ T001~BUKRS
+        INTO CORRESPONDING FIELDS OF TABLE LT_LFC3
+        FOR ALL ENTRIES IN LT_DATA
+        WHERE LFC3~LIFNR EQ LT_DATA-LIFNR
+        AND   LFC3~BUKRS EQ LT_DATA-BUKRS
+        AND   LFC3~GJAHR EQ LV_CURR_YEAR.
+      IF SY-SUBRC = 0.
+        SORT LT_LFC3 BY LIFNR BUKRS GJAHR.
+      ENDIF.
+*** End 04.02.19++
+    ENDIF.
+    LV_CURR_YEAR = SY-DATUM(4).
+    SORT LT_LFC1 BY LIFNR BUKRS GJAHR.
+* Calculate debit, credit and balance of current year
+    LOOP AT LT_DATA ASSIGNING <FS_DATA>.
+      CLEAR: LV_TOTAL_NORMAL, LV_TOTAL_SPEC, LS_LFC1, LS_LFC3, LV_TOTAL.
+* LFC3
+* Calculate balance of spec. G/L
+      LOOP AT LT_LFC3 INTO LS_LFC3 WHERE LIFNR EQ <FS_DATA>-LIFNR
+                                   AND   BUKRS EQ <FS_DATA>-BUKRS
+                                   AND   GJAHR EQ LV_CURR_YEAR.
+        IF <FS_DATA>-WAERS IS INITIAL.
+          <FS_DATA>-WAERS = LS_LFC3-WAERS.
+        ENDIF.
+        LV_TOTAL_SPEC = LS_LFC3-SALDV + LS_LFC3-SOLLL - LS_LFC3-HABNL.
+      ENDLOOP.
+      IF LV_WAERS_FR IS NOT INITIAL AND LS_LFC3 IS NOT INITIAL AND
+         LV_WAERS_FR NE LS_LFC3-WAERS AND LV_TOTAL_SPEC IS NOT INITIAL.
+        CLEAR: LV_TOTAL_FR.
+        <FS_DATA>-WAERS_FR = LV_WAERS_FR.
+        CALL FUNCTION 'CONVERT_TO_FOREIGN_CURRENCY'
+          EXPORTING
+            DATE             = SY-DATUM
+            FOREIGN_CURRENCY = LV_WAERS_FR   " 'USD'
+*           local_amount     = ls_bsik-dmbtr
+*           local_currency   = ls_bsik-waers
+            LOCAL_AMOUNT     = LV_TOTAL_SPEC
+            LOCAL_CURRENCY   = LS_LFC3-WAERS
+          IMPORTING
+            FOREIGN_AMOUNT   = LV_TOTAL_FR
+          EXCEPTIONS
+            NO_RATE_FOUND    = 1
+            OVERFLOW         = 2
+            NO_FACTORS_FOUND = 3
+            NO_SPREAD_FOUND  = 4
+            DERIVED_2_TIMES  = 5
+            OTHERS           = 6.
+      ELSE.
+        LV_TOTAL_FR = LV_TOTAL_SPEC.
+      ENDIF.
+      <FS_DATA>-BALANCE_SPEC    = <FS_DATA>-BALANCE_SPEC    + LV_TOTAL_SPEC.
+      <FS_DATA>-BALANCE_SPEC_FR = <FS_DATA>-BALANCE_SPEC_FR + LV_TOTAL_FR.
+* LFC1
+      LOOP AT LT_LFC1 INTO LS_LFC1 WHERE LIFNR EQ <FS_DATA>-LIFNR
+                                   AND   BUKRS EQ <FS_DATA>-BUKRS
+                                   AND   GJAHR EQ LV_CURR_YEAR.
+        CLEAR: LV_CREDIT, LV_DEBIT.
+        IF <FS_DATA>-WAERS IS INITIAL.
+          <FS_DATA>-WAERS = LS_LFC1-WAERS.
+        ENDIF.
+        LV_CURR_MONTH = 1.
+        LV_WHILE      = 1.
+        WHILE LV_WHILE <= 12 .
+          CONCATENATE 'UM' LV_CURR_MONTH 'H' INTO LV_COMP.
+          ASSIGN COMPONENT LV_COMP OF STRUCTURE LS_LFC1 TO <FS_VAL>.
+          IF SY-SUBRC = 0 AND <FS_VAL> IS ASSIGNED.
+            LV_CREDIT = LV_CREDIT + <FS_VAL>.
+            UNASSIGN <FS_VAL>.
+          ENDIF.
+          CLEAR: LV_COMP.
+          CONCATENATE 'UM' LV_CURR_MONTH 'S' INTO LV_COMP.
+          ASSIGN COMPONENT LV_COMP OF STRUCTURE LS_LFC1 TO <FS_VAL>.
+          IF SY-SUBRC = 0 AND <FS_VAL> IS ASSIGNED.
+            LV_DEBIT = LV_DEBIT + <FS_VAL>.
+            UNASSIGN <FS_VAL>.
+          ENDIF.
+          ADD 1 TO LV_CURR_MONTH.
+          ADD 1 TO LV_WHILE.
+        ENDWHILE.
+*        lv_total_normal = lv_total_normal + ( ls_lfc1-umsav + lv_credit - lv_debit ).
+        LV_TOTAL_NORMAL = LV_TOTAL_NORMAL + ( LS_LFC1-UMSAV + LV_DEBIT - LV_CREDIT ).
+      ENDLOOP.
+******** 22.02.19
+      IF LV_WAERS_FR IS NOT INITIAL AND LS_LFC1 IS NOT INITIAL AND
+         LV_WAERS_FR NE LS_LFC1-WAERS AND LV_TOTAL_NORMAL IS NOT INITIAL.
+        CLEAR: LV_TOTAL_FR.
+        <FS_DATA>-WAERS_FR = LV_WAERS_FR.
+        CALL FUNCTION 'CONVERT_TO_FOREIGN_CURRENCY'
+          EXPORTING
+            DATE             = SY-DATUM
+            FOREIGN_CURRENCY = LV_WAERS_FR   " 'USD'
+            LOCAL_AMOUNT     = LV_TOTAL_NORMAL
+            LOCAL_CURRENCY   = LS_LFC1-WAERS
+          IMPORTING
+            FOREIGN_AMOUNT   = LV_TOTAL_FR
+          EXCEPTIONS
+            NO_RATE_FOUND    = 1
+            OVERFLOW         = 2
+            NO_FACTORS_FOUND = 3
+            NO_SPREAD_FOUND  = 4
+            DERIVED_2_TIMES  = 5
+            OTHERS           = 6.
+      ELSE.
+        LV_TOTAL_FR = LV_TOTAL_NORMAL.
+      ENDIF.
+      <FS_DATA>-BALANCE_NORMAL    = <FS_DATA>-BALANCE_NORMAL    + LV_TOTAL_NORMAL. " Balance total normal   of LFC1
+      <FS_DATA>-BALANCE_NORMAL_FR = <FS_DATA>-BALANCE_NORMAL_FR + LV_TOTAL_FR.
+* Total balance
+      LV_TOTAL = <FS_DATA>-BALANCE_NORMAL + <FS_DATA>-BALANCE_SPEC.
+      IF LV_WAERS_FR IS NOT INITIAL AND <FS_DATA>-WAERS IS NOT INITIAL AND
+         LV_WAERS_FR NE LS_LFC1-WAERS AND LV_TOTAL IS NOT INITIAL.
+        CLEAR: LV_TOTAL_FR.
+        <FS_DATA>-WAERS_FR = LV_WAERS_FR.
+        CALL FUNCTION 'CONVERT_TO_FOREIGN_CURRENCY'
+          EXPORTING
+            DATE             = SY-DATUM
+            FOREIGN_CURRENCY = LV_WAERS_FR   " 'USD'
+            LOCAL_AMOUNT     = LV_TOTAL
+            LOCAL_CURRENCY   = <FS_DATA>-WAERS
+          IMPORTING
+            FOREIGN_AMOUNT   = LV_TOTAL_FR
+          EXCEPTIONS
+            NO_RATE_FOUND    = 1
+            OVERFLOW         = 2
+            NO_FACTORS_FOUND = 3
+            NO_SPREAD_FOUND  = 4
+            DERIVED_2_TIMES  = 5
+            OTHERS           = 6.
+      ELSE.
+        IF <FS_DATA>-WAERS_FR IS INITIAL.
+          <FS_DATA>-WAERS_FR = LV_WAERS_FR.
+        ENDIF.
+        LV_TOTAL_FR = LV_TOTAL.
+      ENDIF.
+******** 22.02.19
+      <FS_DATA>-BALANCE_TOTAL = LV_TOTAL.
+**** 07/22++
+      IF <FS_DATA>-EKORG IS NOT INITIAL.
+        <FS_DATA>-POSSIBLE_APP = C_POSSIBLE_APP_TXT.
+      ENDIF.
+      READ TABLE LT_VBKPF INTO LS_VBKPF WITH KEY BUKRS = <FS_DATA>-BUKRS
+                                                 LIFNR = <FS_DATA>-LIFNR.
+      IF SY-SUBRC IS INITIAL.
+        <FS_DATA>-PARKED_IVNOICE = 'X'.
+      ENDIF.
+**** 07/22++
+      IF LV_TOTAL_FR IN R_BALANCE_FR[].
+        <FS_DATA>-BALANCE_TOTAL_FR = LV_TOTAL_FR.
+        APPEND <FS_DATA> TO T_DATA.
+      ENDIF.
+    ENDLOOP.
+    READ TABLE T_DATA INDEX 1.
+    CHECK NOT SY-TFILL  IS INITIAL .
+    IS_ALERT = 'X' .
+  ENDFUNCTION.

@@ -1,0 +1,306 @@
+FUNCTION /SKN/F_SW_10_01_SALES_REV .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT OPTIONAL
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_01_SALES_REV OPTIONAL
+*"----------------------------------------------------------------------
+  DATA_SINGLE: LANGU  LANGU,
+               BACKDAYS INT4,
+               DURATION_UNIT  /SKN/E_SW_DURATION_UNIT,
+               DATE_REF_FLD NAME_FELD
+               .
+** Default values
+  LV_BACKDAYS = 1.
+  LV_DURATION_UNIT = 'D'.
+  LV_LANGU = SY-LANGU.
+  LV_DATE_REF_FLD = 'AEDAT'.
+  SELECT_SINGLE:
+                 LANGU,
+                 BACKDAYS,
+                 DURATION_UNIT,
+                 DATE_REF_FLD
+                 .
+  DATA_MULTY:
+              VBELN        VBELN_VA,
+              AUART        AUART,
+              VBTYP        VBTYP,
+              VKORG        VKORG,
+              VTWEG        VTWEG,
+              SPART        SPART,
+              VKGRP        VKGRP,
+              VKBUR        VKBUR,
+              KUNNR        KUNAG,
+              WAERK        WAERK,
+              MATNR        MATNR,
+              MATKL        MATKL,
+              UEPOS        UEPOS,
+              ABGRU        ABGRU_VA,
+              WERKS        WERKS_EXT,
+              LGORT        LGORT_D,
+              NETWR        NETWR_AP,
+              WAVWR        WAVWR,
+              PSTYV        PSTYV,
+              MPROK        MPROK,
+              DURATION     /SKN/E_SW_DURATION,
+              DATUM        SY-DATUM.
+  SELECT_MULTY:
+              VBELN,
+              AUART,
+              VBTYP,
+              VKORG ,
+              VTWEG ,
+              SPART,
+              VKGRP,
+              VKBUR,
+              KUNNR,
+              WAERK,
+              MATNR,
+              MATKL,
+              UEPOS,
+              ABGRU,
+              WERKS,
+              LGORT,
+              NETWR,
+              WAVWR,
+              PSTYV,
+              MPROK,
+              DURATION,
+              DATUM.
+  CONVERT_MULTY:  VBELN ALPHA.
+  CONVERT_MULTY:  MATNR MATN1.
+  CONVERT_MULTY:  AUART AUART .
+  CONVERT_MULTY:  KUNNR ALPHA.
+  DATA : BACKDAYS  TYPE I ,
+         DATE_FROM LIKE SY-DATUM,
+         DATE_TO LIKE SY-DATUM .
+  DATA : LANGU LIKE SY-LANGU .
+  DATA : TIME_DIFF TYPE  INT4 .
+  DATA:LV_TABIX LIKE SY-TABIX.
+  DATA: LV_WERKS TYPE WERKS_D.
+  DATA : SY_TABIX LIKE SY-TABIX .
+  DATA : REF_DATE TYPE D.
+  DATA: LV_DOMNAME LIKE  DD07V-DOMNAME,
+        LV_DOMVALUE LIKE  DD07V-DOMVALUE_L,
+        LV_DDTEXT LIKE  DD07V-DDTEXT.
+"--- Run Cloud Mode -----
+  DATA_SINGLE: SW_DEST RFCDEST.             .
+  SELECT_SINGLE: SW_DEST.
+  IF LV_SW_DEST IS NOT INITIAL.
+    CALL FUNCTION '/SKN/FC_SW_10_01_SALES_REV'
+      IMPORTING
+        IS_ALERT       = IS_ALERT
+      TABLES
+        T_SELECT       = T_SELECT
+        T_DATA         = T_DATA.
+  ENDIF.
+  CHECK LV_SW_DEST IS INITIAL.
+"--- Run Cloud Mode -----
+  IF R_DATUM[] IS INITIAL .
+    RS_DATUM-SIGN = 'I' .
+    RS_DATUM-OPTION = 'GE' .
+    DATE_FROM = SY-DATUM - LV_BACKDAYS .
+    RS_DATUM-LOW = DATE_FROM .
+    APPEND RS_DATUM TO R_DATUM.
+  ENDIF.
+  IF R_MATNR[] IS INITIAL .
+    RS_MATNR-SIGN = 'I' .
+    RS_MATNR-OPTION = 'GT' .
+    RS_MATNR-LOW = ''.
+    APPEND RS_MATNR TO R_MATNR.
+  ENDIF.
+*--- Retrieve data
+  CLEAR IS_ALERT .
+  SELECT *
+    FROM VBAK
+    INNER JOIN VBAP ON
+    VBAK~VBELN = VBAP~VBELN
+    INTO CORRESPONDING FIELDS OF TABLE  T_DATA
+    WHERE  VBAK~VBELN IN R_VBELN
+      AND AUART IN R_AUART
+      AND VBTYP IN R_VBTYP
+      AND VKORG IN R_VKORG
+      AND VTWEG IN R_VTWEG
+"      AND vbak~SPART IN R_SPART   ""???
+      AND VKGRP IN R_VKGRP
+      AND VKBUR IN R_VKBUR
+      AND KUNNR IN R_KUNNR
+      AND VBAP~SPART IN R_SPART   ""???
+      AND VBAP~WAERK IN R_WAERK
+      AND MATNR IN R_MATNR
+      AND MATKL IN R_MATKL
+      AND UEPOS IN R_UEPOS
+      AND ABGRU IN R_ABGRU
+      AND WERKS IN R_WERKS
+      AND LGORT IN R_LGORT
+      AND VBAP~NETWR IN R_NETWR
+      AND WAVWR IN R_WAVWR
+      AND PSTYV IN R_PSTYV
+      AND MPROK IN R_MPROK
+      AND ( VBAK~ERDAT IN R_DATUM OR VBAK~AEDAT IN R_DATUM )
+      AND ( VBAP~ERDAT IN R_DATUM OR VBAP~AEDAT IN R_DATUM )
+      AND VBAP~NETWR LT VBAP~WAVWR
+      """AND VBAP~NETWR GT VBAP~WAVWR
+       .
+**********************************************************************
+**********************************************************************
+  LOOP AT T_DATA . """"?????????
+    SY_TABIX = SY-TABIX .
+***    CONCATENATE 'T_DATA-' lv_date_ref_fld INTO fld .
+***    ASSIGN (fld) TO .
+***    IF  IS NOT ASSIGNED.
+***      CONTINUE.
+***    ENDIF.
+***    ref_date =  .
+    REF_DATE = T_DATA-AEDAT.
+    IF REF_DATE IS INITIAL.
+      REF_DATE = T_DATA-ERDAT.
+    ENDIF.
+    IF NOT REF_DATE IS INITIAL.
+      T_DATA-DURATION_UNIT = LV_DURATION_UNIT.
+      CALL FUNCTION '/SKN/F_SW_GET_TIME_DIFF'
+        EXPORTING
+          D_FROM      = REF_DATE
+          T_FROM      = SY-UZEIT
+          D_TO        = SY-DATUM
+          T_TO        = SY-UZEIT
+          TIME_UNIT   = LV_DURATION_UNIT
+        IMPORTING
+          TIME_DIFF   = TIME_DIFF
+        EXCEPTIONS
+          WRONG_VALUE = 1
+          OTHERS      = 2.
+      IF SY-SUBRC = 0.
+        IF TIME_DIFF < '999999'.
+          T_DATA-DURATION = TIME_DIFF .
+        ELSE.
+          T_DATA-DURATION = '999999'.
+        ENDIF.
+      ENDIF.
+      MODIFY T_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+  DELETE T_DATA WHERE DURATION NOT IN R_DURATION.
+**********************************************************************
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    CALL FUNCTION '/SKN/F_SW_10_DOC_TYPE_DESC'
+      EXPORTING
+        AUART            = T_DATA-AUART
+        LANGU            = LV_LANGU
+     IMPORTING
+        TYPE_DESC        = T_DATA-DOC_TYPE_DESC
+     EXCEPTIONS
+        WRONG_CODE       = 1
+        OTHERS           = 2
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+    CALL FUNCTION '/SKN/F_SW_10_SALES_ORG_DESC'
+      EXPORTING
+        VKORG                = T_DATA-VKORG
+        LANGU                = LV_LANGU
+     IMPORTING
+        SALES_ORG_DESC       = T_DATA-SALES_ORG_DESC
+     EXCEPTIONS
+       WRONG_CODE            = 1
+       OTHERS                = 2
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+    CALL FUNCTION '/SKN/F_SW_10_SALES_GRP_DESC'
+      EXPORTING
+        VKGRP                = T_DATA-VKGRP
+        LANGU                = SY-LANGU
+     IMPORTING
+       SALES_GRP_DESC       = T_DATA-SALES_GRP_DESC
+     EXCEPTIONS
+       WRONG_CODE           = 1
+       OTHERS               = 2
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+    CALL FUNCTION '/SKN/F_SW_10_SALES_OFF_DESC'
+      EXPORTING
+        VKBUR                = T_DATA-VKBUR
+        LANGU                = LV_LANGU
+     IMPORTING
+       SALES_OFF_DESC       =  T_DATA-SALES_OFF_DESC
+     EXCEPTIONS
+       WRONG_CODE           = 1
+       OTHERS               = 2
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+    CALL FUNCTION '/SKN/F_SW_10_MAT_GRP_DESC'
+      EXPORTING
+        MATKL              = T_DATA-MATKL
+        LANGU              = LV_LANGU
+     IMPORTING
+        MATKL_DESC         = T_DATA-MATKL_DESC
+*       MATKL_DESC_L       =
+     EXCEPTIONS
+       WRONG_CODE         = 1
+       OTHERS             = 2
+              .
+    IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+    ENDIF.
+    LV_WERKS = T_DATA-WERKS.
+      CALL FUNCTION '/SKN/F_SW_10_PLANT_DESC'
+        EXPORTING
+          WERKS            =  LV_WERKS
+         LANGU             =  LV_LANGU
+       IMPORTING
+        PLANT_DESC       = T_DATA-PLANT_DESC
+       EXCEPTIONS
+         WRONG_CODE       = 1
+         OTHERS           = 2
+                .
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+      CALL FUNCTION '/SKN/F_SW_10_CUST_DESC'
+        EXPORTING
+          KUNNR                = T_DATA-KUNNR
+       IMPORTING
+         CUST_DESC            =  T_DATA-CUST_DESC
+       EXCEPTIONS
+         WRONG_CUSTOMER       = 1
+         OTHERS               = 2
+                .
+      IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+      ENDIF.
+    LV_DOMNAME = 'MPROK'.
+    LV_DOMVALUE = T_DATA-MPROK.
+      CALL FUNCTION '/SKN/F_SW_GET_DOMAIN_VALUE'
+        EXPORTING
+          I_DOMNAME        = LV_DOMNAME
+          I_DOMVALUE       = LV_DOMVALUE
+          LANGU            = LV_LANGU
+*         SW_DEST          =
+       IMPORTING
+         E_DDTEXT          = LV_DDTEXT
+       EXCEPTIONS
+         NOT_EXIST        = 1
+         OTHERS           = 2
+                .
+     IF SY-SUBRC = 0.
+      T_DATA-MPROK_DESC = LV_DDTEXT.
+     ENDIF.
+    MODIFY T_DATA INDEX SY_TABIX.
+  ENDLOOP.
+**********************************************************************
+*********************************************************************
+*--- Check Alert Information
+  READ TABLE T_DATA INDEX 1.
+  CHECK NOT SY-TFILL  IS INITIAL .
+  IS_ALERT = 'X' .
+ENDFUNCTION.

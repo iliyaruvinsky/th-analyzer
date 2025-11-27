@@ -1,0 +1,350 @@
+FUNCTION /SKN/F_SW_10_03_PO_RETRO_CR .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT OPTIONAL
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_03_PO_RETRO_CR OPTIONAL
+*"----------------------------------------------------------------------
+DATA_SINGLE: LANGU  LANGU,
+             BACKDAYS INT4,
+             DATE_REF_FLD NAME_FELD,
+             DURATION_UNIT  /SKN/E_SW_DURATION_UNIT.
+ LV_BACKDAYS = 10.
+ LV_DURATION_UNIT = 'D'.
+ LV_LANGU = SY-LANGU.
+ LV_DATE_REF_FLD = 'CPUDT'. "Entered on
+ SELECT_SINGLE: LANGU,
+                BACKDAYS,
+                DATE_REF_FLD,
+                DURATION_UNIT.
+DATA_MULTY: FRGRL        FRGRL,
+            EBELN        EBELN,
+            BUKRS        BUKRS,
+            BSTYP        EBSTYP,
+            BSART        ESART,
+            EKORG        EKORG,
+            EKGRP        BKGRP,
+            FRGGR        FRGGR,
+            FRGSX        FRGSX,
+            FRGCO        FRGCO,
+            FRGKE        FRGKE,
+            LIFNR        ELIFN,
+            RESWK        RESWK,
+            ZTERM        DZTERM,
+            ERNAM        ERNAM,
+            AEDAT        ERDAT,
+            BEDAT        EBDAT,
+            WAERS        WAERS,
+            PROCSTAT     MEPROCSTATE,
+            DATUM        SY-DATUM,
+            CPUDT        CPUDT,
+            BLART        BLART,
+            BELNR        RE_BELNR,
+            DURATION    /SKN/E_SW_DURATION.
+SELECT_MULTY:
+            FRGRL,
+            EBELN,
+            BUKRS,
+            BSTYP,
+            BSART,
+            EKORG,
+            EKGRP,
+            FRGGR,
+            FRGSX,
+            FRGCO,
+            FRGKE,
+            LIFNR,
+            RESWK,
+            ZTERM,
+            ERNAM,
+            AEDAT,
+            BEDAT,
+            WAERS,
+            PROCSTAT,
+            DATUM,
+            CPUDT,
+            BLART,
+            BELNR,
+            DURATION.
+CONVERT_MULTY: EBELN ALPHA,
+               LIFNR ALPHA.
+RANGES : R_FLD_NAME FOR DD03P-FIELDNAME,
+         R_FLD_VAL FOR DD03P-FIELDNAME .
+DATA :   FLD_NAME TYPE FIELDNAME.
+DATA : I TYPE I,
+       CI(1) TYPE C,
+       NFIELDS TYPE I VALUE 3.   "
+DATA : BACKDAYS  TYPE I ,
+       DATE_FROM LIKE SY-DATUM .
+DATA : LANGU LIKE SY-LANGU .
+DATA : IS_OUT(1) TYPE C.
+DATA : TIME_DIFF TYPE  INT4 .
+DATA: LV_DOMNAME LIKE  DD07V-DOMNAME,
+      LV_DOMVALUE LIKE  DD07V-DOMVALUE_L,
+      LV_DDTEXT LIKE  DD07V-DDTEXT.
+DATA: LV_FRGCO  TYPE FRGCO.
+DATA: LS_T169F TYPE T169F,
+      LT_T169F LIKE TABLE OF LS_T169F.
+DATA : SY_TABIX LIKE SY-TABIX .
+DATA : FLD(60) TYPE C .
+DATA : REF_DATE TYPE D.
+*data: lra_range type range of DD03P-FIELDNAME.
+FIELD-SYMBOLS:  TYPE ANY ,
+               <FS_V> TYPE ANY .
+DATA : BEGIN OF SW_STRUCTURE OCCURS 0.
+  INCLUDE STRUCTURE /SKN/S_SW_S_FCAT .
+DATA : END OF SW_STRUCTURE .
+DATA : LS_VBPA TYPE VBPA,
+       LT_VBPA LIKE TABLE OF LS_VBPA.
+DATA : LV_DATA_POSNR TYPE POSNR.
+"--- Run Cloud Mode -----
+  DATA_SINGLE: SW_DEST RFCDEST.             .
+  SELECT_SINGLE: SW_DEST.
+  IF LV_SW_DEST IS NOT INITIAL.
+    CALL FUNCTION '/SKN/FC_SW_10_03_PO_RETRO_CR'
+      IMPORTING
+        IS_ALERT       = IS_ALERT
+      TABLES
+        T_SELECT       = T_SELECT
+        T_DATA         = T_DATA.
+  ENDIF.
+  CHECK LV_SW_DEST IS INITIAL.
+"--- Run Cloud Mode -----
+   IF R_DATUM[] IS INITIAL .
+     RS_DATUM-SIGN = 'I' .
+      RS_DATUM-OPTION = 'GE' .
+       DATE_FROM = SY-DATUM - LV_BACKDAYS .
+       RS_DATUM-LOW = DATE_FROM .
+        APPEND RS_DATUM TO R_DATUM.
+   ENDIF.
+ "--- Set Reference Date Field
+   CASE LV_DATE_REF_FLD.
+     WHEN 'CPUDT'.
+       R_CPUDT[] = R_DATUM[]. "Entered on
+     WHEN 'AEDAT'.
+       R_AEDAT[] = R_DATUM[]. "Document created
+     WHEN 'BEDAT'.
+       R_BEDAT[] = R_DATUM[]. "PO Date
+     WHEN OTHERS.
+       R_CPUDT[] = R_DATUM[]. "Billing date
+   ENDCASE.
+ "--- Prepare BLART
+   SELECT *
+     FROM T169F
+     INTO CORRESPONDING FIELDS OF TABLE LT_T169F
+     WHERE TCODE = 'MIRO'
+       AND BLART IN R_BLART.
+     REFRESH R_BLART.
+     LOOP AT LT_T169F INTO LS_T169F.
+       RS_BLART-SIGN = 'I'.
+       RS_BLART-OPTION = 'EQ'.
+       RS_BLART-LOW = LS_T169F-BLART.
+       APPEND RS_BLART TO R_BLART.
+     ENDLOOP.
+*--- Retrieve data
+  CLEAR IS_ALERT .
+  REFRESH T_DATA.
+  SELECT *
+    FROM RBKP
+      INNER JOIN RSEG
+        ON RBKP~BELNR = RSEG~BELNR AND
+           RBKP~GJAHR = RSEG~GJAHR
+      INNER JOIN EKKO
+        ON RSEG~EBELN = EKKO~EBELN
+    INTO CORRESPONDING FIELDS OF TABLE T_DATA
+    WHERE RBKP~BLART IN R_BLART
+      AND RBKP~BUKRS IN R_BUKRS
+      AND RBKP~CPUDT IN R_CPUDT
+      AND RBKP~LIFNR IN R_LIFNR
+      AND RBKP~BELNR IN R_BELNR
+      AND RBKP~RBSTAT IN ( '5’,‘ ' ) "  (posted invoice)
+      AND RBKP~STBLG = ' '    "  (uncanceled invoice)
+      AND EKKO~AEDAT > RBKP~BLDAT
+      AND EKKO~ERNAM IN R_ERNAM
+      .
+*********************************************************************************
+  "--- Get Release Code
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    CALL FUNCTION '/SKN/F_SW_10_PO_GET_FRGC'
+      EXPORTING
+        FRGGR                   = T_DATA-FRGGR
+        FRGSX                   = T_DATA-FRGSX
+        FRGZU                   = T_DATA-FRGZU
+      IMPORTING
+        FRGC                    = T_DATA-FRGC
+      EXCEPTIONS
+        WRONG_COMBINATION       = 1
+        OTHERS                  = 2.
+    IF SY-SUBRC = 0.
+      MODIFY T_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+  DELETE T_DATA WHERE FRGC NOT IN R_FRGCO.
+*-- Calculate Status Duration (associating to Reference Field (DATE_REF_FLD)
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    CONCATENATE 'T_DATA-' LV_DATE_REF_FLD INTO FLD .
+    ASSIGN (FLD) TO .
+    REF_DATE =  .
+    IF NOT REF_DATE IS INITIAL.
+      T_DATA-DURATION_UNIT = LV_DURATION_UNIT.
+      CALL FUNCTION '/SKN/F_SW_GET_TIME_DIFF'
+        EXPORTING
+          D_FROM            = REF_DATE
+          T_FROM            = SY-UZEIT
+          D_TO              = SY-DATUM
+          T_TO              = SY-UZEIT
+          TIME_UNIT         = LV_DURATION_UNIT   "'D'
+        IMPORTING
+          TIME_DIFF         = TIME_DIFF
+        EXCEPTIONS
+          WRONG_VALUE       = 1
+          OTHERS            = 2    .
+      IF SY-SUBRC = 0.
+        IF TIME_DIFF < '999999'.
+          T_DATA-DURATION  = TIME_DIFF .
+        ELSE.
+          T_DATA-DURATION  = '999999'.
+        ENDIF.
+      ENDIF.
+      MODIFY T_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+  DELETE T_DATA WHERE DURATION  NOT IN R_DURATION .
+******************************************************************************
+********************************************************************************
+"--- Set Descriptions
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    "-- BSTYP_DESC
+    LV_DOMNAME = 'EBSTYP'.
+    LV_DOMVALUE = T_DATA-BSTYP.
+    CALL FUNCTION '/SKN/F_SW_GET_DOMAIN_VALUE'
+      EXPORTING
+        I_DOMNAME        = LV_DOMNAME
+        I_DOMVALUE       = LV_DOMVALUE
+        LANGU            = LV_LANGU
+*       SW_DEST          =
+      IMPORTING
+        E_DDTEXT         = LV_DDTEXT
+      EXCEPTIONS
+        NOT_EXIST        = 1
+        OTHERS           = 2.
+    IF SY-SUBRC = 0.
+      T_DATA-BSTYP_DESC = LV_DDTEXT.
+    ENDIF.
+    "-- STATU_DESC
+    LV_DOMNAME = 'ESTAK'.
+    LV_DOMVALUE = T_DATA-STATU.
+    CALL FUNCTION '/SKN/F_SW_GET_DOMAIN_VALUE'
+      EXPORTING
+        I_DOMNAME        = LV_DOMNAME
+        I_DOMVALUE       = LV_DOMVALUE
+        LANGU            = LV_LANGU
+*       SW_DEST          =
+      IMPORTING
+        E_DDTEXT         = LV_DDTEXT
+      EXCEPTIONS
+        NOT_EXIST        = 1
+        OTHERS           = 2.
+    IF SY-SUBRC = 0.
+      T_DATA-STATU_DESC = LV_DDTEXT.
+    ENDIF.
+    "-- PROCSTAT_DESC
+    LV_DOMNAME = 'MEPROCSTATE'.
+    LV_DOMVALUE = T_DATA-PROCSTAT.
+    CALL FUNCTION '/SKN/F_SW_GET_DOMAIN_VALUE'
+      EXPORTING
+        I_DOMNAME        = LV_DOMNAME
+        I_DOMVALUE       = LV_DOMVALUE
+        LANGU            = LV_LANGU
+*       SW_DEST          =
+      IMPORTING
+        E_DDTEXT         = LV_DDTEXT
+      EXCEPTIONS
+        NOT_EXIST        = 1
+        OTHERS           = 2.
+    IF SY-SUBRC = 0.
+      T_DATA-PROCSTAT_DESC = LV_DDTEXT.
+    ENDIF.
+    "-- BSART_DESC
+    CALL FUNCTION '/SKN/F_SW_10_BSART_DESC'
+      EXPORTING
+        BSART            = T_DATA-BSART
+        LANGU            = LV_LANGU
+        BSTYP            = T_DATA-BSTYP
+      IMPORTING
+        TYPE_DESC        = T_DATA-BSART_DESC
+      EXCEPTIONS
+        WRONG_CODE       = 1
+        OTHERS           = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+    "--- Get  Vendor Decriptions
+     CALL FUNCTION '/SKN/F_SW_10_VENDOR_DESC'
+       EXPORTING
+         LIFNR              = T_DATA-LIFNR
+       IMPORTING
+         VENDOR_DESC        = T_DATA-VENDOR_DESC
+       EXCEPTIONS
+         WRONG_VENDOR       = 1
+         OTHERS             = 2.
+     IF SY-SUBRC <> 0.
+     ENDIF.
+   "-- EKORG_DESC
+    CALL FUNCTION '/SKN/F_SW_10_PUR_ORG_DESC'
+      EXPORTING
+        EKORG              = T_DATA-EKORG
+        "LANGU              = lv_LANGU
+      IMPORTING
+        PUR_ORG_DESC       = T_DATA-EKORG_DESC
+      EXCEPTIONS
+        WRONG_CODE         = 1
+        OTHERS             = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+   "-- EKGRP_DESC
+    CALL FUNCTION '/SKN/F_SW_10_PUR_GRP_DESC'
+      EXPORTING
+        EKGRP              = T_DATA-EKGRP
+*       LANGU              = lv_LANGU
+      IMPORTING
+        PUR_GRP_DESC       = T_DATA-EKGRP_DESC
+      EXCEPTIONS
+        WRONG_CODE         = 1
+        OTHERS             = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+    "--- RESWK_DESC (WERKS)
+     CALL FUNCTION '/SKN/F_SW_10_PLANT_DESC'
+       EXPORTING
+         WERKS            = T_DATA-RESWK
+*        LANGU            = lv_LANGU
+       IMPORTING
+         PLANT_DESC       = T_DATA-RESWK_DESC
+       EXCEPTIONS
+         WRONG_CODE       = 1
+         OTHERS           = 2.
+     IF SY-SUBRC <> 0.
+     ENDIF.
+     CALL FUNCTION '/SKN/F_SW_10_BLART_DESC'
+       EXPORTING
+         BLART            = T_DATA-BLART
+*        LANGU            = SY-LANGU
+       IMPORTING
+         TYPE_DESC        = T_DATA-BLART_DESC
+       EXCEPTIONS
+         WRONG_CODE       = 1
+         OTHERS           = 2.
+     IF SY-SUBRC <> 0.
+     ENDIF.
+    MODIFY T_DATA INDEX SY_TABIX.
+  ENDLOOP.
+*--- Check Alert Information
+ READ TABLE T_DATA INDEX 1.
+ CHECK NOT SY-TFILL  IS INITIAL .
+ IS_ALERT = 'X' .
+ENDFUNCTION.

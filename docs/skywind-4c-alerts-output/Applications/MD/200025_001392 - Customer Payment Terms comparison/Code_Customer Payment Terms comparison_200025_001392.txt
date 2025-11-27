@@ -1,0 +1,166 @@
+FUNCTION /SKN/F_SW_10_06_CUST_TERM_CHK.
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_06_CUST_ZTERM_CHK
+*"----------------------------------------------------------------------
+  DATA_SINGLE: SW_DEST   RFCDEST,
+               LANGU     LANGU,
+               BACKDAYS  INT4,
+               DURATION_UNIT  /SKN/E_SW_DURATION_UNIT.
+  DATA_MULTY: KUNNR KUNNR,
+              VKORG VKORG,
+              VTWEG VTWEG,
+              SPART SPART,
+              LAND1 LAND1,
+              BUKRS BUKRS,
+              ERDAT ERDAT,
+              DURATION    /SKN/E_SW_DURATION.
+  SELECT_MULTY: KUNNR,
+                VKORG,
+                VTWEG,
+                SPART,
+                LAND1,
+                BUKRS,
+                ERDAT,
+                DURATION.
+  "lv_BACKDAYS = 10.
+  LV_DURATION_UNIT = 'D'.
+  LV_LANGU = SY-LANGU.
+  SELECT_SINGLE: SW_DEST, LANGU, BACKDAYS, DURATION_UNIT.
+  CONVERT_MULTY: KUNNR ALPHA.
+  DATA: LS_DATA LIKE LINE OF T_DATA,
+        LT_DATA LIKE TABLE OF LS_DATA.
+ DATA : LV_TIME_DIFF TYPE  INT4 .
+ DATA : SY_TABIX LIKE SY-TABIX.
+ DATA : DATE_FROM LIKE SY-DATUM .
+  IF LV_SW_DEST IS NOT INITIAL.
+    CALL FUNCTION '/SKN/FC_SW_10_06_CUST_TERM_CHK'
+      IMPORTING
+        IS_ALERT = IS_ALERT
+      TABLES
+        T_SELECT = T_SELECT
+        T_DATA   = T_DATA.
+  ENDIF.
+  CHECK LV_SW_DEST IS INITIAL.
+   IF R_ERDAT[] IS INITIAL .
+     IF LV_BACKDAYS IS NOT INITIAL.
+       RS_ERDAT-SIGN = 'I' .
+        RS_ERDAT-OPTION = 'GE' .
+         DATE_FROM = SY-DATUM - LV_BACKDAYS .
+         RS_ERDAT-LOW = DATE_FROM .
+          APPEND RS_ERDAT TO R_ERDAT.
+      ENDIF.
+   ENDIF.
+  SELECT KNVV~KUNNR KNVV~VKORG KNVV~VTWEG KNVV~SPART KNVV~ZTERM AS ZTERM_VKRG
+    KNA1~NAME1 KNA1~LAND1 KNA1~ERDAT
+    KNB1~ZTERM AS ZTERM_BKRS
+    TVKO~BUKRS "t024e~ekotx
+    T001~BUTXT
+    FROM KNVV
+    INNER JOIN KNA1      ON KNVV~KUNNR  EQ KNA1~KUNNR
+    INNER JOIN KNB1      ON KNVV~KUNNR  EQ KNB1~KUNNR
+    INNER JOIN TVKO      ON KNVV~VKORG  EQ TVKO~VKORG
+    INNER JOIN T001      ON TVKO~BUKRS  EQ T001~BUKRS
+    INTO CORRESPONDING FIELDS OF TABLE LT_DATA
+    WHERE KNVV~KUNNR IN R_KUNNR
+    AND   KNVV~VKORG IN R_VKORG
+    AND   KNVV~VTWEG IN R_VTWEG
+    AND   KNVV~SPART IN R_SPART
+    AND   KNA1~LAND1 IN R_LAND1
+    AND   KNA1~ERDAT IN R_ERDAT
+    AND   TVKO~BUKRS IN R_BUKRS
+    AND   TVKO~BUKRS = KNB1~BUKRS
+    AND   KNVV~ZTERM <> KNB1~ZTERM.
+  CHECK LT_DATA IS NOT INITIAL.
+  LOOP AT LT_DATA INTO LS_DATA.
+    SY_TABIX = SY-TABIX.
+    LS_DATA-DURATION_UNIT = LV_DURATION_UNIT.
+      CALL FUNCTION '/SKN/F_SW_GET_TIME_DIFF'
+        EXPORTING
+          D_FROM            = LS_DATA-ERDAT
+          T_FROM            = SY-UZEIT
+          D_TO              = SY-DATUM
+          T_TO              = SY-UZEIT
+          TIME_UNIT         = LV_DURATION_UNIT   "'D'
+        IMPORTING
+          TIME_DIFF         = LV_TIME_DIFF
+        EXCEPTIONS
+          WRONG_VALUE       = 1
+          OTHERS            = 2    .
+      IF SY-SUBRC = 0.
+          LS_DATA-DURATION  = LV_TIME_DIFF .
+      ENDIF.
+      MODIFY LT_DATA FROM LS_DATA INDEX SY_TABIX.
+  ENDLOOP.
+  DELETE LT_DATA WHERE DURATION  NOT IN R_DURATION .
+  LOOP AT LT_DATA INTO LS_DATA.
+    CALL FUNCTION '/SKN/F_SW_10_ZTERM_DESC'
+      EXPORTING
+        ZTERM            = LS_DATA-ZTERM_VKRG
+        LANGU            = LV_LANGU
+      IMPORTING
+        ZTERM_DESC       = LS_DATA-VTEXT_TERM_VKORG
+      EXCEPTIONS
+        WRONG_CODE       = 1
+        OTHERS           = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+    CALL FUNCTION '/SKN/F_SW_10_ZTERM_DESC'
+      EXPORTING
+        ZTERM            = LS_DATA-ZTERM_BKRS
+        LANGU            = LV_LANGU
+      IMPORTING
+        ZTERM_DESC       = LS_DATA-VTEXT_TERM_BUKRS
+      EXCEPTIONS
+        WRONG_CODE       = 1
+        OTHERS           = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+****************Sales Org
+    CALL FUNCTION '/SKN/F_SW_10_SALES_ORG_DESC'
+      EXPORTING
+        VKORG            = LS_DATA-VKORG
+        LANGU            = LV_LANGU
+      IMPORTING
+        SALES_ORG_DESC       = LS_DATA-VTEXT_VKORG
+      EXCEPTIONS
+        WRONG_CODE       = 1
+        OTHERS           = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+*********Distribution Channel Description
+   CALL FUNCTION '/SKN/F_SW_10_DISTR_CHAN_DESC'
+      EXPORTING
+        VTWEG            = LS_DATA-VTWEG
+        LANGU            = LV_LANGU
+      IMPORTING
+        DISTR_CHAN_DESC  = LS_DATA-VTEXT_VTWEG
+      EXCEPTIONS
+        WRONG_CODE       = 1
+        OTHERS           = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+**********************Division
+    CALL FUNCTION '/SKN/F_SW_10_DIVISION_DESC'
+      EXPORTING
+        SPART            = LS_DATA-SPART
+        LANGU            = LV_LANGU
+      IMPORTING
+        DIV_DESC         = LS_DATA-VTEXT_SPART
+      EXCEPTIONS
+        WRONG_CODE       = 1
+        OTHERS           = 2.
+    IF SY-SUBRC <> 0.
+    ENDIF.
+**********************
+    MOVE-CORRESPONDING LS_DATA TO T_DATA.
+    APPEND T_DATA.
+  ENDLOOP.
+  IF T_DATA[] IS NOT INITIAL.
+    IS_ALERT = ABAP_TRUE.
+  ENDIF.
+ENDFUNCTION.
