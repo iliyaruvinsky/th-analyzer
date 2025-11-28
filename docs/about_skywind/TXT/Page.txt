@@ -1,0 +1,4 @@
+URL: https://help.skywind.com/wp-admin/post-new.php?post_type=page
+Title: Add Page ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+

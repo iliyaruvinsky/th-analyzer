@@ -6,7 +6,7 @@ import RiskLevelChart from '../components/charts/RiskLevelChart';
 import MoneyLossChart from '../components/charts/MoneyLossChart';
 import FindingsTable from '../components/tables/FindingsTable';
 import DashboardFilters, { FilterState } from '../components/filters/DashboardFilters';
-import HelpTooltip from '../components/HelpTooltip';
+import KpiCard from '../components/KpiCard';
 import { useNavigate } from 'react-router-dom';
 import '../styles/dashboard.css';
 
@@ -187,72 +187,123 @@ const Dashboard: React.FC = () => {
 
       {/* KPI Grid - Asymmetric layout */}
       <div className="kpi-grid">
-        {/* Large featured KPI */}
-        <div className="kpi-card kpi-featured" style={{ animationDelay: '0.1s' }}>
-          <div className="kpi-header">
-            <span className="kpi-icon">⬢</span>
-            <span className="kpi-label">TOTAL FINDINGS</span>
-            <HelpTooltip content="Total number of unique findings detected across all uploaded data sources." />
-          </div>
-          <div className="kpi-value-large">
-            {numberFormatter.format(totalFindings)}
-          </div>
-          <div className="kpi-footer">
-            <div className="kpi-bar">
-              <div className="kpi-bar-fill" style={{ width: '100%' }}></div>
+        {/* Total Findings KPI */}
+        <KpiCard
+          icon="⬢"
+          label="TOTAL FINDINGS"
+          value={numberFormatter.format(totalFindings)}
+          variant="featured"
+          glowColor="cyan"
+          animationDelay="0.1s"
+          alertNames={findings?.map((f: any) => f.title) || []}
+          helpTitle="Total Findings"
+          helpContent={
+            <div>
+              <p>Total number of unique findings detected across all uploaded data sources.</p>
+              <h4>What are Findings?</h4>
+              <p>Each finding represents an alert from the 4C system that has been analyzed for risk and financial impact.</p>
             </div>
-          </div>
-          <div className="card-glow glow-cyan"></div>
-        </div>
+          }
+          details={findings?.map((f: any) => ({
+            label: f.title,
+            value: f.severity || 'N/A',
+          })).slice(0, 10)}
+        />
 
-        {/* Secondary KPIs */}
-        <div className="kpi-card kpi-danger" style={{ animationDelay: '0.2s' }}>
-          <div className="kpi-header">
-            <span className="kpi-icon">▲</span>
-            <span className="kpi-label">RISK SCORE</span>
-            <HelpTooltip content="The sum of risk scores from all findings. A higher score indicates a higher overall risk." />
-          </div>
-          <div className="kpi-value">
-            {numberFormatter.format(totalRiskScore)}
-          </div>
-          <div className="kpi-trend">
-            <span className="trend-icon">↑</span>
-            <span className="trend-text">ELEVATED</span>
-          </div>
-          <div className="card-glow glow-red"></div>
-        </div>
+        {/* Risk Score KPI */}
+        <KpiCard
+          icon="▲"
+          label="RISK SCORE"
+          value={numberFormatter.format(totalRiskScore)}
+          trend={{ icon: '↑', text: 'ELEVATED' }}
+          variant="danger"
+          glowColor="red"
+          animationDelay="0.2s"
+          alertNames={findings?.map((f: any) => f.title) || []}
+          helpTitle="Risk Score Calculation"
+          helpContent={
+            <div>
+              <p>Combined risk score from all findings, calculated using a 5-factor model:</p>
+              <h4>Scoring Formula</h4>
+              <p><code>Score = (F1 + F2 + F3 + F5) × F4</code></p>
+              <h4>Factors</h4>
+              <ul>
+                <li><strong>F1 - Severity Base:</strong> Critical=90, High=75, Medium=60, Low=50</li>
+                <li><strong>F2 - Count:</strong> Daily rate normalized by BACKDAYS (+0 to +15)</li>
+                <li><strong>F3 - Money:</strong> $1M+=20, $100K+=15, $10K+=10, $1K+=5</li>
+                <li><strong>F4 - Focus Area:</strong> BUSINESS_PROTECTION ×1.2</li>
+                <li><strong>F5 - Patterns:</strong> Concentration & threshold violations (+0 to +15)</li>
+              </ul>
+              <h4>Risk Levels</h4>
+              <ul>
+                <li><strong>Critical:</strong> 76-100</li>
+                <li><strong>High:</strong> 51-75</li>
+                <li><strong>Medium:</strong> 26-50</li>
+                <li><strong>Low:</strong> 0-25</li>
+              </ul>
+            </div>
+          }
+          details={findings?.map((f: any) => ({
+            label: f.title,
+            value: f.risk_assessment?.risk_score || 0,
+            description: f.risk_assessment?.risk_level,
+          })).slice(0, 10)}
+        />
 
-        <div className="kpi-card kpi-warning" style={{ animationDelay: '0.3s' }}>
-          <div className="kpi-header">
-            <span className="kpi-icon">$</span>
-            <span className="kpi-label">FINANCIAL EXPOSURE</span>
-            <HelpTooltip content="The total estimated financial loss from all findings, calculated by the hybrid ML/LLM engine." />
-          </div>
-          <div className="kpi-value kpi-value-currency">
-            {currencyFormatter.format(totalMoneyLoss)}
-          </div>
-          <div className="kpi-trend">
-            <span className="trend-icon">⬤</span>
-            <span className="trend-text">MONITORED</span>
-          </div>
-          <div className="card-glow glow-amber"></div>
-        </div>
+        {/* Financial Exposure KPI */}
+        <KpiCard
+          icon="$"
+          label="FINANCIAL EXPOSURE"
+          value={currencyFormatter.format(totalMoneyLoss)}
+          trend={{ icon: '⬤', text: 'MONITORED' }}
+          variant="warning"
+          glowColor="amber"
+          animationDelay="0.3s"
+          alertNames={findings?.map((f: any) => f.title) || []}
+          helpTitle="Financial Exposure"
+          helpContent={
+            <div>
+              <p>Total estimated financial exposure from all findings.</p>
+              <h4>Data Source</h4>
+              <p>Monetary amounts are extracted <strong>only from Summary_* files</strong> (actual alert output data).</p>
+              <h4>Important Notes</h4>
+              <ul>
+                <li>Values represent potential exposure, not confirmed losses</li>
+                <li>Amounts may be balances at risk, not actual fraud</li>
+                <li>Review individual findings for context</li>
+              </ul>
+            </div>
+          }
+          details={findings?.filter((f: any) => f.money_loss_calculation?.estimated_loss > 0).map((f: any) => ({
+            label: f.title,
+            value: currencyFormatter.format(f.money_loss_calculation?.estimated_loss || 0),
+          })).slice(0, 10)}
+        />
 
-        <div className="kpi-card kpi-info" style={{ animationDelay: '0.4s' }}>
-          <div className="kpi-header">
-            <span className="kpi-icon">◉</span>
-            <span className="kpi-label">ANALYSIS RUNS</span>
-            <HelpTooltip content="The total number of analysis processes that have been run." />
-          </div>
-          <div className="kpi-value">
-            {numberFormatter.format(totalAnalysisRuns)}
-          </div>
-          <div className="kpi-trend">
-            <span className="trend-icon">→</span>
-            <span className="trend-text">ACTIVE</span>
-          </div>
-          <div className="card-glow glow-blue"></div>
-        </div>
+        {/* Analysis Runs KPI */}
+        <KpiCard
+          icon="◉"
+          label="ANALYSIS RUNS"
+          value={numberFormatter.format(totalAnalysisRuns)}
+          trend={{ icon: '→', text: 'ACTIVE' }}
+          variant="info"
+          glowColor="blue"
+          animationDelay="0.4s"
+          helpTitle="Analysis Runs"
+          helpContent={
+            <div>
+              <p>Total number of analysis processes that have been executed.</p>
+              <h4>Analysis Process</h4>
+              <ul>
+                <li>Upload 4 artifact files (Code, Explanation, Metadata, Summary)</li>
+                <li>System classifies into Focus Area</li>
+                <li>Extracts quantitative data from Summary</li>
+                <li>Calculates risk score and severity</li>
+                <li>Saves finding to database</li>
+              </ul>
+            </div>
+          }
+        />
       </div>
 
       {/* Filters */}

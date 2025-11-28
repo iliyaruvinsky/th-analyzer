@@ -1,0 +1,165 @@
+URL: https://help.skywind.com/wp-admin/media-new.php
+Title: Upload New Media ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+
+Skip to main content
+Skip to toolbar
+Dashboard
+Dashboard
+Home
+Updates
+18
+Posts
+Posts
+All Posts
+Add Post
+Categories
+Tags
+Re-Order
+Taxonomy Order
+Media
+Media
+Library
+Add Media File
+Pages
+Pages
+All Pages
+Add Page
+Comments
+40
+40 Comments in moderation
+Contact
+Contact
+Contact Forms
+Add New
+Integration
+Appearance
+Appearance
+Themes
+7
+Patterns
+Customize
+Menus
+Theme File Editor
+Plugins
+11
+Plugins
+11
+Installed Plugins
+Add Plugin
+Plugin File Editor
+Users
+Users
+All Users
+Add User
+Profile
+Tools
+Tools
+Available Tools
+Import
+Export
+Site Health
+2
+Export Personal Data
+Erase Personal Data
+Settings
+Settings
+General
+Writing
+Reading
+Discussion
+Media
+Permalinks
+Privacy
+Autologin-links
+Cyr To Lat
+Post Types Order
+Taxonomy Terms Order
+Custom Fields
+Custom Fields
+Field Groups
+Add New
+Tools
+Info
+Updates
+Options
+PDF & Print
+PDF & Print
+Settings
+Headers & Footers
+BWS Panel
+Upgrade to Pro
+All Export
+All Export
+New Export
+Manage Exports
+Settings
+Collapse Menu
+Menu
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Visit Site
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Overview
+For more information:
+Documentation on Uploading Media Files
+Support forums
+You can upload media files here without creating a post first. This allows you to upload files to use with posts and pages later and/or to get a web link for a particular file that you can share. There are three options for uploading files:
+Drag and drop
+your files into the area below. Multiple files are allowed.
+Clicking
+Select Files
+opens a navigation window showing you files in your operating system. Selecting
+Open
+after clicking on the file you want activates a progress bar on the uploader screen.
+Revert to the
+Browser Uploader
+by clicking the link below the drag and drop box.
+Help
+Upload New Media
+Drop files to upload
+or
+You are using the multi-file uploader. Problems? Try the
+browser uploader
+instead.
+Upload
+Cancel
+You are using the browser’s built-in file uploader. The WordPress uploader includes multiple file selection and drag and drop capability.
+Switch to the multi-file uploader
+.
+Maximum upload file size: 32 MB.
+Thank you for creating with
+WordPress
+.
+Version 6.8.3
+Plugin
+PDF&Print
+Shortcode settings
+Add PDF & Print Buttons to your page or post
+PDF
+Print
+The shortcode will be inserted
+Close dialog
+Session expired
+Please log in again.
+The login page will open in a new tab. After logging in you can close it and return to this page.

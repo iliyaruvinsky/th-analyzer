@@ -1,0 +1,62 @@
+URL: https://help.skywind.com/page/3/?s=4c&q=4c&search=4c&query=4c
+Title: Skywind Knowledge Portal
+================================================================================
+
+Knowledge base and help for all products
+by Skywind Software Group
+Products
+4C™
+SoDA™
+Contact
+4c
+Wizard – Format
+Alert’s structures contain multiple output fields. At the Format section you will choose the fields which will construct Alert’s output. You can arrange output fields in the desired order and edit original field’s descriptions: To add fields to Alert’s output sorting, click on the <+Add field> button, select a desired field from the dropdown list […]
+Read more
+Wizard – Basic Settings
+Alert Wizard is a module of Skywind 4C™ designed for creation and customization of Alerts. Alert Wizard consists of 6 steps: Basic Settings (add alert’s name, assign source system, running mode etc.) Format (choose the fields for alert’s output) Parameters (choose alert’s parameters, assign parameter values) Recipients (define the population of alert’s recipients, choose how to […]
+Read more
+Skywind Software Group
+© All rights reserved. 2011-2021.
+PRODUCTS
+4C™
+SoDA™
+CONTACT US
+sales@skywind.com
++972-524640067
+87 Hatopaz ST., Kfar
+Yona, Israel,
+post code 4035387
+Skywind Software Group
+© All rights reserved. 2011-2021.
+Skip to toolbar
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Dashboard
+Plugins
+Themes
+Menus
+Customize
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Auto-login link
+No users with autologin codes
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Search

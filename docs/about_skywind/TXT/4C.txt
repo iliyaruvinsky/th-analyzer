@@ -1,0 +1,58 @@
+URL: https://help.skywind.com/category/4c/
+Title: Skywind Knowledge Portal
+================================================================================
+
+SEARCH
+-Browse Help Topics by Product
+Event Driven Jobs
+4C™ – Overview
+4C™ - Overview
+4C™ - Key Benefits
+4C™ - Deployment
+4C™ - Glossary
+Analytics
+4C™ - Analytics
+Cockpit
+4C™ - Cockpit - Overview
+4C™ - Alert management
+Catalog
+4C™ - Catalog
+Wizard
+Wizard - Basic Settings
+Wizard - Format
+Wizard - Parameters
+Wizard - Recipients
+Wizard - Authorizations
+Wizard - Scheduling
+Date and Time Parameters
+Alert Generator
+AG - Overview
+AG - 1. Basic Settings
+AG - 2. Selected Fields
+AG - 3. Currency Conversion
+AG - 4. External Parameters
+AG - 5. Key for Delta
+AG - 6. Documentation
+AG - Validation and Generation
+AG - Glossary
+Feed
+4C™ – Feed
+Support
+4C™ - Support
+Latest Articles
+Date and Time Parameters
+Role’s Assigned Users & Transactions – Report Output
+Role’s Assigned Users & Transactions – Managing Reporting Instance versions
+Role’s Assigned Users & Transactions – Report Usage
+User’s Assigned Roles and Profiles – Report Output
+User’s Assigned Transactions – Report Output
+Transaction Usage – Report Output
+Excessive Authorizations – Report Output
+Cross Reference Violations – Report Output
+Internal Violations – Report Output
+Actual SOD Violations (by T-Groups) – Report Output
+Potential SOD Violations (by T-Groups) – Report Output
+Need more support?
+If you did not found an answer, contact us for further help.
+SUBMIT A TICKET
+Skip to toolbar

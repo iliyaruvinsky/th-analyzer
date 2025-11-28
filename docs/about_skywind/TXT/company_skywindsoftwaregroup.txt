@@ -1,0 +1,287 @@
+URL: https://www.linkedin.com/company/skywindsoftwaregroup
+Title: Skywind Software Group | LinkedIn
+================================================================================
+
+Skywind Software Group
+Software Development
+Streamline your SAP operations with Skywind. Protect, Control, Optimize, Manage
+Follow
+View all 7 employees
+Report this company
+About us
+Established in 2010, Skywind Group is a conglomerate of functional consultants and software developers, operating in key SAP areas and technologies.
+The group serves multiple clients over the globe, providing proprietary software solutions and consulting services, helping SAP based companies to be informed in real time about Fraud, SoD Violations, Business Bottlenecks and Technical Issues.
+
+SkyAPS – Skywind Analytical Platform for SAP:
+Skywind is the leading provider of software for fraud detection, business processes monitoring, SoD compliance, authorizations inspection and technical monitoring solutions for SAP.
+
+Having a holistic approach to the most important aspects of the ERP control,  Skywind has developed Skywind Analytical Platform for SAP (SkyAPS) platform, which’s backbone algorithms are for analysis, monitoring and alerting, complemented by mechanisms for smart data  distribution and management.
+
+The SkyAPS platform incorporates a suite of solutions, dedicated to improve the most important aspects of management and control over SAP. At the same time, all solutions make extensive use of the analytical and monitoring capabilities of the platform, thereby complementing and enhancing their own unique functions. 
+
+The platform is agnostic to an SAP versions and database types and can be applied to On Premise and On Cloud SAP installations such as S/4HANA, ECC, CRM, SRM and BW
+
+SAP Business Fraud - Financials, Sales, Procurement, Maser Data, HR and more
+SAP Business Processes - SD/MM/HCM/FI/CO/PM/QM and more
+SAP Infrastructure - BASIS/DB/Communications/Interfaces
+SAP SoD - Segregation of Duties and Authorizations
+SAP Background Jobs Analysis and Management
+SAP Applications - BW/Security/Users Management 
+
+Contact sales@skywind.com to learn more.
+Website
+http://www.skywind.com
+External link for Skywind Software Group
+Industry
+Software Development
+Company size
+11-50 employees
+Type
+Privately Held
+Founded
+2010
+Specialties
+Software Development, Enterprise Business Intelligence, Business Consulting, Technlogical Consulting, User Interface Design, User Experience Design, SAP, BW, SAP Business Monitoring, Fraud Detection, Business Bottlenecks, and SoD
+Locations
+Primary
+Get directions
+Kfar Yona, IL
+Get directions
+Employees at Skywind Software Group
+Alex Liskevich
+Iliya Ruvinsky
+CEO at Skywind, SAP Data and Analytics Expert,
+Enterprise AI Enthusiast and Researcher
+Bar Melinarskiy
+Software Engineer @Skywind Software Group | Experienced Full-Stack Developer with 6+ years specializing in crafting innovative solutions for Big-Data…
+Lucy Shaw
+VP Marketing & Success Management at Skywind Software Group
+See all employees
+Updates
+Skywind Software Group
+reposted this
+Iliya Ruvinsky
+CEO at Skywind, SAP Data and Analytics Expert,
+Enterprise AI Enthusiast and Researcher
+2w
+Edited
+Report this post
+Today I'm starting a series of blogs, related to what I do in SAP@GenAI domains. 
+Last year I've made (I think) some progress, learning, adopting then personally developing the necessary entetprise related framework that gets the best out of SAP with the help of genAI (LLM based AI). 
+I'm currently do it in a multichannel manner. On the one side of this gold coin, I provide  services and develop products for the enterprises while the other side of the coin is my goal of transforming Skywind Software to become Agentic based development company. I see the dynamics and the response of the enterprises I'm working for, to this fundamental shift (one side of the "gold coin"), analyze it, learning and teaching at the same time all good and professional peers of mine, standing in a middle between the group of professionals I'm working for and the group of professionals who develop Skywind platform.
+
+It's interesting to contemplate how these 2 domains combine and how natural it feels and flows.
+None of my posts will be written by a machine - this is the core principle of this journey. I'm intentionally doing it as part of the strategy. I love what I do with machines, but I also love to express my thoughts and observations by myself, so I hope this blog will be fun, instructive and a bit surprising.
+Your responses will tell me if I'm moving in the right direction.
+Not too long the posts will be. They will provide a critical aspects and important nuances to those, who wishes to enter the genAI domain and learn about it, acquiring practical knowledge to become a better professional.
+I'm aware that I'm probably one of many in this field but I will try my luck anyway, because I follow my professional life credo: "“Better to try and regret, than not to try and regret.”
+Stay tuned.
+14
+2 Comments
+Like
+Comment
+Share
+Skywind Software Group
+1,619 followers
+3mo
+Report this post
+https://lnkd.in/dEDEGnMF
+Jacqueline Daniel Solomon
+Applications Team Lead
+3mo
+Edited
+Alerts have been a major parts of our lives in Israel lately. 
+They have helped us protect ourselves, find safety and take shelter during the missile attacks.
+Because Alerts - at the right time - can save lives!
+Alerts matter-> they give us time to act, stay ahead and avoid bigger trouble later.
+
+Its not different in our SAP world. 
+In my recent webinar, I had the opportunity to share with the organizations in South Africa, how  we partnered with Sky wind software to transform our SAP operations post S/4 Hana Go live, from dealing with daily disruptions to proactively preventing them. 
+
+Before Sky wind:
+
+* We were reacting to issues too late
+* Manual Monitoring - was too late, too little and overwhelming
+
+After Sky wind:
+* We build proactive alerts that detect issues before they spread
+* We moved from fire fighting to fire proofing our processes.
+
+Just like real-life alerts protect us, these SAP alerts help protect our processes, data, and peace of mind. 😇 
+
+Let’s keep building systems that protect, enable, and evolve with us.
+
+Thank you to everyone who joined this session . It was great to share our story.
+#SAP
+#S4HANA
+#Skywind
+#OrmatTechnologies
+#BusinessTransformation
+#AlertsMatter
+#ERPExcellence
+#DigitalResilience
+#WebinarRecap
+#proactivetoreactive
+#digitaloperations
+#webinarvibes
+.
+Iliya Ruvinsky
+Gil Blumenfeld
+Leon Berman
+Like
+Comment
+Share
+Skywind Software Group
+1,619 followers
+5mo
+Report this post
+Interesting point (or a turnpoint?)
+Iliya Ruvinsky
+CEO at Skywind, SAP Data and Analytics Expert,
+Enterprise AI Enthusiast and Researcher
+5mo
+🚨 AI Agents vs. Traditional Apps: The "Apps Apocalypse"? 🚨
+
+Tech leaders Bill McDermott (ServiceNow) and Satya Nadella (Microsoft) predict a massive shift in enterprise software: AI agents could soon replace many traditional business applications. Their vision? AI agents will handle business logic and data tasks across platforms, making many standalone apps obsolete. This could mean fewer apps, more automation, and a new era of innovation-but also big changes for companies heavily invested in current software.
+
+Are we ready for this "Agent Era"? Share your thoughts!
+#AI
+#EnterpriseSoftware
+#DigitalTransformation
+https://lnkd.in/dT-ZCyRr
+Apps Apocalypse: Bill McDermott Joins Satya Nadella in Saying AI Agents Will Crush Applications
+cloudwars.com
+Like
+Comment
+Share
+Skywind Software Group
+reposted this
+Skywind Software Group
+1,619 followers
+5mo
+Edited
+Report this post
+Running SAP shouldn’t feel like firefighting. 
+
+Join our 11 June webinar with Ormat Technologies to see how they’ve gained unmatched visibility and control across global SAP environments. 
+
+Learn how Skywind enables early bottleneck detection, cross-module validation, and real-time transaction assurance - all without code. 
+
+💡 Ideal for SAP Managers, Analysts, and Process Owners.
+We redefine how organizations control and operate their SAP environments.
+share.hsforms.com
+18
+Like
+Comment
+Share
+Skywind Software Group
+1,619 followers
+5mo
+Report this post
+Iliya Ruvinsky
+CEO at Skywind, SAP Data and Analytics Expert,
+Enterprise AI Enthusiast and Researcher
+5mo
+Edited
+הי, רבים היום מתעניינים בהתפתחות של מודלי LLM ונשפכים טונות של מידע, כך שכבר היום יש TMI ואנשים לא מצליחים לעקוב אחר המושגים, הפיצ'רים והטכנולוגיות. אישית – לא ראיתי קצב התפתחות טכנולוגי שכזה מעולם . רבים מאנשים שאני פוגש בחיי המקצועיים (וגם אישיים), משתמשים בכלים הנפוצים היום בצורה יחסית פשוטה. רובם היו שמחים להעמיק את השימוש אך ללא "בזבוז" שעות על לימוד התורה. אני החלטתי (ולא בשביל ה Personal Glory) לפרסם מדי פעם דברים בנושא, שנראים לי חמים אך לא ברורים מספיק. היום אדבר (ממש קצר) על ה Model Context Protocol. כל מי שמשתמש בכלי LLM יודע את זיכרונם הקצר – מ Prompt ל Prompt הם לא זוכרים דבר וגם באותו Prompt הם מתחילים להתבלבל בצורה מאוד יפה אם האורך שלו עולה על סף מסוים (שאף פעם לא ידוע מראש). יש טכניקות רבות לשפר את התגובות אבל Anthropic באמת הבריקו עם ה MCP. הנה לכם קצת ממנו (בסוף ה Intro שלי יצא יותר ארוך מהתוכן שאני מפרסם אז אסיים כאן):
+Like
+Comment
+Share
+Skywind Software Group
+1,619 followers
+11mo
+Report this post
+We're
+#hiring
+a new Senior SAP Developer in Tel Aviv District. Apply today or share this post with your network.
+Senior SAP Developer
+Skywind Software Group, Tel Aviv District, Israel
+3
+Like
+Comment
+Share
+Skywind Software Group
+1,619 followers
+11mo
+Report this post
+מחר בשעה 11:00. נשמח לראותכם, יהיה שווה את הזמן של:
+#SAPExperts
+#BusinessAnalysts
+#ProcessOwners
+#TechLeaders
+#SAPBestPractices
+#SAPProcessOwners
+Business/Industry Focus:
+#SAPOperations
+#RenewableEnergy
+#ProcessExcellence
+#BusinessContinuity
+#OperationalEfficiency
+Technical/Solution Focus:
+#SAPSecurity
+#CyberSecurity
+#ProcessAutomation
+#BusinessAnalytics
+Skywind Software Group
+1,619 followers
+11mo
+Edited
+When SAP Runs Smooth, Business Thrives! 
+Join our webinar to discover how
+https://www.ormat.com
+, a global renewable energy leader, enhanced their SAP operations with unprecedented transparency and control with Skywind. Hear how they streamlined SAP operations, identified process disruptions early, achieving seamless business and technical continuity across global units.
+
+Ormat's success story reveals: 
+✅ Early bottleneck detection 
+✅ Cross-module process validation
+✅ Proactive processes analytics 
+
+Perfect for: SAP Process Owners, Business Analysts & Technical Teams, SAP Managers, Basis Teams
+Stay ahead of risks with Skywind!
+onetec.activetrail.biz
+Like
+Comment
+Share
+Join now to see what you are missing
+Find people you know at Skywind Software Group
+Browse recommended jobs for you
+View all updates, news, and articles
+Join now
+Similar pages
+Skywind Group
+IT Services and IT Consulting
+Skywinds Solutions Pvt Ltd
+IT Services and IT Consulting
+Ahmedabad, Gujarat
+alterno.io
+Software Development
+Or Yehuda, Center
+Princess Casino Romania
+Gambling Facilities and Casinos
+iprosis
+IT Services and IT Consulting
+Ramat-Hasharon, Ramat-Hasharon
+Evolution
+IT Services and IT Consulting
+Sapiencia
+IT Services and IT Consulting
+Kyriat Ata, Kyriat Ata
+ECO Matrix Solution
+Engineering Services
+SoliDev
+Business Consulting and Services
+Recruiter IT consultant
+Human Resources Services
+Show more similar pages
+Show fewer similar pages
+Browse jobs
+Scrum Master jobs
+128,485 open jobs
+System Analyst jobs
+292,633 open jobs
+Developer jobs
+258,935 open jobs
+Engineer jobs
+555,845 open jobs
+Head of Sales jobs
+12,761 open jobs

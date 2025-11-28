@@ -1,0 +1,451 @@
+﻿
+
+ 
+
+
+Skywind
+Empowering for SAP Excellence
+Control, Optimize, Protect, Empower
+
+
+
+About Skywind
+Skywind is the leading provider of software for business control, fraud and cyber detection, SoD compliance, authorizations inspection and technical monitoring solutions for SAP. Having a holistic approach to the most important aspects of ERP control, Skywind has developed Skywind Analytical Platform for SAP or SkyAPS to help customers keep business running, eliminate fraud, improve process efficiency and enable complete transparency.
+The platform is agnostic to an SAP versions and database types and can be applied to On Premise and On Cloud SAP installations such as S/4HANA, ECC, CRM, SRM and BW.
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+
+What is COPE – Control Over Processes and Events?
+
+info@skywind.com | www.skywind.com
+
+
+
+
+Hundreds of processes run daily in your SAP systems, with thousands of events taking place. Each event should be seen as a potential problem. By ceasing to function properly, the event will disrupt the continuity of the whole process. When an event becomes “bad”, the responsible personnel
+in organization should be timely informed
+about it.
+
+ 
+
+Explanatory Teasers
+
+info@skywind.com | www.skywind.com
+
+
+	
+
+
+
+
+
+info@skywind.com | www.skywind.com
+
+Why does Control Over Processes and Events (COPE) matter?
+Control Types
+
+
+Areas of Application	Target Audiences
+
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+How Skywind helps to COPE
+with SAP operations complexities?
+
+Our software continuously checks the validity of the processes by catching “bad” or “about to become bad” events.
+Smart, automated data distribution mechanisms seamlessly and securely distribute critical info to the right audiences.
+
+
+
+Skywind Selected Customers
+
+info@skywind.com | www.skywind.com
+
+
+    
+
+info@skywind.com | www.skywind.com
+
+Solutions and Content
+
+
+Business Disruptions and Bottlenecks
+Identify, prevent, eliminate or compensate problems
+and inefficiencies to ensure smooth business operations
+
+Cybersecurity
+Strengthen your defenses against internal SAP cyber threats with advanced security tracking
+
+Fraud Detection
+Proactively detect and prevent fraudulent activities within your SAP environment
+
+Authorizations and Access Control
+Manage and monitor user permissions and activities to enhance security and compliance
+
+
+
+Segregation of Duties
+Ensure clear role distinctions to prevent conflicts and unauthorized access
+
+Technical Infrastructure Hurdles
+Overcome technical SAP challenges with robust monitoring, observability, and optimization tools
+
+
+
+Compliance
+Maintain adherence to internal policies and external regulations
+effortlessly
+
+No-Code, Tailor Made Report Generation
+Instant, automated, no-code, real-time SAP reporting
+
+info@skywind.com | www.skywind.com
+
+Products and Content
+
+
+Skywind 4C  Anti Fraud and Cyber Pack
+for ultimate SAP protection against cyber attacks and internal fraud
+
+Skywind 4C  Generator
+for instant, no-code creation of your own controls and reports
+
+
+Skywind 4C  Business Bottlenecks Pack for superior business control and transparency
+Skywind 4C  Basis and Infrastructure Pack
+for continuous validation of SAP technical consistency and performance
+Skywind 4C  Business Warehouse (BW) Pack
+
+
+Skywind SoDA  SoD and Authorizations Violations Analysis – to eliminate and prevent SoD violations and protection against internal fraud
+
+Skywind JAM	SAP Background Jobs Analysis and Control to analyze, control and optimize all SAP Background Jobs activities
+
+for smooth BW operation and maintenance	Security and Administration App.
+Internal application for ultimate control of platform
+usage
+
+info@skywind.com | www.skywind.com
+
+
+Integration with SOC / SIEM Platforms	B E N E F I T S: Pushes pre-filtered SAP data instead of raw
+logs, dramatically reducing SIEM processing costs while
+
+Enable SAP insights within your Security Operation Center (SOC)
+
+providing laser-focused security insights.
+
+P R O T O C O L S:
+Syslog Protocol
+Centralized Logging: Centralize logs from various devices, systems,
+and software applications into a single repository. Security Monitoring: Used in security information and event management (SIEM) systems
+Web Services
+Use Case: Synchronize data flows between SAP and Non-SAP systems such as CRM, eCommerce platforms, or custom databases. Benefit: Ensures consistency and accuracy of data across different systems, improving operational efficiency and reducing errors.
+Files Transfers
+Impact: Interruptions or errors in file transfers can lead to data loss, incomplete data records, and compliance risks, especially in data-driven decision-making environments
+
+S U P P O R T E D P L A T F O R M S:
+
+
+
+Most frequently asked questions
+
+info@skywind.com | www.skywind.com
+
+
+Why implement COPE when we have the most advanced BI / NOK platform/s and other monitoring solutions in place?
+
+
+
+are less BI related features
+
+
+Qualitative / Quantitative / Call To Action
+
+that continuously track and validate
+the correctness of technical processes
+– no-code engine to generate your own rules
+
+
+
+that continuously validate the correctness of business
+
+
+and every user in organization
+
+- personalized info for each
+
+processes
+
+Automated Data Distribution Mechanisms
+that seamlessly and securely distribute critical info
+to the right audiences
+
+that continuously track / identify dangerous situations and suspicious activities
+
+Solution buyer:	SAP or IT Manager
+
+
+
+
+
+
+ALL IN 30 MIN!
+
+
+A Pitch
+
+
+1. Know what will break before anyone else does
+2. Discover what is already broken but you are not aware of it
+3. Timely receive info about problematic events requiring immediate attention
+
+Solution buyer:  SAP or IT Manager
+
+
+How to measure the ROI from Event Control?
+
+
+	
+
+Save money by revealing direct losses from outdated or incorrect business activities
+
+Save time and money to the Stakeholders by timely providing them with critical data
+
+
+	
+
+Save money by early detection and continuous control upon business bottlenecks
+
+Save time to IT and Business by developing ad-hoc reports much faster and without coding
+
+
+
+Save time by responding to the incidents faster
+
+Solution buyer:  SAP or IT Manager
+
+ROI #1 - Save money by revealing direct losses from
+outdated or incorrect business activities
+
+
+
+
+Solution user:	Intended for Business Users
+
+Solution buyer:  SAP or IT Manager
+
+ROI #2 – Save money by early detection
+and further control upon business bottlenecks
+
+
+
+
+Solution user:	Intended for Business Users
+
+Solution buyer:  SAP or IT Manager
+
+ROI #3 – Save time by responding
+to the incidents faster
+
+
+
+Solution user:	Intended for Business Users
+
+Solution buyer:  SAP or IT Manager
+
+ROI #4 – Save time and money to the stakeholders
+by timely providing them with critical data
+
+
+
+
+Solution user:	Intended for Business Users
+
+Solution buyer:  SAP or IT Manager
+
+ROI #5 – Save time to IT and Business by developing
+new rules and subsequent alerts faster and without coding
+
+
+
+
+Solution user:	Intended for Business Users
+
+
+
+Skywind Analytical Platform for SAP
+	on Premises Architecture	
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+
+HTTPS
+
+SAP UI SDK server
+https://sapui5.hana.ondemand.com/1.52.18/
+
+
+The client has access to the Internet
+
+
+C L I E N T S
+
+
+
+
+
+
+
+
+HTTP/S		TRUSTED RFC
+
+G W S E R V E R
+
+SAP web dispatcher
+SAP NW 7.5
+SAP_GWFND 750
+
+
+
+
+
+E R P S E R V E R
+
+
+
+
+Skywind Analytical Platform for SAP
+	on Premises Architecture	
+
+info@skywind.com | www.skywind.com
+
+
+
+
+Client does not have
+internet access
+
+
+
+HTTP/S	TRUSTED RFC
+
+
+
+C L I E N T S
+
+G W S E R V E R
+
+
+SAP web dispatcher
+SAP NW 7.5
+SAP_GWFND 750
+SAP_UI 7.52 sp2 or above
+
+E R P S E R V E R
+
+
+
+
+Skywind Analytical Platform for SAP
+	on Cloud Architecture	
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+HTTPS ENCRYPTION
+Two-factor authentification
+
+https://my.skywind.com
+
+
+
+
+
+SkyWind Cloud Platform
+
+
+
+
+
+
+SAP ROUTER
+
+
+
+
+FIREWALL IP SEC
+
+      SNC ENCRYPTION
+
+Security System
+
+
+
+SAP ROUTER	SAP
+authentification
+
+
+SAP
+authorization
+
+
+
+
+
+SAP 1
+
+
+
+SAP 2
+
+
+
+SAP 3
+
+
+
+
+
+Realise Tangible Benefits
+
+info@skywind.com | www.skywind.com
+
+
+			
+Save Time	Save Costs	Increase Efficiency	Complete Coverage
+
+ Reduce manual effort through an automated business rule engine.
+
+Prevent fraud with proactive alerts and comprehensive insights.
+
+Optimize the way you do business by identifying process bottlenecks
+or violations.
+
+Search your entire transactions database versus only a sample achieved during an audit.
+
+
+
+ 
+The Science of Data.
+The Art of Business.
+INFO@SKYWIND.COM

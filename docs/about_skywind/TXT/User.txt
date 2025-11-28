@@ -1,0 +1,183 @@
+URL: https://help.skywind.com/wp-admin/user-new.php
+Title: Add User ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+
+Skip to main content
+Skip to toolbar
+Dashboard
+Dashboard
+Home
+Updates
+18
+Posts
+Posts
+All Posts
+Add Post
+Categories
+Tags
+Re-Order
+Taxonomy Order
+Media
+Media
+Library
+Add Media File
+Pages
+Pages
+All Pages
+Add Page
+Comments
+40
+40 Comments in moderation
+Contact
+Contact
+Contact Forms
+Add New
+Integration
+Appearance
+Appearance
+Themes
+7
+Patterns
+Customize
+Menus
+Theme File Editor
+Plugins
+11
+Plugins
+11
+Installed Plugins
+Add Plugin
+Plugin File Editor
+Users
+Users
+All Users
+Add User
+Profile
+Tools
+Tools
+Available Tools
+Import
+Export
+Site Health
+2
+Export Personal Data
+Erase Personal Data
+Settings
+Settings
+General
+Writing
+Reading
+Discussion
+Media
+Permalinks
+Privacy
+Autologin-links
+Cyr To Lat
+Post Types Order
+Taxonomy Terms Order
+Custom Fields
+Custom Fields
+Field Groups
+Add New
+Tools
+Info
+Updates
+Options
+PDF & Print
+PDF & Print
+Settings
+Headers & Footers
+BWS Panel
+Upgrade to Pro
+All Export
+All Export
+New Export
+Manage Exports
+Settings
+Collapse Menu
+Menu
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Visit Site
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Overview
+User Roles
+For more information:
+Documentation on Adding New Users
+Support forums
+To add a new user to your site, fill in the form on this screen and click the Add User button at the bottom.
+New users are automatically assigned a password, which they can change after logging in. You can view or edit the assigned password by clicking the Show Password button. The username cannot be changed once the user has been added.
+By default, new users will receive an email letting them know they’ve been added as a user for your site. This email will also contain a password reset link. Uncheck the box if you do not want to send the new user a welcome email.
+Remember to click the Add User button at the bottom of this screen when you are finished.
+Here is a basic overview of the different user roles and the permissions associated with each one:
+Subscribers can read comments/comment/receive newsletters, etc. but cannot create regular site content.
+Contributors can write and manage their posts but not publish posts or upload media files.
+Authors can publish and manage their own posts, and are able to upload files.
+Editors can publish posts, manage posts as well as manage other people’s posts, etc.
+Administrators have access to all the administration features.
+Help
+Add User
+Create a brand new user and add them to this site.
+Username
+(required)
+Email
+(required)
+First Name
+Last Name
+Website
+Language
+Site Default
+English (United States)
+Русский
+Password
+(required)
+Generate password
+Hide
+Repeat Password
+(required)
+Type the password again.
+Confirm Password
+Confirm use of weak password
+Send User Notification
+Send the new user an email about their account
+Role
+Subscriber
+Contributor
+Author
+Editor
+Administrator
+Thank you for creating with
+WordPress
+.
+Version 6.8.3
+Plugin
+PDF&Print
+Shortcode settings
+Add PDF & Print Buttons to your page or post
+PDF
+Print
+The shortcode will be inserted
+Close dialog
+Session expired
+Please log in again.
+The login page will open in a new tab. After logging in you can close it and return to this page.

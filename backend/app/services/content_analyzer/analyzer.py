@@ -193,11 +193,22 @@ class ContentAnalyzer:
             description = self._fallback_description(artifacts, analysis)
 
         # Step 5: Calculate combined score
+        # Pass alert_name for type-based severity determination
+        # Pass metadata for BACKDAYS normalization
+        # Check metadata file first, then Code file for BACKDAYS
+        metadata_dict = self._parse_metadata(artifacts.metadata) if artifacts.metadata else {}
+        if "BACKDAYS" not in metadata_dict and artifacts.code:
+            code_params = self._parse_metadata(artifacts.code)
+            if "BACKDAYS" in code_params:
+                metadata_dict["BACKDAYS"] = code_params["BACKDAYS"]
+
         combined_score = self.scoring_engine.calculate_score(
             focus_area=classification.focus_area,
             qualitative_data=analysis.qualitative_analysis,
             quantitative_data=analysis.quantitative_analysis,
-            severity=analysis.severity
+            severity=analysis.severity,
+            alert_name=artifacts.alert_name,
+            metadata=metadata_dict
         )
 
         # Build the finding
@@ -228,9 +239,9 @@ class ContentAnalyzer:
             key_metrics=combined_score.quantitative.key_metrics,
             notable_items=combined_score.quantitative.notable_items,
 
-            # Scoring
-            severity=analysis.severity,
-            severity_reasoning=analysis.severity_reasoning,
+            # Scoring - use severity from scoring engine (alert-type based) not fallback analysis
+            severity=combined_score.qualitative.severity.value,
+            severity_reasoning=combined_score.qualitative.severity_reasoning or analysis.severity_reasoning,
             risk_score=combined_score.risk_score,
             risk_level=combined_score.risk_level.value,
             risk_factors=combined_score.risk_factors,
@@ -301,64 +312,78 @@ class ContentAnalyzer:
 
         return findings
 
+    def _parse_metadata(self, metadata_text: str) -> Dict[str, Any]:
+        """
+        Parse metadata text to extract key parameters like BACKDAYS.
+
+        Args:
+            metadata_text: Raw metadata text from Metadata_* file
+
+        Returns:
+            Dictionary with extracted parameters
+        """
+        import re
+
+        result = {"raw_metadata": metadata_text}
+
+        if not metadata_text:
+            return result
+
+        # Extract BACKDAYS parameter
+        backdays_match = re.search(r'BACKDAYS\s*[=:]\s*(\d+)', metadata_text, re.IGNORECASE)
+        if backdays_match:
+            result["BACKDAYS"] = int(backdays_match.group(1))
+
+        # Extract REPET_BACKDAYS (used in repetitive alerts)
+        repet_match = re.search(r'REPET_BACKDAYS\s*[=:]\s*(\d+)', metadata_text, re.IGNORECASE)
+        if repet_match:
+            result["REPET_BACKDAYS"] = int(repet_match.group(1))
+
+        # Extract other common parameters
+        param_patterns = [
+            (r'DURATION\s*[=:]\s*(\d+)', "DURATION"),
+            (r'THRESHOLD\s*[=:]\s*([\d.]+)', "THRESHOLD"),
+            (r'AMOUNT\s*[=:]\s*([\d,.]+)', "AMOUNT"),
+        ]
+
+        for pattern, key in param_patterns:
+            match = re.search(pattern, metadata_text, re.IGNORECASE)
+            if match:
+                try:
+                    result[key] = float(match.group(1).replace(',', ''))
+                except ValueError:
+                    pass
+
+        return result
+
     def _fallback_classification(self, artifacts: AlertArtifacts) -> tuple:
         """Fallback classification when LLM is not available."""
-        if self.llm_classifier:
-            return self.llm_classifier.analyze_without_llm(artifacts)
-
-        # Simple keyword-based classification
-        text = f"{artifacts.alert_name} {artifacts.explanation or ''}"
-        text_lower = text.lower()
-
-        # Check for security/fraud (highest priority)
-        if any(kw in text_lower for kw in ["fraud", "security breach", "unauthorized transaction", "suspicious activity", "theft"]):
-            return "BUSINESS_PROTECTION", 0.7, "Keyword match: security/fraud terms"
-
-        # Check for access governance
-        elif any(kw in text_lower for kw in ["sod", "segregation of duties", "access control", "privilege", "authorization", "role conflict"]):
-            return "ACCESS_GOVERNANCE", 0.7, "Keyword match: access/governance terms"
-
-        # Check for job control
-        elif any(kw in text_lower for kw in ["job failed", "batch job", "background job", "scheduled task", "job runtime"]):
-            return "JOBS_CONTROL", 0.7, "Keyword match: job-related terms"
-
-        # Check for technical control (more specific keywords)
-        elif any(kw in text_lower for kw in ["memory dump", "cpu usage", "system crash", "runtime error", "abap dump", "short dump"]):
-            return "TECHNICAL_CONTROL", 0.7, "Keyword match: technical terms"
-
-        # Check for business control (vendor, customer, financial, master data)
-        elif any(kw in text_lower for kw in ["vendor", "customer", "master data", "invoice", "payment", "purchase order",
-                                              "sales order", "balance", "financial", "pricing", "discount", "credit"]):
-            return "BUSINESS_CONTROL", 0.7, "Keyword match: business process terms"
-
-        else:
-            return "BUSINESS_CONTROL", 0.4, "Default classification"
+        # Always use the LLMClassifier's weighted pattern matching
+        # This works without an API key - it's the analyze_without_llm method
+        classifier = LLMClassifier()  # No API key needed for pattern-based
+        return classifier.analyze_without_llm(artifacts)
 
     def _fallback_analysis(self, artifacts: AlertArtifacts) -> AnalysisResult:
         """Fallback analysis when LLM is not available."""
-        # Extract metrics from ALL available text sources
+        # IMPORTANT: Quantitative data (counts, monetary amounts) comes ONLY from Summary_* file
+        # The other 3 files (Code, Explanation, Metadata) provide CONTEXT only:
+        # - Code_* = technical implementation
+        # - Explanation_* = business meaning (may contain template/example numbers - DO NOT USE)
+        # - Metadata_* = parameters like BACKDAYS
+
         all_counts = []
         all_monetary = []
 
-        # Check summary
+        # Extract quantitative data ONLY from Summary (the actual data)
         if artifacts.summary:
             metrics = self.scoring_engine.extract_metrics_from_text(artifacts.summary)
             all_counts.extend(metrics.get("counts", []))
             all_monetary.extend(metrics.get("monetary_values", []))
 
-        # Check explanation (often has the key numbers)
-        if artifacts.explanation:
-            metrics = self.scoring_engine.extract_metrics_from_text(artifacts.explanation)
-            all_counts.extend(metrics.get("counts", []))
-            all_monetary.extend(metrics.get("monetary_values", []))
+        # DO NOT extract monetary values from Explanation - it contains template/example text
+        # DO NOT extract monetary values from Metadata - it contains parameters only
 
-        # Check metadata
-        if artifacts.metadata:
-            metrics = self.scoring_engine.extract_metrics_from_text(artifacts.metadata)
-            all_counts.extend(metrics.get("counts", []))
-            all_monetary.extend(metrics.get("monetary_values", []))
-
-        # Get the highest values found
+        # Get the highest values found from Summary only
         total_count = max(all_counts) if all_counts else 0
         monetary_amount = max((m["amount"] for m in all_monetary), default=0.0)
 

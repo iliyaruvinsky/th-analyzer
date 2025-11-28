@@ -1,0 +1,309 @@
+# Quantitative Alert Analysis Template
+# Version: 1.0
+# Purpose: Define the structure and required elements for analyzing alerts with measurable financial data
+#
+# ENFORCEMENT: .claude/rules/quantitative-alert-analysis.md
+# KNOWLEDGE BASE: docs/th-context/skywind-4c-knowledge.md
+# EXAMPLES: docs/analysis/SD_Negative_Profit_Deal_Analysis.md
+#           docs/analysis/FI_Comparison_Monthly_Purchase_Volume_Analysis.md
+
+template_name: quantitative_alert
+version: "1.0"
+description: |
+  Use this template for alerts that produce numeric, measurable outputs:
+  - Financial amounts (losses, gains, exposures)
+  - Counts (records, transactions, users)
+  - Percentages and ratios
+  - Aggregatable data that can be sliced by dimensions
+
+# =============================================================================
+# BUSINESS CONTEXT SECTION - MUST BE FIRST
+# =============================================================================
+# Purpose: Help reader understand WHY this alert matters BEFORE seeing data
+# Provides orientation - reader needs context to interpret the numbers
+# Keep it SHORT - 4 subsections max
+
+business_context:
+  position: first
+  principle: "Context before data - reader must understand what they're looking at"
+  max_length: "Half a page"
+
+  required_subsections:
+
+    # 1. Business Purpose (Required)
+    - section: business_purpose
+      format: blockquote_paragraph
+      source: explanation_file
+      content: |
+        A 2-3 sentence business-focused explanation of what this alert monitors.
+        Derived from Explanation_* file. Must speak BUSINESS language, not technical.
+        Answer: "What business risk does this alert help detect?"
+      example: |
+        > **Business Purpose:** This alert identifies sales transactions where products
+        > were sold below their cost price, resulting in direct financial loss. It helps
+        > detect pricing errors, unauthorized discounts, or potential fraud schemes
+        > where employees may be favoring specific customers.
+      note: "MANDATORY - Must be derived from Explanation_* file"
+
+    # 2. What This Alert Monitors (1-2 sentences)
+    - section: what_it_monitors
+      format: single_paragraph
+      content: |
+        Technical description of the monitoring logic in plain language.
+        Derived from Code_* file.
+      example: "Compares NETWR (net value) against WAVWR (cost) in sales order line items."
+
+    # 3. Why It Matters (table format)
+    - section: why_it_matters
+      format: two_column_table
+      columns: [risk_type, business_impact]
+      max_rows: 3
+      example: |
+        | Risk Type | Business Impact |
+        | Revenue Leakage | Every flagged item = money lost |
+        | Pricing Control Gap | No hard stop preventing below-cost sales |
+
+    # 4. Interpreting the Findings (table format)
+    - section: interpreting_findings
+      format: three_column_table
+      columns: [pattern, legitimate_cause, red_flag]
+      max_rows: 3
+      note: "Help reader distinguish normal vs suspicious"
+
+# =============================================================================
+# EXECUTIVE SUMMARY - AFTER BUSINESS CONTEXT
+# =============================================================================
+# Principle: Now that reader has context, show them the critical numbers
+# The Executive Summary must contain ALL critical information.
+
+executive_summary:
+  position: after_business_context
+  principle: "All critical findings must be visible without scrolling"
+
+  required_sections:
+
+    # 1. Alert Identity - What alert is this?
+    - section: alert_identity
+      required_fields:
+        - alert_name
+        - alert_id
+        - module           # SD, FI, MM, etc.
+        - category         # From Metadata (e.g., Applications)
+        - subcategory      # From Metadata (e.g., SD Alerts)
+      source: metadata_basic_sheet
+
+    # 2. Execution Context - When/where did it run?
+    - section: execution_context
+      required_fields:
+        - source_system    # Which SAP instance (PS4, ECC, etc.)
+        - created_date     # When alert was created
+        - last_executed    # When alert last ran
+        - exception_indicator_id  # EI reference
+      source: metadata_general_sheet
+      note: "Critical for multi-system clients"
+
+    # 3. Alert Parameters - What filters were applied?
+    - section: alert_parameters
+      required_fields:
+        - ALL_PARAMETERS   # Include every parameter from metadata
+      source: alert_parameters_sheet
+      display: table_with_descriptions
+      note: "Include parameters with empty values too (show as 'none')"
+
+    # 4. The Bottom Line - Key numbers at a glance
+    - section: bottom_line
+      required_fields:
+        - total_financial_impact  # Primary money figure
+        - records_affected        # Count of items/transactions
+        - severity               # CRITICAL/HIGH/MEDIUM/LOW
+        - fraud_indicator        # YES/NO/INVESTIGATE
+      display: prominent_table
+      note: "These 4 numbers are the minimum a reader needs"
+
+    # 5. What Happened - One sentence summary
+    - section: what_happened
+      format: single_paragraph
+      max_sentences: 2
+      content: "Plain language description of what the alert found"
+
+    # 6. Top Findings - The most important discoveries
+    - section: top_findings
+      max_items: 3
+      format: numbered_list
+      priority_order:
+        - largest_single_transaction
+        - highest_concentration
+        - pattern_anomaly
+      note: "Each finding should be actionable"
+
+    # 7. Immediate Actions - What to do NOW
+    - section: immediate_actions
+      max_items: 3
+      format: numbered_list
+      timeframe: "24-48 hours"
+      note: "Specific, actionable items"
+
+# =============================================================================
+# KEY METRICS SECTION
+# =============================================================================
+
+key_metrics:
+  position: after_executive_summary
+
+  subsections:
+    - name: financial_impact
+      required_fields:
+        - total_amount      # Primary financial figure
+        - secondary_amounts # Revenue, cost, etc. if applicable
+        - average_per_item
+        - maximum_single
+        - currency
+
+    - name: volume
+      required_fields:
+        - primary_count     # Main record count
+        - secondary_counts  # Orders, customers, etc.
+
+    - name: patterns
+      required_fields:
+        - pattern_breakdown  # e.g., manual vs system, zero-price vs priced
+      display: table_with_percentages
+
+# =============================================================================
+# CONCENTRATION ANALYSIS
+# =============================================================================
+
+concentration_analysis:
+  position: after_key_metrics
+  principle: "Identify where risk is concentrated"
+
+  dimensions:
+    - by_organization:
+        field_examples: [sales_org, company_code, plant, cost_center]
+        show: [rank, code, name, amount, percentage]
+        highlight_threshold: 50  # Highlight if >50% concentration
+
+    - by_entity:
+        field_examples: [customer, vendor, user, material]
+        show: [rank, entity, amount, count, manual_flag]
+        max_rows: 5
+
+    - largest_transactions:
+        show: [amount, entity, description, manual_flag]
+        max_rows: 5
+        note: "Always check if manual override involved"
+
+# =============================================================================
+# RISK ASSESSMENT
+# =============================================================================
+
+risk_assessment:
+
+  classification:
+    required_fields:
+      - focus_area:
+          options: [BUSINESS_CONTROL, BUSINESS_PROTECTION, ACCESS_GOVERNANCE,
+                   TECHNICAL_CONTROL, JOBS_CONTROL, S4HANA_EXCELLENCE]
+          include_reasoning: true
+
+      - severity:
+          options: [CRITICAL, HIGH, MEDIUM, LOW]
+          include_reasoning: true
+
+      - risk_score:
+          range: [0, 100]
+          include_breakdown: true
+
+      - fraud_indicator:
+          options: [YES, NO, INVESTIGATE]
+          include_reasoning: true
+
+  risk_indicators:
+    format: table
+    columns: [risk_type, evidence, recommended_action]
+    common_types:
+      - potential_fraud
+      - process_gap
+      - concentration_risk
+      - override_abuse
+      - compliance_violation
+
+# =============================================================================
+# RECOMMENDED ACTIONS
+# =============================================================================
+
+recommended_actions:
+
+  tiers:
+    - immediate:
+        timeframe: "24-48 hours"
+        max_items: 3
+        format: detailed_with_substeps
+
+    - short_term:
+        timeframe: "1-2 weeks"
+        max_items: 3
+        format: detailed_with_substeps
+
+    - process_improvements:
+        timeframe: "ongoing"
+        max_items: 3
+        format: brief
+
+# =============================================================================
+# TECHNICAL DETAILS (BOTTOM OF DOCUMENT)
+# =============================================================================
+
+technical_details:
+  position: last
+  note: "For readers who want to dig deeper"
+
+  optional_sections:
+    - detection_logic:
+        content: "ABAP code explanation, SQL logic"
+
+    - detailed_data_breakdown:
+        content: "Additional slices not in main sections"
+
+    - artifacts_analyzed:
+        content: "List of files with brief descriptions"
+
+    - content_analyzer_output:
+        content: "JSON format for programmatic use"
+
+# =============================================================================
+# FORMATTING RULES
+# =============================================================================
+
+formatting:
+
+  tables:
+    - use_markdown_tables: true
+    - align_numbers: right
+    - bold_key_figures: true
+    - include_totals_row: when_applicable
+
+  numbers:
+    - currency: "Use $ prefix, comma separators ($14,152,997)"
+    - percentages: "Include % suffix, one decimal (81.2%)"
+    - large_numbers: "Use K/M suffix for readability in text ($14.15M)"
+    - counts: "Use comma separators (2,044)"
+
+  emphasis:
+    - critical_findings: "Use **bold**"
+    - warnings: "Use **UPPERCASE**"
+    - action_items: "Start with verb (Investigate, Review, Audit)"
+
+# =============================================================================
+# QUALITY CHECKLIST
+# =============================================================================
+
+quality_checklist:
+  before_finalizing:
+    - "Can reader understand key findings from Executive Summary alone?"
+    - "Are all parameters from Metadata included?"
+    - "Is source system clearly identified?"
+    - "Are concentrations highlighted (>50% = flag)?"
+    - "Are all top losses checked for manual override flag?"
+    - "Are actions specific and actionable?"
+    - "Is fraud indicator explicitly stated (YES/NO/INVESTIGATE)?"

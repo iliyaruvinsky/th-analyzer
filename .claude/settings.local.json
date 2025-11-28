@@ -17,7 +17,20 @@
       "Bash(python:*)",
       "Bash(git add:*)",
       "Bash(git commit:*)",
-      "Bash(git push:*)"
+      "Bash(git push:*)",
+      "Bash(timeout 10 docker compose:*)",
+      "Bash(dir:*)",
+      "Bash(timeout 15 bash:*)",
+      "Bash(echo \"\" echo \"1. Rarely Used Vendors...\" curl -s -X POST \"http://localhost:3011/api/v1/content-analysis/analyze-and-save\" -H \"Content-Type: application/json\" -d '{\"\"\"\"directory_path\"\"\"\": \"\"\"\"docs/skywind-4c-alerts-output/FI/200025_001372 - Rarely Used Vendors\"\"\"\"}')",
+      "Bash(echo \"\" echo \"2. Modified Vendor Bank Account...\" curl -s -X POST \"http://localhost:3011/api/v1/content-analysis/analyze-and-save\" -H \"Content-Type: application/json\" -d '{\"\"\"\"directory_path\"\"\"\": \"\"\"\"docs/skywind-4c-alerts-output/FI/200025_001357 - Modified Vendor Bank Account\"\"\"\"}')",
+      "Bash(echo \"\" echo \"3. Inventory Count - Plant Level...\" curl -s -X POST \"http://localhost:3011/api/v1/content-analysis/analyze-and-save\" -H \"Content-Type: application/json\" -d '{\"\"\"\"directory_path\"\"\"\": \"\"\"\"docs/skywind-4c-alerts-output/MM/200025_001397 - Inventory Count - Plant Level\"\"\"\"}')",
+      "Bash(echo \"\" echo \"4. Exceptional Posting by GL Account...\" curl -s -X POST \"http://localhost:3011/api/v1/content-analysis/analyze-and-save\" -H \"Content-Type: application/json\" -d '{\"\"\"\"directory_path\"\"\"\": \"\"\"\"docs/skywind-4c-alerts-output/FI/200025_001359 - Exceptional posting by GL account\"\"\"\"}')",
+      "Bash(echo \"\" echo \"5. SOD GR-IR vs PO user comparison...\" curl -s -X POST \"http://localhost:3011/api/v1/content-analysis/analyze-and-save\" -H \"Content-Type: application/json\" -d '{\"\"\"\"directory_path\"\"\"\": \"\"\"\"docs/skywind-4c-alerts-output/MM/200025_001448 - SOD GR-IR vs PO user comparison\"\"\"\"}')",
+      "Skill(frontend-design)",
+      "Bash(find:*)",
+      "Bash(done)",
+      "Bash(for:*)",
+      "Bash(do)"
     ],
     "deny": [],
     "ask": []

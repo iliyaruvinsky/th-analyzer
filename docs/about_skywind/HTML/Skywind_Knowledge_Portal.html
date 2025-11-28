@@ -1,0 +1,912 @@
+<!DOCTYPE html>
+
+<html class="wp-toolbar" lang="en-US">
+<head>
+<meta content="text/html; charset=utf-8" http-equiv="Content-Type"/>
+<title>Dashboard ‹ Skywind Knowledge Portal — WordPress</title>
+<script type="text/javascript">
+addLoadEvent = function(func){if(typeof jQuery!=='undefined')jQuery(function(){func();});else if(typeof wpOnload!=='function'){wpOnload=func;}else{var oldonload=wpOnload;wpOnload=function(){oldonload();func();}}};
+var ajaxurl = '/wp-admin/admin-ajax.php',
+	pagenow = 'dashboard',
+	typenow = '',
+	adminpage = 'index-php',
+	thousandsSeparator = ',',
+	decimalPoint = '.',
+	isRtl = 0;
+</script>
+<link href="https://help.skywind.com/wp-admin/load-styles.php?c=1&amp;dir=ltr&amp;load%5Bchunk_0%5D=dashicons,admin-bar,site-health,common,forms,admin-menu,dashboard,list-tables,edit,revisions,media,themes,about,nav-menus,wp-poi&amp;load%5Bchunk_1%5D=nter,widgets,site-icon,l10n,buttons,wp-auth-check,code-editor&amp;ver=6.8.3" media="all" rel="stylesheet" type="text/css"/>
+<style type="text/css">
+@media print { #wpadminbar { display:none; } }
+</style>
+<link href="https://help.skywind.com/wp-content/plugins/post-types-order/css/cpt.css?ver=6.8.3" id="CPTStyleSheets-css" media="all" rel="stylesheet"/>
+<link href="https://help.skywind.com/wp-includes/js/thickbox/thickbox.css?ver=6.8.3" id="thickbox-css" media="all" rel="stylesheet"/>
+<link href="https://help.skywind.com/wp-content/plugins/advanced-custom-fields-pro/assets/css/acf-global.css?ver=5.7.7" id="acf-global-css" media="all" rel="stylesheet"/>
+<link href="https://help.skywind.com/wp-content/plugins/cyr2lat/assets/css/settings-base.css?ver=5.0.4" id="ctl-settings-base-css" media="all" rel="stylesheet"/>
+<link href="https://help.skywind.com/wp-content/plugins/pdf-print/css/style-general.css?ver=2.2.8" id="pdfprnt_general-css" media="all" rel="stylesheet"/>
+<link href="https://help.skywind.com/wp-includes/js/codemirror/codemirror.min.css?ver=5.29.1-alpha-ee20357" id="wp-codemirror-css" media="all" rel="stylesheet"/>
+<link href="https://help.skywind.com/wp-content/plugins/pdf-print/bws_menu/css/jquery-ui-styles/1.13.3/jquery-ui.css?ver=6.8.3" id="jquery-ui-style-css" media="all" rel="stylesheet"/>
+<link href="https://help.skywind.com/wp-content/plugins/pdf-print/bws_menu/css/general_style.css?ver=6.8.3" id="bws-admin-css-css" media="all" rel="stylesheet"/>
+<style id="wp-emoji-styles-inline-css">
+
+	img.wp-smiley, img.emoji {
+		display: inline !important;
+		border: none !important;
+		box-shadow: none !important;
+		height: 1em !important;
+		width: 1em !important;
+		margin: 0 0.07em !important;
+		vertical-align: -0.1em !important;
+		background: none !important;
+		padding: 0 !important;
+	}
+</style>
+<link href="https://help.skywind.com/wp-content/plugins/taxonomy-terms-order/css/to.css?ver=6.8.3" id="to.css-css" media="all" rel="stylesheet"/>
+<script>
+window._wpemojiSettings = {"baseUrl":"https:\/\/s.w.org\/images\/core\/emoji\/16.0.1\/72x72\/","ext":".png","svgUrl":"https:\/\/s.w.org\/images\/core\/emoji\/16.0.1\/svg\/","svgExt":".svg","source":{"concatemoji":"https:\/\/help.skywind.com\/wp-includes\/js\/wp-emoji-release.min.js?ver=6.8.3"}};
+/*! This file is auto-generated */
+!function(s,n){var o,i,e;function c(e){try{var t={supportTests:e,timestamp:(new Date).valueOf()};sessionStorage.setItem(o,JSON.stringify(t))}catch(e){}}function p(e,t,n){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);var t=new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data),a=(e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(n,0,0),new Uint32Array(e.getImageData(0,0,e.canvas.width,e.canvas.height).data));return t.every(function(e,t){return e===a[t]})}function u(e,t){e.clearRect(0,0,e.canvas.width,e.canvas.height),e.fillText(t,0,0);for(var n=e.getImageData(16,16,1,1),a=0;a<n.data.length;a++)if(0!==n.data[a])return!1;return!0}function f(e,t,n,a){switch(t){case"flag":return n(e,"\ud83c\udff3\ufe0f\u200d\u26a7\ufe0f","\ud83c\udff3\ufe0f\u200b\u26a7\ufe0f")?!1:!n(e,"\ud83c\udde8\ud83c\uddf6","\ud83c\udde8\u200b\ud83c\uddf6")&&!n(e,"\ud83c\udff4\udb40\udc67\udb40\udc62\udb40\udc65\udb40\udc6e\udb40\udc67\udb40\udc7f","\ud83c\udff4\u200b\udb40\udc67\u200b\udb40\udc62\u200b\udb40\udc65\u200b\udb40\udc6e\u200b\udb40\udc67\u200b\udb40\udc7f");case"emoji":return!a(e,"\ud83e\udedf")}return!1}function g(e,t,n,a){var r="undefined"!=typeof WorkerGlobalScope&&self instanceof WorkerGlobalScope?new OffscreenCanvas(300,150):s.createElement("canvas"),o=r.getContext("2d",{willReadFrequently:!0}),i=(o.textBaseline="top",o.font="600 32px Arial",{});return e.forEach(function(e){i[e]=t(o,e,n,a)}),i}function t(e){var t=s.createElement("script");t.src=e,t.defer=!0,s.head.appendChild(t)}"undefined"!=typeof Promise&&(o="wpEmojiSettingsSupports",i=["flag","emoji"],n.supports={everything:!0,everythingExceptFlag:!0},e=new Promise(function(e){s.addEventListener("DOMContentLoaded",e,{once:!0})}),new Promise(function(t){var n=function(){try{var e=JSON.parse(sessionStorage.getItem(o));if("object"==typeof e&&"number"==typeof e.timestamp&&(new Date).valueOf()<e.timestamp+604800&&"object"==typeof e.supportTests)return e.supportTests}catch(e){}return null}();if(!n){if("undefined"!=typeof Worker&&"undefined"!=typeof OffscreenCanvas&&"undefined"!=typeof URL&&URL.createObjectURL&&"undefined"!=typeof Blob)try{var e="postMessage("+g.toString()+"("+[JSON.stringify(i),f.toString(),p.toString(),u.toString()].join(",")+"));",a=new Blob([e],{type:"text/javascript"}),r=new Worker(URL.createObjectURL(a),{name:"wpTestEmojiSupports"});return void(r.onmessage=function(e){c(n=e.data),r.terminate(),t(n)})}catch(e){}c(n=g(i,f,p,u))}t(n)}).then(function(e){for(var t in e)n.supports[t]=e[t],n.supports.everything=n.supports.everything&&n.supports[t],"flag"!==t&&(n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&n.supports[t]);n.supports.everythingExceptFlag=n.supports.everythingExceptFlag&&!n.supports.flag,n.DOMReady=!1,n.readyCallback=function(){n.DOMReady=!0}}).then(function(){return e}).then(function(){var e;n.supports.everything||(n.readyCallback(),(e=n.source||{}).concatemoji?t(e.concatemoji):e.wpemoji&&e.twemoji&&(t(e.twemoji),t(e.wpemoji)))}))}((window,document),window._wpemojiSettings);
+</script>
+<script type="text/javascript">
+/* <![CDATA[ */
+var wpae_cm_settings = {"codeEditor":{"codemirror":{"indentUnit":4,"indentWithTabs":true,"inputStyle":"contenteditable","lineNumbers":true,"lineWrapping":true,"styleActiveLine":true,"continueComments":true,"extraKeys":{"Ctrl-Space":"autocomplete","Ctrl-\/":"toggleComment","Cmd-\/":"toggleComment","Alt-F":"findPersistent","Ctrl-F":"findPersistent","Cmd-F":"findPersistent"},"direction":"ltr","gutters":[],"mode":"php"},"csslint":{"errors":true,"box-model":true,"display-property-grouping":true,"duplicate-properties":true,"known-properties":true,"outline-none":true},"jshint":{"boss":true,"curly":true,"eqeqeq":true,"eqnull":true,"es3":true,"expr":true,"immed":true,"noarg":true,"nonbsp":true,"onevar":true,"quotmark":"single","trailing":true,"undef":true,"unused":true,"browser":true,"globals":{"_":false,"Backbone":false,"jQuery":false,"JSON":false,"wp":false}},"htmlhint":{"tagname-lowercase":true,"attr-lowercase":true,"attr-value-double-quotes":false,"doctype-first":false,"tag-pair":true,"spec-char-escape":true,"id-unique":true,"src-not-empty":true,"attr-no-duplication":true,"alt-require":true,"space-tab-mixed-disabled":"tab","attr-unsafe-chars":true}}};var userSettings = {"url":"\/","uid":"1","time":"1760524449","secure":"1"};/* ]]> */
+</script>
+<script src="https://help.skywind.com/wp-admin/load-scripts.php?c=1&amp;load%5Bchunk_0%5D=jquery-core,jquery-migrate,utils,underscore,jquery-ui-core,wp-codemirror&amp;ver=6.8.3" type="text/javascript"></script>
+<script id="pmxe-script-js" src="https://help.skywind.com/wp-content/plugins/wp-all-export/static/js/pmxe.js?ver=1.4.8-1.0.2"></script>
+<script id="code-editor-js" src="https://help.skywind.com/wp-admin/js/code-editor.min.js?ver=6.8.3"></script>
+<script id="code-editor-js-after">
+jQuery.extend( wp.codeEditor.defaultSettings, {"codemirror":{"indentUnit":4,"indentWithTabs":true,"inputStyle":"contenteditable","lineNumbers":true,"lineWrapping":true,"styleActiveLine":true,"continueComments":true,"extraKeys":{"Ctrl-Space":"autocomplete","Ctrl-\/":"toggleComment","Cmd-\/":"toggleComment","Alt-F":"findPersistent","Ctrl-F":"findPersistent","Cmd-F":"findPersistent"},"direction":"ltr","gutters":[],"mode":"php"},"csslint":{"errors":true,"box-model":true,"display-property-grouping":true,"duplicate-properties":true,"known-properties":true,"outline-none":true},"jshint":{"boss":true,"curly":true,"eqeqeq":true,"eqnull":true,"es3":true,"expr":true,"immed":true,"noarg":true,"nonbsp":true,"onevar":true,"quotmark":"single","trailing":true,"undef":true,"unused":true,"browser":true,"globals":{"_":false,"Backbone":false,"jQuery":false,"JSON":false,"wp":false}},"htmlhint":{"tagname-lowercase":true,"attr-lowercase":true,"attr-value-double-quotes":false,"doctype-first":false,"tag-pair":true,"spec-char-escape":true,"id-unique":true,"src-not-empty":true,"attr-no-duplication":true,"alt-require":true,"space-tab-mixed-disabled":"tab","attr-unsafe-chars":true}} );
+</script>
+<script id="jquery-ui-tooltip-js" src="https://help.skywind.com/wp-includes/js/jquery/ui/tooltip.min.js?ver=1.13.3"></script>
+<script id="bws-admin-scripts-js" src="https://help.skywind.com/wp-content/plugins/pdf-print/bws_menu/js/general_script.js?ver=6.8.3"></script>
+<script id="bws_shortcode_button-js-after">
+var bws_shortcode_button = {
+					'label': 'Add BWS Shortcode',
+					'title': 'Add BWS Plugins Shortcode',
+					'function_name': ['pdfprnt_shortcode_init',]
+				};
+</script>
+<script id="to-javascript-js" src="https://help.skywind.com/wp-content/plugins/taxonomy-terms-order/js/to-javascript.js?ver=6.8.3"></script>
+<script type="text/javascript">var _wpColorScheme = {"icons":{"base":"#a7aaad","focus":"#72aee6","current":"#fff"}};</script>
+<link href="https://help.skywind.com/wp-admin/" id="wp-admin-canonical" rel="canonical"/>
+<script>
+		if ( window.history.replaceState ) {
+			window.history.replaceState( null, null, document.getElementById( 'wp-admin-canonical' ).href + window.location.hash );
+		}
+	</script>
+<meta content="width=device-width,initial-scale=1.0" name="viewport"/></head>
+<body class="wp-admin wp-core-ui no-js index-php auto-fold admin-bar branch-6-8 version-6-8-3 admin-color-fresh locale-en-us no-customize-support svg wp-theme-help_skywind">
+<script type="text/javascript">
+	document.body.className = document.body.className.replace('no-js','js');
+</script>
+<script>
+		(function() {
+			var request, b = document.body, c = 'className', cs = 'customize-support', rcs = new RegExp('(^|\\s+)(no-)?'+cs+'(\\s+|$)');
+
+				request = true;
+	
+			b[c] = b[c].replace( rcs, ' ' );
+			// The customizer requires postMessage and CORS (if the site is cross domain).
+			b[c] += ( window.postMessage && request ? ' ' : ' no-' ) + cs;
+		}());
+	
+</script>
+<div id="wpwrap">
+<div aria-label="Main menu" id="adminmenumain" role="navigation">
+<a class="screen-reader-shortcut" href="#wpbody-content">Skip to main content</a>
+<a class="screen-reader-shortcut" href="#wp-toolbar">Skip to toolbar</a>
+<div id="adminmenuback"></div>
+<div id="adminmenuwrap">
+<ul id="adminmenu">
+<li class="wp-first-item wp-has-submenu wp-has-current-submenu wp-menu-open menu-top menu-top-first menu-icon-dashboard menu-top-last" id="menu-dashboard">
+<a class="wp-first-item wp-has-submenu wp-has-current-submenu wp-menu-open menu-top menu-top-first menu-icon-dashboard menu-top-last" href="index.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-dashboard"><br/></div><div class="wp-menu-name">Dashboard</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Dashboard</li><li class="wp-first-item current"><a aria-current="page" class="wp-first-item current" href="index.php">Home</a></li><li><a href="update-core.php">Updates <span class="update-plugins count-18"><span class="update-count">18</span></span></a></li></ul></li>
+<li aria-hidden="true" class="wp-not-current-submenu wp-menu-separator"><div class="separator"></div></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first" id="menu-posts">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-post open-if-no-js menu-top-first" data-ariahaspopup="" href="edit.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-post"><br/></div><div class="wp-menu-name">Posts</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Posts</li><li class="wp-first-item"><a class="wp-first-item" href="edit.php">All Posts</a></li><li><a href="post-new.php">Add Post</a></li><li><a href="edit-tags.php?taxonomy=category">Categories</a></li><li><a href="edit-tags.php?taxonomy=post_tag">Tags</a></li><li><a href="edit.php?page=order-post-types-post">Re-Order</a></li><li><a href="edit.php?page=to-interface-post">Taxonomy Order</a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media" id="menu-media">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-media" data-ariahaspopup="" href="upload.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-media"><br/></div><div class="wp-menu-name">Media</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Media</li><li class="wp-first-item"><a class="wp-first-item" href="upload.php">Library</a></li><li><a href="media-new.php">Add Media File</a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-page" id="menu-pages">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-page" data-ariahaspopup="" href="edit.php?post_type=page"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-page"><br/></div><div class="wp-menu-name">Pages</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Pages</li><li class="wp-first-item"><a class="wp-first-item" href="edit.php?post_type=page">All Pages</a></li><li><a href="post-new.php?post_type=page">Add Page</a></li></ul></li>
+<li class="wp-not-current-submenu menu-top menu-icon-comments" id="menu-comments">
+<a class="wp-not-current-submenu menu-top menu-icon-comments" href="edit-comments.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-comments"><br/></div><div class="wp-menu-name">Comments <span class="awaiting-mod count-40"><span aria-hidden="true" class="pending-count">40</span><span class="comments-in-moderation-text screen-reader-text">40 Comments in moderation</span></span></div></a></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_wpcf7 menu-top-last" id="toplevel_page_wpcf7"><a class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_wpcf7 menu-top-last" data-ariahaspopup="" href="admin.php?page=wpcf7"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-email"><br/></div><div class="wp-menu-name">Contact</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Contact</li><li class="wp-first-item"><a class="wp-first-item" href="admin.php?page=wpcf7">Contact Forms</a></li><li><a href="admin.php?page=wpcf7-new">Add New</a></li><li><a href="admin.php?page=wpcf7-integration">Integration</a></li></ul></li>
+<li aria-hidden="true" class="wp-not-current-submenu wp-menu-separator"><div class="separator"></div></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-appearance menu-top-first" id="menu-appearance">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-appearance menu-top-first" data-ariahaspopup="" href="themes.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-appearance"><br/></div><div class="wp-menu-name">Appearance</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Appearance</li><li class="wp-first-item"><a class="wp-first-item" href="themes.php">Themes <span class="update-plugins count-7"><span class="theme-count">7</span></span></a></li><li><a href="site-editor.php?p=/pattern">Patterns</a></li><li class="hide-if-no-customize"><a class="hide-if-no-customize" href="customize.php?return=%2Fwp-admin%2F">Customize</a></li><li><a href="nav-menus.php">Menus</a></li><li><a href="theme-editor.php">Theme File Editor</a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" id="menu-plugins">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-plugins" data-ariahaspopup="" href="plugins.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-plugins"><br/></div><div class="wp-menu-name">Plugins <span class="update-plugins count-11"><span class="plugin-count">11</span></span></div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Plugins <span class="update-plugins count-11"><span class="plugin-count">11</span></span></li><li class="wp-first-item"><a class="wp-first-item" href="plugins.php">Installed Plugins</a></li><li><a href="plugin-install.php">Add Plugin</a></li><li><a href="plugin-editor.php">Plugin File Editor</a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-users" id="menu-users">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-users" data-ariahaspopup="" href="users.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-users"><br/></div><div class="wp-menu-name">Users</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Users</li><li class="wp-first-item"><a class="wp-first-item" href="users.php">All Users</a></li><li><a href="user-new.php">Add User</a></li><li><a href="profile.php">Profile</a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-tools" id="menu-tools">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-tools" data-ariahaspopup="" href="tools.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-tools"><br/></div><div class="wp-menu-name">Tools</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Tools</li><li class="wp-first-item"><a class="wp-first-item" href="tools.php">Available Tools</a></li><li><a href="import.php">Import</a></li><li><a href="export.php">Export</a></li><li><a href="site-health.php">Site Health <span class="menu-counter site-health-counter count-2"><span class="count">2</span></span></a></li><li><a href="export-personal-data.php">Export Personal Data</a></li><li><a href="erase-personal-data.php">Erase Personal Data</a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-settings" id="menu-settings">
+<a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-settings" data-ariahaspopup="" href="options-general.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-settings"><br/></div><div class="wp-menu-name">Settings</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Settings</li><li class="wp-first-item"><a class="wp-first-item" href="options-general.php">General</a></li><li><a href="options-writing.php">Writing</a></li><li><a href="options-reading.php">Reading</a></li><li><a href="options-discussion.php">Discussion</a></li><li><a href="options-media.php">Media</a></li><li><a href="options-permalink.php">Permalinks</a></li><li><a href="options-privacy.php">Privacy</a></li><li><a href="options-general.php?page=pkg_autologin_admin_menu">Autologin-links</a></li><li><a href="options-general.php?page=cyr-to-lat">Cyr To Lat</a></li><li><a href="options-general.php?page=cpto-options"><img alt="" class="menu_pto" src="https://help.skywind.com/wp-content/plugins/post-types-order/images/menu-icon.png"/>Post Types Order</a></li><li><a href="options-general.php?page=to-options"><img alt="" class="menu_tto" src="https://help.skywind.com/wp-content/plugins/taxonomy-terms-order/images/menu-icon.png"/>Taxonomy Terms Order</a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_edit?post_type=acf-field-group" id="toplevel_page_edit-post_type-acf-field-group">
+<a class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_edit?post_type=acf-field-group" data-ariahaspopup="" href="edit.php?post_type=acf-field-group"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-welcome-widgets-menus"><br/></div><div class="wp-menu-name">Custom Fields</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">Custom Fields</li><li class="wp-first-item"><a class="wp-first-item" href="edit.php?post_type=acf-field-group">Field Groups</a></li><li><a href="post-new.php?post_type=acf-field-group">Add New</a></li><li><a href="edit.php?post_type=acf-field-group&amp;page=acf-tools">Tools</a></li><li><a href="edit.php?post_type=acf-field-group&amp;page=acf-settings-info">Info</a></li><li><a href="edit.php?post_type=acf-field-group&amp;page=acf-settings-updates">Updates</a></li></ul></li>
+<li class="wp-not-current-submenu menu-top menu-icon-generic toplevel_page_acf-options menu-top-last" id="toplevel_page_acf-options">
+<a class="wp-not-current-submenu menu-top menu-icon-generic toplevel_page_acf-options menu-top-last" href="admin.php?page=acf-options"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-generic"><br/></div><div class="wp-menu-name">Options</div></a></li>
+<li aria-hidden="true" class="wp-not-current-submenu wp-menu-separator"><div class="separator"></div></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-generic toplevel_page_pdf-print menu-top-first" id="toplevel_page_pdf-print"><a class="wp-has-submenu wp-not-current-submenu menu-top menu-icon-generic toplevel_page_pdf-print menu-top-first" data-ariahaspopup="" href="admin.php?page=pdf-print.php"><div aria-hidden="true" class="wp-menu-image dashicons-before dashicons-admin-generic"><br/></div><div class="wp-menu-name">PDF &amp; Print</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">PDF &amp; Print</li><li class="wp-first-item"><a class="wp-first-item" href="admin.php?page=pdf-print.php">Settings</a></li><li><a href="admin.php?page=pdf-print-templates.php">Headers &amp; Footers</a></li><li><a href="admin.php?page=pdfprnt-bws-panel">BWS Panel</a></li><li><a href="https://bestwebsoft.com/products/wordpress/plugins/pdf-print/?k=d9da7c9c2046bed8dfa38d005d4bffdb&amp;pn=101&amp;v=2.2.8&amp;wp_v=6.8.3"><span style="color:#d86463"> Upgrade to Pro</span></a></li></ul></li>
+<li class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_pmxe-admin-home menu-top-last" id="toplevel_page_pmxe-admin-home"><a class="wp-has-submenu wp-not-current-submenu menu-top toplevel_page_pmxe-admin-home menu-top-last" data-ariahaspopup="" href="admin.php?page=pmxe-admin-export"><div aria-hidden="true" class="wp-menu-image svg" style="background-image:url('data:image/svg+xml;base64,PHN2ZyBjbGFzcz0iaW1nLWZsdWlkIiBpZD0ib3V0cHV0c3ZnIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIGhlaWdodD0iMjAiIHdpZHRoPSIyMCIgdmlld0JveD0iMCAwIDQwIDQwIj48cGF0aCBmaWxsPSIjZjBmMGYxIiBzdHJva2U9Im5vbmUiIGQ9Ik0zNS40MjA4IDE5Ljk4NTNDMzUuMjI0NCAxOS44NTQyIDM0Ljk3MzUgMTkuODEwNSAzNC43NTU0IDE5Ljg4N0wzMC42ODY1IDIxLjIyQzMwLjI4MjkgMjEuMzUxMiAzMC4wNjQ3IDIxLjc4ODIgMzAuMTk1NiAyMi4xODE2QzMwLjMyNjUgMjIuNTg1OSAzMC43NjI5IDIyLjgwNDQgMzEuMTU1NiAyMi42NzMzTDMyLjc0ODIgMjIuMTQ4OEMzMS41NzAxIDIzLjg4NjIgMjguNjU3NSAyNy41NDY3IDI1LjM1MjMgMjYuOTg5NUMyNC43NTIzIDI2Ljg5MTEgMjQuMzA1MSAyNi41MTk2IDI0LjE4NTEgMjYuMDM4OEMyNC4wMTA1IDI1LjM3MjMgMjQuNDU3OCAyNC41NzQ2IDI1LjM5NTkgMjMuODIwNkMyOS4wMzkzIDIwLjkzNTkgMzEuMDM1NiAxNy4xMTE1IDMxLjAzNTYgMTMuMDU3NkMzMS4wMjQ3IDUuODU2ODIgMjUuMTc3NyAwIDE3Ljk3ODIgMEMxMC43Nzg2IDAgNC45NDI1NiA1Ljg1NjgyIDQuOTQyNTYgMTMuMDY4NkM0Ljk0MjU2IDE3LjEyMjUgNi45NDk3MiAyMC45NDY5IDEwLjU4MjIgMjMuODMxNkMxMS41MjA0IDI0LjU3NDYgMTEuOTU2NyAyNS4zODMyIDExLjc5MzEgMjYuMDQ5N0MxMS42NzMxIDI2LjUzMDUgMTEuMjE0OSAyNi45MDIgMTAuNjI1OSAyNy4wMDA0QzcuMzMxNTEgMjcuNTU3NiA0LjQwODA1IDIzLjg5NzEgMy4yMjk5MyAyMi4xNTk4TDQuODExNjYgMjIuNjg0MkM1LjIxNTI3IDIyLjgxNTQgNS42NDA3IDIyLjU5NjggNS43NzE2IDIyLjE5MjVDNS45MDI1MSAyMS43ODgyIDUuNjg0MzQgMjEuMzYyMSA1LjI4MDcyIDIxLjIzMUwxLjIxMTg3IDE5Ljg4N0MwLjk4Mjc5MiAxOS44MTA1IDAuNzQyODA2IDE5Ljg0MzMgMC41NDY0NTQgMTkuOTg1M0MwLjM1MDEwMSAyMC4xMTY0IDAuMjMwMTA4IDIwLjMzNSAwLjIxOTIgMjAuNTc1NEwwLjAwMTAzMDggMjUuMDAwOEMtMC4wMjA3ODYxIDI1LjQyNjkgMC4zMDY0NjggMjUuNzc2NiAwLjcyMDk4OSAyNS43OTg0SDAuNzY0NjIzQzEuMTY4MjQgMjUuNzk4NCAxLjUwNjQgMjUuNDgxNSAxLjUyODIxIDI1LjA2NjNMMS42MTU0OCAyMy4yNjM0QzIuOTEzNTkgMjUuMTY0NyA2LjAxMTU5IDI5IDkuOTM4NjMgMjlDMTAuMjY1OSAyOSAxMC42MDQxIDI4Ljk3ODEgMTAuOTUzMSAyOC45MTI2QzEyLjMyNzYgMjguNjgzMSAxMy4zNzQ4IDI3Ljc2NTMgMTMuNzAyMSAyNi41MDg3QzE0LjA3MjkgMjUuMDU1NCAxMy4zODU3IDIzLjUxNDcgMTEuODE0OSAyMi4yNjlDOS45ODIyNyAyMC44MTU4IDYuOTE2OTkgMTcuNjkwNyA2LjkxNjk5IDEzLjA0NjdDNi45MTY5OSA2LjkyNzY2IDExLjg5MTIgMS45NDQ5OSAxOCAxLjk0NDk5QzI0LjEwODcgMS45NDQ5OSAyOS4wODMgNi45Mjc2NiAyOS4wODMgMTMuMDQ2N0MyOS4wODMgMTcuNjkwNyAyNi4wMTc3IDIwLjgxNTggMjQuMTg1MSAyMi4yNjlDMjIuNjE0MyAyMy41MTQ3IDIxLjkxNjEgMjUuMDY2MyAyMi4yOTc5IDI2LjUwODdDMjIuNjE0MyAyNy43NTQzIDIzLjY3MjQgMjguNjcyMiAyNS4wNDY4IDI4LjkxMjZDMjkuNDUzOSAyOS42NTU2IDMyLjk3NzMgMjUuMzI4NiAzNC4zODQ1IDIzLjI2MzRMMzQuNDcxOCAyNS4wNTU0QzM0LjQ5MzYgMjUuNDU5NyAzNC44MzE3IDI1Ljc4NzUgMzUuMjM1MyAyNS43ODc1SDM1LjI3OUMzNS43MDQ0IDI1Ljc2NTYgMzYuMDIwOCAyNS40MDUgMzUuOTk4OSAyNC45ODk4TDM1Ljc4MDggMjAuNTY0NEMzNS43MzcxIDIwLjM0NTkgMzUuNjA2MiAyMC4xMTY0IDM1LjQyMDggMTkuOTg1M1pNMTMuNSAxOUMxNC4zMjg0IDE5IDE1IDE4LjMyODQgMTUgMTcuNUMxNSAxNi42NzE2IDE0LjMyODQgMTYgMTMuNSAxNkMxMi42NzE2IDE2IDEyIDE2LjY3MTYgMTIgMTcuNUMxMiAxOC4zMjg0IDEyLjY3MTYgMTkgMTMuNSAxOVpNMjIuNSAxOUMyMy4zMjg0IDE5IDI0IDE4LjMyODQgMjQgMTcuNUMyNCAxNi42NzE2IDIzLjMyODQgMTYgMjIuNSAxNkMyMS42NzE2IDE2IDIxIDE2LjY3MTYgMjEgMTcuNUMyMSAxOC4zMjg0IDIxLjY3MTYgMTkgMjIuNSAxOVpNMjQuMjM2NCAzMi40MzE2QzI0LjYxMTkgMzIuMjk0NyAyNS4wMjkyIDMyLjUwNTMgMjUuMTU0MyAzMi44OTQ3TDI2LjQ2ODcgMzYuODEwNUMyNi41MzEzIDM3LjAyMTEgMjYuNSAzNy4yNjMyIDI2LjM3NDggMzcuNDUyNkMyNi4yNDk2IDM3LjY0MjEgMjYuMDQxIDM3Ljc1NzkgMjUuODExNSAzNy43Njg0TDIxLjU4NjggMzhIMjEuNTQ1QzIxLjE1OTEgMzggMjAuODM1NyAzNy42OTQ3IDIwLjgxNDggMzcuMzA1M0MyMC43OTQgMzYuODk0NyAyMS4wOTY1IDM2LjU0NzQgMjEuNTAzMyAzNi41MjYzTDIzLjIzNDkgMzYuNDMxNkMyMC42NDc5IDM0Ljg2MzIgMTguOTQ3NiAzMi45NTc5IDE3Ljk5ODMgMzAuNTA1M0MxNy4wNDkgMzIuOTU3OSAxNS4zNDg3IDM0Ljg2MzIgMTIuNzYxNyAzNi40MzE2TDE0LjUwMzcgMzYuNTI2M0MxNC45MDAxIDM2LjU0NzQgMTUuMjEzMSAzNi44OTQ3IDE1LjE5MjIgMzcuMzA1M0MxNS4xNzE0IDM3LjY5NDcgMTQuODQ4IDM4IDE0LjQ2MiAzOEgxNC40MjAzTDEwLjE5NTUgMzcuNzY4NEM5Ljk2NjAzIDM3Ljc1NzkgOS43Njc4MyAzNy42NDIxIDkuNjMyMjIgMzcuNDUyNkM5LjQ5NjYxIDM3LjI2MzIgOS40NjUzMSAzNy4wMzE2IDkuNTM4MzQgMzYuODEwNUwxMC44MjE0IDMyLjg4NDJDMTAuOTQ2NiAzMi41MDUzIDExLjM1MzQgMzIuMjk0NyAxMS43Mzk0IDMyLjQyMTFDMTIuMTE0OSAzMi41NDc0IDEyLjMyMzYgMzIuOTU3OSAxMi4xOTg0IDMzLjM0NzRMMTEuNjAzOCAzNS4xNTc5QzE1Ljk1MzcgMzIuNjMxNiAxNi44NTA4IDI5LjUwNTMgMTcuMTQyOSAyNi43NTc5QzE3LjE5NTEgMjYuMzI2MyAxNy41NDk3IDI2IDE3Ljk3NzQgMjZDMTguNDA1MSAyNiAxOC43NzAyIDI2LjMyNjMgMTguODEyIDI2Ljc1NzlDMTkuMTA0IDI5LjUxNTggMjAuMDAxMiAzMi42NDIxIDI0LjM3MiAzNS4xNzg5TDIzLjc3NzQgMzMuMzU3OUMyMy42NDE4IDMyLjk3ODkgMjMuODUwNCAzMi41NTc5IDI0LjIzNjQgMzIuNDMxNloiLz48L3N2Zz4=')"><br/></div><div class="wp-menu-name">All Export</div></a>
+<ul class="wp-submenu wp-submenu-wrap"><li aria-hidden="true" class="wp-submenu-head">All Export</li><li class="wp-first-item"><a class="wp-first-item" href="admin.php?page=pmxe-admin-export">New Export</a></li><li><a href="admin.php?page=pmxe-admin-manage">Manage Exports</a></li><li><a href="admin.php?page=pmxe-admin-settings">Settings</a></li></ul></li><li class="hide-if-no-js" id="collapse-menu"><button aria-expanded="true" aria-label="Collapse Main Menu" id="collapse-button" type="button"><span aria-hidden="true" class="collapse-button-icon"></span><span class="collapse-button-label">Collapse Menu</span></button></li></ul>
+</div>
+</div>
+<div id="wpcontent">
+<div class="nojq nojs" id="wpadminbar">
+<div aria-label="Toolbar" class="quicklinks" id="wp-toolbar" role="navigation">
+<ul class="ab-top-menu" id="wp-admin-bar-root-default" role="menu"><li id="wp-admin-bar-menu-toggle" role="group"><a class="ab-item" href="#" role="menuitem"><span aria-hidden="true" class="ab-icon"></span><span class="screen-reader-text">Menu</span></a></li><li class="menupop" id="wp-admin-bar-wp-logo" role="group"><a aria-expanded="false" class="ab-item" href="https://help.skywind.com/wp-admin/about.php" role="menuitem"><span aria-hidden="true" class="ab-icon"></span><span class="screen-reader-text">About WordPress</span></a><div class="ab-sub-wrapper"><ul aria-label="About WordPress" class="ab-submenu" id="wp-admin-bar-wp-logo-default" role="menu"><li id="wp-admin-bar-about" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/about.php" role="menuitem">About WordPress</a></li><li id="wp-admin-bar-contribute" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/contribute.php" role="menuitem">Get Involved</a></li></ul><ul aria-label="About WordPress" class="ab-sub-secondary ab-submenu" id="wp-admin-bar-wp-logo-external" role="menu"><li id="wp-admin-bar-wporg" role="group"><a class="ab-item" href="https://wordpress.org/" role="menuitem">WordPress.org</a></li><li id="wp-admin-bar-documentation" role="group"><a class="ab-item" href="https://wordpress.org/documentation/" role="menuitem">Documentation</a></li><li id="wp-admin-bar-learn" role="group"><a class="ab-item" href="https://learn.wordpress.org/" role="menuitem">Learn WordPress</a></li><li id="wp-admin-bar-support-forums" role="group"><a class="ab-item" href="https://wordpress.org/support/forums/" role="menuitem">Support</a></li><li id="wp-admin-bar-feedback" role="group"><a class="ab-item" href="https://wordpress.org/support/forum/requests-and-feedback" role="menuitem">Feedback</a></li></ul></div></li><li class="menupop" id="wp-admin-bar-site-name" role="group"><a aria-expanded="false" class="ab-item" href="https://help.skywind.com/" role="menuitem">Skywind Knowledge Portal</a><div class="ab-sub-wrapper"><ul aria-label="Skywind Knowledge Portal" class="ab-submenu" id="wp-admin-bar-site-name-default" role="menu"><li id="wp-admin-bar-view-site" role="group"><a class="ab-item" href="https://help.skywind.com/" role="menuitem">Visit Site</a></li></ul></div></li><li id="wp-admin-bar-updates" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/update-core.php" role="menuitem"><span aria-hidden="true" class="ab-icon"></span><span aria-hidden="true" class="ab-label">18</span><span class="screen-reader-text updates-available-text">18 updates available</span></a></li><li id="wp-admin-bar-comments" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/edit-comments.php" role="menuitem"><span aria-hidden="true" class="ab-icon"></span><span aria-hidden="true" class="ab-label awaiting-mod pending-count count-40">40</span><span class="screen-reader-text comments-in-moderation-text">40 Comments in moderation</span></a></li><li class="menupop" id="wp-admin-bar-new-content" role="group"><a aria-expanded="false" class="ab-item" href="https://help.skywind.com/wp-admin/post-new.php" role="menuitem"><span aria-hidden="true" class="ab-icon"></span><span class="ab-label">New</span></a><div class="ab-sub-wrapper"><ul aria-label="New" class="ab-submenu" id="wp-admin-bar-new-content-default" role="menu"><li id="wp-admin-bar-new-post" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/post-new.php" role="menuitem">Post</a></li><li id="wp-admin-bar-new-media" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/media-new.php" role="menuitem">Media</a></li><li id="wp-admin-bar-new-page" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/post-new.php?post_type=page" role="menuitem">Page</a></li><li id="wp-admin-bar-new-user" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/user-new.php" role="menuitem">User</a></li></ul></div></li></ul><ul class="ab-top-secondary ab-top-menu" id="wp-admin-bar-top-secondary" role="menu"><li class="menupop with-avatar" id="wp-admin-bar-my-account" role="group"><a aria-expanded="false" class="ab-item" href="https://help.skywind.com/wp-admin/profile.php" role="menuitem">Howdy, <span class="display-name">admin_help_skywind</span><img alt="" class="avatar avatar-26 photo" decoding="async" height="26" loading="lazy" src="https://secure.gravatar.com/avatar/bfd39ebfcd1f8f642e2d1d554f582648c6536933093e04cd266f03c7afbc6f82?s=26&amp;d=mm&amp;r=g" srcset="https://secure.gravatar.com/avatar/bfd39ebfcd1f8f642e2d1d554f582648c6536933093e04cd266f03c7afbc6f82?s=52&amp;d=mm&amp;r=g 2x" width="26"/></a><div class="ab-sub-wrapper"><ul aria-label="Howdy, admin_help_skywind" class="ab-submenu" id="wp-admin-bar-user-actions" role="menu"><li id="wp-admin-bar-user-info" role="group"><a class="ab-item" href="https://help.skywind.com/wp-admin/profile.php" role="menuitem"><img alt="" class="avatar avatar-64 photo" decoding="async" height="64" loading="lazy" src="https://secure.gravatar.com/avatar/bfd39ebfcd1f8f642e2d1d554f582648c6536933093e04cd266f03c7afbc6f82?s=64&amp;d=mm&amp;r=g" srcset="https://secure.gravatar.com/avatar/bfd39ebfcd1f8f642e2d1d554f582648c6536933093e04cd266f03c7afbc6f82?s=128&amp;d=mm&amp;r=g 2x" width="64"/><span class="display-name">admin_help_skywind</span><span class="display-name edit-profile">Edit Profile</span></a></li><li id="wp-admin-bar-logout" role="group"><a class="ab-item" href="https://help.skywind.com/wp-login.php?action=logout&amp;_wpnonce=8cbdb7346d" role="menuitem">Log Out</a></li></ul></div></li></ul> </div>
+</div>
+<div id="wpbody" role="main">
+<div id="wpbody-content">
+<div class="metabox-prefs" id="screen-meta">
+<div aria-label="Contextual Help Tab" class="hidden" id="contextual-help-wrap" tabindex="-1">
+<div id="contextual-help-back"></div>
+<div id="contextual-help-columns">
+<div class="contextual-help-tabs">
+<ul>
+<li class="active" id="tab-link-overview">
+<a aria-controls="tab-panel-overview" href="#tab-panel-overview">
+									Overview								</a>
+</li>
+<li id="tab-link-help-navigation">
+<a aria-controls="tab-panel-help-navigation" href="#tab-panel-help-navigation">
+									Navigation								</a>
+</li>
+<li id="tab-link-help-layout">
+<a aria-controls="tab-panel-help-layout" href="#tab-panel-help-layout">
+									Layout								</a>
+</li>
+<li id="tab-link-help-content">
+<a aria-controls="tab-panel-help-content" href="#tab-panel-help-content">
+									Content								</a>
+</li>
+</ul>
+</div>
+<div class="contextual-help-sidebar">
+<p><strong>For more information:</strong></p><p><a href="https://wordpress.org/documentation/article/dashboard-screen/">Documentation on Dashboard</a></p><p><a href="https://wordpress.org/support/forums/">Support forums</a></p><p><a href="https://wordpress.org/documentation/wordpress-version/version-6-8-3/">Version 6.8.3</a></p> </div>
+<div class="contextual-help-tabs-wrap">
+<div class="help-tab-content active" id="tab-panel-overview">
+<p>Welcome to your WordPress Dashboard!</p><p>The Dashboard is the first place you will come to every time you log into your site. It is where you will find all your WordPress tools. If you need help, just click the “Help” tab above the screen title.</p> </div>
+<div class="help-tab-content" id="tab-panel-help-navigation">
+<p>The left-hand navigation menu provides links to all of the WordPress administration screens, with submenu items displayed on hover. You can minimize this menu to a narrow icon strip by clicking on the Collapse Menu arrow at the bottom.</p><p>Links in the Toolbar at the top of the screen connect your dashboard and the front end of your site, and provide access to your profile and helpful WordPress information.</p> </div>
+<div class="help-tab-content" id="tab-panel-help-layout">
+<p>You can use the following controls to arrange your Dashboard screen to suit your workflow. This is true on most other administration screens as well.</p><p><strong>Screen Options</strong> — Use the Screen Options tab to choose which Dashboard boxes to show.</p><p><strong>Drag and Drop</strong> — To rearrange the boxes, drag and drop by clicking on the title bar of the selected box and releasing when you see a gray dotted-line rectangle appear in the location you want to place the box.</p><p><strong>Box Controls</strong> — Click the title bar of the box to expand or collapse it. Some boxes added by plugins may have configurable content, and will show a “Configure” link in the title bar if you hover over it.</p> </div>
+<div class="help-tab-content" id="tab-panel-help-content">
+<p>The boxes on your Dashboard screen are:</p><p><strong>Welcome</strong> — Shows links for some of the most common tasks when setting up a new site.</p><p><strong>Site Health Status</strong> — Informs you of any potential issues that should be addressed to improve the performance or security of your website.</p><p><strong>At a Glance</strong> — Displays a summary of the content on your site and identifies which theme and version of WordPress you are using.</p><p><strong>Activity</strong> — Shows the upcoming scheduled posts, recently published posts, and the most recent comments on your posts and allows you to moderate them.</p><p><strong>Quick Draft</strong> — Allows you to create a new post and save it as a draft. Also displays links to the 3 most recent draft posts you've started.</p><p><strong>WordPress Events and News</strong> — Upcoming events near you as well as the latest news from the official WordPress project and the <a href="https://planet.wordpress.org/">WordPress Planet</a>.</p> </div>
+</div>
+</div>
+</div>
+<div aria-label="Screen Options Tab" class="hidden" id="screen-options-wrap" tabindex="-1">
+<form id="adv-settings" method="post">
+<fieldset class="metabox-prefs">
+<legend>Screen elements</legend>
+<p>
+			Some screen elements can be shown or hidden by using the checkboxes.			Expand or collapse the elements by clicking on their headings, and arrange them by dragging their headings or by clicking on the up and down arrows.		</p>
+<div class="metabox-prefs-container">
+<label for="dashboard_php_nag-hide"><input checked="checked" class="hide-postbox-tog" id="dashboard_php_nag-hide" name="dashboard_php_nag-hide" type="checkbox" value="dashboard_php_nag"/>PHP Update Recommended</label><label for="dashboard_site_health-hide"><input checked="checked" class="hide-postbox-tog" id="dashboard_site_health-hide" name="dashboard_site_health-hide" type="checkbox" value="dashboard_site_health"/>Site Health Status</label><label for="dashboard_right_now-hide"><input checked="checked" class="hide-postbox-tog" id="dashboard_right_now-hide" name="dashboard_right_now-hide" type="checkbox" value="dashboard_right_now"/>At a Glance</label><label for="dashboard_activity-hide"><input checked="checked" class="hide-postbox-tog" id="dashboard_activity-hide" name="dashboard_activity-hide" type="checkbox" value="dashboard_activity"/>Activity</label><label for="dashboard_quick_press-hide"><input checked="checked" class="hide-postbox-tog" id="dashboard_quick_press-hide" name="dashboard_quick_press-hide" type="checkbox" value="dashboard_quick_press"/><span class="hide-if-no-js">Quick Draft</span> <span class="hide-if-js">Your Recent Drafts</span></label><label for="dashboard_primary-hide"><input checked="checked" class="hide-postbox-tog" id="dashboard_primary-hide" name="dashboard_primary-hide" type="checkbox" value="dashboard_primary"/>WordPress Events and News</label><label for="wp_welcome_panel-hide"><input checked="checked" id="wp_welcome_panel-hide" type="checkbox"/>Welcome</label>
+</div>
+</fieldset>
+<input id="screenoptionnonce" name="screenoptionnonce" type="hidden" value="a6b80b4599"/>
+</form>
+</div> </div>
+<div id="screen-meta-links">
+<div class="hide-if-no-js screen-meta-toggle" id="screen-options-link-wrap">
+<button aria-controls="screen-options-wrap" aria-expanded="false" class="button show-settings" id="show-settings-link" type="button">Screen Options</button>
+</div>
+<div class="hide-if-no-js screen-meta-toggle" id="contextual-help-link-wrap">
+<button aria-controls="contextual-help-wrap" aria-expanded="false" class="button show-settings" id="contextual-help-link" type="button">Help</button>
+</div>
+</div>
+<div class="wrap">
+<h1>Dashboard</h1>
+<div class="welcome-panel" id="welcome-panel">
+<input id="welcomepanelnonce" name="welcomepanelnonce" type="hidden" value="72f6f3a3e8"/> <a aria-label="Dismiss the welcome panel" class="welcome-panel-close" href="https://help.skywind.com/wp-admin/?welcome=0">Dismiss</a>
+<div class="welcome-panel-content">
+<div class="welcome-panel-header">
+<div class="welcome-panel-header-image">
+<svg aria-hidden="true" fill="none" focusable="false" preserveaspectratio="xMidYMin slice" viewbox="0 0 1232 240" xmlns="http://www.w3.org/2000/svg">
+<g clip-path="url(#a)">
+<path d="M0 0h1232v240H0z" fill="#151515"></path>
+<ellipse cx="616" cy="232" fill="url(#b)" opacity=".05" rx="1497" ry="249"></ellipse>
+<mask height="400" id="d" maskunits="userSpaceOnUse" style="mask-type:alpha" width="1000" x="232" y="20">
+<path d="M0 0h1000v400H0z" fill="url(#c)" transform="translate(232 20)"></path>
+</mask>
+<g mask="url(#d)" stroke-width="2">
+<path d="M387 20v1635" stroke="url(#e)"></path>
+<path d="M559.5 20v1635" stroke="url(#f)"></path>
+<path d="M732 20v1635" stroke="url(#g)"></path>
+<path d="M904.5 20v1635" stroke="url(#h)"></path>
+<path d="M1077 20v1635" stroke="url(#i)"></path>
+</g>
+</g>
+<defs>
+<lineargradient gradientunits="userSpaceOnUse" id="e" x1="387.5" x2="387.5" y1="20" y2="1655">
+<stop stop-color="#3858E9" stop-opacity="0"></stop>
+<stop offset=".297" stop-color="#3858E9"></stop>
+<stop offset=".734" stop-color="#3858E9"></stop>
+<stop offset="1" stop-color="#3858E9" stop-opacity="0"></stop>
+<stop offset="1" stop-color="#3858E9" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="f" x1="560" x2="560" y1="20" y2="1655">
+<stop stop-color="#FFFCB5" stop-opacity="0"></stop>
+<stop offset="0" stop-color="#FFFCB5" stop-opacity="0"></stop>
+<stop offset=".297" stop-color="#FFFCB5"></stop>
+<stop offset=".734" stop-color="#FFFCB5"></stop>
+<stop offset="1" stop-color="#FFFCB5" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="g" x1="732.5" x2="732.5" y1="20" y2="1655">
+<stop stop-color="#C7FFDB" stop-opacity="0"></stop>
+<stop offset=".297" stop-color="#C7FFDB"></stop>
+<stop offset=".693" stop-color="#C7FFDB"></stop>
+<stop offset="1" stop-color="#C7FFDB" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="h" x1="905" x2="905" y1="20" y2="1655">
+<stop stop-color="#FFB7A7" stop-opacity="0"></stop>
+<stop offset=".297" stop-color="#FFB7A7"></stop>
+<stop offset=".734" stop-color="#FFB7A7"></stop>
+<stop offset="1" stop-color="#3858E9" stop-opacity="0"></stop>
+<stop offset="1" stop-color="#FFB7A7" stop-opacity="0"></stop>
+</lineargradient>
+<lineargradient gradientunits="userSpaceOnUse" id="i" x1="1077.5" x2="1077.5" y1="20" y2="1655">
+<stop stop-color="#7B90FF" stop-opacity="0"></stop>
+<stop offset=".297" stop-color="#7B90FF"></stop>
+<stop offset=".734" stop-color="#7B90FF"></stop>
+<stop offset="1" stop-color="#3858E9" stop-opacity="0"></stop>
+<stop offset="1" stop-color="#7B90FF" stop-opacity="0"></stop>
+</lineargradient>
+<radialgradient cx="0" cy="0" gradienttransform="matrix(0 249 -1497 0 616 232)" gradientunits="userSpaceOnUse" id="b" r="1">
+<stop stop-color="#3858E9"></stop>
+<stop offset="1" stop-color="#151515" stop-opacity="0"></stop>
+</radialgradient>
+<radialgradient cx="0" cy="0" gradienttransform="matrix(0 765 -1912.5 0 500 -110)" gradientunits="userSpaceOnUse" id="c" r="1">
+<stop offset=".161" stop-color="#151515" stop-opacity="0"></stop>
+<stop offset=".682"></stop>
+</radialgradient>
+<clippath id="a">
+<path d="M0 0h1232v240H0z" fill="#fff"></path>
+</clippath>
+</defs>
+</svg>
+</div>
+<h2>Welcome to WordPress!</h2>
+<p>
+<a href="https://help.skywind.com/wp-admin/about.php">
+			Learn more about the 6.8.3 version.			</a>
+</p>
+</div>
+<div class="welcome-panel-column-container">
+<div class="welcome-panel-column">
+<svg aria-hidden="true" fill="none" focusable="false" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#1E1E1E" height="48" rx="4" width="48"></rect>
+<path clip-rule="evenodd" d="M32.0668 17.0854L28.8221 13.9454L18.2008 24.671L16.8983 29.0827L21.4257 27.8309L32.0668 17.0854ZM16 32.75H24V31.25H16V32.75Z" fill="white" fill-rule="evenodd"></path>
+</svg>
+<div class="welcome-panel-column-content">
+<h3>Author rich content with blocks and patterns</h3>
+<p>Block patterns are pre-configured block layouts. Use them to get inspired or create new pages in a flash.</p>
+<a href="https://help.skywind.com/wp-admin/post-new.php?post_type=page">Add a new page</a>
+</div>
+</div>
+<div class="welcome-panel-column">
+<svg aria-hidden="true" fill="none" focusable="false" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#1E1E1E" height="48" rx="4" width="48"></rect>
+<path clip-rule="evenodd" d="M18 16h12a2 2 0 0 1 2 2v12a2 2 0 0 1-2 2H18a2 2 0 0 1-2-2V18a2 2 0 0 1 2-2zm12 1.5H18a.5.5 0 0 0-.5.5v3h13v-3a.5.5 0 0 0-.5-.5zm.5 5H22v8h8a.5.5 0 0 0 .5-.5v-7.5zm-10 0h-3V30a.5.5 0 0 0 .5.5h2.5v-8z" fill="#fff" fill-rule="evenodd"></path>
+</svg>
+<div class="welcome-panel-column-content">
+<h3>Start Customizing</h3>
+<p>Configure your site’s logo, header, menus, and more in the Customizer.</p>
+<a class="load-customize hide-if-no-customize" href="https://help.skywind.com/wp-admin/customize.php">Open the Customizer</a>
+</div>
+</div>
+<div class="welcome-panel-column">
+<svg aria-hidden="true" fill="none" focusable="false" height="48" viewbox="0 0 48 48" width="48" xmlns="http://www.w3.org/2000/svg">
+<rect fill="#1E1E1E" height="48" rx="4" width="48"></rect>
+<path clip-rule="evenodd" d="M31 24a7 7 0 0 1-7 7V17a7 7 0 0 1 7 7zm-7-8a8 8 0 1 1 0 16 8 8 0 0 1 0-16z" fill="#fff" fill-rule="evenodd"></path>
+</svg>
+<div class="welcome-panel-column-content">
+<h3>Discover a new way to build your site.</h3>
+<p>There is a new kind of WordPress theme, called a block theme, that lets you build the site you’ve always wanted — with blocks and styles.</p>
+<a href="https://wordpress.org/documentation/article/block-themes/">Learn about block themes</a>
+</div>
+</div>
+</div>
+</div>
+</div>
+<div id="dashboard-widgets-wrap">
+<div class="metabox-holder" id="dashboard-widgets">
+<div class="postbox-container" id="postbox-container-1">
+<div class="meta-box-sortables" id="normal-sortables"><div class="postbox php-no-security-updates" id="dashboard_php_nag">
+<div class="postbox-header"><h2 class="hndle"><span aria-hidden="true" class="dashicons dashicons-warning"></span><span class="screen-reader-text">Warning: </span>PHP Update Recommended</h2>
+<div class="handle-actions hide-if-no-js"><button aria-describedby="dashboard_php_nag-handle-order-higher-description" aria-disabled="false" class="handle-order-higher" type="button"><span class="screen-reader-text">Move up</span><span aria-hidden="true" class="order-higher-indicator"></span></button><span class="hidden" id="dashboard_php_nag-handle-order-higher-description">Move PHP Update Recommended box up</span><button aria-describedby="dashboard_php_nag-handle-order-lower-description" aria-disabled="false" class="handle-order-lower" type="button"><span class="screen-reader-text">Move down</span><span aria-hidden="true" class="order-lower-indicator"></span></button><span class="hidden" id="dashboard_php_nag-handle-order-lower-description">Move PHP Update Recommended box down</span><button aria-expanded="true" class="handlediv" type="button"><span class="screen-reader-text">Toggle panel: PHP Update Recommended</span><span aria-hidden="true" class="toggle-indicator"></span></button></div></div><div class="inside">
+<p class="bigger-bolder-text">Your site is running on an outdated version of PHP (7.4.33), which does not receive security updates. It should be updated.</p>
+<p>What is PHP and how does it affect my site?</p>
+<p>
+		PHP is one of the programming languages used to build WordPress. Newer versions of PHP receive regular security updates and may increase your site’s performance.		The minimum recommended version of PHP is 8.3.	</p>
+<p class="button-container">
+<a class="button button-primary" href="https://wordpress.org/support/update-php/" target="_blank">Learn more about updating PHP<span class="screen-reader-text"> (opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> </p>
+</div>
+</div>
+<div class="postbox" id="dashboard_site_health">
+<div class="postbox-header"><h2 class="hndle">Site Health Status</h2>
+<div class="handle-actions hide-if-no-js"><button aria-describedby="dashboard_site_health-handle-order-higher-description" aria-disabled="false" class="handle-order-higher" type="button"><span class="screen-reader-text">Move up</span><span aria-hidden="true" class="order-higher-indicator"></span></button><span class="hidden" id="dashboard_site_health-handle-order-higher-description">Move Site Health Status box up</span><button aria-describedby="dashboard_site_health-handle-order-lower-description" aria-disabled="false" class="handle-order-lower" type="button"><span class="screen-reader-text">Move down</span><span aria-hidden="true" class="order-lower-indicator"></span></button><span class="hidden" id="dashboard_site_health-handle-order-lower-description">Move Site Health Status box down</span><button aria-expanded="true" class="handlediv" type="button"><span class="screen-reader-text">Toggle panel: Site Health Status</span><span aria-hidden="true" class="toggle-indicator"></span></button></div></div><div class="inside">
+<div class="health-check-widget">
+<div class="health-check-widget-title-section site-health-progress-wrapper loading hide-if-no-js">
+<div class="site-health-progress">
+<svg aria-hidden="true" focusable="false" height="100%" version="1.1" viewbox="0 0 200 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+<circle cx="100" cy="100" fill="transparent" r="90" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+<circle cx="100" cy="100" fill="transparent" id="bar" r="90" stroke-dasharray="565.48" stroke-dashoffset="0"></circle>
+</svg>
+</div>
+<div class="site-health-progress-label">
+									Results are still loading…							</div>
+</div>
+<div class="site-health-details">
+<p>
+											Your site has critical issues that should be addressed as soon as possible to improve its performance and security.									</p>
+<p>
+					Take a look at the <strong>7 items</strong> on the <a href="https://help.skywind.com/wp-admin/site-health.php">Site Health screen</a>.				</p>
+</div>
+</div>
+</div>
+</div>
+<div class="postbox" id="dashboard_right_now">
+<div class="postbox-header"><h2 class="hndle">At a Glance</h2>
+<div class="handle-actions hide-if-no-js"><button aria-describedby="dashboard_right_now-handle-order-higher-description" aria-disabled="false" class="handle-order-higher" type="button"><span class="screen-reader-text">Move up</span><span aria-hidden="true" class="order-higher-indicator"></span></button><span class="hidden" id="dashboard_right_now-handle-order-higher-description">Move At a Glance box up</span><button aria-describedby="dashboard_right_now-handle-order-lower-description" aria-disabled="false" class="handle-order-lower" type="button"><span class="screen-reader-text">Move down</span><span aria-hidden="true" class="order-lower-indicator"></span></button><span class="hidden" id="dashboard_right_now-handle-order-lower-description">Move At a Glance box down</span><button aria-expanded="true" class="handlediv" type="button"><span class="screen-reader-text">Toggle panel: At a Glance</span><span aria-hidden="true" class="toggle-indicator"></span></button></div></div><div class="inside">
+<div class="main">
+<ul>
+<li class="post-count"><a href="edit.php?post_type=post">131 Posts</a></li><li class="page-count"><a href="edit.php?post_type=page">5 Pages</a></li> <li class="comment-count">
+<a href="edit-comments.php">2 Comments</a>
+</li>
+<li class="comment-mod-count">
+<a class="comments-in-moderation-text" href="edit-comments.php?comment_status=moderated">40 Comments in moderation</a>
+</li>
+</ul>
+<p id="wp-version-message"><span id="wp-version">WordPress 6.8.3 running <a href="themes.php">Help Skywind</a> theme.</span></p> </div>
+</div>
+</div>
+<div class="postbox" id="dashboard_activity">
+<div class="postbox-header"><h2 class="hndle">Activity</h2>
+<div class="handle-actions hide-if-no-js"><button aria-describedby="dashboard_activity-handle-order-higher-description" aria-disabled="false" class="handle-order-higher" type="button"><span class="screen-reader-text">Move up</span><span aria-hidden="true" class="order-higher-indicator"></span></button><span class="hidden" id="dashboard_activity-handle-order-higher-description">Move Activity box up</span><button aria-describedby="dashboard_activity-handle-order-lower-description" aria-disabled="false" class="handle-order-lower" type="button"><span class="screen-reader-text">Move down</span><span aria-hidden="true" class="order-lower-indicator"></span></button><span class="hidden" id="dashboard_activity-handle-order-lower-description">Move Activity box down</span><button aria-expanded="true" class="handlediv" type="button"><span class="screen-reader-text">Toggle panel: Activity</span><span aria-hidden="true" class="toggle-indicator"></span></button></div></div><div class="inside">
+<div id="activity-widget"><div class="activity-block" id="published-posts"><h3>Recently Published</h3><ul><li><span>Oct 14th 2024, 21:51</span> <a aria-label="Edit “Role’s Assigned Users &amp; Transactions – Report Usage”" href="https://help.skywind.com/wp-admin/post.php?post=4896&amp;action=edit">Role’s Assigned Users &amp; Transactions – Report Usage</a></li><li><span>Oct 15th 2024, 18:37</span> <a aria-label="Edit “Role’s Assigned Users &amp; Transactions – Managing Reporting Instance versions”" href="https://help.skywind.com/wp-admin/post.php?post=4924&amp;action=edit">Role’s Assigned Users &amp; Transactions – Managing Reporting Instance versions</a></li><li><span>Oct 15th 2024, 19:32</span> <a aria-label="Edit “Role’s Assigned Users &amp; Transactions – Report Output”" href="https://help.skywind.com/wp-admin/post.php?post=4936&amp;action=edit">Role’s Assigned Users &amp; Transactions – Report Output</a></li><li><span>Oct 7th 2024, 19:38</span> <a aria-label="Edit “User’s Assigned Roles and Profiles – Report Usage”" href="https://help.skywind.com/wp-admin/post.php?post=4737&amp;action=edit">User’s Assigned Roles and Profiles – Report Usage</a></li><li><span>Oct 8th 2024, 19:52</span> <a aria-label="Edit “User’s Assigned Roles and Profiles – Managing Reporting Instance versions”" href="https://help.skywind.com/wp-admin/post.php?post=4768&amp;action=edit">User’s Assigned Roles and Profiles – Managing Reporting Instance versions</a></li></ul></div><div class="activity-block table-view-list" id="latest-comments"><h3>Recent Comments</h3><ul data-wp-lists="list:comment" id="the-comment-list">
+<li class="pingback even thread-even depth-1 comment-item unapproved" id="comment-48">
+<div class="dashboard-comment-wrap has-row-actions">
+<p class="comment-meta">
+<strong>Pingback</strong> on <a href="https://help.skywind.com/administration-general/">Administration – Overview</a> <span class="approve">[Pending]</span> </p>
+<p class="comment-author"><a class="url" href="http://help.skywind.com/administration-user-info-authorizations/" rel="ugc">Skywind Knowledge Portal</a></p>
+<blockquote><p>[…] – Overview Administration - OverviewAdministration - User […]</p></blockquote>
+<p class="row-actions"><span class="approve"><a aria-label="Approve this comment" class="vim-a aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-48:unapproved:e7e7d3:e7e7d3:new=approved" href="comment.php?action=approvecomment&amp;p=3407&amp;c=48&amp;_wpnonce=e7991459aa">Approve</a></span><span class="unapprove"><a aria-label="Unapprove this comment" class="vim-u aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-48:unapproved:e7e7d3:e7e7d3:new=unapproved" href="comment.php?action=unapprovecomment&amp;p=3407&amp;c=48&amp;_wpnonce=e7991459aa">Unapprove</a></span><span class="reply hide-if-no-js"> | <button aria-label="Reply to this comment" class="vim-r button-link hide-if-no-js" onclick="window.commentReply &amp;&amp; commentReply.open('48','3407');" type="button">Reply</button></span><span class="edit"> | <a aria-label="Edit this comment" href="comment.php?action=editcomment&amp;c=48">Edit</a></span><span class="spam"> | <a aria-label="Mark this comment as spam" class="vim-s vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-48::spam=1" href="comment.php?action=spamcomment&amp;p=3407&amp;c=48&amp;_wpnonce=1ad9bff545">Spam</a></span><span class="trash"> | <a aria-label="Move this comment to the Trash" class="delete vim-d vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-48::trash=1" href="comment.php?action=trashcomment&amp;p=3407&amp;c=48&amp;_wpnonce=1ad9bff545">Trash</a></span><span class="view hidden"> | <a aria-label="View this comment" class="comment-link" href="https://help.skywind.com/administration-general/#comment-48">View</a></span></p>
+</div>
+</li>
+<li class="pingback odd alt thread-odd thread-alt depth-1 comment-item unapproved" id="comment-47">
+<div class="dashboard-comment-wrap has-row-actions">
+<p class="comment-meta">
+<strong>Pingback</strong> on <a href="https://help.skywind.com/administration-general/">Administration – Overview</a> <span class="approve">[Pending]</span> </p>
+<p class="comment-author"><a class="url" href="http://help.skywind.com/4c-recipients/" rel="ugc">Skywind Knowledge Portal</a></p>
+<blockquote><p>[…] – Overview Administration - OverviewAdministration - User Info &amp; […]</p></blockquote>
+<p class="row-actions"><span class="approve"><a aria-label="Approve this comment" class="vim-a aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-47:unapproved:e7e7d3:e7e7d3:new=approved" href="comment.php?action=approvecomment&amp;p=3407&amp;c=47&amp;_wpnonce=ae4a410985">Approve</a></span><span class="unapprove"><a aria-label="Unapprove this comment" class="vim-u aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-47:unapproved:e7e7d3:e7e7d3:new=unapproved" href="comment.php?action=unapprovecomment&amp;p=3407&amp;c=47&amp;_wpnonce=ae4a410985">Unapprove</a></span><span class="reply hide-if-no-js"> | <button aria-label="Reply to this comment" class="vim-r button-link hide-if-no-js" onclick="window.commentReply &amp;&amp; commentReply.open('47','3407');" type="button">Reply</button></span><span class="edit"> | <a aria-label="Edit this comment" href="comment.php?action=editcomment&amp;c=47">Edit</a></span><span class="spam"> | <a aria-label="Mark this comment as spam" class="vim-s vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-47::spam=1" href="comment.php?action=spamcomment&amp;p=3407&amp;c=47&amp;_wpnonce=fe4779c226">Spam</a></span><span class="trash"> | <a aria-label="Move this comment to the Trash" class="delete vim-d vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-47::trash=1" href="comment.php?action=trashcomment&amp;p=3407&amp;c=47&amp;_wpnonce=fe4779c226">Trash</a></span><span class="view hidden"> | <a aria-label="View this comment" class="comment-link" href="https://help.skywind.com/administration-general/#comment-47">View</a></span></p>
+</div>
+</li>
+<li class="pingback even thread-even depth-1 comment-item unapproved" id="comment-46">
+<div class="dashboard-comment-wrap has-row-actions">
+<p class="comment-meta">
+<strong>Pingback</strong> on <a href="https://help.skywind.com/administration-user-info-authorizations/">Administration – Users Management – User Details</a> <span class="approve">[Pending]</span> </p>
+<p class="comment-author"><a class="url" href="http://help.skywind.com/administration-general/" rel="ugc">Skywind Knowledge Portal</a></p>
+<blockquote><p>[…] Administration – Overview Administration - OverviewAdministration - User Info &amp; Authorizations […]</p></blockquote>
+<p class="row-actions"><span class="approve"><a aria-label="Approve this comment" class="vim-a aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-46:unapproved:e7e7d3:e7e7d3:new=approved" href="comment.php?action=approvecomment&amp;p=3798&amp;c=46&amp;_wpnonce=d21ed6142e">Approve</a></span><span class="unapprove"><a aria-label="Unapprove this comment" class="vim-u aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-46:unapproved:e7e7d3:e7e7d3:new=unapproved" href="comment.php?action=unapprovecomment&amp;p=3798&amp;c=46&amp;_wpnonce=d21ed6142e">Unapprove</a></span><span class="reply hide-if-no-js"> | <button aria-label="Reply to this comment" class="vim-r button-link hide-if-no-js" onclick="window.commentReply &amp;&amp; commentReply.open('46','3798');" type="button">Reply</button></span><span class="edit"> | <a aria-label="Edit this comment" href="comment.php?action=editcomment&amp;c=46">Edit</a></span><span class="spam"> | <a aria-label="Mark this comment as spam" class="vim-s vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-46::spam=1" href="comment.php?action=spamcomment&amp;p=3798&amp;c=46&amp;_wpnonce=7dd128cba3">Spam</a></span><span class="trash"> | <a aria-label="Move this comment to the Trash" class="delete vim-d vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-46::trash=1" href="comment.php?action=trashcomment&amp;p=3798&amp;c=46&amp;_wpnonce=7dd128cba3">Trash</a></span><span class="view hidden"> | <a aria-label="View this comment" class="comment-link" href="https://help.skywind.com/administration-user-info-authorizations/#comment-46">View</a></span></p>
+</div>
+</li>
+<li class="pingback odd alt thread-odd thread-alt depth-1 comment-item unapproved" id="comment-45">
+<div class="dashboard-comment-wrap has-row-actions">
+<p class="comment-meta">
+<strong>Pingback</strong> on <a href="https://help.skywind.com/soda-data-masking/">SoDA™ – Data Masking</a> <span class="approve">[Pending]</span> </p>
+<p class="comment-author"><a class="url" href="http://help.skywind.com/soda-users/" rel="ugc">Skywind Knowledge Portal</a></p>
+<blockquote><p>[…] Administration – SoDA™ SoDA™ – UsersSoDA™ - Data Masking […]</p></blockquote>
+<p class="row-actions"><span class="approve"><a aria-label="Approve this comment" class="vim-a aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-45:unapproved:e7e7d3:e7e7d3:new=approved" href="comment.php?action=approvecomment&amp;p=3140&amp;c=45&amp;_wpnonce=7f1878e33f">Approve</a></span><span class="unapprove"><a aria-label="Unapprove this comment" class="vim-u aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-45:unapproved:e7e7d3:e7e7d3:new=unapproved" href="comment.php?action=unapprovecomment&amp;p=3140&amp;c=45&amp;_wpnonce=7f1878e33f">Unapprove</a></span><span class="reply hide-if-no-js"> | <button aria-label="Reply to this comment" class="vim-r button-link hide-if-no-js" onclick="window.commentReply &amp;&amp; commentReply.open('45','3140');" type="button">Reply</button></span><span class="edit"> | <a aria-label="Edit this comment" href="comment.php?action=editcomment&amp;c=45">Edit</a></span><span class="spam"> | <a aria-label="Mark this comment as spam" class="vim-s vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-45::spam=1" href="comment.php?action=spamcomment&amp;p=3140&amp;c=45&amp;_wpnonce=2ced429b94">Spam</a></span><span class="trash"> | <a aria-label="Move this comment to the Trash" class="delete vim-d vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-45::trash=1" href="comment.php?action=trashcomment&amp;p=3140&amp;c=45&amp;_wpnonce=2ced429b94">Trash</a></span><span class="view hidden"> | <a aria-label="View this comment" class="comment-link" href="https://help.skywind.com/soda-data-masking/#comment-45">View</a></span></p>
+</div>
+</li>
+<li class="pingback even thread-even depth-1 comment-item unapproved" id="comment-41">
+<div class="dashboard-comment-wrap has-row-actions">
+<p class="comment-meta">
+<strong>Pingback</strong> on <a href="https://help.skywind.com/t-groups-menu/">T-Groups – List of Business Domains</a> <span class="approve">[Pending]</span> </p>
+<p class="comment-author"><a class="url" href="http://help.skywind.com/critical-t-codes/" rel="ugc">Skywind Knowledge Portal</a></p>
+<blockquote><p>[…] T-Groups - List of Business DomainsT-Groups - Operating T-GroupsT-Groups - Managing […]</p></blockquote>
+<p class="row-actions"><span class="approve"><a aria-label="Approve this comment" class="vim-a aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-41:unapproved:e7e7d3:e7e7d3:new=approved" href="comment.php?action=approvecomment&amp;p=282&amp;c=41&amp;_wpnonce=07ee4982b8">Approve</a></span><span class="unapprove"><a aria-label="Unapprove this comment" class="vim-u aria-button-if-js" data-wp-lists="dim:the-comment-list:comment-41:unapproved:e7e7d3:e7e7d3:new=unapproved" href="comment.php?action=unapprovecomment&amp;p=282&amp;c=41&amp;_wpnonce=07ee4982b8">Unapprove</a></span><span class="reply hide-if-no-js"> | <button aria-label="Reply to this comment" class="vim-r button-link hide-if-no-js" onclick="window.commentReply &amp;&amp; commentReply.open('41','282');" type="button">Reply</button></span><span class="edit"> | <a aria-label="Edit this comment" href="comment.php?action=editcomment&amp;c=41">Edit</a></span><span class="spam"> | <a aria-label="Mark this comment as spam" class="vim-s vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-41::spam=1" href="comment.php?action=spamcomment&amp;p=282&amp;c=41&amp;_wpnonce=d4124a51e7">Spam</a></span><span class="trash"> | <a aria-label="Move this comment to the Trash" class="delete vim-d vim-destructive aria-button-if-js" data-wp-lists="delete:the-comment-list:comment-41::trash=1" href="comment.php?action=trashcomment&amp;p=282&amp;c=41&amp;_wpnonce=d4124a51e7">Trash</a></span><span class="view hidden"> | <a aria-label="View this comment" class="comment-link" href="https://help.skywind.com/t-groups-menu/#comment-41">View</a></span></p>
+</div>
+</li>
+</ul><h3 class="screen-reader-text">View more comments</h3><ul class="subsubsub">
+<li class="all"><a href="https://help.skywind.com/wp-admin/edit-comments.php?comment_status=all">All <span class="count">(<span class="all-count">42</span>)</span></a> |</li>
+<li class="mine"><a href="https://help.skywind.com/wp-admin/edit-comments.php?comment_status=mine&amp;user_id=1">Mine <span class="count">(<span class="mine-count">0</span>)</span></a> |</li>
+<li class="moderated"><a href="https://help.skywind.com/wp-admin/edit-comments.php?comment_status=moderated">Pending <span class="count">(<span class="pending-count">40</span>)</span></a> |</li>
+<li class="approved"><a href="https://help.skywind.com/wp-admin/edit-comments.php?comment_status=approved">Approved <span class="count">(<span class="approved-count">2</span>)</span></a> |</li>
+<li class="spam"><a href="https://help.skywind.com/wp-admin/edit-comments.php?comment_status=spam">Spam <span class="count">(<span class="spam-count">0</span>)</span></a> |</li>
+<li class="trash"><a href="https://help.skywind.com/wp-admin/edit-comments.php?comment_status=trash">Trash <span class="count">(<span class="trash-count">0</span>)</span></a></li>
+</ul><form method="get">
+<div id="com-reply" style="display:none;"><div id="replyrow" style="display:none;">
+<fieldset class="comment-reply">
+<legend>
+<span class="hidden" id="editlegend">Edit Comment</span>
+<span class="hidden" id="replyhead">Reply to Comment</span>
+<span class="hidden" id="addhead">Add Comment</span>
+</legend>
+<div id="replycontainer">
+<label class="screen-reader-text" for="replycontent">
+		Comment	</label>
+<div class="wp-core-ui wp-editor-wrap html-active" id="wp-replycontent-wrap"><link href="https://help.skywind.com/wp-includes/css/editor.min.css?ver=6.8.3" id="editor-buttons-css" media="all" rel="stylesheet"/>
+<div class="wp-editor-container" id="wp-replycontent-editor-container"><div class="quicktags-toolbar hide-if-no-js" id="qt_replycontent_toolbar"></div><textarea class="wp-editor-area" cols="40" id="replycontent" name="replycontent" rows="20"></textarea></div>
+</div>
+</div>
+<div id="edithead" style="display:none;">
+<div class="inside">
+<label for="author-name">Name</label>
+<input id="author-name" name="newcomment_author" size="50" type="text" value=""/>
+</div>
+<div class="inside">
+<label for="author-email">Email</label>
+<input id="author-email" name="newcomment_author_email" size="50" type="text" value=""/>
+</div>
+<div class="inside">
+<label for="author-url">URL</label>
+<input class="code" id="author-url" name="newcomment_author_url" size="103" type="text" value=""/>
+</div>
+</div>
+<div class="submit" id="replysubmit">
+<p class="reply-submit-buttons">
+<button class="save button button-primary" type="button">
+<span id="addbtn" style="display: none;">Add Comment</span>
+<span id="savebtn" style="display: none;">Update Comment</span>
+<span id="replybtn" style="display: none;">Submit Reply</span>
+</button>
+<button class="cancel button" type="button">Cancel</button>
+<span class="waiting spinner"></span>
+</p>
+<div class="notice notice-error notice-alt inline hidden"><p class="error"></p></div> </div>
+<input id="action" name="action" type="hidden" value=""/>
+<input id="comment_ID" name="comment_ID" type="hidden" value=""/>
+<input id="comment_post_ID" name="comment_post_ID" type="hidden" value=""/>
+<input id="status" name="status" type="hidden" value=""/>
+<input id="position" name="position" type="hidden" value="-1"/>
+<input id="checkbox" name="checkbox" type="hidden" value="0"/>
+<input id="mode" name="mode" type="hidden" value="dashboard"/>
+<input id="_ajax_nonce-replyto-comment" name="_ajax_nonce-replyto-comment" type="hidden" value="278fc3d262"/><input id="_wp_unfiltered_html_comment" name="_wp_unfiltered_html_comment" type="hidden" value="57b967b3ae"/> </fieldset>
+</div></div>
+</form>
+<div class="hidden" id="trash-undo-holder">
+<div class="trash-undo-inside">
+		Comment by <strong></strong> moved to the Trash.		<span class="undo untrash"><a href="#">Undo</a></span>
+</div>
+</div>
+<div class="hidden" id="spam-undo-holder">
+<div class="spam-undo-inside">
+		Comment by <strong></strong> marked as spam.		<span class="undo unspam"><a href="#">Undo</a></span>
+</div>
+</div>
+</div></div></div>
+</div>
+</div> </div>
+<div class="postbox-container" id="postbox-container-2">
+<div class="meta-box-sortables" id="side-sortables"><div class="postbox" id="dashboard_quick_press">
+<div class="postbox-header"><h2 class="hndle"><span class="hide-if-no-js">Quick Draft</span> <span class="hide-if-js">Your Recent Drafts</span></h2>
+<div class="handle-actions hide-if-no-js"><button aria-describedby="dashboard_quick_press-handle-order-higher-description" aria-disabled="false" class="handle-order-higher" type="button"><span class="screen-reader-text">Move up</span><span aria-hidden="true" class="order-higher-indicator"></span></button><span class="hidden" id="dashboard_quick_press-handle-order-higher-description">Move <span class="hide-if-no-js">Quick Draft</span> <span class="hide-if-js">Your Recent Drafts</span> box up</span><button aria-describedby="dashboard_quick_press-handle-order-lower-description" aria-disabled="false" class="handle-order-lower" type="button"><span class="screen-reader-text">Move down</span><span aria-hidden="true" class="order-lower-indicator"></span></button><span class="hidden" id="dashboard_quick_press-handle-order-lower-description">Move <span class="hide-if-no-js">Quick Draft</span> <span class="hide-if-js">Your Recent Drafts</span> box down</span><button aria-expanded="true" class="handlediv" type="button"><span class="screen-reader-text">Toggle panel: <span class="hide-if-no-js">Quick Draft</span> <span class="hide-if-js">Your Recent Drafts</span></span><span aria-hidden="true" class="toggle-indicator"></span></button></div></div><div class="inside">
+<form action="https://help.skywind.com/wp-admin/post.php" class="initial-form hide-if-no-js" id="quick-press" method="post" name="post">
+<div class="input-text-wrap" id="title-wrap">
+<label for="title">
+				Title			</label>
+<input autocomplete="off" id="title" name="post_title" type="text"/>
+</div>
+<div class="textarea-wrap" id="description-wrap">
+<label for="content">Content</label>
+<textarea autocomplete="off" class="mceEditor" cols="15" id="content" name="content" placeholder="What’s on your mind?" rows="3"></textarea>
+</div>
+<p class="submit">
+<input id="quickpost-action" name="action" type="hidden" value="post-quickdraft-save"/>
+<input name="post_ID" type="hidden" value="5036"/>
+<input name="post_type" type="hidden" value="post"/>
+<input id="_wpnonce" name="_wpnonce" type="hidden" value="b1deed9b39"/><input name="_wp_http_referer" type="hidden" value="/wp-admin/"/> <input class="button button-primary" id="save-post" name="save" type="submit" value="Save Draft"/> <br class="clear"/>
+</p>
+</form>
+<div class="drafts"><h2 class="hide-if-no-js">Your Recent Drafts</h2>
+<ul><li>
+<div class="draft-title"><a aria-label="Edit “User’s Assigned Transactions – Report Usage”" href="https://help.skywind.com/wp-admin/post.php?post=4707&amp;action=edit">User’s Assigned Transactions – Report Usage</a><time datetime="2024-10-07T18:04:45+03:00">October 7, 2024</time></div><p>[title_post]User's Assigned Transactions - Report Usage[/title_post] About: Potential SoD Violations…</p></li>
+<li>
+<div class="draft-title"><a aria-label="Edit “Internal Violations – Output”" href="https://help.skywind.com/wp-admin/post.php?post=1390&amp;action=edit">Internal Violations – Output</a><time datetime="2021-08-25T18:53:16+03:00">August 25, 2021</time></div></li>
+</ul>
+</div></div>
+</div>
+<div class="postbox" id="dashboard_primary">
+<div class="postbox-header"><h2 class="hndle">WordPress Events and News</h2>
+<div class="handle-actions hide-if-no-js"><button aria-describedby="dashboard_primary-handle-order-higher-description" aria-disabled="false" class="handle-order-higher" type="button"><span class="screen-reader-text">Move up</span><span aria-hidden="true" class="order-higher-indicator"></span></button><span class="hidden" id="dashboard_primary-handle-order-higher-description">Move WordPress Events and News box up</span><button aria-describedby="dashboard_primary-handle-order-lower-description" aria-disabled="false" class="handle-order-lower" type="button"><span class="screen-reader-text">Move down</span><span aria-hidden="true" class="order-lower-indicator"></span></button><span class="hidden" id="dashboard_primary-handle-order-lower-description">Move WordPress Events and News box down</span><button aria-expanded="true" class="handlediv" type="button"><span class="screen-reader-text">Toggle panel: WordPress Events and News</span><span aria-hidden="true" class="toggle-indicator"></span></button></div></div><div class="inside">
+<div class="notice notice-error community-events-errors inline hide-if-js"><p class="hide-if-js">This widget requires JavaScript.</p><p aria-hidden="true" class="community-events-error-occurred">An error occurred. Please try again.</p><p aria-hidden="true" class="community-events-could-not-locate"></p></div> <div aria-hidden="true" class="community-events" id="community-events">
+<div class="activity-block">
+<p>
+<span id="community-events-location-message"></span>
+<button aria-expanded="false" class="button-link community-events-toggle-location">
+<span aria-hidden="true" class="dashicons dashicons-location"></span>
+<span class="community-events-location-edit">Select location</span>
+</button>
+</p>
+<form action="https://help.skywind.com/wp-admin/admin-ajax.php" aria-hidden="true" class="community-events-form" method="post">
+<label for="community-events-location">
+					City:				</label>
+<input class="regular-text" id="community-events-location" name="community-events-location" placeholder="Cincinnati" type="text"/>
+<input class="button" id="community-events-submit" name="community-events-submit" type="submit" value="Submit"/>
+<button aria-expanded="false" class="community-events-cancel button-link" type="button">
+					Cancel				</button>
+<span class="spinner"></span>
+</form>
+</div>
+<ul class="community-events-results activity-block last"></ul>
+</div>
+<div class="wordpress-news hide-if-no-js">
+<p class="widget-loading hide-if-no-js">Loading…</p><div class="notice notice-error inline hide-if-js"><p>This widget requires JavaScript.</p></div> </div>
+<p class="community-events-footer">
+<a href="https://make.wordpress.org/community/meetups-landing-page" target="_blank">Meetups <span class="screen-reader-text"> (opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		|
+
+		<a href="https://central.wordcamp.org/schedule/" target="_blank">WordCamps <span class="screen-reader-text"> (opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a>
+		|
+
+		<a href="https://wordpress.org/news/" target="_blank">News <span class="screen-reader-text"> (opens in a new tab)</span><span aria-hidden="true" class="dashicons dashicons-external"></span></a> </p>
+</div>
+</div>
+</div> </div>
+<div class="postbox-container" id="postbox-container-3">
+<div class="meta-box-sortables" id="column3-sortables"></div> </div>
+<div class="postbox-container" id="postbox-container-4">
+<div class="meta-box-sortables" id="column4-sortables"></div> </div>
+</div>
+<input id="closedpostboxesnonce" name="closedpostboxesnonce" type="hidden" value="f5b1d57cc0"/><input id="meta-box-order-nonce" name="meta-box-order-nonce" type="hidden" value="a49a3e5d71"/> </div><!-- dashboard-widgets-wrap -->
+</div><!-- wrap -->
+<script id="tmpl-community-events-attend-event-near" type="text/template">
+		Attend an upcoming event near <strong>{{ data.location.description }}</strong>.	</script>
+<script id="tmpl-community-events-could-not-locate" type="text/template">
+		<em>{{data.unknownCity}}</em> could not be located. Please try another nearby city. For example: Kansas City; Springfield; Portland.	</script>
+<script id="tmpl-community-events-event-list" type="text/template">
+		<# _.each( data.events, function( event ) { #>
+			<li class="event event-{{ event.type }} wp-clearfix">
+				<div class="event-info">
+					<div class="dashicons event-icon" aria-hidden="true"></div>
+					<div class="event-info-inner">
+						<a class="event-title" href="{{ event.url }}">{{ event.title }}</a>
+						<# if ( event.type ) {
+							const titleCaseEventType = event.type.replace(
+								/\w\S*/g,
+								function ( type ) { return type.charAt(0).toUpperCase() + type.substr(1).toLowerCase(); }
+							);
+						#>
+							{{ 'wordcamp' === event.type ? 'WordCamp' : titleCaseEventType }}
+							<span class="ce-separator"></span>
+						<# } #>
+						<span class="event-city">{{ event.location.location }}</span>
+					</div>
+				</div>
+
+				<div class="event-date-time">
+					<span class="event-date">{{ event.user_formatted_date }}</span>
+					<# if ( 'meetup' === event.type ) { #>
+						<span class="event-time">
+							{{ event.user_formatted_time }} {{ event.timeZoneAbbreviation }}
+						</span>
+					<# } #>
+				</div>
+			</li>
+		<# } ) #>
+
+		<# if ( data.events.length <= 2 ) { #>
+			<li class="event-none">
+				Want more events? <a href="https://make.wordpress.org/community/organize-event-landing-page/">Help organize the next one</a>!			</li>
+		<# } #>
+
+	</script>
+<script id="tmpl-community-events-no-upcoming-events" type="text/template">
+		<li class="event-none">
+			<# if ( data.location.description ) { #>
+				There are no events scheduled near {{ data.location.description }} at the moment. Would you like to <a href="https://make.wordpress.org/community/handbook/meetup-organizer/welcome/">organize a WordPress event</a>?
+			<# } else { #>
+				There are no events scheduled near you at the moment. Would you like to <a href="https://make.wordpress.org/community/handbook/meetup-organizer/welcome/">organize a WordPress event</a>?			<# } #>
+		</li>
+	</script>
+<div class="clear"></div></div><!-- wpbody-content -->
+<div class="clear"></div></div><!-- wpbody -->
+<div class="clear"></div></div><!-- wpcontent -->
+<div id="wpfooter" role="contentinfo">
+<p class="alignleft" id="footer-left">
+<span id="footer-thankyou">Thank you for creating with <a href="https://wordpress.org/">WordPress</a>.</span> </p>
+<p class="alignright" id="footer-upgrade">
+		Version 6.8.3	</p>
+<div class="clear"></div>
+</div>
+<div id="bws_shortcode_popup" style="display:none;">
+<div id="bws_shortcode_popup_block">
+<div id="bws_shortcode_select_plugin">
+<h4>Plugin</h4>
+<select id="bws_shortcode_select" name="bws_shortcode_select">
+<option value="pdfprnt">PDF&amp;Print</option>
+</select>
+</div>
+<div class="clear"></div>
+<div id="bws_shortcode_content">
+<h4>Shortcode settings</h4>
+<div id="pdfprnt" style="display:none;">
+<fieldset>
+				Add PDF &amp; Print Buttons to your page or post				<br/>
+<label>
+<input checked="checked" name="pdfprnt_selected_pdf" type="checkbox" value="pdf"/>
+					PDF				</label>
+<br/>
+<label>
+<input name="pdfprnt_selected_print" type="checkbox" value="print"/>
+					Print				</label>
+<input class="bws_default_shortcode" name="default" type="hidden" value="[bws_pdfprint]"/>
+<div class="clear"></div>
+</fieldset>
+</div>
+</div>
+<div class="clear"></div>
+<div id="bws_shortcode_content_bottom">
+<p>The shortcode will be inserted</p>
+<div id="bws_shortcode_block"><div id="bws_shortcode_display"></div></div>
+</div>
+</div>
+</div>
+<script type="text/javascript">list_args = {"class":"WP_Comments_List_Table","screen":{"id":"dashboard","base":"dashboard"}};</script>
+<script type="text/javascript">list_args = {"class":"WP_Comments_List_Table","screen":{"id":"dashboard","base":"dashboard"}};</script>
+<div class="hidden" id="wp-auth-check-wrap">
+<div id="wp-auth-check-bg"></div>
+<div id="wp-auth-check">
+<button class="wp-auth-check-close button-link" type="button"><span class="screen-reader-text">
+		Close dialog	</span></button>
+<div class="loading" data-src="https://help.skywind.com/wp-login.php?interim-login=1&amp;wp_lang=en_US" id="wp-auth-check-form"></div>
+<div class="wp-auth-fallback">
+<p><b class="wp-auth-fallback-expired" tabindex="0">Session expired</b></p>
+<p><a href="https://help.skywind.com/wp-login.php" target="_blank">Please log in again.</a>
+		The login page will open in a new tab. After logging in you can close it and return to this page.</p>
+</div>
+</div>
+</div>
+<script src="https://help.skywind.com/wp-admin/load-scripts.php?c=1&amp;load%5Bchunk_0%5D=hoverIntent,wp-dom-ready,wp-hooks&amp;ver=6.8.3" type="text/javascript"></script>
+<script id="wp-i18n-js" src="https://help.skywind.com/wp-includes/js/dist/i18n.min.js?ver=5e580eb46a90c2b997e6"></script>
+<script id="wp-i18n-js-after">
+wp.i18n.setLocaleData( { 'text direction\u0004ltr': [ 'ltr' ] } );
+</script>
+<script id="wp-a11y-js" src="https://help.skywind.com/wp-includes/js/dist/a11y.min.js?ver=3156534cc54473497e14"></script>
+<script id="common-js-extra">
+var bulkActionObserverIds = {"bulk_action":"action","changeit":"new_role"};
+</script>
+<script id="common-js" src="https://help.skywind.com/wp-admin/js/common.min.js?ver=6.8.3"></script>
+<script id="hoverintent-js-js" src="https://help.skywind.com/wp-includes/js/hoverintent-js.min.js?ver=2.2.1"></script>
+<script id="admin-bar-js" src="https://help.skywind.com/wp-includes/js/admin-bar.min.js?ver=6.8.3"></script>
+<script id="clipboard-js" src="https://help.skywind.com/wp-includes/js/clipboard.min.js?ver=2.0.11"></script>
+<script id="wp-util-js-extra">
+var _wpUtilSettings = {"ajax":{"url":"\/wp-admin\/admin-ajax.php"}};
+</script>
+<script id="wp-util-js" src="https://help.skywind.com/wp-includes/js/wp-util.min.js?ver=6.8.3"></script>
+<script id="wp-api-request-js-extra">
+var wpApiSettings = {"root":"https:\/\/help.skywind.com\/wp-json\/","nonce":"01e31d85be","versionString":"wp\/v2\/"};
+</script>
+<script id="wp-api-request-js" src="https://help.skywind.com/wp-includes/js/api-request.min.js?ver=6.8.3"></script>
+<script id="wp-polyfill-js" src="https://help.skywind.com/wp-includes/js/dist/vendor/wp-polyfill.min.js?ver=3.15.0"></script>
+<script id="wp-url-js" src="https://help.skywind.com/wp-includes/js/dist/url.min.js?ver=c2964167dfe2477c14ea"></script>
+<script id="site-health-js-extra">
+var SiteHealth = {"screen":"dashboard","nonce":{"site_status":"0d20af1eaa","site_status_result":"7047d5ce14"},"site_status":{"direct":[],"async":[],"issues":{"good":16,"recommended":5,"critical":2}}};
+</script>
+<script id="site-health-js" src="https://help.skywind.com/wp-admin/js/site-health.min.js?ver=6.8.3"></script>
+<script id="wp-ajax-response-js-extra">
+var wpAjax = {"noPerm":"Sorry, you are not allowed to do that.","broken":"An error occurred while processing your request. Please try again later."};
+</script>
+<script id="wp-ajax-response-js" src="https://help.skywind.com/wp-includes/js/wp-ajax-response.min.js?ver=6.8.3"></script>
+<script id="jquery-color-js" src="https://help.skywind.com/wp-includes/js/jquery/jquery.color.min.js?ver=3.0.0"></script>
+<script id="wp-lists-js" src="https://help.skywind.com/wp-includes/js/wp-lists.min.js?ver=6.8.3"></script>
+<script id="quicktags-js-extra">
+var quicktagsL10n = {"closeAllOpenTags":"Close all open tags","closeTags":"close tags","enterURL":"Enter the URL","enterImageURL":"Enter the URL of the image","enterImageDescription":"Enter a description of the image","textdirection":"text direction","toggleTextdirection":"Toggle Editor Text Direction","dfw":"Distraction-free writing mode","strong":"Bold","strongClose":"Close bold tag","em":"Italic","emClose":"Close italic tag","link":"Insert link","blockquote":"Blockquote","blockquoteClose":"Close blockquote tag","del":"Deleted text (strikethrough)","delClose":"Close deleted text tag","ins":"Inserted text","insClose":"Close inserted text tag","image":"Insert image","ul":"Bulleted list","ulClose":"Close bulleted list tag","ol":"Numbered list","olClose":"Close numbered list tag","li":"List item","liClose":"Close list item tag","code":"Code","codeClose":"Close code tag","more":"Insert Read More tag"};
+</script>
+<script id="quicktags-js" src="https://help.skywind.com/wp-includes/js/quicktags.min.js?ver=6.8.3"></script>
+<script id="jquery-query-js" src="https://help.skywind.com/wp-includes/js/jquery/jquery.query.js?ver=2.2.3"></script>
+<script id="admin-comments-js-extra">
+var adminCommentsSettings = {"hotkeys_highlight_first":"","hotkeys_highlight_last":""};
+</script>
+<script id="admin-comments-js" src="https://help.skywind.com/wp-admin/js/edit-comments.min.js?ver=6.8.3"></script>
+<script id="jquery-ui-mouse-js" src="https://help.skywind.com/wp-includes/js/jquery/ui/mouse.min.js?ver=1.13.3"></script>
+<script id="jquery-ui-sortable-js" src="https://help.skywind.com/wp-includes/js/jquery/ui/sortable.min.js?ver=1.13.3"></script>
+<script id="postbox-js" src="https://help.skywind.com/wp-admin/js/postbox.min.js?ver=6.8.3"></script>
+<script id="moment-js" src="https://help.skywind.com/wp-includes/js/dist/vendor/moment.min.js?ver=2.30.1"></script>
+<script id="moment-js-after">
+moment.updateLocale( 'en_US', {"months":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthsShort":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"weekdaysShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"week":{"dow":1},"longDateFormat":{"LT":"H:i","LTS":null,"L":null,"LL":"d.m.Y","LLL":"F j, Y g:i a","LLLL":null}} );
+</script>
+<script id="wp-deprecated-js" src="https://help.skywind.com/wp-includes/js/dist/deprecated.min.js?ver=e1f84915c5e8ae38964c"></script>
+<script id="wp-date-js" src="https://help.skywind.com/wp-includes/js/dist/date.min.js?ver=85ff222add187a4e358f"></script>
+<script id="wp-date-js-after">
+wp.date.setSettings( {"l10n":{"locale":"en_US","months":["January","February","March","April","May","June","July","August","September","October","November","December"],"monthsShort":["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"],"weekdays":["Sunday","Monday","Tuesday","Wednesday","Thursday","Friday","Saturday"],"weekdaysShort":["Sun","Mon","Tue","Wed","Thu","Fri","Sat"],"meridiem":{"am":"am","pm":"pm","AM":"AM","PM":"PM"},"relative":{"future":"%s from now","past":"%s ago","s":"a second","ss":"%d seconds","m":"a minute","mm":"%d minutes","h":"an hour","hh":"%d hours","d":"a day","dd":"%d days","M":"a month","MM":"%d months","y":"a year","yy":"%d years"},"startOfWeek":1},"formats":{"time":"H:i","date":"d.m.Y","datetime":"F j, Y g:i a","datetimeAbbreviated":"M j, Y g:i a"},"timezone":{"offset":3,"offsetFormatted":"3","string":"","abbr":""}} );
+</script>
+<script id="dashboard-js-extra">
+var communityEventsData = {"nonce":"b740fa45a2","cache":"","time_format":"H:i"};
+</script>
+<script id="dashboard-js" src="https://help.skywind.com/wp-admin/js/dashboard.min.js?ver=6.8.3"></script>
+<script id="thickbox-js-extra">
+var thickboxL10n = {"next":"Next >","prev":"< Prev","image":"Image","of":"of","close":"Close","noiframes":"This feature requires inline frames. You have iframes disabled or your browser does not support them.","loadingAnimation":"https:\/\/help.skywind.com\/wp-includes\/js\/thickbox\/loadingAnimation.gif"};
+</script>
+<script id="thickbox-js" src="https://help.skywind.com/wp-includes/js/thickbox/thickbox.js?ver=3.1-20121105"></script>
+<script id="plugin-install-js" src="https://help.skywind.com/wp-admin/js/plugin-install.min.js?ver=6.8.3"></script>
+<script id="wp-sanitize-js" src="https://help.skywind.com/wp-includes/js/wp-sanitize.min.js?ver=6.8.3"></script>
+<script id="updates-js-extra">
+var _wpUpdatesSettings = {"ajax_nonce":"05ec038d57"};
+</script>
+<script id="updates-js" src="https://help.skywind.com/wp-admin/js/updates.min.js?ver=6.8.3"></script>
+<script id="shortcode-js" src="https://help.skywind.com/wp-includes/js/shortcode.min.js?ver=6.8.3"></script>
+<script id="media-upload-js" src="https://help.skywind.com/wp-admin/js/media-upload.min.js?ver=6.8.3"></script>
+<script id="svg-painter-js" src="https://help.skywind.com/wp-admin/js/svg-painter.js?ver=6.8.3"></script>
+<script id="heartbeat-js-extra">
+var heartbeatSettings = {"nonce":"ff3ccbed0f"};
+</script>
+<script id="heartbeat-js" src="https://help.skywind.com/wp-includes/js/heartbeat.min.js?ver=6.8.3"></script>
+<script id="wp-auth-check-js" src="https://help.skywind.com/wp-includes/js/wp-auth-check.min.js?ver=6.8.3"></script>
+<script id="pdfprnt_bws_shortcode_button-js" src="//?ver=6.8.3"></script>
+<script id="pdfprnt_bws_shortcode_button-js-after">
+function pdfprnt_shortcode_init() {
+            ( function( $ ) {
+                $( '.mce-reset input[name^="pdfprnt_selected"]' ).change( function() {
+                    var result = '';
+                    $( '.mce-reset input[name^="pdfprnt_selected"]' ).each( function() {
+                        if ( $( this ).is( ':checked' ) ) {
+                            result += $( this ).val() + ',';
+                        }
+                    } );
+
+                    if ( '' == result ) {
+                        $( '.mce-reset #bws_shortcode_display' ).text( '' );
+                    } else {
+                        result = result.slice( 0, - 1 );
+                        $( '.mce-reset #bws_shortcode_display' ).text( '[bws_pdfprint display="' + result + '"]' );
+                    }
+                } );
+            } ) ( jQuery );
+        }
+</script>
+<script id="wplink-js-extra">
+var wpLinkL10n = {"title":"Insert\/edit link","update":"Update","save":"Add Link","noTitle":"(no title)","noMatchesFound":"No results found.","linkSelected":"Link selected.","linkInserted":"Link inserted.","minInputLength":"3"};
+</script>
+<script id="wplink-js" src="https://help.skywind.com/wp-includes/js/wplink.min.js?ver=6.8.3"></script>
+<script id="jquery-ui-menu-js" src="https://help.skywind.com/wp-includes/js/jquery/ui/menu.min.js?ver=1.13.3"></script>
+<script id="jquery-ui-autocomplete-js" src="https://help.skywind.com/wp-includes/js/jquery/ui/autocomplete.min.js?ver=1.13.3"></script>
+<script type="text/javascript">
+		tinyMCEPreInit = {
+			baseURL: "https://help.skywind.com/wp-includes/js/tinymce",
+			suffix: ".min",
+						mceInit: {},
+			qtInit: {'replycontent':{id:"replycontent",buttons:"strong,em,link,block,del,ins,img,ul,ol,li,code,close"}},
+			ref: {plugins:"",theme:"modern",language:""},
+			load_ext: function(url,lang){var sl=tinymce.ScriptLoader;sl.markDone(url+'/langs/'+lang+'.js');sl.markDone(url+'/langs/'+lang+'_dlg.js');}
+		};
+		</script>
+<script type="text/javascript">
+		
+		( function() {
+			var initialized = [];
+			var initialize  = function() {
+				var init, id, inPostbox, $wrap;
+				var readyState = document.readyState;
+
+				if ( readyState !== 'complete' && readyState !== 'interactive' ) {
+					return;
+				}
+
+				for ( id in tinyMCEPreInit.mceInit ) {
+					if ( initialized.indexOf( id ) > -1 ) {
+						continue;
+					}
+
+					init      = tinyMCEPreInit.mceInit[id];
+					$wrap     = tinymce.$( '#wp-' + id + '-wrap' );
+					inPostbox = $wrap.parents( '.postbox' ).length > 0;
+
+					if (
+						! init.wp_skip_init &&
+						( $wrap.hasClass( 'tmce-active' ) || ! tinyMCEPreInit.qtInit.hasOwnProperty( id ) ) &&
+						( readyState === 'complete' || ( ! inPostbox && readyState === 'interactive' ) )
+					) {
+						tinymce.init( init );
+						initialized.push( id );
+
+						if ( ! window.wpActiveEditor ) {
+							window.wpActiveEditor = id;
+						}
+					}
+				}
+			}
+
+			if ( typeof tinymce !== 'undefined' ) {
+				if ( tinymce.Env.ie && tinymce.Env.ie < 11 ) {
+					tinymce.$( '.wp-editor-wrap ' ).removeClass( 'tmce-active' ).addClass( 'html-active' );
+				} else {
+					if ( document.readyState === 'complete' ) {
+						initialize();
+					} else {
+						document.addEventListener( 'readystatechange', initialize );
+					}
+				}
+			}
+
+			if ( typeof quicktags !== 'undefined' ) {
+				for ( id in tinyMCEPreInit.qtInit ) {
+					quicktags( tinyMCEPreInit.qtInit[id] );
+
+					if ( ! window.wpActiveEditor ) {
+						window.wpActiveEditor = id;
+					}
+				}
+			}
+		}());
+		</script>
+<div id="wp-link-backdrop" style="display: none"></div>
+<div aria-labelledby="link-modal-title" aria-modal="true" class="wp-core-ui" id="wp-link-wrap" role="dialog" style="display: none">
+<form id="wp-link" tabindex="-1">
+<input id="_ajax_linking_nonce" name="_ajax_linking_nonce" type="hidden" value="afd2b9e2e8"/> <h1 id="link-modal-title">Insert/edit link</h1>
+<button id="wp-link-close" type="button"><span class="screen-reader-text">
+			Close		</span></button>
+<div id="link-selector">
+<div id="link-options">
+<p class="howto" id="wplink-enter-url">Enter the destination URL</p>
+<div>
+<label><span>URL</span>
+<input aria-describedby="wplink-enter-url" id="wp-link-url" type="text"/></label>
+</div>
+<div class="wp-link-text-field">
+<label><span>Link Text</span>
+<input id="wp-link-text" type="text"/></label>
+</div>
+<div class="link-target">
+<label><span></span>
+<input id="wp-link-target" type="checkbox"/> Open link in a new tab</label>
+</div>
+</div>
+<p class="howto" id="wplink-link-existing-content">Or link to existing content</p>
+<div id="search-panel">
+<div class="link-search-wrapper">
+<label>
+<span class="search-label">Search</span>
+<input aria-describedby="wplink-link-existing-content" autocomplete="off" class="link-search-field" id="wp-link-search" type="search"/>
+<span class="spinner"></span>
+</label>
+</div>
+<div class="query-results" id="search-results" tabindex="0">
+<ul></ul>
+<div class="river-waiting">
+<span class="spinner"></span>
+</div>
+</div>
+<div class="query-results" id="most-recent-results" tabindex="0">
+<div class="query-notice" id="query-notice-message">
+<em class="query-notice-default">No search term specified. Showing recent items.</em>
+<em class="query-notice-hint screen-reader-text">
+							Search or use up and down arrow keys to select an item.						</em>
+</div>
+<ul></ul>
+<div class="river-waiting">
+<span class="spinner"></span>
+</div>
+</div>
+</div>
+</div>
+<div class="submitbox">
+<div id="wp-link-cancel">
+<button class="button" type="button">Cancel</button>
+</div>
+<div id="wp-link-update">
+<input class="button button-primary" id="wp-link-submit" name="wp-link-submit" type="submit" value="Add Link"/>
+</div>
+</div>
+</form>
+</div>
+<div class="clear"></div></div><!-- wpwrap -->
+<script type="text/javascript">if(typeof wpOnload==='function')wpOnload();</script>
+</body>
+</html>

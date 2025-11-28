@@ -1,0 +1,86 @@
+URL: https://help.skywind.com/page/2/?s=4c&q=4c&search=4c&query=4c
+Title: Skywind Knowledge Portal
+================================================================================
+
+Knowledge base and help for all products
+by Skywind Software Group
+Products
+4C™
+SoDA™
+Contact
+4c
+4C™ – Glossary
+Skywind 4C™ alerting and monitoring service informs the recipients about events they were subscribed to or defining recipients dynamically (without a subscription), by analyzing results of notification’s content. Alerts are triggered to run according to their scheduling plan. Alerting mechanism as a whole, consists of the following components: Exception Indicator Alert Instance Alert Template (parameterized […]
+Read more
+4C™ – Catalog
+Alert Catalog contains all available Exception Indicators, organized into Categories and Subcategories, e.g., Administration / System / BW / Application etc. While looking at any Exception Indicator in the Alert Catalog, you can observe the list of associated Alert Templates (Alert Template is a pre-configured alert). Exception Indicator (sometimes related as EI in the documentation) […]
+Read more
+Date and Time Parameters
+Alerts can be parametrized using dozens of fields that derive from SAP tables. Alongside with them 4C™ provides special external Date and Time parameters that are used in majority of Best Practice and Alert Generator based alerts. Using those parameters you can define time intervals for monitoring. Date and Time Parameters are NOT coming from […]
+Read more
+AG – Validation and Generation
+Once you are done with all configuration steps in Alert Generator, you should validate them and generate the Exception Indicator to be used for further creation of  Alerts and Reports. To validate and generate Exception Indicator, the respective buttons are located at the right corner of the Footer: <Validate> button Pressing this button will check […]
+Read more
+AG – 4. External Parameters
+Alerts can be parametrized using dozens of fields that derive from SAP tables. Alongside with them 4C™ provides special (e.g. external) parameters that are used in majority of Best Practice and AG alerts. Using those parameters you can define time intervals for monitoring, echange rate type etc. In this tab you can set the default […]
+Read more
+AG – 1. Basic Settings
+This step is a starting point. First, choose Source system and Language. Click on the dropdowns to choose from the respective list of values. Source System is an SAP system, connected to the Skywind Analytical Platform. It represents an RFC connection to the specific SAP Instance.  Language parameter sets the language of the text data: […]
+Read more
+AG – Overview
+Skywind 4C™ Alert Generator (shortly AG) provides SAP functional teams, developers and end users with a no-code alternative to ABAP and BW reporting, dramatically increasing the simplicity, efficiency and speed of the process of reports creation and reports distribution.   For data distribution, AG possesses 8 different mechanisms, securely pushing mission critical info to the corporate […]
+Read more
+AG – Glossary
+Skywind 4C™ alerting, reporting and monitoring platform informs recipients about events they were subscribed to or defines recipients dynamically (without a subscription), by analyzing results of notification’s content. Alerts are triggered to run according to their scheduling plan. Alerting mechanism as a whole, consists of the components, described in this document. Please refer to the […]
+Read more
+Wizard – Recipients
+Alert notifications can be sent to recipients via Email and Text messages (SMS). In addition to a regular subscription method, when certain recipients are assigned to receive alert notifications, Skywind 4C™ provides advanced mechanisms for sending alert notifications to recipients, using various conditions based on the alert output content and users’ roles in an organization. […]
+Read more
+Wizard – Parameters
+In order to catch specific event type, in most cases Alert Instances must be parameterized (restricted by specific parameter values). Every Alert Instance has its own pool of parameters, based on the ABAP Function Module behind the Alert. In Skywind professional language, ABAP Function Module behind the alert is called: “Exception Indicator” while alerts are being […]
+Read more
+Skywind Software Group
+© All rights reserved. 2011-2021.
+PRODUCTS
+4C™
+SoDA™
+CONTACT US
+sales@skywind.com
++972-524640067
+87 Hatopaz ST., Kfar
+Yona, Israel,
+post code 4035387
+Skywind Software Group
+© All rights reserved. 2011-2021.
+Skip to toolbar
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Dashboard
+Plugins
+Themes
+Menus
+Customize
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Auto-login link
+No users with autologin codes
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Search

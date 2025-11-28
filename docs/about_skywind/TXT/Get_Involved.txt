@@ -1,0 +1,182 @@
+URL: https://help.skywind.com/wp-admin/contribute.php
+Title: Get Involved ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+
+Skip to main content
+Skip to toolbar
+Dashboard
+Dashboard
+Home
+Updates
+18
+Posts
+Posts
+All Posts
+Add Post
+Categories
+Tags
+Re-Order
+Taxonomy Order
+Media
+Media
+Library
+Add Media File
+Pages
+Pages
+All Pages
+Add Page
+Comments
+40
+40 Comments in moderation
+Contact
+Contact
+Contact Forms
+Add New
+Integration
+Appearance
+Appearance
+Themes
+7
+Patterns
+Customize
+Menus
+Theme File Editor
+Plugins
+11
+Plugins
+11
+Installed Plugins
+Add Plugin
+Plugin File Editor
+Users
+Users
+All Users
+Add User
+Profile
+Tools
+Tools
+Available Tools
+Import
+Export
+Site Health
+2
+Export Personal Data
+Erase Personal Data
+Settings
+Settings
+General
+Writing
+Reading
+Discussion
+Media
+Permalinks
+Privacy
+Autologin-links
+Cyr To Lat
+Post Types Order
+Taxonomy Terms Order
+Custom Fields
+Custom Fields
+Field Groups
+Add New
+Tools
+Info
+Updates
+Options
+PDF & Print
+PDF & Print
+Settings
+Headers & Footers
+BWS Panel
+Upgrade to Pro
+All Export
+All Export
+New Export
+Manage Exports
+Settings
+Collapse Menu
+Menu
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Visit Site
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Get Involved
+Be the future of WordPress
+Do you use WordPress for work, for personal projects, or even just for fun? You can help shape the long-term success of the open source project that powers millions of websites around the world.
+Join the diverse WordPress contributor community and connect with other people who are passionate about maintaining a free and open web.
+Be part of a global open source community.
+Apply your skills or learn new ones.
+Grow your network and make friends.
+No-code contribution
+WordPress may thrive on technical contributions, but you don’t have to code to contribute. Here are some of the ways you can make an impact without writing a single line of code:
+Share
+your knowledge in the WordPress support forums.
+Write
+or improve documentation for WordPress.
+Translate
+WordPress into your local language.
+Create
+and improve WordPress educational materials.
+Promote
+the WordPress project to your community.
+Curate
+submissions or take photos for the Photo Directory.
+Organize
+or participate in local Meetups and WordCamps.
+Lend
+your creative imagination to the WordPress UI design.
+Edit
+videos and add captions to WordPress.tv.
+Explore
+ways to reduce the environmental impact of websites.
+Code-based contribution
+If you do code, or want to learn how, you can contribute technically in numerous ways:
+Find
+and report bugs in the WordPress core software.
+Test
+new releases and proposed features for the Block Editor.
+Write
+and submit patches to fix bugs or help build new features.
+Contribute
+to the code, improve the UX, and test the WordPress app.
+WordPress embraces new technologies, while being committed to backward compatibility. The WordPress project uses the following languages and libraries:
+WordPress Core and Block Editor: HTML, CSS, PHP, SQL, JavaScript, and React.
+WordPress app: Kotlin, Java, Swift, Objective-C, Vue, Python, and TypeScript.
+Shape the future of the web with WordPress
+Finding the area that aligns with your skills and interests is the first step toward meaningful contribution. With more than 20 Make WordPress teams working on different parts of the open source WordPress project, there’s a place for everyone, no matter what your skill set is.
+Find your team →
+Thank you for creating with
+WordPress
+.
+Version 6.8.3
+Plugin
+PDF&Print
+Shortcode settings
+Add PDF & Print Buttons to your page or post
+PDF
+Print
+The shortcode will be inserted
+Close dialog
+Session expired
+Please log in again.
+The login page will open in a new tab. After logging in you can close it and return to this page.

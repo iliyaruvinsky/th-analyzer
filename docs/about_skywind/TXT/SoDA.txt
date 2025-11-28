@@ -1,0 +1,134 @@
+URL: https://help.skywind.com/category/soda/
+Title: Skywind Knowledge Portal
+================================================================================
+
+SEARCH
+-Browse Help Topics by Product
+SoDA™ – Overview
+SoDA™ Overview
+Analytics
+Analytics - Overview
+Analytics – Users
+Analytics - Top Users with Actual SOD Violations
+Analytics - Top Users with Potential SOD Violations
+Analytics - Users By Role
+Analytics - Users By Profile
+Analytics - Invalid Users
+Analytics - Valid Users
+Analytics - Logged on Users
+Analytics – SOD
+Analytics - Top Most Violated SOD Rules
+Analytics - Number of Actual SOD Violations
+Analytics - Number of Potential SOD Violations
+Analytics – Roles
+Top Cross Reference Role Violations
+Top Internal Role Violations
+Analytics – Transactions
+Top Most Visited Transactions
+Top Most Violated Transactions Combinations (Actual Violations)
+Analytics - Top Most Violated Transactions Combinations (Potential Violations)
+Reports
+Reports - General
+Reports - Managing Reports
+Potential SOD Violations (by SoD Rules)
+Potential SoD Violations (by SoD Rules) - Video
+Potential SOD Violations (by SoD Rules) - Report Usage
+Potential SOD Violations (by SoD Rules) - Managing Reporting Instance versions
+Potential SOD Violations (by SoD Rules) - Report Output
+Actual SoD Violations (by SoD Rules)
+Actual SoD Violations (by SoD Rules) - Video
+Actual SOD Violations (by SoD Rules) - Report Usage
+Actual SOD Violations (by SoD Rules) - Managing Reporting Instance versions
+Actual SOD Violations (by SoD Rules) - Report Output
+Potential SOD Violations (by T-Groups)
+Potential SOD Violations (by T-Groups) - Report Usage
+Potential SOD Violations (by T-Groups) - Managing Reporting Instance versions
+Potential SOD Violations (by T-Groups) - Report Output
+Actual SOD Violations (by T-Groups)
+Actual SOD Violations (by T-Groups) - Report Usage
+Actual SOD Violations (by T-Groups) - Managing Reporting Instance versions
+Actual SOD Violations (by T-Groups) - Report Output
+Internal Violations
+Internal Violations - Report Usage
+Internal Violations - Managing Reporting Instance versions
+Internal Violations - Report Output
+Cross Reference Violations
+Cross Reference Violations - Report Usage
+Cross Reference Violations - Managing Reporting Instance versions
+Cross Reference Violations - Report Output
+Role's Assigned Users & Transactions
+Role's Assigned Users & Transactions - Report Usage
+Role's Assigned Users & Transactions - Managing Reporting Instance versions
+Role's Assigned Users & Transactions - Report Output
+Excessive Authorizations
+Excessive Authorizations - Report Usage
+Excessive Authorizations - Managing Reporting Instance versions
+Excessive Authorizations - Report Output
+Transaction Usage
+Transaction Usage - Report Usage
+Transaction Usage - Managing Reporting Instance versions
+Transaction Usage - Report Output
+User's Assigned Transactions
+User's Assigned Transactions - Report Usage
+User's Assigned Transactions - Managing Reporting Instance versions
+User's Assigned Transactions - Report Output
+User's Assigned Roles & Profiles
+User's Assigned Roles and Profiles - Report Usage
+User's Assigned Roles and Profiles - Managing Reporting Instance versions
+User's Assigned Roles and Profiles - Report Output
+Where Used
+Where Used
+Simulations
+Simulations - General
+Internal Violations
+Simulations - Internal Violations - Output
+Simulations - Internal Violations - Parameters
+Cross Reference Violations
+Simulations - Cross Reference Violations - Output
+Simulations -  Cross Reference Violations - Parameters
+T-Codes (Deep Impact)
+Simulations - T-Codes (Deep Impact) - Output
+Simulations - T-Codes (Deep Impact) - Parameters
+User Simulations
+Simulations - User Simulations - Output
+Simulations - User Roles - Parameters
+SoD Rules
+SoD Rules - General
+SoD Rules - Managing SoD Rules
+SoD Rules - Operating SoD Rules
+T-Groups
+T-Groups - List of Business Domains
+T-Groups - Operating T-Groups
+T-Groups - Managing T-Groups
+Business Content
+Business Content - General
+Business Content - Business Domains
+Business Content - T-Groups
+Business Content - SoD Rules
+Business Content - List of SoD Rules
+Business Content - List of T-Groups
+Critical Objects
+Critical Roles
+Critical T-Codes
+Critical Objects - General
+Support
+SoDA™ - Support
+Auxiliary Functions
+Search Help
+Latest Articles
+Date and Time Parameters
+Role’s Assigned Users & Transactions – Report Output
+Role’s Assigned Users & Transactions – Managing Reporting Instance versions
+Role’s Assigned Users & Transactions – Report Usage
+User’s Assigned Roles and Profiles – Report Output
+User’s Assigned Transactions – Report Output
+Transaction Usage – Report Output
+Excessive Authorizations – Report Output
+Cross Reference Violations – Report Output
+Internal Violations – Report Output
+Actual SOD Violations (by T-Groups) – Report Output
+Potential SOD Violations (by T-Groups) – Report Output
+Need more support?
+If you did not found an answer, contact us for further help.
+SUBMIT A TICKET
+Skip to toolbar

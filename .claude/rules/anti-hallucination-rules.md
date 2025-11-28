@@ -125,4 +125,21 @@ When asked to read files and unable to read most/all of them:
 - **DO NOT ask what the user wants to do next**
 - **Wait for explicit user direction**
 
+### **RULE 11: DATA INTERPRETATION - NO EMBELLISHMENT**
+
+When extracting and reporting data from source files (metadata, summaries, configs):
+- **Report values EXACTLY as they appear in the source**
+- **DO NOT interpret, infer, or "fix" values based on assumptions**
+- **If metadata shows ambiguous fields, report them verbatim and flag uncertainty**
+- **Cross-check parameters against actual data - if they contradict, report the discrepancy**
+- **Never add restrictions, ranges, or qualifiers not explicitly stated in the source**
+
+**Example Violation:**
+- Metadata shows: `DMBE2, Greater than, 500000, 3000000`
+- Actual data contains values up to $11.5M
+- WRONG: Report as "500,000 - 3,000,000 range"
+- CORRECT: Report raw values, note that actual data exceeds any apparent limit, flag for clarification
+
+**Principle:** If interpretation is required, state what the source says AND what you're uncertain about. Let the user decide the correct interpretation.
+
 **NO EXCEPTIONS TO THESE RULES UNDER ANY CIRCUMSTANCES**

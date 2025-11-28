@@ -1,0 +1,358 @@
+URL: https://help.skywind.com/wp-admin/profile.php
+Title: Profile ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+
+Skip to main content
+Skip to toolbar
+Dashboard
+Dashboard
+Home
+Updates
+18
+Posts
+Posts
+All Posts
+Add Post
+Categories
+Tags
+Re-Order
+Taxonomy Order
+Media
+Media
+Library
+Add Media File
+Pages
+Pages
+All Pages
+Add Page
+Comments
+40
+40 Comments in moderation
+Contact
+Contact
+Contact Forms
+Add New
+Integration
+Appearance
+Appearance
+Themes
+7
+Patterns
+Customize
+Menus
+Theme File Editor
+Plugins
+11
+Plugins
+11
+Installed Plugins
+Add Plugin
+Plugin File Editor
+Users
+Users
+All Users
+Add User
+Profile
+Tools
+Tools
+Available Tools
+Import
+Export
+Site Health
+2
+Export Personal Data
+Erase Personal Data
+Settings
+Settings
+General
+Writing
+Reading
+Discussion
+Media
+Permalinks
+Privacy
+Autologin-links
+Cyr To Lat
+Post Types Order
+Taxonomy Terms Order
+Custom Fields
+Custom Fields
+Field Groups
+Add New
+Tools
+Info
+Updates
+Options
+PDF & Print
+PDF & Print
+Settings
+Headers & Footers
+BWS Panel
+Upgrade to Pro
+All Export
+All Export
+New Export
+Manage Exports
+Settings
+Collapse Menu
+Menu
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Visit Site
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Overview
+For more information:
+Documentation on User Profiles
+Support forums
+Your profile contains information about you (your “account”) as well as some personal options related to using WordPress.
+You can change your password, turn on keyboard shortcuts, change the color scheme of your WordPress administration screens, and turn off the WYSIWYG (Visual) editor, among other things. You can hide the Toolbar (formerly called the Admin Bar) from the front end of your site, however it cannot be disabled on the admin screens.
+You can select the language you wish to use while using the WordPress administration screen without affecting the language site visitors see.
+Your username cannot be changed, but you can use other fields to enter your real name or a nickname, and change which name to display on your posts.
+You can log out of other devices, such as your phone or a public computer, by clicking the Log Out Everywhere Else button.
+Required fields are indicated; the rest are optional. Profile information will only be displayed if your theme is set up to do so.
+Remember to click the Update Profile button when you are finished.
+Help
+Profile
+Personal Options
+Syntax Highlighting
+Disable syntax highlighting when editing code
+Admin Color Scheme
+Admin Color Scheme
+Default
+Light
+Modern
+Blue
+Coffee
+Ectoplasm
+Midnight
+Ocean
+Sunrise
+Keyboard Shortcuts
+Enable keyboard shortcuts for comment moderation.
+Documentation on Keyboard Shortcuts
+Toolbar
+Show Toolbar when viewing site
+Language
+Site Default
+English (United States)
+Русский
+Afrikaans
+አማርኛ
+Aragonés
+العربية
+العربية المغربية
+অসমীয়া
+گؤنئی آذربایجان
+Azərbaycan dili
+Беларуская мова
+Български
+বাংলা
+བོད་ཡིག
+Bosanski
+Català
+Cebuano
+Čeština
+Cymraeg
+Dansk
+Deutsch (Österreich)
+Deutsch
+Deutsch (Sie)
+Deutsch (Schweiz)
+Deutsch (Schweiz, Du)
+Dolnoserbšćina
+རྫོང་ཁ
+Ελληνικά
+English (South Africa)
+English (Canada)
+English (New Zealand)
+English (UK)
+English (Australia)
+Esperanto
+Español de Perú
+Español de Costa Rica
+Español de Chile
+Español de Argentina
+Español de Colombia
+Español
+Español de Venezuela
+Español de Ecuador
+Español de República Dominicana
+Español de Uruguay
+Español de Puerto Rico
+Español de Guatemala
+Español de México
+Eesti
+Euskara
+(فارسی (افغانستان
+فارسی
+Suomi
+Français du Canada
+Français
+Français de Belgique
+Friulian
+Frysk
+Gàidhlig
+Galego
+ગુજરાતી
+هزاره گی
+עִבְרִית
+हिन्दी
+Hrvatski
+Hornjoserbšćina
+Magyar
+Հայերեն
+Bahasa Indonesia
+Íslenska
+Italiano
+日本語
+Basa Jawa
+ქართული
+Taqbaylit
+Қазақ тілі
+ភាសាខ្មែរ
+ಕನ್ನಡ
+한국어
+كوردی‎
+Кыргызча
+ພາສາລາວ
+Lietuvių kalba
+Latviešu valoda
+Македонски јазик
+മലയാളം
+Монгол
+मराठी
+Bahasa Melayu
+ဗမာစာ
+Norsk bokmål
+नेपाली
+Nederlands
+Nederlands (Formeel)
+Nederlands (België)
+Norsk nynorsk
+Occitan
+ਪੰਜਾਬੀ
+Polski
+پښتو
+Português do Brasil
+Português
+Português (AO90)
+Português de Angola
+Ruáinga
+Română
+Сахалыы
+سنڌي
+සිංහල
+Slovenčina
+سرائیکی
+Slovenščina
+Shqip
+Српски језик
+Svenska
+Kiswahili
+Ślōnskŏ gŏdka
+தமிழ்
+தமிழ்
+తెలుగు
+ไทย
+Tagalog
+Türkçe
+Татар теле
+Reo Tahiti
+ئۇيغۇرچە
+Українська
+اردو
+O‘zbekcha
+Tiếng Việt
+简体中文
+香港中文
+繁體中文
+Name
+Username
+Usernames cannot be changed.
+First Name
+Last Name
+Nickname
+(required)
+Display name publicly as
+admin_help_skywind
+Contact Info
+Email
+(required)
+If you change this, an email will be sent at your new address to confirm it.
+The new address will not become active until confirmed.
+Website
+About Yourself
+Biographical Info
+Share a little biographical information to fill out your profile. This may be shown publicly.
+Profile Picture
+You can change your profile picture on Gravatar
+.
+Account Management
+New Password
+Set New Password
+Hide
+Cancel
+Repeat New Password
+Type your new password again.
+Confirm Password
+Confirm use of weak password
+Sessions
+Log Out Everywhere Else
+You are only logged in at this location.
+Application Passwords
+Application passwords allow authentication via non-interactive systems, such as XML-RPC or the REST API, without providing your actual password. Application passwords can be easily revoked. They cannot be used for traditional logins to your website.
+New Application Password Name
+Required to create an Application Password, but not to update the user.
+Add Application Password
+Name
+Created
+Last Used
+Last IP
+Revoke
+No items found.
+Name
+Created
+Last Used
+Last IP
+Revoke
+Revoke all application passwords
+Auto-login
+Auto-login link
+1
+[Unsaved]
+-
+Thank you for creating with
+WordPress
+.
+Version 6.8.3
+Plugin
+PDF&Print
+Shortcode settings
+Add PDF & Print Buttons to your page or post
+PDF
+Print
+The shortcode will be inserted
+Close dialog
+Session expired
+Please log in again.
+The login page will open in a new tab. After logging in you can close it and return to this page.

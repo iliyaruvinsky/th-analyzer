@@ -1,0 +1,443 @@
+﻿
+
+
+
+
+
+Empowering SAP Basis
+AMS Teams with SkyAPS	:
+the Path to Enhanced Management,
+Control and Efﬁciency
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+Keeping multiple SAP landscapes performing optimally, secure, compliant, and under centralized control is the paramount challenge faced by SAP AMS Basis experts across complex, multi-client environments.
+SkyAPS is the comprehensive solution empowering AMS teams to master this complexity through automated monitoring, in-depth analysis, real-time alerting, and a full suite of tools purpose-built to streamline issue resolution, enhance system reliability, and drive operational efﬁciency
+
+ 
+
+
+What you get:
+
+info@skywind.com | www.skywind.com
+
+
+
+
+Identify the potential problem before it actually happened Notify process/problem initiator dynamically (no subscription)
+Save resources, required for monitoring (less disk space, less IO)
+Spend substantially less time on day-by-day maintenance routines
+Identify mass abnormal activities such as too many dumps/failed jobs/bad IDOCs Fine tune only once : 100% inheritance of SAP version upgrades or Database updates
+
+ 
+
+
+
+
+Seamlessly tackle complex SAP Basis challenges with SkyAPS —
+where advanced analytics meet proactive solutions for measurable operational gains.
+
+info@skywind.com | www.skywind.com
+
+
+  
+
+
+ 
+
+
+
+
+
+Seamlessly tackle complex SAP Basis challenges with SkyAPS —
+where advanced analytics meet proactive solutions for measurable operational gains.
+
+info@skywind.com | www.skywind.com
+
+
+  
+
+info@skywind.com | www.skywind.com
+
+
+
+Protect Your Business, Control Your Processes
+The SkyAPS  Solutions Pool:
+
+Skywind 4C	Skywind JAM
+
+to increase the transparency of all SAP activities by enhancing control upon business and technical events and processes
+
+to gain visibility, agility, better management, analysis and control of SAP background jobs
+
+
+
+ to prevent unwanted outcomes and quickly compensate the damage by diminishing the consequences and restraining further risks
+
+to identify fraud, reveal problems and bottlenecks earlier, to protect against cyber threats
+
+
+Skywind SoDA
+to analyze and monitor your segregation of
+duties, perform in-depth authorizations analysis
+and inform you in real time about corresponding suspicious activities
+
+info@skywind.com | www.skywind.com
+
+
+
+Solutions and Content
+SKYWIND ANALYTICAL PLATFORM FOR SAP
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+for continuous validation of SAP technical consistency and performance
+
+for instant, no-code creation of your own controls and reports
+& Skywind 4C Anti Fraud and Cyber Pack
+for ultimate SAP protection against cyber attacks and internal
+fraud
+& Skywind 4C Business Bottlenecks Pack for superior business control and transparency
+& Skywind 4C Business Warehouse (BW) Pack
+for smooth BW operation and maintenance
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+to analyze, control and optimize all SAP Background Jobs activities
+& Skywind SoDA SoD and Authorizations Violations Analysis – to eliminate and prevent SoD violations and protection against internal fraud
+
+& Skywind Security and Administration App.
+Internal application for ultimate control of platform usage
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+
+    Anomalies Detection 	Communication & Connectivity Server Resources Control		Logs Analysis
+Automated Jobs Analysis  	User Activities Control
+
+APIs to SOC / SIEM
+
+SAP Interfaces
+
+
+and much more…
+
+ 
+Anomalies Detection
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+E X A M P L E S :
+
+
+ ST22: 300+ dumps occurred in 10 minutes Impact: potentially causing system instability, disrupted operations
+ SM37: 100+ jobs have failed in 10 minutes Impact: indicates a signiﬁcant operational disruption, potentially leading to business process interruptions
+
+ SM13: 200+ requests have failed in 20 minutes Impact: potential data processing and connectivity issues, risking inconsistencies in storage and processing
+
+ SM12: Detect prolonged Locks (e.g., 10+ hours) Impact: could hinder system performance and disrupt critical business operations
+ WE02: 200+ IDOCS have failed in 10 minutes Impact: can severely disrupt data exchange processes and compromise system integrity
+ SM35: Too long Batch Inputs (e.g., 10+ hours) Impact: can impede system efﬁciency and delay critical business processes
+
+ 
+Server Resources Control
+
+
+E X A M P L E S :
+
+ ST06: Servers CPU controlling (e.g. Free CPU < 10%) Impact: can cause high system latency, reduced throughput, and increased response times
+ ST06: Free Memory on SAP Server (e.g., RAM < 5%) Impact: can lead to signiﬁcant performance degradation, potential system instability, and increased risk of application failures
+  ST06: Swap Page File Free Memory (e.g., PF < 10%)
+Impact: can lead to increased disk swapping, reduced performance,
+and slower response times
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+DB02: Free Space on SAP Server Disks: (e.g., C:\ < 10%)
+Impact: potentially causing data handling issues and
+system interruptions
+DB02: Database Free Space Control
+Impact: can lead to critical issues such as database write failures, transaction errors, and potential system downtime
+SM50: Work Processes Control (e.g. UPD < 20%) Impact: can result in delays in transaction processing and reduced system responsiveness
+
+ 
+Automated Jobs Analysis
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+E X A M P L E S :
+
+ Abnormally long running jobs (e.g. 24+ hours)
+Impact: can indicate ABAP program inefﬁciency or issues within the system, potentially causing resource contention and affecting overall system performance.
+ Multiple parallel job executions(the same job)
+Impact: depletion of critical resources such as work processes, memory, and CPU, leading to potential performance bottlenecks and system instability
+ Redundant Jobs (jobs with identical or similar structure) Impact: can lead to increased resource consumption, such as additional memory, CPU usage, and disk space, potential confusion for administrators and users, and increased maintenance overhead
+
+ Jobs that already are or will soon become obsolete Explanation: jobs with expired date/time variant values or jobs which’s steps are assigned to the users with ended (or ending) validity
+ Deleted Jobs (deleted by user or by program) Impact: possible fraud, potential data loss, disruption of scheduled processes, and challenges in tracking and auditing system activities
+ Elongated Jobs (run longer and longer over time) Impact: potential performance bottlenecks, resource contention, and delays in critical business processes
+
+ 
+Automated Jobs Analysis
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+COMPREHENSIVE ANALYSIS OF SAP BACKGROUND JOBS	OPTIMIZED SAP SYSTEM PERFORMANCE AND EFFICIENCY
+
+Which jobs overlap with system peak times? Which jobs overload the CPU, RAM, WP? Which jobs are redundant or duplicated? Which jobs are or will soon become obsolete?
+Which jobs are at risk of becoming invalid and why? Which jobs are experiencing an increase in duration, and what are the reasons behind it?
+During system peaks, which jobs place the greatest burden on the system?
+Which jobs were deleted from SAP systems? What alterations occurred to a job and its cause? Which jobs consistently fail and why?
+Which jobs are repeatedly delayed and the reasons? Who updated which jobs and when?
+
+
+
+
+
+
+
+LEADS TO
+
+Less Down Time: Quicker issue identiﬁcation and resolution.
+Economic Savvy: Save on time, human and machine
+resources.
+Anticipate and Act: Prevent minor hiccups from escalating into technical or business challenges.
+Superior IT Services: Enhanced reliability and quality of SAP Basis teams.
+Trust Building: Boost stakeholder trust and brand reputation.
+Work with Conﬁdence: Equipped SAP Basis team for swift issue handling.
+Collaborative Spirit: Strengthened teamwork and problem-solving.
+
+ 
+Communication and Connectivity
+
+
+E X A M P L E S :
+
+ RFC Connection Ping (internal and external)
+Impact: can indicate SAP system is down.
+ RFC Logon Availability Ping (is the system is “frozen”?) Impact: could indicate potential logon issues or server unavailability
+  qRFC queue count (e.g., inbound / outbound > 100)
+Impact: potential processing bottlenecks, leading to delays in data transmission and potential system instability
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+tRFC Queue (e.g. records in SMQ2 are for 2+ hours) Impact: potential communication failures or performance issues, risking data integrity and system reliability
+SOST: Email Anomaly (100+ errors in 10 minutes) Impact: potential issues with email delivery, risking disruption of critical communication processes activities
+SOST: Email Anomaly (100+ are waiting for 2+ hours) Impact: potential delays in critical email delivery, possibly hindering business communication and operations
+
+ 
+SAP Logs Monitoring Analysis
+
+E X A M P L E S :
+  SM20: Analysis of Security Audit Log - Details
+Impact: unauthorized access attempts, suspicious transactions, user activity patterns, changes to sensitive data
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+
+
+
+
+
+SM21: Analysis of System Log - Details
+Impact: system errors, warnings, performance issues, background job status, user logon/logout activities
+
+ SM20: Analysis of Security Audit Log - Anomalies
+Impact: unauthorized access attempts, suspicious transactions, user activity patterns, changes to sensitive data (en masse)
+
+ SM21: Analysis of System Log - Anomalies
+Impact: system errors, warnings, performance issues, background job status, user logon/logout activities (en masse)
+
+ SM21: Analysis of Debugging Log - Details
+Impact: program execution, variable values, error messages, program ﬂow, and
+potential debugging issues
+ SLG1: Analysis of Application Log - Details
+Impact: potential processing bottlenecks, leading to delays in data transmission and potential system instability
+
+  SCU3: Analysis of Change Log (CDHDR / CDPOS)
+Impact: changes made to critical data objects, including who made the changes, when they were made, and the old and new values, aiding in audit trails, compliance and data integrity maintenance
+ DB20: Analysis of DBTABLOG
+Impact: detailed records of database table changes, including insertions, updates, deletions, and the associated user information, timestamps, and affected ﬁelds
+
+ 
+User Activities Analysis
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+E X A M P L E S :
+ SM04: Long Time Logged On Users
+Impact: increased resource consumption, potential performance degradation, heightened security risks
+ SUIM: Inactive Users (e.g., 180+ days)
+Impact: increased security risks, potential data breaches, compliance issues
+and inefﬁcient resource allocation due to unused user accounts
+ SM20: Users who repeatedly entered wrong password Impact: account lockouts, increased administrative workload, and heightened user frustration
+ SU01: Locked Users
+Impact: potential processing bottlenecks, leading to delays in data transmission and potential system instability
+
+
+
+ SU01: User Creators Control
+Impact: system errors, warnings, performance issues, background job status, user logon/logout activities
+ SU01: Users Proﬁle Control
+Impact: system errors, warnings, performance issues, background job status, user logon/logout activities (en masse)
+ SU01: Users Password State
+Impact: changes made to critical data objects, including who made the changes, when they were made, and the old and new values, aiding in audit trails, compliance and data integrity maintenance
+  SU01 : Users having SAP_ALL (or any other) Proﬁle
+Impact: detailed records of database table changes, including insertions, updates,
+deletions, and the associated user information, timestamps, and affected ﬁelds
+
+ 
+SAP Interfaces
+Safeguarding data integrity and security
+
+info@skywind.com | www.skywind.com
+
+
+
+E X A M P L E S :
+ IDocs (Intermediate Documents)
+Impact: Delays or errors in IDoc processing can disrupt data synchronization between systems, leading to transaction failures and inaccurate business reporting
+ RFCs (Remote Function Calls)
+Impact: Failed or slow RFCs can cause system integration issues, impacting real-time data exchange and potentially halting cross-system business processes
+ File Transfers (Direct / FTP)
+Impact: Interruptions or errors in file transfers can lead to data loss, incomplete data records, and compliance risks, especially in data-driven decision-making environments
+
+
+
+	SAP Exchange Infrastructure/Process Integration (XI/PI) Impact: Disruptions in integration, delays in data flow between SAP and non-SAP systems, resulting in business process interruptions and operational inefficiencies
+	BAPIs (Business Application Programming Interfaces) Impact: Malfunctions or inefficiencies in BAPIs can degrade application performance, resulting in slower response times and reduced user productivity
+	Business Documents (NAST Table)
+Impact: Delay or prevent the generation and dispatch of critical documents like invoices and purchase orders, affecting operational efficiency and customer relationships
+
+ 
+Integration with SOC / SIEM Platforms
+Enable SAP insights within your Security Operation Center (SOC)
+
+info@skywind.com | www.skywind.com
+
+P R O T O C O L S:
+ Syslog Protocol
+Centralized Logging: Centralize logs from various devices, systems, and software applications into a single repository.
+Security Monitoring: Used in security information and event management (SIEM) systems
+ Web Services
+Use Case: Synchronize data flows between SAP and Non-SAP systems such as CRM, eCommerce platforms, or custom databases. Benefit: Ensures consistency and accuracy of data across different systems, improving operational efficiency and reducing errors.
+	Files Transfers
+Impact: Interruptions or errors in file transfers can lead to data loss, incomplete data records, and compliance risks, especially in data-driven decision-making environments
+
+S U P P O R T E D P L A T F O R M S:
+
+ 
+  
+
+info@skywind.com | www.skywind.com
+
+
+
+Realise Tangible Benefits
+SkyAPS platform empowers SAP AMS Basis Teams to conquer the most daunting challenges of multi-client SAP management. With its unparalleled capabilities in automated monitoring, comprehensive analysis, and real-time alerting, SkyAPS ensures:
+
+Performance	Visibility	Productivity	Resolution	Security
+
+
+Seamless performance and high availability across all SAP landscapes
+
+
+Centralized visibility and control over intricate system operations
+
+
+Enhanced team productivity and operational efﬁciency
+
+
+Swift issue resolution and optimal resource utilization
+
+
+Robust control over SAP user activities
+
+	
+ 
+The Science of Data.
+The Art of Business.
+INFO@SKYWIND.COM

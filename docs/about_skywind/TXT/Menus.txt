@@ -1,0 +1,519 @@
+URL: https://help.skywind.com/wp-admin/nav-menus.php
+Title: Menus ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+
+Skip to main content
+Skip to toolbar
+Dashboard
+Dashboard
+Home
+Updates
+18
+Posts
+Posts
+All Posts
+Add Post
+Categories
+Tags
+Re-Order
+Taxonomy Order
+Media
+Media
+Library
+Add Media File
+Pages
+Pages
+All Pages
+Add Page
+Comments
+40
+40 Comments in moderation
+Contact
+Contact
+Contact Forms
+Add New
+Integration
+Appearance
+Appearance
+Themes
+7
+Patterns
+Customize
+Menus
+Theme File Editor
+Plugins
+11
+Plugins
+11
+Installed Plugins
+Add Plugin
+Plugin File Editor
+Users
+Users
+All Users
+Add User
+Profile
+Tools
+Tools
+Available Tools
+Import
+Export
+Site Health
+2
+Export Personal Data
+Erase Personal Data
+Settings
+Settings
+General
+Writing
+Reading
+Discussion
+Media
+Permalinks
+Privacy
+Autologin-links
+Cyr To Lat
+Post Types Order
+Taxonomy Terms Order
+Custom Fields
+Custom Fields
+Field Groups
+Add New
+Tools
+Info
+Updates
+Options
+PDF & Print
+PDF & Print
+Settings
+Headers & Footers
+BWS Panel
+Upgrade to Pro
+All Export
+All Export
+New Export
+Manage Exports
+Settings
+Collapse Menu
+Menu
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Visit Site
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Overview
+Menu Management
+Editing Menus
+For more information:
+Documentation on Menus
+Support forums
+This screen is used for managing your navigation menus.
+Menus can be displayed in locations defined by your theme, even used in sidebars by adding a “Navigation Menu” widget on the
+Widgets
+screen. If your theme does not support the navigation menus feature (the default themes, Twenty Twenty and Twenty Twenty-One, do), you can learn about adding this support by following the documentation link to the side.
+From this screen you can:
+Create, edit, and delete menus
+Add, organize, and modify individual menu items
+The menu management box at the top of the screen is used to control which menu is opened in the editor below.
+To edit an existing menu,
+choose a menu from the dropdown and click Select
+If you have not yet created any menus,
+click the ’create a new menu’ link
+to get started
+You can assign theme locations to individual menus by
+selecting the desired settings
+at the bottom of the menu editor. To assign menus to all theme locations at once,
+visit the Manage Locations tab
+at the top of the screen.
+Each navigation menu may contain a mix of links to pages, categories, custom URLs or other content types. Menu links are added by selecting items from the expanding boxes in the left-hand column below.
+Clicking the arrow to the right of any menu item
+in the editor will reveal a standard group of settings. Additional settings such as link target, CSS classes, link relationships, and link descriptions can be enabled and disabled via the Screen Options tab.
+Add one or several items at once by
+selecting the checkbox next to each item and clicking Add to Menu
+To add a custom link,
+expand the Custom Links section, enter a URL and link text, and click Add to Menu
+To reorganize menu items,
+drag and drop items with your mouse or use your keyboard
+. Drag or move a menu item a little to the right to make it a submenu
+Delete a menu item by
+expanding it and clicking the Remove link
+Screen elements
+Some screen elements can be shown or hidden by using the checkboxes.			Expand or collapse the elements by clicking on their headings, and arrange them by dragging their headings or by clicking on the up and down arrows.
+Pages
+Posts
+Custom Links
+Categories
+Tags
+Show advanced menu properties
+Link Target
+Title Attribute
+CSS Classes
+Link Relationship (XFN)
+Description
+Screen Options
+Help
+Menus
+Manage with Live Preview
+Select a menu to edit:
+Меню в header (Меню в шапке)
+Меню в footer (Меню в подвале)
+or
+create a new menu
+. Do not forget to save your changes!
+Click the Save Menu button to save your changes.
+Add menu items
+Pages
+Most Recent
+View All
+Search
+Submit a ticket
+Страница сброса пароля
+Авторизация
+Пример страницы
+Search
+Home —
+Front Page
+Submit a ticket
+Авторизация
+Пример страницы
+Страница сброса пароля
+Select All
+Posts
+Most Recent
+View All
+Search
+Date and Time Parameters
+Role’s Assigned Users & Transactions – Report Output
+Role’s Assigned Users & Transactions – Managing Reporting Instance versions
+Role’s Assigned Users & Transactions – Report Usage
+User’s Assigned Roles and Profiles – Report Output
+User’s Assigned Transactions – Report Output
+Transaction Usage – Report Output
+Excessive Authorizations – Report Output
+Cross Reference Violations – Report Output
+Internal Violations – Report Output
+Actual SOD Violations (by T-Groups) – Report Output
+Potential SOD Violations (by T-Groups) – Report Output
+Actual SOD Violations (by SoD Rules) – Report Output
+Potential SOD Violations (by SoD Rules) – Report Output
+User’s Assigned Roles and Profiles – Managing Reporting Instance versions
+Search
+Page
+1
+Page
+2
+Page
+3
+»
+# of Jobs vs Job’s duration
+4C™ – Alert management
+4C™ – Analytics
+4C™ – Catalog
+4C™ – Cockpit – Overview
+4C™ – Deployment
+4C™ – Glossary
+4C™ – Key Benefits
+4C™ – Overview
+4C™ – Recipients
+4C™ – Support
+4C™ – Feed
+4C™ – Recipient Lists
+Actual SOD Violations (by SoD Rules) – Managing Reporting Instance versions
+Actual SOD Violations (by SoD Rules) – Report Output
+Actual SOD Violations (by SoD Rules) – Report Usage
+Actual SoD Violations (by SoD Rules) – Video
+Actual SOD Violations (by T-Groups) – Managing Reporting Instance versions
+Actual SOD Violations (by T-Groups) – Report Output
+Actual SOD Violations (by T-Groups) – Report Usage
+Administration – Overview
+Administration – Users Management – User Details
+AG – 1. Basic Settings
+AG – 2. Selected Fields
+AG – 3. Currency Conversion
+AG – 4. External Parameters
+AG – 5. Key for Delta
+AG – 6. Documentation
+AG – Glossary
+AG – Overview
+AG – Validation and Generation
+Analytics – Invalid Users
+Analytics – Logged on Users
+Analytics – Number of Actual SOD Violations
+Analytics – Number of Potential SOD Violations
+Analytics – Overview
+Analytics – Top Most Violated SOD Rules
+Analytics – Top Most Violated Transactions Combinations (Potential Violations)
+Analytics – Top Users with Actual SOD Violations
+Analytics – Top Users with Potential SOD Violations
+Analytics – Users By Profile
+Analytics – Users By Role
+Analytics – Valid Users
+Business Content – Business Domains
+Business Content – General
+Business Content – List of SoD Rules
+Business Content – List of T-Groups
+Business Content – SoD Rules
+Business Content – T-Groups
+Critical Objects – General
+Page
+1
+Page
+2
+Page
+3
+»
+Select All
+Custom Links
+URL
+Please provide a valid link.
+Link Text
+Categories
+Most Used
+View All
+Search
+User's Assigned Roles & Profiles
+User's Assigned Transactions
+Transaction Usage
+Excessive Authorizations
+Role's Assigned Users & Transactions
+Auxiliary Functions
+Support
+Critical Objects
+Business Content
+Support
+Page
+1
+Page
+2
+»
+SkyAps™
+FAQ
+SkyAPS™ Architecture
+Authorization and Security
+SkyAPS™ and SAP® Ecosystem
+Installation and Implementation
+Usage of SkyAPS™ 4C™ Alerts
+Administration
+Administration - Overview
+Administration - 4C™
+Administration - SoDA™
+JAM™
+Performance (Augmented Analytcis)
+Performance - Top KPIs
+Users KPIs
+Informative KPIs
+SoDA™
+SoDA™ - Overview
+Analytics
+Analytics - Users
+Analytics - SOD
+Analytics - Roles
+Analytics - Transactions
+Reports
+Potential SOD Violations (by SoD Rules)
+Actual SoD Violations (by SoD Rules)
+Potential SOD Violations (by T-Groups)
+Actual SOD Violations (by T-Groups)
+Internal Violations
+Cross Reference Violations
+Role's Assigned Users & Transactions
+Where Used
+Simulations
+Internal Violations
+Cross Reference Violations
+T-Codes (Deep Impact)
+User Simulations
+SoD Rules
+T-Groups
+Business Content
+T-Groups List
+4C™
+4C™ – Overview
+Analytics
+Cockpit
+Catalog
+Wizard
+Alert Generator
+Feed
+Support
+Page
+1
+Page
+2
+»
+Search
+Select All
+Tags
+No items.
+Menu structure
+Menu Name
+Drag the items into the order you prefer. Click the arrow on the right of the item to reveal additional configuration options.
+Bulk Select
+Add menu items from the column on the left.
+Products
+sub item
+Custom Link
+↑
+|
+↓
+Edit
+URL
+Navigation Label
+Title Attribute
+Open link in a new tab
+CSS Classes (optional)
+Link Relationship (XFN)
+Description
+The description will be displayed in the menu if the active theme supports it.
+Menu Parent
+Menu Order
+Move
+Up one
+Down one
+To the top
+Remove
+|
+Cancel
+4C™
+sub item
+Category
+↑
+|
+↓
+Edit
+Navigation Label
+Title Attribute
+Open link in a new tab
+CSS Classes (optional)
+Link Relationship (XFN)
+Description
+The description will be displayed in the menu if the active theme supports it.
+Menu Parent
+Menu Order
+Move
+Up one
+Down one
+To the top
+Original:
+4C™
+Remove
+|
+Cancel
+SoDA™
+sub item
+Category
+↑
+|
+↓
+Edit
+Navigation Label
+Title Attribute
+Open link in a new tab
+CSS Classes (optional)
+Link Relationship (XFN)
+Description
+The description will be displayed in the menu if the active theme supports it.
+Menu Parent
+Menu Order
+Move
+Up one
+Down one
+To the top
+Original:
+SoDA™
+Remove
+|
+Cancel
+Contact
+sub item
+Page
+↑
+|
+↓
+Edit
+Navigation Label
+Title Attribute
+Open link in a new tab
+CSS Classes (optional)
+Link Relationship (XFN)
+Description
+The description will be displayed in the menu if the active theme supports it.
+Menu Parent
+Menu Order
+Move
+Up one
+Down one
+To the top
+Original:
+Submit a ticket
+Remove
+|
+Cancel
+<img role="button" data-toggle="tooltip" title="Log Out" src="http://help.skywind.com/wp-content/themes/help_skywind/img/logout.svg" alt="">
+sub item
+Custom Link
+↑
+|
+↓
+Edit
+URL
+Navigation Label
+Title Attribute
+Open link in a new tab
+CSS Classes (optional)
+Link Relationship (XFN)
+Description
+The description will be displayed in the menu if the active theme supports it.
+Menu Parent
+Menu Order
+Move
+Up one
+Down one
+To the top
+Remove
+|
+Cancel
+Bulk Select
+List of menu items selected for deletion:
+Menu Settings
+Auto add pages
+Automatically add new top-level pages to this menu
+Display location
+Меню в шапке
+Меню в подвале
+(Currently set to: Меню в footer)
+Delete Menu
+Thank you for creating with
+WordPress
+.
+Version 6.8.3
+Plugin
+PDF&Print
+Shortcode settings
+Add PDF & Print Buttons to your page or post
+PDF
+Print
+The shortcode will be inserted
+Close dialog
+Session expired
+Please log in again.
+The login page will open in a new tab. After logging in you can close it and return to this page.

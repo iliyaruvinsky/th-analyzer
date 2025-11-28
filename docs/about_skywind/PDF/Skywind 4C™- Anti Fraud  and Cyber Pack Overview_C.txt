@@ -1,0 +1,375 @@
+﻿
+
+
+
+Enhance and automate control upon SAP operations
+Protect your SAP against Cyber and Internal Fraud
+
+info@skywind.com | www.skywind.com
+
+Skywind Profile
+
+
+
+      Development of Skywind Analytical Platform
+for SAP Cloud based SAP® related solutions
+
+Design and implementation of SAP Business Intelligence, Performance Management, Planning and Data Warehousing solutions.
+
+Development, optimization and maintenance of SAP Infrastructure (Basis) incl. SAP upgrades and migrations to HANA On Premises and On Cloud.
+
+Development, optimization and maintenance of SAP Infrastructure (Basis) incl. SAP upgrades and migrations to HANA On Premises and On Cloud.
+
+info@skywind.com | www.skywind.com
+
+Discover Intelligent Platform for SAP Observability, Automation and Control
+
+info@skywind.com | www.skywind.com
+
+
+
+Protect Your Business, Control Your Processes
+The SkyAPS  Solutions Pool:
+
+Skywind 4C	Skywind JAM
+
+to increase the transparency of all SAP activities by enhancing control upon business and technical events and processes
+
+to gain visibility, agility, better management, analysis and control of SAP background jobs
+
+
+to identify fraud, reveal problems and
+bottlenecks earlier, to protect against
+cyber threats	Skywind SoDA
+
+ to prevent unwanted outcomes and quickly compensate the damage by diminishing the consequences and restraining further risks
+
+to analyze and monitor your segregation of duties, perform in-depth authorizations analysis and inform you in real time about corresponding suspicious activities
+
+info@skywind.com | www.skywind.com
+
+Solutions and Content
+SKYWIND ANALYTICAL PLATFORM FOR SAP
+
+Analytics	Monitoring	Alerting	Smart Data Distribution
+
+
+
+Fraud & Cyber detection
+Business Processes monitoring
+Infrastructure, Communications, Interfaces monitoring
+Business Warehouse monitoring
+
+Segregation of Duties (SoD) analysis
+and monitoring
+Authorizations analysis and monitoring
+
+
+
+YOUR SAP	S/4HANA  ·  ECC  ·  BW  ·  CRM  ·  SRM
+
+
+Skywind Selected Customers
+
+info@skywind.com | www.skywind.com
+
+
+    
+
+
+
+
+info@skywind.com | www.skywind.com
+
+Solutions and Content
+
+
+Skywind 4C  Anti Fraud and Cyber Pack
+for ultimate SAP protection against cyber attacks and internal fraud
+
+Skywind 4C  Generator
+for instant, no-code creation of your own controls and reports
+
+
+Skywind 4C  Business Bottlenecks Pack for superior business control and transparency
+Skywind 4C  Basis and Infrastructure Pack
+for continuous validation of SAP technical consistency and performance
+Skywind 4C  Business Warehouse (BW) Pack
+
+
+Skywind SoDA	SoD and Authorizations Violations Analysis – to eliminate and prevent SoD violations and protection against internal fraud
+
+Skywind JAM	Analysis and Control
+to analyze, control and optimize all SAP Background Jobs
+activities
+
+for smooth BW operation and maintenance	Skywind Security and Administration App.
+Internal application for ultimate control of platform usage
+
+info@skywind.com | www.skywind.com
+
+
+Skywind 4C	Anti Fraud and Cyber Pack
+for Ultimate SAP Protection
+
+
+Financial Accounting	Purchasing
+Master Data Management	Sales and Logistics Stock and Inventory	Cyber
+Logs Analysis	Integration with SOC / SIEM
+
+info@skywind.com | www.skywind.com
+
+01. Financial Accounting – anti fraud controls
+
+E X A M P L E S :
+
+
+Exceptional postings by GL account
+Possible misbehavior and fraud
+
+Financial Documents are parked and posted by the same user
+SoD violation
+Payment advice of One-Time Vendor with regular vendor bank details
+Payment clerk fraud
+
+Vendor related accounting document without Purch. Order reference
+A wrong purchasing procedure or fraud
+
+Payment except regular incoming payment bank accounts
+Incorrect / Fraudulent posting
+Sensitive financial transactions usage Tracked by User/Terminal ID/Transaction/Time/ Duration/IP Address
+
+info@skywind.com | www.skywind.com
+
+02. Master Data Management - anti fraud controls
+
+E X A M P L E S ( b y V e n d o r ) :
+
+
+GR/IR of PO and Vendor's Master Data was altered by the same user
+SoD violation and possible fraud
+
+Vendor's bank account was changed and in a short period of time the change was reversed
+
+Alternative payee was assigned to a vendor
+A wrong purchasing procedure or possible fraud
+
+Inactive / Rarely used vendor with open balance
+Possible fraud / money loss
+
+Possible fraud	A new ONE TIME vendor was created
+Should be tracked for purchasing and ﬁnancial
+
+Vendor's name / bank account / other vendor’s credentials
+were changed multiple times in a short period
+Possible fraud
+
+posting
+
+info@skywind.com | www.skywind.com
+
+03. Stock and Inventory – anti fraud controls
+
+E X A M P L E S :
+
+
+Suspicious material movements
+Possible case for a merchandize to be stolen
+
+High amount inventory variance (booked vs. counted)
+Possible theft
+
+
+
+Inappropriate Material conversions
+Convert a car to a pencil. Possible case for a merchandize to be stolen
+Inventory count - Plant or Single Document level differs
+from the books statement
+Possible theft
+
+Moving average material price changes
+Discover misbehavior by side effect
+
+Material price has exceeded the threshold
+Discover misbehavior by side effect
+
+info@skywind.com | www.skywind.com
+
+04. Purchasing – anti fraud controls
+
+E X A M P L E S :
+
+
+Purchase Order approved by creator
+SoD violation and possible fraud
+
+Purchase Requisition approved by creator
+
+Vendor’s master payment terms differs payment
+terms in invoice
+Misbehavior leading to possible money loss or fraud
+
+SoD violation and possible fraud	Purchase Order for one-time Vendor
+Threshold preventing inappropriate purchasing
+
+PO created retroactively
+(after the date placed in Vendor's invoice) Misbehavior leading to possible money loss or fraud
+
+procedure
+Over delivery tolerance in PO was changed
+Since the Over delivery ﬂag does not trigger a re-approval
+process, there is a danger of misuse of this ﬂag
+
+info@skywind.com | www.skywind.com
+
+05. Sales and Logistics – anti fraud controls
+
+E X A M P L E S :
+
+
+Customer's credit limit was changed
+Possible ﬁnancial risk exposure
+
+Credit Memo monthly vol. by Payer have been exceeded an amount of XX in doc. currency Misbehavior leading to possible money loss or fraud
+
+Returns monthly volume by Sold-To-Party have been exceeded an amount of XX in doc. currency Misbehavior leading to possible money loss or fraud
+
+Credit Management Block ﬂag is disabled
+Suspicious activity leading to a possible fraud
+
+
+
+Sales Order pricing conditions were multiplied and/or changed manually
+Intentional Fraud
+
+Minimum/Maximum Sales Order quantity violation
+Misbehavior leading to possible money loss or fraud
+
+info@skywind.com | www.skywind.com
+
+06. Cyber Controls
+
+E X A M P L E S :
+
+
+Login to the DIALOG user's system using a password
+and not by using Single Sign ON
+Violation of secured Logon
+
+Activation of critical SAP Business / Technical
+processes via transactions
+Unsecured transaction start
+
+
+
+Creating a DIALOG user by NOT authorized parties (not by Authorizations/Basis team)
+Cyber related changes made to User Master
+
+Any system update through DEBUG, performed by the SYSTEM / DIALOG user
+Unacceptable and dangerous action
+
+Activating transactions by unauthorized DIALOG users
+Successful run of a transaction even when a user is not authorized to activate it
+
+Notiﬁcation of granting/receiving critical authorization
+(e.g., SAP_ALL/SAP_NEW)
+Potential to a malicious, unauthorized grant of critical rights in the SAP system
+
+info@skywind.com | www.skywind.com
+
+
+SAP Logs Monitoring Analysis
+
+
+Potential Impact: SAP Operational
+Efﬁciency and Business Disruptions
+
+
+
+E X A M P L E S :
+SM20: Analysis of Security Audit Log - Details
+Impact: unauthorized access attempts, suspicious transactions, user activity patterns, changes to sensitive data
+
+
+
+SM21: Analysis of System Log - Details
+Impact: system errors, warnings, performance issues, background job status, user logon/logout activities
+
+SM20: Analysis of Security Audit Log - Anomalies
+Impact: unauthorized access attempts, suspicious transactions, user activity patterns, changes to sensitive data (en masse)
+
+SM21: Analysis of System Log - Anomalies
+Impact: system errors, warnings, performance issues, background job status, user logon/logout activities (en masse)
+
+SM21: Analysis of Debugging Log - Details
+Impact: program execution, variable values, error messages, program ﬂow, and
+potential debugging issues
+SLG1: Analysis of Application Log - Details
+Impact: potential processing bottlenecks, leading to delays in data transmission and potential system instability
+
+SCU3: Analysis of Change Log (CDHDR / CDPOS)
+Impact: changes made to critical data objects, including who made the changes, when they were made, and the old and new values, aiding in audit trails, compliance and data integrity maintenance
+DB20: Analysis of DBTABLOG
+Impact: detailed records of database table changes, including insertions, updates, deletions, and the associated user information, timestamps, and affected ﬁelds
+
+info@skywind.com | www.skywind.com
+
+
+Integration with SOC / SIEM Platforms	B E N E F I T S: Pushes pre-filtered SAP data instead of raw
+logs, dramatically reducing SIEM processing costs while
+
+Enable SAP insights within your Security Operation Center (SOC)
+
+providing laser-focused security insights.
+
+P R O T O C O L S:
+Syslog Protocol
+Centralized Logging: Centralize logs from various devices, systems, and software applications into a single repository.
+Security Monitoring: Used in security information and event
+management (SIEM) systems
+Web Services
+Use Case: Synchronize data flows between SAP and Non-SAP systems such as CRM, eCommerce platforms, or custom databases. Benefit: Ensures consistency and accuracy of data across different systems, improving operational efficiency and reducing errors.
+Files Transfers
+Impact: Interruptions or errors in file transfers can lead to data loss, incomplete data records, and compliance risks, especially in data-driven decision-making environments
+
+S U P P O R T E D P L A T F O R M S:
+
+info@skywind.com | www.skywind.com
+
+
+Realise Tangible Benefits
+
+
+
+
+
+ Reduce manual effort through an automated business rule engine.
+
+Prevent fraud with proactive alerts and comprehensive insights.
+
+Optimize the way you do business by identifying process bottlenecks or violations.
+
+Search your entire transactions database versus only a sample achieved during an audit.
+
+info@skywind.com | www.skywind.com
+
+
+
+
+
+
+To Conclude...
+Our software continuously checks the validity of the processes
+by catching “bad” or “about to become bad” events. Sophisticated data distribution mechanisms seamlessly and securely distribute critical info to the right audiences.
+
+Bad Event
+
+
+Normal Event
+
+
+
+
+The Science of Data.
+The Art of Business.
+INFO@SKYWIND.COM	WWW.SKYWIND.COM

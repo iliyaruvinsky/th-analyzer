@@ -390,6 +390,7 @@ class LLMClassifier:
         Fallback analysis without LLM (pattern-based).
 
         Uses keyword matching when LLM is unavailable.
+        Updated to align with refined BUSINESS_PROTECTION severity classification.
 
         Args:
             artifacts: The alert artifacts
@@ -401,39 +402,126 @@ class LLMClassifier:
         text_lower = text.lower()
 
         # Pattern matching for focus areas
+        # Patterns are weighted - more specific patterns get higher scores
+        # IMPORTANT: Specific fraud patterns must have HIGH weights to override generic terms
         patterns = {
             "BUSINESS_PROTECTION": [
-                "fraud", "cybersecurity", "unauthorized", "manipulation",
-                "suspicious", "irregular", "falsif", "diversion", "theft"
+                # Critical indicators (weight 10) - MUST override ALL generic vendor/customer terms
+                # Weight must be > sum of all BUSINESS_CONTROL keywords that might match
+                ("rarely used vendor", 10),       # RUV = fraud indicator - HIGHEST priority
+                ("rarely used vendors", 10),      # Plural form
+                ("ruv ", 10),                     # RUV abbreviation
+                ("po for one-time vendor", 10),   # Direct theft pattern
+                ("purchase order for one-time", 10),
+                ("debug", 10),                    # DEBUG system updates - security bypass
+                ("sap_all", 10),                  # Critical authorization
+                ("sap_new", 10),                  # Critical authorization
+                # High indicators (weight 3)
+                ("fraud", 3),
+                ("theft", 3),
+                ("cyber", 3),
+                ("unauthorized", 3),
+                ("manipulation", 3),
+                ("suspicious", 3),
+                ("bank.*changed.*reversed", 3),   # Vendor bank fraud pattern
+                ("bank.*revert", 3),
+                ("modified vendor bank", 3),      # Bank modification alert
+                ("alternative payee", 3),
+                ("sensitive transaction", 3),     # WHO/WHY/HOW needed
+                ("inventory variance", 3),
+                ("inventory count.*differ", 3),
+                # Standard indicators (weight 1)
+                ("irregular", 1),
+                ("falsif", 1),
+                ("diversion", 1),
             ],
             "BUSINESS_CONTROL": [
-                "vendor", "customer", "master data", "invoice", "payment",
-                "purchase order", "sales order", "balance", "financial",
-                "pricing", "discount", "credit", "bottleneck", "delay",
-                "approval", "stuck", "unbilled", "incomplete", "anomal"
+                # Vendor/customer management (weight 1) - LOWER than fraud patterns
+                ("vendor", 1),
+                ("customer", 1),
+                ("master data", 1),
+                ("invoice", 1),
+                ("payment", 1),
+                # Process indicators (weight 1)
+                ("purchase order", 1),
+                ("sales order", 1),
+                ("balance", 1),
+                ("financial", 1),
+                ("pricing", 1),
+                ("discount", 1),
+                ("credit", 1),
+                ("bottleneck", 1),
+                ("delay", 1),
+                ("approval", 1),
+                ("stuck", 1),
+                ("unbilled", 1),
+                ("incomplete", 1),
+                ("anomal", 1),
+                ("inactive vendor", 1),
+                ("inactive customer", 1),
             ],
             "ACCESS_GOVERNANCE": [
-                "sod", "segregation of duties", "privilege", "authorization",
-                "access control", "permission", "role conflict"
+                # SoD indicators (weight 2)
+                ("sod", 2),
+                ("segregation of duties", 2),
+                ("approved by creator", 2),
+                ("parked.*posted.*same user", 2),
+                # Authorization indicators (weight 1)
+                ("privilege", 1),
+                ("authorization", 1),
+                ("access control", 1),
+                ("permission", 1),
+                ("role conflict", 1),
+                ("user profile", 1),
             ],
             "TECHNICAL_CONTROL": [
-                "memory dump", "abap dump", "short dump", "cpu usage",
-                "runtime error", "system crash"
+                # Critical technical issues (weight 2)
+                ("memory dump", 2),
+                ("abap dump", 2),
+                ("short dump", 2),
+                ("system crash", 2),
+                # Standard technical issues (weight 1)
+                ("cpu usage", 1),
+                ("runtime error", 1),
+                ("performance", 1),
+                ("database", 1),
             ],
             "JOBS_CONTROL": [
-                "job failed", "batch job", "background job", "scheduled task",
-                "job runtime", "resource contention"
+                # Job issues (weight 2)
+                ("job failed", 2),
+                ("job failure", 2),
+                ("job runtime", 2),
+                # Standard job indicators (weight 1)
+                ("batch job", 1),
+                ("background job", 1),
+                ("scheduled task", 1),
+                ("resource contention", 1),
             ]
         }
 
         scores = {}
-        for focus_area, keywords in patterns.items():
-            score = sum(1 for kw in keywords if kw in text_lower)
-            scores[focus_area] = score
+        matched_keywords = {}
+
+        for focus_area, keyword_weights in patterns.items():
+            total_score = 0
+            matched = []
+            for keyword, weight in keyword_weights:
+                # Use regex for patterns with special chars, otherwise simple match
+                if any(c in keyword for c in ['*', '.', '+']):
+                    import re
+                    if re.search(keyword, text_lower):
+                        total_score += weight
+                        matched.append(keyword)
+                elif keyword in text_lower:
+                    total_score += weight
+                    matched.append(keyword)
+            scores[focus_area] = total_score
+            matched_keywords[focus_area] = matched
 
         if max(scores.values()) > 0:
             best_area = max(scores, key=scores.get)
-            confidence = min(0.8, scores[best_area] * 0.15)
-            return best_area, confidence, f"Matched {scores[best_area]} keywords"
+            confidence = min(0.85, scores[best_area] * 0.12)
+            matched_str = ", ".join(matched_keywords[best_area][:5])
+            return best_area, confidence, f"Matched keywords: {matched_str}"
 
         return "BUSINESS_CONTROL", 0.3, "Default classification"

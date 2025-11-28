@@ -1,0 +1,241 @@
+# Presentation Rules for Alert Analysis
+# Version: 1.0
+# Purpose: Define how findings should be presented for maximum clarity and impact
+
+version: "1.0"
+
+# =============================================================================
+# CORE PRINCIPLES
+# =============================================================================
+
+core_principles:
+
+  - principle: "Executive Summary First"
+    description: |
+      Most readers will NOT read the entire document.
+      All critical information must be in the first section.
+      A reader should be able to make decisions from the summary alone.
+
+  - principle: "Numbers Before Narrative"
+    description: |
+      Lead with quantifiable facts.
+      Use tables for key metrics.
+      Narrative explains the numbers, not replaces them.
+
+  - principle: "Actionable Over Informative"
+    description: |
+      Every finding should suggest an action.
+      "Investigate X" is better than "X was found"
+      Prioritize by urgency (immediate > short-term > process)
+
+  - principle: "Concentration Is Risk"
+    description: |
+      Always calculate concentrations (by org, customer, user).
+      Flag any dimension where >50% is in one entity.
+      Single large transactions are always suspicious.
+
+  - principle: "Manual Override = Red Flag"
+    description: |
+      For any alert involving transactions:
+      - Always check for manual override flags
+      - If top losses are manual, explicitly state this
+      - Consider fraud indicator = YES if pattern exists
+
+# =============================================================================
+# EXECUTIVE SUMMARY RULES
+# =============================================================================
+
+executive_summary_rules:
+
+  structure_order:
+    1: alert_identity
+    2: execution_context
+    3: alert_parameters
+    4: bottom_line
+    5: what_happened
+    6: top_findings
+    7: immediate_actions
+
+  alert_identity:
+    purpose: "Identify WHAT alert this is"
+    required:
+      - alert_name
+      - alert_id
+      - module
+      - category
+      - subcategory
+    format: two_column_table
+
+  execution_context:
+    purpose: "Identify WHEN and WHERE it ran"
+    required:
+      - source_system      # CRITICAL for multi-SAP clients
+      - created_date
+      - last_executed
+      - exception_indicator
+    format: two_column_table
+    note: "Source system is critical - same client may have ECC, S/4, BW, CRM"
+
+  alert_parameters:
+    purpose: "Identify WHAT FILTERS were applied"
+    required:
+      - ALL parameters from Metadata file
+      - Include empty parameters (show as 'none')
+    format: three_column_table (parameter, value, description)
+    note: "Reader must understand scope of data at a glance"
+
+  bottom_line:
+    purpose: "Key numbers at a glance"
+    required:
+      - total_financial_impact
+      - records_affected
+      - severity
+      - fraud_indicator
+    format: two_column_table_bold
+    note: "These 4 items are the MINIMUM"
+
+  top_findings:
+    purpose: "Most important discoveries"
+    max_items: 3
+    format: numbered_list
+    each_finding:
+      - must_be_specific: true
+      - must_include_number: true  # "$8.1M" not "large amount"
+      - should_suggest_action: true
+
+  immediate_actions:
+    purpose: "What to do in next 24-48 hours"
+    max_items: 3
+    format: numbered_list
+    each_action:
+      - must_start_with_verb: true  # "Investigate", "Review", "Audit"
+      - must_be_specific: true
+      - must_be_actionable: true
+
+# =============================================================================
+# METRICS PRESENTATION
+# =============================================================================
+
+metrics_presentation:
+
+  financial_figures:
+    format_in_tables: "$14,152,997"      # Full number with commas
+    format_in_text: "$14.15M"            # Abbreviated for readability
+    always_include_currency: true
+    bold_primary_figure: true
+
+  counts:
+    format: "2,044"                      # Comma separators
+    always_specify_unit: true            # "2,044 line items" not "2,044"
+
+  percentages:
+    format: "81%"                        # Whole number usually sufficient
+    format_precise: "81.2%"              # One decimal when needed
+    always_include_percent_sign: true
+
+  concentration_thresholds:
+    flag_if_above: 50                    # >50% in one entity = flag it
+    highlight_method: bold
+    add_insight_note: true               # "81% despite only 21% of items"
+
+# =============================================================================
+# TABLE FORMATTING
+# =============================================================================
+
+table_formatting:
+
+  two_column_key_value:
+    example: |
+      | | |
+      |---|---|
+      | **Total Loss** | **$14,152,997** |
+      | **Records** | 2,044 |
+    use_for: bottom_line, alert_identity, execution_context
+
+  data_table:
+    example: |
+      | Rank | Entity | Amount | % |
+      |------|--------|--------|---|
+      | 1 | KE01 | $11.4M | 81% |
+    use_for: concentration_analysis, top_customers, top_transactions
+    rules:
+      - bold_top_row: true
+      - right_align_numbers: true
+      - include_rank_column: when_ordered
+
+  parameter_table:
+    example: |
+      | Parameter | Value | Description |
+      |-----------|-------|-------------|
+      | BACKDAYS | 365 | Data from past 365 days |
+    use_for: alert_parameters
+    rules:
+      - show_empty_as: "(none)"
+      - always_include_description: true
+
+# =============================================================================
+# RISK INDICATOR FORMATTING
+# =============================================================================
+
+risk_indicators:
+
+  fraud_indicator:
+    options:
+      - "YES - Requires Investigation"
+      - "NO"
+      - "INVESTIGATE - Suspicious patterns"
+    display: bold
+    always_explicit: true  # Never omit, always state
+
+  severity:
+    options:
+      - CRITICAL: "Immediate action required, significant financial/compliance impact"
+      - HIGH: "Prompt action required, material impact"
+      - MEDIUM: "Action required, moderate impact"
+      - LOW: "Monitor, minor impact"
+    display: uppercase_bold
+
+  concentration_flags:
+    when: "Single entity >50% of total"
+    format: "**81% of total loss** concentrated in one sales org"
+    add_insight: true
+
+# =============================================================================
+# ACTION FORMATTING
+# =============================================================================
+
+action_formatting:
+
+  immediate_actions:
+    prefix: "**URGENT**:" or number
+    verb_first: true
+    examples:
+      - "**URGENT**: Investigate KAMURU TRADING COMPANY - $8.1M loss"
+      - "1. Review all manual price changes exceeding $50K"
+
+  tiered_actions:
+    tiers:
+      - immediate: "24-48 hours"
+      - short_term: "1-2 weeks"
+      - process_improvements: "Ongoing"
+    format_each_tier: numbered_list_with_substeps
+
+# =============================================================================
+# DOCUMENT STRUCTURE ORDER
+# =============================================================================
+
+document_structure:
+
+  order:
+    1: executive_summary      # MUST BE FIRST
+    2: key_metrics
+    3: concentration_analysis
+    4: risk_assessment
+    5: recommended_actions
+    6: alert_parameters       # Optional if already in summary
+    7: detection_logic        # Technical details
+    8: detailed_data          # Additional breakdowns
+    9: artifacts_analyzed     # File references
+    10: analyzer_output       # JSON format
+
+  principle: "Inverted pyramid - most important first, details last"

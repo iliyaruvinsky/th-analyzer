@@ -1,0 +1,84 @@
+URL: https://learn.wordpress.org/
+Title: Learn WordPress - There's always more to learn | Learn WordPress 
+================================================================================
+
+Search
+Get Started
+Learning Pathways help you build your skills progressively so you can go from beginner to advanced at your own pace.
+Start using WordPress
+Get the basics to create and manage your own website.
+Develop with WordPress
+Jump into the code and learn how to extend the software.
+Design with WordPress
+Unlock the creative potential of Block themes.
+Featured Courses
+Focus on building your skills through a series of lessons in various formats.
+See all courses
+Featured
+Beginner WordPress Developer
+Start your WordPress development journey here. Learn how WordPress works, and how to extend it.
+9 hours
+59 lessons
+Featured
+Beginner WordPress User
+Learn the essentials of creating and managing your site, from mastering the interface to crafting content.
+4 hours
+24 lessons
+Featured
+Intermediate WordPress User
+Delve into advanced features, fine-tune site customization, and implement effective content strategies.
+7 hours
+37 lessons
+Featured
+Intermediate Theme Developer
+Learn how to develop a custom block theme, from global styles to release on WordPress.org.
+8 hours
+32 lessons
+Featured
+Creating a 4-page business website
+In today’s digital age, having a website is crucial for any business. However, creating a website…
+10 lessons
+Featured
+Open source basics and WordPress
+Explore open-source principles as they apply to WordPress, essential for new or seasoned contributor to understand.
+3 hours
+7 lessons
+Featured Lessons
+Improve your WordPress expertise with versatile lessons featuring a blend of videos, practical exercises, quizzes, and text-based content.
+See all lessons
+Create a landing page
+This lesson teaches how to create a landing page with a block theme, featuring key elements.
+Intermediate
+Website optimization
+Part of:
+Intermediate WordPress User
+Learn which elements impact performance, and how to test and optimize your site’s speed.
+Intermediate
+Introduction to themes for developers
+Part of:
+Beginner WordPress Developer
+Learn the difference between themes and plugins, and explore the structure block, classic, and hybrid themes.
+Beginner
+Setting up your block development environment
+Part of:
+Beginner WordPress Developer
+Explore the software and tools needed in order to develop WordPress blocks.
+Beginner
+What is a plugin?
+Part of:
+Beginner WordPress Developer
+Explore an introduction to WordPress plugins geared to developers.
+Beginner
+Introduction to WordPress
+Part of:
+Beginner WordPress User
+Delve into the basics and learn what even a beginner can achieve with WordPress.
+Beginner
+Upcoming Online Workshops
+Join a live session alongside other learners, led by experienced WordPress professionals.
+See all Online Workshops
+No upcoming Online Workshops found.
+Share your WordPress expertise
+Behind every course, lesson, and live workshop is a passionate collective of professionals working to offer the highest-quality educational content. If you love WordPress, have knowledge to share, and want to contribute to a thriving open source community—get involved with the Training team.
+Get involved
+Read the Training team handbook

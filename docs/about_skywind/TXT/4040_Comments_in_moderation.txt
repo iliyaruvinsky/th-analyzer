@@ -1,0 +1,1180 @@
+URL: https://help.skywind.com/wp-admin/edit-comments.php
+Title: Comments (40) ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+
+Skip to main content
+Skip to toolbar
+Dashboard
+Dashboard
+Home
+Updates
+18
+Posts
+Posts
+All Posts
+Add Post
+Categories
+Tags
+Re-Order
+Taxonomy Order
+Media
+Media
+Library
+Add Media File
+Pages
+Pages
+All Pages
+Add Page
+Comments
+40
+40 Comments in moderation
+Contact
+Contact
+Contact Forms
+Add New
+Integration
+Appearance
+Appearance
+Themes
+7
+Patterns
+Customize
+Menus
+Theme File Editor
+Plugins
+11
+Plugins
+11
+Installed Plugins
+Add Plugin
+Plugin File Editor
+Users
+Users
+All Users
+Add User
+Profile
+Tools
+Tools
+Available Tools
+Import
+Export
+Site Health
+2
+Export Personal Data
+Erase Personal Data
+Settings
+Settings
+General
+Writing
+Reading
+Discussion
+Media
+Permalinks
+Privacy
+Autologin-links
+Cyr To Lat
+Post Types Order
+Taxonomy Terms Order
+Custom Fields
+Custom Fields
+Field Groups
+Add New
+Tools
+Info
+Updates
+Options
+PDF & Print
+PDF & Print
+Settings
+Headers & Footers
+BWS Panel
+Upgrade to Pro
+All Export
+All Export
+New Export
+Manage Exports
+Settings
+Collapse Menu
+Menu
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Visit Site
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Overview
+Moderating Comments
+For more information:
+Documentation on Comments
+Documentation on Comment Spam
+Documentation on Keyboard Shortcuts
+Support forums
+You can manage comments made on your site similar to the way you manage posts and other content. This screen is customizable in the same ways as other management screens, and you can act on comments using the on-hover action links or the bulk actions.
+A red bar on the left means the comment is waiting for you to moderate it.
+In the
+Author
+column, in addition to the author’s name, email address, and site URL, the commenter’s IP address is shown. Clicking on this link will show you all the comments made from this IP address.
+In the
+Comment
+column, hovering over any comment gives you options to approve, reply (and approve), quick edit, edit, spam mark, or trash that comment.
+In the
+In response to
+column, there are three elements. The text is the name of the post that inspired the comment, and links to the post editor for that entry. The View Post link leads to that post on your live site. The small bubble with the number in it shows the number of approved comments that post has received. If there are pending comments, a red notification circle with the number of pending comments is displayed. Clicking the notification circle will filter the comments screen to show only pending comments on that post.
+In the
+Submitted on
+column, the date and time the comment was left on your site appears. Clicking on the date/time link will take you to that comment on your live site.
+Many people take advantage of keyboard shortcuts to moderate their comments more quickly. Use the link to the side to learn more.
+Columns
+Author
+In response to
+Submitted on
+Pagination
+Number of items per page:
+View mode
+Compact view
+Extended view
+Screen Options
+Help
+Comments
+Filter comments list
+All
+(
+42
+)
+|
+Mine
+(
+0
+)
+|
+Pending
+(
+40
+)
+|
+Approved
+(
+2
+)
+|
+Spam
+(
+0
+)
+|
+Trash
+(
+0
+)
+Search Comments:
+Select bulk action
+Bulk actions
+Unapprove
+Approve
+Mark as spam
+Move to Trash
+Filter by comment type
+All comment types
+Pings
+Comments list navigation
+42 items
+«
+‹
+Current Page
+of
+3
+Next page
+›
+Last page
+»
+Comments list
+Ordered by Comment Date, descending.
+Select All
+Author
+Sort ascending.
+Comment
+In response to
+Sort ascending.
+Submitted on
+Sort ascending.
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/administration-user-info-authori…
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/administration-user-info-authori…
+107.180.38.170
+[…] – Overview Administration – OverviewAdministration – User […]
+[&#8230;] &#8211; Overview Administration - OverviewAdministration - User [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/administration-user-info-authorizations/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Administration – Overview
+View Post
+0
+No approved comments
+2
+2 pending comments
+2022/07/18 at 7:20 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/4c-recipients
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/4c-recipients
+107.180.38.170
+[…] – Overview Administration – OverviewAdministration – User Info & […]
+[&#8230;] &#8211; Overview Administration - OverviewAdministration - User Info &amp; [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/4c-recipients/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Administration – Overview
+View Post
+0
+No approved comments
+2
+2 pending comments
+2022/07/18 at 5:17 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/administration-general
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/administration-general
+107.180.38.170
+[…] Administration – Overview Administration – OverviewAdministration – User Info & Authorizations […]
+[&#8230;] Administration &#8211; Overview Administration - OverviewAdministration - User Info &amp; Authorizations [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/administration-general/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Administration – Users Management – User Details
+View Post
+0
+No approved comments
+1
+1 pending comment
+2022/07/17 at 9:22 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/soda-users
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/soda-users
+107.180.38.170
+[…] Administration – SoDA™ SoDA™ – UsersSoDA™ – Data Masking […]
+[&#8230;] Administration &#8211; SoDA™ SoDA™ – UsersSoDA™ - Data Masking [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/soda-users/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+SoDA™ – Data Masking
+View Post
+0
+No approved comments
+1
+1 pending comment
+2022/03/16 at 2:20 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/critical-t-codes
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/critical-t-codes
+107.180.38.170
+[…] T-Groups – List of Business DomainsT-Groups – Operating T-GroupsT-Groups – Managing […]
+[&#8230;] T-Groups - List of Business DomainsT-Groups - Operating T-GroupsT-Groups - Managing [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/critical-t-codes/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+T-Groups – List of Business Domains
+View Post
+0
+No approved comments
+1
+1 pending comment
+2022/02/22 at 10:05 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/wizard-basic-settings
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/wizard-basic-settings
+107.180.38.170
+[…] 4C™ – Overview 4C™ – Overview4C™ – Key Benefits4C™ – Deployment4C™ – Glossary […]
+[&#8230;] 4C™ – Overview 4C™ - Overview4C™ - Key Benefits4C™ - Deployment4C™ - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/wizard-basic-settings/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+4C™ – Glossary
+View Post
+0
+No approved comments
+2
+2 pending comments
+2022/01/25 at 2:04 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-validation-and-generation
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-validation-and-generation
+107.180.38.170
+[…] Generator AG – OverviewAG – 1. Basic SettingsAG – 2. Selected FieldsAG – 3. Regular ParametersAG – 4. Currency ConversionAG – 5. Special […]
+[&#8230;] Generator AG - OverviewAG - 1. Basic SettingsAG - 2. Selected FieldsAG - 3. Regular ParametersAG - 4. Currency ConversionAG - 5. Special [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-validation-and-generation/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – 1. Basic Settings
+View Post
+0
+No approved comments
+1
+1 pending comment
+2022/01/10 at 2:09 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-validation-and-generation
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-validation-and-generation
+107.180.38.170
+[…] Alert Generator AG – OverviewAG – 7.ConditionsAG – 8.DocumentationAG – Validation and GenerationAG – 1. Basic SettingsAG – 2. Selected FieldsAG – 3. Regular ParametersAG – 4.Currency ConversionAG – 5.Special ParametersAG – 6. Key for DeltaAG – Glossary […]
+[&#8230;] Alert Generator AG - OverviewAG - 7.ConditionsAG - 8.DocumentationAG - Validation and GenerationAG - 1. Basic SettingsAG - 2. Selected FieldsAG - 3. Regular ParametersAG - 4.Currency ConversionAG - 5.Special ParametersAG - 6. Key for DeltaAG - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-validation-and-generation/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – Glossary
+View Post
+0
+No approved comments
+7
+7 pending comments
+2022/01/10 at 1:53 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-7-conditions
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-7-conditions
+107.180.38.170
+[…] Alert Generator AG – OverviewAG – 7.ConditionsAG – 1. Basic SettingsAG – 2. Selected FieldsAG – 3. Regular ParametersAG – 4.Currency ConversionAG – 5.Special ParametersAG – 6. Key for DeltaAG – Glossary […]
+[&#8230;] Alert Generator AG - OverviewAG - 7.ConditionsAG - 1. Basic SettingsAG - 2. Selected FieldsAG - 3. Regular ParametersAG - 4.Currency ConversionAG - 5.Special ParametersAG - 6. Key for DeltaAG - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-7-conditions/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – Glossary
+View Post
+0
+No approved comments
+7
+7 pending comments
+2022/01/10 at 1:47 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-6-key-for-delta
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-6-key-for-delta
+107.180.38.170
+[…] Alert Generator AG – OverviewAG – 6. Key for DeltaAG – 1. Basic SettingsAG – 2. Selected FieldsAG – 3. Regular ParametersAG – 4.Currency ConversionAG – 5.Special ParametersAG – Glossary […]
+[&#8230;] Alert Generator AG - OverviewAG - 6. Key for DeltaAG - 1. Basic SettingsAG - 2. Selected FieldsAG - 3. Regular ParametersAG - 4.Currency ConversionAG - 5.Special ParametersAG - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-6-key-for-delta/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – Glossary
+View Post
+0
+No approved comments
+7
+7 pending comments
+2022/01/10 at 1:19 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-5-special-parameters
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-5-special-parameters
+107.180.38.170
+[…] Alert Generator AG – OverviewAG – 5.Special ParametersAG – 1. Basic SettingsAG – 2. Selected FieldsAG – 3. Regular ParametersAG – 4.Currency ConversionAG – Glossary […]
+[&#8230;] Alert Generator AG - OverviewAG - 5.Special ParametersAG - 1. Basic SettingsAG - 2. Selected FieldsAG - 3. Regular ParametersAG - 4.Currency ConversionAG - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-5-special-parameters/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – Glossary
+View Post
+0
+No approved comments
+7
+7 pending comments
+2022/01/10 at 1:11 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-4-currency-conversion
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-4-currency-conversion
+107.180.38.170
+[…] Alert Generator AG – OverviewAG – 4.Currency ConversionAG – 1. Basic SettingsAG – 2. Selected FieldsAG – 3. Regular ParametersAG – Glossary […]
+[&#8230;] Alert Generator AG - OverviewAG - 4.Currency ConversionAG - 1. Basic SettingsAG - 2. Selected FieldsAG - 3. Regular ParametersAG - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-4-currency-conversion/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – Glossary
+View Post
+0
+No approved comments
+7
+7 pending comments
+2022/01/10 at 1:05 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-4-currency-conversion
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-4-currency-conversion
+107.180.38.170
+[…] Generator AG – OverviewAG – 1. Basic SettingsAG – 2. Selected FieldsAG – 3. Regular ParametersAG – […]
+[&#8230;] Generator AG - OverviewAG - 1. Basic SettingsAG - 2. Selected FieldsAG - 3. Regular ParametersAG - [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-4-currency-conversion/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – 2. Selected Fields
+View Post
+0
+No approved comments
+2
+2 pending comments
+2022/01/10 at 1:04 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-3-regular-parameters
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-3-regular-parameters
+107.180.38.170
+[…] Generator AG – OverviewAG – 3. Regular ParametersAG – 1. Basic SettingsAG – 2. Selected FieldsAG – […]
+[&#8230;] Generator AG - OverviewAG - 3. Regular ParametersAG - 1. Basic SettingsAG - 2. Selected FieldsAG - [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-3-regular-parameters/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – 2. Selected Fields
+View Post
+0
+No approved comments
+2
+2 pending comments
+2022/01/09 at 11:03 am
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-2-selected-fields
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-2-selected-fields
+107.180.38.170
+[…] Alert Generator AG – OverviewAG – 1. Basic SettingsAG – 2. Selected FieldsAG – Glossary […]
+[&#8230;] Alert Generator AG - OverviewAG - 1. Basic SettingsAG - 2. Selected FieldsAG - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-2-selected-fields/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – Glossary
+View Post
+0
+No approved comments
+7
+7 pending comments
+2022/01/09 at 10:56 am
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/ag-1-basic-settings
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/ag-1-basic-settings
+107.180.38.170
+[…] Generator AG – GlossaryAG – OverviewAG – 1. Basic […]
+[&#8230;] Generator AG - GlossaryAG - OverviewAG - 1. Basic [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/ag-1-basic-settings/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+AG – Glossary
+View Post
+0
+No approved comments
+7
+7 pending comments
+2022/01/09 at 10:32 am
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/analytics
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/analytics
+107.180.38.170
+[…] Cockpit Cockpit – OverviewAlert management […]
+[&#8230;] Cockpit Cockpit - OverviewAlert management [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/analytics/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+4C™ – Alert management
+View Post
+0
+No approved comments
+2
+2 pending comments
+2021/12/06 at 7:40 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/wizard-format
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/wizard-format
+107.180.38.170
+[…] Wizard – Basic SettingsWizard – FormatWizard – ParametersWizard – RecipientsWizard – AuthorizationsWizard – […]
+[&#8230;] Wizard - Basic SettingsWizard - FormatWizard - ParametersWizard - RecipientsWizard - AuthorizationsWizard - [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/wizard-format/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Wizard – Authorizations
+View Post
+0
+No approved comments
+1
+1 pending comment
+2021/12/05 at 12:57 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/alert-management
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/alert-management
+107.180.38.170
+[…] Wizard Wizard – Basic SettingsWizard – FormatWizard – ParametersWizard – RecipientsWizard – AuthorizationsWizard – Scheduling […]
+[&#8230;] Wizard Wizard - Basic SettingsWizard - FormatWizard - ParametersWizard - RecipientsWizard - AuthorizationsWizard - Scheduling [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/alert-management/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Wizard – Scheduling
+View Post
+0
+No approved comments
+1
+1 pending comment
+2021/11/30 at 7:18 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/alert-management
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/alert-management
+107.180.38.170
+[…] Wizard – Basic SettingsWizard – FormatWizard – ParametersWizard – RecipientsWizard – AuthorizationsWizard – […]
+[&#8230;] Wizard - Basic SettingsWizard - FormatWizard - ParametersWizard - RecipientsWizard - AuthorizationsWizard - [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/alert-management/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Wizard – Parameters
+View Post
+0
+No approved comments
+1
+1 pending comment
+2021/11/21 at 11:11 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/cockpit-overview
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/cockpit-overview
+107.180.38.170
+[…] Cockpit Cockpit – OverviewAlert management – SummaryAlert management – HistoryAlert management […]
+[&#8230;] Cockpit Cockpit - OverviewAlert management - SummaryAlert management - HistoryAlert management [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/cockpit-overview/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+4C™ – Alert management
+View Post
+0
+No approved comments
+2
+2 pending comments
+2021/11/21 at 10:54 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/alert-management
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/alert-management
+107.180.38.170
+[…] Cockpit – OverviewAlert management – SummaryAlert management – HistoryAlert […]
+[&#8230;] Cockpit - OverviewAlert management - SummaryAlert management - HistoryAlert [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/alert-management/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+4C™ – Cockpit – Overview
+View Post
+0
+No approved comments
+2
+2 pending comments
+2021/11/21 at 10:52 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+[…] Wizard – Basic SettingsWizard – FormatWizard – ParametersWizard – RecipientsWizard – AuthorizationsWizard – […]
+[&#8230;] Wizard - Basic SettingsWizard - FormatWizard - ParametersWizard - RecipientsWizard - AuthorizationsWizard - [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/alert-management-summary/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Wizard – Format
+View Post
+0
+No approved comments
+1
+1 pending comment
+2021/11/16 at 11:06 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+[…] 4C Overview 4C™ – Overview4C™ – Key Benefits4C™ – Deployment4C™ – Glossary […]
+[&#8230;] 4C Overview 4C™ - Overview4C™ - Key Benefits4C™ - Deployment4C™ - Glossary [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/alert-management-summary/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+4C™ – Glossary
+View Post
+0
+No approved comments
+2
+2 pending comments
+2021/11/16 at 11:00 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+[…] Wizard – Basic SettingsWizard – FormatWizard – ParametersWizard – RecipientsWizard – AuthorizationsWizard – […]
+[&#8230;] Wizard - Basic SettingsWizard - FormatWizard - ParametersWizard - RecipientsWizard - AuthorizationsWizard - [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/alert-management-summary/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Wizard – Basic Settings
+View Post
+0
+No approved comments
+1
+1 pending comment
+2021/11/16 at 11:00 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/alert-management-summary
+107.180.38.170
+[…] Cockpit – OverviewAlert management – […]
+[&#8230;] Cockpit - OverviewAlert management - [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/alert-management-summary/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+4C™ – Cockpit – Overview
+View Post
+0
+No approved comments
+2
+2 pending comments
+2021/11/16 at 10:56 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/analytics-top-most-violated-sod-…
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/analytics-top-most-violated-sod-…
+107.180.38.170
+[…] Internal Violations Internal Violations – VideoInternal Violations – Managing Reporting Instance versionsInternal Violations – Parameters […]
+[&#8230;] Internal Violations Internal Violations – VideoInternal Violations - Managing Reporting Instance versionsInternal Violations - Parameters [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/analytics-top-most-violated-sod-rules/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Internal Violations – Report Usage
+View Post
+0
+No approved comments
+1
+1 pending comment
+2021/10/27 at 1:49 pm
+Select comment
+Skywind Knowledge Portal
+help.skywind.com/analytics-top-users-with-actual-…
+107.180.38.170
+Skywind Knowledge Portal
+help.skywind.com/analytics-top-users-with-actual-…
+107.180.38.170
+[…] Cross Reference Violations Cross Reference Violations – VideoCross Reference Violations – Managing Reporting Instance versionsCross Reference Violations – Parameters […]
+[&#8230;] Cross Reference Violations Cross Reference Violations – VideoCross Reference Violations - Managing Reporting Instance versionsCross Reference Violations - Parameters [&#8230;]
+Skywind Knowledge Portal
+http://help.skywind.com/analytics-top-users-with-actual-sod-violations/
+0
+Approve
+Unapprove
+|
+Reply
+|
+Quick Edit
+|
+Edit
+|
+Spam
+|
+Trash
+Show more details
+Cross Reference Violations – Report Usage
+View Post
+0
+No approved comments
+1
+1 pending comment
+2021/10/27 at 1:46 pm
+Select All
+Author
+Sort ascending.
+Comment
+In response to
+Sort ascending.
+Submitted on
+Sort ascending.
+Select bulk action
+Bulk actions
+Unapprove
+Approve
+Mark as spam
+Move to Trash
+42 items
+«
+‹
+Current Page
+1 of
+3
+Next page
+›
+Last page
+»
+Edit Comment
+Reply to Comment
+Add Comment
+Comment
+Name
+Email
+URL
+Add Comment
+Update Comment
+Submit Reply
+Cancel
+Comment by
+moved to the Trash.
+Undo
+Comment by
+marked as spam.
+Undo
+Thank you for creating with
+WordPress
+.
+Version 6.8.3
+Plugin
+PDF&Print
+Shortcode settings
+Add PDF & Print Buttons to your page or post
+PDF
+Print
+The shortcode will be inserted
+Close dialog
+Session expired
+Please log in again.
+The login page will open in a new tab. After logging in you can close it and return to this page.
+Insert/edit link
+Close
+Enter the destination URL
+URL
+Link Text
+Open link in a new tab
+Or link to existing content
+Search
+No search term specified. Showing recent items.
+Search or use up and down arrow keys to select an item.
+Cancel

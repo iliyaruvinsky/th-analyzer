@@ -1,0 +1,254 @@
+URL: https://wordpress.org/support/forum/requests-and-feedback
+Title: Requests and Feedback | WordPress.org
+================================================================================
+
+Requests and Feedback Forum
+Feature suggestions and constructive feedback to improve WordPress.
+Search for:
+Search forums
+Log in to Create a Topic
+1
+2
+3
+…
+47
+48
+49
+→
+Topic
+Participants
+Replies
+Last Post
+Welcome to the Requests and Feedback forum (AKA forum rules)
+Started by:
+mrmist
+1
+0
+15 years, 5 months ago
+mrmist
+Typography in Tabs Styling needs to be more flexible. It needs to move
+Started by:
+rickaltman
+3
+5
+5 days, 20 hours ago
+threadi
+Media pick more then one at a time.
+Started by:
+RaymondDay
+3
+3
+3 hours, 14 minutes ago
+ameliaadam2025
+Stop developers hijacking the font library
+Started by:
+debbitage
+2
+3
+1 month, 3 weeks ago
+debbitage
+Post Date as Future Event
+Started by:
+debbitage
+3
+1
+2 months, 2 weeks ago
+threadi
+Native IPv6 Support for api.wordpress.org
+Started by:
+AllFactors
+5
+6
+4 weeks, 1 day ago
+Barry
+Feature request: return search results ordered by relevance
+Started by:
+mightywebdeveloper
+2
+1
+4 months, 1 week ago
+threadi
+Suggestion: Improve Plugin Search Filters
+Started by:
+Zio3D
+2
+2
+4 months, 2 weeks ago
+Zio3D
+Themes page slow
+Started by:
+kingleo216
+2
+3
+4 months, 3 weeks ago
+kingleo216
+Ability to Create Sub Folders inside Media Library (Uploads) Folder Natively
+Started by:
+Deepak
+3
+2
+4 months, 3 weeks ago
+James Killingsworth
+Improvement Native Lightbox Function
+Started by:
+Helison S. Cruz
+2
+1
+5 months ago
+t-p
+Enhance Media Library Search: Include Alt Text, Captions, and Descriptions
+Started by:
+K.M. Nahidul Islam
+2
+1
+5 months ago
+threadi
+WordPress Plugins Image Galleries – Please finally improve them
+Started by:
+Mulder
+2
+3
+5 months, 2 weeks ago
+Mulder
+Feature Suggestions for WordPress Stories: View Count & Link Support
+Started by:
+Voice Mazani
+4
+4
+6 months ago
+Samuel Wood (Otto)
+Move attachments serialized data to it’s own table
+Started by:
+dylandawg
+4
+3
+6 months, 1 week ago
+bcworkz
+Inconsistentcy between ADMIN VIEW & NON-ADMIN VIEW OF same POST
+Started by:
+trcooper
+4
+5
+6 months, 2 weeks ago
+Shubham Patil
+Why doesn’t WP ask for donations?
+Started by:
+LilGames
+1
+1
+6 months, 2 weeks ago
+Support Moderator
+Support custom sources (like acf/field) in the Attributes Panel UI
+Started by:
+Benedikt Ledl
+2
+1
+6 months, 2 weeks ago
+threadi
+Don’t Allow Support Threads w/No Solution to be Marked Resolved. Use Abandoned
+Started by:
+jerome21z
+1
+0
+6 months, 3 weeks ago
+jerome21z
+Request – Ability to color code pages listed in the page index
+Started by:
+chrislightfoot
+2
+1
+6 months, 4 weeks ago
+threadi
+WordPress Default Media Image Sizes
+Started by:
+avalmabna
+4
+11
+6 months, 1 week ago
+Josh Journey
+Website suggestion: DONATE button
+Started by:
+Denra.com
+3
+3
+7 months ago
+Denra.com
+Last Update Date
+Started by:
+yeknafar
+3
+3
+7 months, 1 week ago
+yeknafar
+PLEASE STOP installing themes automatically
+Started by:
+nexgraphics
+3
+2
+7 months, 1 week ago
+threadi
+Redirection during bulk plugin activation should be disabled
+Started by:
+Norm Sash
+4
+3
+7 months, 2 weeks ago
+Norm Sash
+Add Fields To “Users” Screen
+Started by:
+Melly
+2
+1
+7 months, 2 weeks ago
+threadi
+Request: Previous / Next Buttons for WP Admin
+Started by:
+trishahdee
+2
+2
+6 months, 1 week ago
+trishahdee
+Theme Handbook recommends elusive plugin
+Started by:
+Bob Kline
+4
+5
+7 months, 3 weeks ago
+threadi
+Internal vs External link identification
+Started by:
+nmckean
+2
+0
+7 months, 3 weeks ago
+nmckean
+Feature Request: GIF Playback Controls in Comments
+Started by:
+rti451
+1
+0
+7 months, 3 weeks ago
+rti451
+Need Pattern Overrides for Query Loop
+Started by:
+LilGames
+1
+0
+7 months, 3 weeks ago
+LilGames
+1
+2
+3
+…
+47
+48
+49
+→
+RSS Recent Posts
+RSS Recent Topics
+Topics
+Topics with no replies
+Non-support topics
+Resolved topics
+Unresolved topics
+All topics

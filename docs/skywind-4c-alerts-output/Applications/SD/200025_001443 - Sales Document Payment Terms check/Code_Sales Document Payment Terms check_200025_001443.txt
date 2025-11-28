@@ -1,0 +1,201 @@
+FUNCTION /SKN/F_SW_10_01_SD_PT_CHK .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT OPTIONAL
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_01_SD_PT_CHK OPTIONAL
+*"----------------------------------------------------------------------
+  TYPES: BEGIN OF TY_VBKD,
+           VBELN TYPE VBKD-VBELN,
+           POSNR TYPE VBKD-POSNR,
+           ZTERM TYPE VBKD-ZTERM,
+         END OF TY_VBKD,
+         TT_VBKD TYPE STANDARD TABLE OF TY_VBKD.
+  DATA_SINGLE: MANAGE_IN_UTC  CHAR1 ,
+               LANGU          LANGU,
+               BACKDAYS       INT4,
+               DATE_REF_FLD   NAME_FELD.
+** Default values
+  LV_BACKDAYS     = 1.
+  LV_DATE_REF_FLD = 'ERDAT'.
+  SELECT_SINGLE: LANGU,
+                 BACKDAYS,
+                 DATE_REF_FLD.
+  DATA_MULTY: VBELN        VBAK-VBELN,
+              VKORG        VBAK-VKORG,
+              VTWEG        VBAK-VTWEG,
+              SPART        VBAK-SPART,
+              BSTNK        VBAK-BSTNK,
+              VBTYP        VBAK-VBTYP,
+              AUART        VBAK-AUART,
+              ERDAT        VBAK-ERDAT,
+              AEDAT        VBAK-AEDAT,
+              AUDAT        VBAK-AUDAT,
+              VDATU        VBAK-VDATU,
+              KUNNR        VBPA-KUNNR,
+              PARVW        VBPA-PARVW,
+              ZTERM_VBKD   VBKD-ZTERM,
+              ZTERM_KNVV   KNVV-ZTERM,
+              DATUM        SY-DATUM.
+  SELECT_MULTY: VBELN,
+                VKORG ,
+                VTWEG ,
+                SPART,
+                BSTNK,
+                VBTYP,
+                AUART,
+                ERDAT,
+                AEDAT,
+                AUDAT,
+                VDATU,
+                KUNNR,
+                PARVW,
+                ZTERM_VBKD,
+                ZTERM_KNVV,
+                DATUM.
+  CONVERT_MULTY: KUNNR ALPHA,
+                 VBELN ALPHA.
+  """Tanya 14/11/18 :
+  CONVERT_MULTY:  AUART AUART ,
+                  PARVW PARVW .
+*  RANGES : r_fld_name FOR dd03p-fieldname,
+*           r_fld_val  FOR dd03p-fieldname .
+*  DATA :   fld_name TYPE fieldname.
+*  DATA : i TYPE i,
+*         ci(1) TYPE c,
+*         nfields TYPE i VALUE 3.   "
+  DATA : BACKDAYS  TYPE I ,
+         DATE_FROM LIKE SY-DATUM,
+         DATE_TO   LIKE SY-DATUM .
+*  DATA : langu LIKE sy-langu .
+*  DATA : time_diff TYPE  int4 .
+  DATA : SY_TABIX LIKE SY-TABIX .
+  DATA : REF_DATE TYPE D.
+  DATA : LV_VBELN TYPE VBELN,
+         LV_POSNR TYPE POSNR,
+         LV_PARVW TYPE PARVW,
+         LV_KUNNR TYPE KUNNR,
+         LV_TABIX LIKE SY-TABIX,
+         LV_VBTYP TYPE VBTYP.
+  DATA: LS_DATA LIKE LINE OF T_DATA,
+        LS_VBKD TYPE TY_VBKD.
+  DATA: LT_VBKD TYPE TT_VBKD.
+  FIELD-SYMBOLS: <FS_DATA> LIKE LINE OF T_DATA.
+*  DATA: lt_data  LIKE t_data[],
+*        lwa_data LIKE LINE OF t_data.
+  "--- Run Cloud Mode -----
+  DATA_SINGLE: SW_DEST
+               RFCDEST.
+  SELECT_SINGLE: SW_DEST.
+  IF LV_SW_DEST IS NOT INITIAL.
+    CALL FUNCTION '/SKN/FC_SW_10_01_SD_PT_CHK'
+      IMPORTING
+        IS_ALERT = IS_ALERT
+      TABLES
+        T_SELECT = T_SELECT
+        T_DATA   = T_DATA.
+  ENDIF.
+  CHECK LV_SW_DEST IS INITIAL.
+  "--- Run Cloud Mode -----
+  IF R_DATUM[] IS INITIAL .
+    RS_DATUM-SIGN   = 'I' .
+    RS_DATUM-OPTION = 'BT' .
+    DATE_FROM       = SY-DATUM - LV_BACKDAYS.
+    RS_DATUM-LOW    = DATE_FROM.
+    RS_DATUM-HIGH   = SY-DATUM.
+    APPEND RS_DATUM TO R_DATUM.
+  ENDIF.
+  IF R_PARVW IS INITIAL.
+    RS_PARVW-SIGN   = 'I' .
+    RS_PARVW-OPTION = 'EQ' .
+    RS_PARVW-LOW    = 'RG'.
+    APPEND RS_PARVW TO R_PARVW.
+  ENDIF.
+  "--- Set Reference Date Field
+*  date_from = sy-datum.
+*  READ TABLE r_datum INTO rs_datum INDEX 1.
+*  IF sy-subrc IS INITIAL.
+*    date_from = rs_datum-low.
+*    date_to = rs_datum-high.
+*    IF date_to < date_from.
+*      date_to = date_from.
+*    ENDIF.
+*  ENDIF.
+  "---
+  CASE LV_DATE_REF_FLD.
+    WHEN 'ERDAT'.
+      R_ERDAT[] = R_DATUM[]. "Date on Which Record Was Created
+    WHEN 'AEDAT'.
+      R_AEDAT[] = R_DATUM[]. "Changed On
+    WHEN 'AUDAT'.
+      R_AUDAT[] = R_DATUM[]. "Document Date (Date Received/Sent)
+*    WHEN 'EDATU'.
+*      r_edatu = r_datum[].
+    WHEN 'VDATU'.
+      R_VDATU[] = R_DATUM[].
+    WHEN OTHERS.
+      R_ERDAT[] = R_DATUM[]. "Document created
+  ENDCASE.
+*--- Retrieve data
+  CLEAR IS_ALERT .
+*  REFRESH: lt_data.
+  SELECT VBAK~VBELN VBAK~ERDAT VBAK~ERZET VBAK~ERNAM VBAK~AUDAT VBAK~VBTYP VBAK~AUART
+         VBAK~AEDAT VBAK~NETWR VBAK~WAERK VBAK~VKORG VBAK~VTWEG VBAK~BSTNK VBAK~VKGRP VBAK~SPART
+         VBPA~KUNNR
+         KNA1~NAME1
+         VBKD~ZTERM AS ZTERM_VBKD
+         KNVV~ZTERM AS ZTERM_KNVV
+         ADRP~NAME_TEXT
+    FROM VBAK INNER JOIN VBPA  ON  VBAK~VBELN       EQ VBPA~VBELN
+              INNER JOIN KNA1  ON  VBPA~KUNNR       EQ KNA1~KUNNR
+              INNER JOIN VBKD  ON  VBAK~VBELN       EQ VBKD~VBELN
+                               AND VBPA~POSNR       EQ VBKD~POSNR
+              INNER JOIN KNVV  ON  VBPA~KUNNR       EQ KNVV~KUNNR
+                               AND VBAK~VKORG       EQ KNVV~VKORG
+                               AND VBAK~VTWEG       EQ KNVV~VTWEG
+                               AND VBAK~SPART       EQ KNVV~SPART        " YC++ 08.03.21
+                               AND VBKD~ZTERM       NE KNVV~ZTERM
+              INNER JOIN USR21 ON  VBAK~ERNAM       EQ USR21~BNAME       " YC++ 08.03.21
+              INNER JOIN ADRP  ON  USR21~PERSNUMBER EQ ADRP~PERSNUMBER   " YC++ 08.03.21
+    INTO CORRESPONDING FIELDS OF TABLE T_DATA[]
+    WHERE VBAK~VBELN IN R_VBELN
+      AND VBAK~VKORG IN R_VKORG
+      AND VBAK~VTWEG IN R_VTWEG
+      AND VBAK~SPART IN R_SPART
+      AND VBAK~BSTNK IN R_BSTNK
+      AND VBAK~AUART IN R_AUART
+      AND VBAK~ERDAT IN R_ERDAT
+      AND VBAK~AUDAT IN R_AUDAT
+      AND VBAK~AEDAT IN R_AEDAT
+      AND VBAK~VDATU IN R_VDATU
+      AND VBAK~VBTYP IN R_VBTYP
+      AND VBPA~KUNNR IN R_KUNNR
+      AND VBPA~PARVW IN R_PARVW.
+  CHECK T_DATA[] IS NOT INITIAL.
+*  SELECT vbeln posnr zterm
+*    FROM vbkd
+*    INTO TABLE lt_vbkd
+*    FOR ALL ENTRIES IN t_data
+*    WHERE vbeln EQ t_data-vbeln.
+**********************************************************************
+*  LOOP AT t_data ASSIGNING <fs_data>.
+*    sy_tabix = sy-tabix .
+*    CALL FUNCTION '/SKN/F_SW_10_CUST_DESC'
+*      EXPORTING
+*        kunnr          = <fs_data>-kunnr
+*      IMPORTING
+*        cust_desc      = <fs_data>-name1
+*      EXCEPTIONS
+*        wrong_customer = 1
+*        OTHERS         = 2.
+*    IF sy-subrc <> 0.
+*    ENDIF.
+*  ENDLOOP.
+**********************************************************************
+*--- Check Alert Information
+  READ TABLE T_DATA INDEX 1.
+  CHECK NOT SY-TFILL  IS INITIAL .
+  IS_ALERT = 'X' .
+ENDFUNCTION.

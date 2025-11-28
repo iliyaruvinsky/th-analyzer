@@ -1,0 +1,64 @@
+URL: https://help.skywind.com/category/administration/administration-4c/
+Title: Skywind Knowledge Portal
+================================================================================
+
+Knowledge base and help for all products
+by Skywind Software Group
+Products
+4C™
+SoDA™
+Contact
+SEARCH
+Administration - 4C™
+4C™ – Recipient Lists
+Click on the <Recipient Lists> button to display the respective frame. Using it you can create new Recipient Lists and manage existing ones. Using Recipients Lists is useful when the same group of recipient should receive notifications from multiple alerts. It much easier and controllable to manage those notifications at the list level, rather than at […]
+Read more
+4C™ – Recipients
+User and Recipient are 2 different entities, having different purposes. Recipients only receive notifications, but unlike Users, they do not have access to the SkyAPS™ platform. Every person can be defined as User and/or Recipient. Users are managed at the platform level, while users – at the application level. To add a new Recipient and […]
+Read more
+Skywind Software Group
+© All rights reserved. 2011-2021.
+PRODUCTS
+4C™
+SoDA™
+CONTACT US
+sales@skywind.com
++972-524640067
+87 Hatopaz ST., Kfar
+Yona, Israel,
+post code 4035387
+Skywind Software Group
+© All rights reserved. 2011-2021.
+Skip to toolbar
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Dashboard
+Plugins
+Themes
+Menus
+Customize
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Edit Category
+Auto-login link
+No users with autologin codes
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+Search

@@ -370,12 +370,22 @@ Risk = f(Normalized_Count, ...)
 
 ---
 
-## Context Documents (User Mentioned but NOT in Repo)
+## Context Documents
 
-- `docs/about_skywind/TXT/*` - Skywind alert parameter documentation
+### Available (Read These First)
+- **`docs/th-context/skywind-4c-knowledge.md`** - Consolidated Skywind 4C knowledge base (CREATED 2025-11-27)
+  - Core terminology (Exception Indicator, Alert Instance, Alert Template)
+  - Alert parameters (BACKDAYS, FORWDAYS, DURATION, etc.)
+  - Alert artifact structure (Code, Explanation, Metadata, Summary)
+  - SAP module reference (SD, FI, MM fields)
+  - Analysis guidelines for THA
+
+### Source Documentation (Raw)
+- `docs/about_skywind/TXT/*` - Original Skywind documentation (70+ files)
+- `docs/about_skywind/HTML/*` - Raw HTML pages from help.skywind.com
+
+### Still Missing
 - `Core Principles of THA Analysis.md` - On user's Windows machine
-
-**Ask user to provide these documents or copy to repo.**
 
 ---
 
@@ -397,6 +407,11 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 ## Changelog
 
 ### 2025-11-27 (Current Session)
+- **CREATED**: `docs/th-context/skywind-4c-knowledge.md` - Consolidated Skywind 4C knowledge base
+  - Read all 70+ TXT files from docs/about_skywind/
+  - Documented core terminology (EI, AI, Alert Template)
+  - Documented parameters (BACKDAYS, FORWDAYS, DURATION)
+  - BACKDAYS clarification: It's a filter for time window depth, NOT a divisor for normalization
 - **IN PROGRESS**: Alert Interpretation Comparison Exercise
 - **CREATED**: `docs/analysis/SD_Negative_Profit_Deal_Analysis.md` - Full AI analysis document
 - **ANALYZED**: "Negative Profit Deal" alert (SD Module, ID: 200025_001441)
@@ -404,6 +419,7 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
   - Patterns: 59% zero-price, 39% manual override
   - Fraud indicator: $8.1M single transaction to KAMURU TRADING
   - Concentration: KE01 = 81% of loss
+  - BACKDAYS = 365 (data from past year)
 - **WORKFLOW**: User comparing AI vs User interpretation to improve Content Analyzer
 - **PENDING**: User's interpretation for comparison
 - **PENDING**: 2 more alerts to analyze
@@ -419,7 +435,7 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 - **FIXED**: File categorization (handles "Metadata " with space)
 - **TESTED**: "Rarely Used Vendors" alert → $45M exposure, Risk 80
 - **IN PROGRESS**: Defining BUSINESS_PROTECTION scoring rules
-- **PENDING**: BACKDAYS parameter extraction and normalization
+- **PENDING**: BACKDAYS parameter extraction from Metadata file (for context, not normalization)
 - **PENDING**: Updated severity base scores (90/75/60/50)
 
 ### 2025-11-26 (Earlier)

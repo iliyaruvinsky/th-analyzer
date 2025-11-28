@@ -1,0 +1,307 @@
+FUNCTION /SKN/F_SW_10_01_BILL_STAT .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT OPTIONAL
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_01_BILL_STAT OPTIONAL
+*"----------------------------------------------------------------------
+DATA_SINGLE: MANAGE_IN_UTC  CHAR1 ,
+             LANGU  LANGU,
+             BACKDAYS INT4,
+             BP1_FUNCT   PARVW,
+             BP2_FUNCT   PARVW,
+             BP3_FUNCT   PARVW,
+             DATE_REF_FLD NAME_FELD,
+             DURATION_UNIT  /SKN/E_SW_DURATION_UNIT.
+ LV_BACKDAYS = 1.
+ LV_DATE_REF_FLD = 'FKDAT'. "Billing date
+ LV_DURATION_UNIT = 'D'.
+ SELECT_SINGLE: MANAGE_IN_UTC,
+                LANGU,
+                BACKDAYS,
+                BP1_FUNCT,
+                BP2_FUNCT,
+                BP3_FUNCT,
+                DATE_REF_FLD,
+                DURATION_UNIT.
+DATA_MULTY: VBELN        VBELN_VF,
+            FKART        FKART,
+            FKTYP        FKTYP,
+            VBTYP        VBTYP,
+            VKORG        VKORG,
+            VTWEG        VTWEG,
+            KDGRP        KDGRP,
+            BZIRK        BZIRK,
+            FKDAT        FKDAT,
+            ERDAT        ERDAT,
+            ERNAM        ERNAM,
+            AEDAT        AEDAT,
+            DATUM        SY-DATUM,
+"            DURATION_M   /SKN/E_SW_DURATION_M,
+"            DURATION_H   /SKN/E_SW_DURATION_H,
+"            DURATION_D   /SKN/E_SW_DURATION_D,
+            DURATION    /SKN/E_SW_DURATION,
+            KUNRG       KUNRG,
+            KUNAG       KUNAG,
+            SPART       SPART,
+            BUCHK       BUCHK,
+            RELIK       RELIK,
+            RRSTA       RR_STATUS,
+            BLOCK       BLOCK_VB,
+            RFBSK       RFBSK,
+            BP1_CODE    KUNNR,
+            BP2_CODE    KUNNR,
+            BP3_CODE    KUNNR,
+            BP_FUNCT    PARVW,
+            FKSTO        FKSTO.
+SELECT_MULTY:
+            VBELN,
+            FKART ,
+            FKTYP,
+            VBTYP ,
+            VKORG ,
+            VTWEG,
+            KDGRP,
+            BZIRK,
+            FKDAT,
+            ERDAT,
+            ERNAM,
+            AEDAT,
+            DATUM,
+"            DURATION_M,
+"            DURATION_H ,
+"            DURATION_D,
+            DURATION,
+            KUNRG ,
+            KUNAG,
+            SPART,
+            BUCHK,
+            RELIK,
+            RRSTA,
+            BLOCK,
+            RFBSK,
+            BP1_CODE,
+            BP2_CODE,
+            BP3_CODE,
+            FKSTO.
+CONVERT_MULTY: KUNRG ALPHA,
+               KUNAG ALPHA,
+               VBELN ALPHA,
+               BP1_CODE ALPHA,
+               BP2_CODE ALPHA,
+               BP3_CODE ALPHA.
+  ""Tanya 14/11/18 :
+  CONVERT_SINGLE:  BP1_FUNCT PARVW ,
+                   BP2_FUNCT PARVW ,
+                   BP3_FUNCT PARVW .
+RANGES : R_FLD_NAME FOR DD03P-FIELDNAME,
+         R_FLD_VAL FOR DD03P-FIELDNAME .
+DATA :   FLD_NAME TYPE FIELDNAME.
+DATA : I TYPE I,
+       CI(1) TYPE C,
+       NFIELDS TYPE I VALUE 3.   "
+DATA : BACKDAYS  TYPE I ,
+       DATE_FROM LIKE SY-DATUM .
+DATA : LANGU LIKE SY-LANGU .
+DATA : IS_OUT(1) TYPE C.
+DATA : TIME_DIFF TYPE  INT4 .
+DATA : W_DATA LIKE LINE OF T_DATA .
+DATA : WA_VBPA TYPE VBPA.
+DATA : LV_VBELN TYPE VBELN,
+       LV_POSNR TYPE POSNR,
+       LV_PARVW TYPE PARVW,
+       LV_KUNNR TYPE  KUNNR,
+       LV_KUNNR_NAME TYPE  NAME1_GP,
+       LV_LIFNR TYPE  LIFNR,
+       LV_LIFNR_NAME TYPE  NAME1_GP,
+       LV_PERNR TYPE  PERNR_D,
+       LV_PERNR_NAME TYPE  NAME1_GP,
+       LV_NRART TYPE NRART.
+DATA : SY_TABIX LIKE SY-TABIX .
+DATA : FLD(60) TYPE C .
+DATA : REF_DATE TYPE D.
+*data: lra_range type range of DD03P-FIELDNAME.
+FIELD-SYMBOLS:  TYPE ANY ,
+               <FS_V> TYPE ANY .
+DATA : BEGIN OF SW_STRUCTURE OCCURS 0.
+  INCLUDE STRUCTURE /SKN/S_SW_S_FCAT .
+DATA : END OF SW_STRUCTURE .
+DATA : LS_VBPA TYPE VBPA,
+       LT_VBPA LIKE TABLE OF LS_VBPA.
+DATA : LV_DATA_POSNR TYPE POSNR.
+"--- Run Cloud Mode -----
+  DATA_SINGLE: SW_DEST RFCDEST.             .
+  SELECT_SINGLE: SW_DEST.
+  IF LV_SW_DEST IS NOT INITIAL.
+    DATA: LV_IS_HANA(1) TYPE C.
+    CALL FUNCTION '/SKN/F_SW_IS_RFCDEST_HANA'
+      EXPORTING
+        DEST          = LV_SW_DEST
+      IMPORTING
+        IS_HANA       =  LV_IS_HANA.
+   IF LV_IS_HANA IS NOT INITIAL.
+    CALL FUNCTION '/SKN/FH_SW_10_01_BILL_STAT'
+      IMPORTING
+        IS_ALERT       = IS_ALERT
+      TABLES
+        T_SELECT       = T_SELECT
+        T_DATA         = T_DATA.
+   ELSE.
+    CALL FUNCTION '/SKN/FC_SW_10_01_BILL_STAT'
+      IMPORTING
+        IS_ALERT       = IS_ALERT
+      TABLES
+        T_SELECT       = T_SELECT
+        T_DATA         = T_DATA.
+   ENDIF.
+  ENDIF.
+  CHECK LV_SW_DEST IS INITIAL.
+"--- Run Cloud Mode -----
+   IF R_DATUM[] IS INITIAL .
+     RS_DATUM-SIGN = 'I' .
+      RS_DATUM-OPTION = 'GE' .
+       DATE_FROM = SY-DATUM - LV_BACKDAYS .
+       RS_DATUM-LOW = DATE_FROM .
+        APPEND RS_DATUM TO R_DATUM.
+   ENDIF.
+ "--- Set Reference Date Field
+   CASE LV_DATE_REF_FLD.
+     WHEN 'ERDAT'.
+       R_ERDAT[] = R_DATUM[]. "Document created
+     WHEN 'AEDAT'.
+       R_AEDAT[] = R_DATUM[]. "changed on
+     WHEN OTHERS.
+       R_FKDAT[] = R_DATUM[]. "Billing date
+   ENDCASE.
+*--- Retrieve data
+  CLEAR IS_ALERT .
+  REFRESH T_DATA.
+  SELECT *
+    FROM VBRK AS A
+    INNER JOIN VBUK AS K
+    ON A~VBELN = K~VBELN
+    INTO CORRESPONDING FIELDS OF TABLE T_DATA
+    WHERE A~VBELN IN R_VBELN
+      AND  A~FKART IN R_FKART
+      AND A~FKTYP IN R_FKTYP
+      AND A~VBTYP IN R_VBTYP
+      AND A~VKORG IN R_VKORG
+      AND A~VTWEG IN R_VTWEG
+      AND A~KDGRP IN R_KDGRP
+      AND A~BZIRK IN R_BZIRK
+      AND A~FKDAT IN R_FKDAT
+      AND A~ERDAT IN R_ERDAT
+      AND A~ERNAM IN R_ERNAM
+      AND A~AEDAT IN R_AEDAT
+      AND A~KUNRG IN R_KUNRG
+      AND A~KUNAG IN R_KUNAG
+      AND A~SPART IN R_SPART
+      AND K~BUCHK IN R_BUCHK
+      AND K~RELIK IN R_RELIK
+      AND K~RRSTA IN R_RRSTA
+      AND K~BLOCK IN R_BLOCK
+      AND A~RFBSK IN R_RFBSK
+      AND A~FKSTO IN R_FKSTO.
+*********************************************************************************
+*-- Calculate Status Duration (associating to Reference Field (DATE_REF_FLD)
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    CONCATENATE 'T_DATA-' LV_DATE_REF_FLD INTO FLD .
+    ASSIGN (FLD) TO .
+    REF_DATE =  .
+    IF NOT REF_DATE IS INITIAL.
+      T_DATA-DURATION_UNIT = LV_DURATION_UNIT.
+      CALL FUNCTION '/SKN/F_SW_GET_TIME_DIFF'
+        EXPORTING
+          D_FROM            = REF_DATE
+          T_FROM            = SY-UZEIT
+          D_TO              = SY-DATUM
+          T_TO              = SY-UZEIT
+          TIME_UNIT         = LV_DURATION_UNIT   "'D'
+        IMPORTING
+          TIME_DIFF         = TIME_DIFF
+        EXCEPTIONS
+          WRONG_VALUE       = 1
+          OTHERS            = 2    .
+      IF SY-SUBRC = 0.
+        IF TIME_DIFF < '999999'.
+          T_DATA-DURATION  = TIME_DIFF .
+        ELSE.
+          T_DATA-DURATION  = '999999'.
+        ENDIF.
+      ENDIF.
+      MODIFY T_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+  DELETE T_DATA WHERE DURATION  NOT IN R_DURATION .
+******************************************************************************
+********************************************************************************
+  "--- Get BPs
+  IF T_DATA[] IS NOT INITIAL.
+    "--- Fill R_BP_FUNCT ----
+    REFRESH R_BP_FUNCT.
+    SET_BP_RANGE 1.
+    SET_BP_RANGE 2.
+    SET_BP_RANGE 3.
+   IF R_BP_FUNCT[] IS NOT INITIAL.
+     SELECT * FROM VBPA
+        INTO CORRESPONDING FIELDS OF TABLE LT_VBPA
+        FOR ALL ENTRIES IN T_DATA
+        WHERE VBELN = T_DATA-VBELN
+          AND PARVW IN R_BP_FUNCT.
+     SORT LT_VBPA BY VBELN POSNR PARVW.
+     LOOP AT T_DATA.
+       SY_TABIX = SY-TABIX .
+       GET_BP_ATTR 1.
+       GET_BP_ATTR 2.
+       GET_BP_ATTR 3.
+       MODIFY T_DATA INDEX SY_TABIX.
+     ENDLOOP.
+    "--- Get BPs
+*  "--- Get BPs
+*  loop at t_data.
+*    sy_tabix = sy-tabix .
+*    get_BP_attr 1.
+*    get_BP_attr 2.
+*    get_BP_attr 3.
+*    modify t_data index sy_tabix.
+*  endloop.
+   "--- Get BPs
+    DELETE T_DATA WHERE BP1_CODE NOT IN R_BP1_CODE.
+    DELETE T_DATA WHERE BP2_CODE NOT IN R_BP2_CODE.
+    DELETE T_DATA WHERE BP3_CODE NOT IN R_BP3_CODE.
+   ENDIF.
+  ENDIF.
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+*Payer desc
+    CALL FUNCTION '/SKN/F_SW_10_CUST_DESC'
+      EXPORTING
+        KUNNR                = T_DATA-KUNRG
+      IMPORTING
+        CUST_DESC            = T_DATA-PAYER_DESC
+      EXCEPTIONS
+        WRONG_CUSTOMER       = 1
+        OTHERS               = 2              .
+    IF SY-SUBRC <> 0.
+    ENDIF.
+*Sold-to party desc
+    CALL FUNCTION '/SKN/F_SW_10_CUST_DESC'
+      EXPORTING
+        KUNNR                = T_DATA-KUNAG
+      IMPORTING
+        CUST_DESC            = T_DATA-SOLDTO_DESC
+      EXCEPTIONS
+        WRONG_CUSTOMER       = 1
+        OTHERS               = 2              .
+    IF SY-SUBRC <> 0.
+    ENDIF.
+    MODIFY T_DATA INDEX SY_TABIX.
+  ENDLOOP.
+*--- Check Alert Information
+ READ TABLE T_DATA INDEX 1.
+ CHECK NOT SY-TFILL  IS INITIAL .
+ IS_ALERT = 'X' .
+ENDFUNCTION.

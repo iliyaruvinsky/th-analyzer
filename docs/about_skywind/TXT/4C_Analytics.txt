@@ -1,0 +1,309 @@
+URL: https://help.skywind.com/analytics/
+Title: Skywind Knowledge Portal
+================================================================================
+
+Home
+4C™
+Analytics
+4C™ – Analytics
+Share
+Copy URL
+Search
+Table of Contents
+SkyAps™
+FAQ
+Go-To-Market Strategy
+SkyAPS™ Architecture
+Example post for SkyAps2
+Example post for SkyAps
+Authorization and Security
+Example post for SkyAps
+SkyAPS™ and SAP® Ecosystem
+Example post for SkyAps
+Installation and Implementation
+Example post for SkyAps
+Usage of SkyAPS™ 4C™ Alerts
+Example post for SkyAps
+Administration
+Administration – Overview
+Administration - Overview
+Administration - Users Management - User Details
+Administration – 4C™
+4C™ - Recipients
+4C™ – Recipient Lists
+Administration – SoDA™
+SoDA™ – Recipients
+SoDA™ - Data Masking
+JAM™
+Performance (Augmented Analytcis)
+Performance - Overview
+Performance – Top KPIs
+Delayed Jobs
+Similar Jobs///Under Construction
+Top 20 Most Long Running Jobs
+Suspicious Jobs
+Elongated Jobs
+Failed Jobs
+Users KPIs
+Users with ending validity/// Under construction
+Updated Jobs (By User)
+Informative KPIs
+Deleted Jobs///Under construction
+Event Driven Jobs
+# of Jobs vs Job's duration
+Jobs with program's variants that have expired///Under construction
+Updated Jobs
+Finished Job
+SoDA™
+SoDA™ – Overview
+SoDA™ Overview
+Analytics
+Analytics - Overview
+Analytics – Users
+Analytics - Top Users with Actual SOD Violations
+Analytics - Top Users with Potential SOD Violations
+Analytics - Users By Role
+Analytics - Users By Profile
+Analytics - Invalid Users
+Analytics - Valid Users
+Analytics - Logged on Users
+Analytics – SOD
+Analytics - Top Most Violated SOD Rules
+Analytics - Number of Actual SOD Violations
+Analytics - Number of Potential SOD Violations
+Analytics – Roles
+Top Cross Reference Role Violations
+Top Internal Role Violations
+Analytics – Transactions
+Top Most Visited Transactions
+Top Most Violated Transactions Combinations (Actual Violations)
+Analytics - Top Most Violated Transactions Combinations (Potential Violations)
+Reports
+Reports - General
+Reports - Managing Reports
+Potential SOD Violations (by SoD Rules)
+Potential SoD Violations (by SoD Rules) - Video
+Potential SOD Violations (by SoD Rules) - Report Usage
+Potential SOD Violations (by SoD Rules) - Managing Reporting Instance versions
+Potential SOD Violations (by SoD Rules) - Report Output
+Actual SoD Violations (by SoD Rules)
+Actual SoD Violations (by SoD Rules) - Video
+Actual SOD Violations (by SoD Rules) - Report Usage
+Actual SOD Violations (by SoD Rules) - Managing Reporting Instance versions
+Actual SOD Violations (by SoD Rules) - Report Output
+Potential SOD Violations (by T-Groups)
+Potential SOD Violations (by T-Groups) - Report Usage
+Potential SOD Violations (by T-Groups) - Managing Reporting Instance versions
+Potential SOD Violations (by T-Groups) - Report Output
+Actual SOD Violations (by T-Groups)
+Actual SOD Violations (by T-Groups) - Report Usage
+Actual SOD Violations (by T-Groups) - Managing Reporting Instance versions
+Actual SOD Violations (by T-Groups) - Report Output
+Internal Violations
+Internal Violations - Report Usage
+Internal Violations - Managing Reporting Instance versions
+Internal Violations - Report Output
+Cross Reference Violations
+Cross Reference Violations - Report Usage
+Cross Reference Violations - Managing Reporting Instance versions
+Cross Reference Violations - Report Output
+Role's Assigned Users & Transactions
+Role's Assigned Users & Transactions - Report Usage
+Role's Assigned Users & Transactions - Managing Reporting Instance versions
+Role's Assigned Users & Transactions - Report Output
+Excessive Authorizations
+Excessive Authorizations - Report Usage
+Excessive Authorizations - Managing Reporting Instance versions
+Excessive Authorizations - Report Output
+Transaction Usage
+Transaction Usage - Report Usage
+Transaction Usage - Managing Reporting Instance versions
+Transaction Usage - Report Output
+User's Assigned Transactions
+User's Assigned Transactions - Report Usage
+User's Assigned Transactions - Managing Reporting Instance versions
+User's Assigned Transactions - Report Output
+User's Assigned Roles & Profiles
+User's Assigned Roles and Profiles - Report Usage
+User's Assigned Roles and Profiles - Managing Reporting Instance versions
+User's Assigned Roles and Profiles - Report Output
+Where Used
+Where Used
+Simulations
+Simulations - General
+Internal Violations
+Simulations - Internal Violations - Output
+Simulations - Internal Violations - Parameters
+Cross Reference Violations
+Simulations - Cross Reference Violations - Output
+Simulations -  Cross Reference Violations - Parameters
+T-Codes (Deep Impact)
+Simulations - T-Codes (Deep Impact) - Output
+Simulations - T-Codes (Deep Impact) - Parameters
+User Simulations
+Simulations - User Simulations - Output
+Simulations - User Roles - Parameters
+SoD Rules
+SoD Rules - General
+SoD Rules - Managing SoD Rules
+SoD Rules - Operating SoD Rules
+T-Groups
+T-Groups - List of Business Domains
+T-Groups - Operating T-Groups
+T-Groups - Managing T-Groups
+Business Content
+Business Content - General
+Business Content - Business Domains
+Business Content - T-Groups
+Business Content - SoD Rules
+Business Content - List of SoD Rules
+Business Content - List of T-Groups
+Critical Objects
+Critical Roles
+Critical T-Codes
+Critical Objects - General
+Support
+SoDA™ - Support
+Auxiliary Functions
+Search Help
+4C™
+Event Driven Jobs
+4C™ – Overview
+4C™ - Overview
+4C™ - Key Benefits
+4C™ - Deployment
+4C™ - Glossary
+Analytics
+4C™ - Analytics
+Cockpit
+4C™ - Cockpit - Overview
+4C™ - Alert management
+Catalog
+4C™ - Catalog
+Wizard
+Wizard - Basic Settings
+Wizard - Format
+Wizard - Parameters
+Wizard - Recipients
+Wizard - Authorizations
+Wizard - Scheduling
+Date and Time Parameters
+Alert Generator
+AG - Overview
+AG - 1. Basic Settings
+AG - 2. Selected Fields
+AG - 3. Currency Conversion
+AG - 4. External Parameters
+AG - 5. Key for Delta
+AG - 6. Documentation
+AG - Validation and Generation
+AG - Glossary
+Feed
+4C™ – Feed
+Support
+4C™ - Support
+Need more support?
+If you did not found an answer,
+						contact us for further help.
+SUBMIT A TICKET
+Analytics
+Analytics
+provides you with high-level overview of the monitored systems and alerts. At a single glance you can learn what’s going on and how all of your SAP systems perform. The panel is a powerful tool for monitoring and analysis; actually it’s a highly-functional real-time BI dashboard.
+The upper toolbar contains buttons for managing filters and properties:
+Click on the
+<Filters>
+button to open the side panel for selecting filter values:
+Click on the button at the right side of a filter selector to open a popover for selecting the values:
+Once you are done with selecting the filters’ values click
+<G0>
+button to apply the filters or
+<Reset>
+button to clear the selection:
+Properties
+panel provides you with detailed information about Alerts, Recipients and other data displayed in the central frame. From here you can also drill down to
+Wizard – Basic Settings
+to perform changes. Click
+<Properties>
+button to display the side panel:
+Click
+<Export Analytics to
+Excel>
+button to export the data to Excel:
+Source system
+toolbar displays the information about the monitored systems: their names, status (Active/Inactive) and number of caught events for each of them:
+The central part of the central frame contains high-level KPIs. The upper row displays alert-related data in comparison with the previous period’s values. Actual figure is displayed at the right side, previous figure for comparison is displayed at the left side. Color and direction of the arrows indicate whether the actual figure increased (red), decreased (green) or didn’t change (grey) since the previous period:
+The second row displays only actual data about notifications, users and recipients. From each panel here you can drill down to detailed information displayed at the
+Properties
+side panel. To get detailed information about
+E-mail Recipients
+click
+<Details>
+button:
+Properties
+panel displays the list of E-mail Recipients. Click on the
+<Arrow>
+button against the chosen recipent to display the Alerts that he/she is notified about. You can click on the
+<Edit>
+button against each alert to change the notifications settings using
+Wizard – Recipients
+:
+Click
+<Details>
+button at the
+E-mails Sent
+panel to display the detailed information at the
+Properties
+side panel. Click on the
+<Arrow>
+button against the chosen recipent to display the list of E-mails sent to the recipient:
+Click
+<Details>
+button at the
+SMS Recipients
+panel to display the detailed information at the
+Properties
+side panel. Click on the
+<Arrow>
+button against the chosen recipent to display the Alerts that he/she is notified about. You can click on the
+<Edit>
+button against each alert to change the notifications settings using
+Wizard – Recipients
+:
+Click
+<Details>
+button at the
+SMS Sent
+panel to display the detailed information at the
+Properties
+side panel. Click on the
+<Arrow>
+button against the chosen recipent to display the list of E-mails sent to the recipient:
+Click
+<Details>
+button at the
+Users
+panel to display the detailed information at the
+Properties
+side panel:
+Click
+<Details>
+button at the
+Recipient Lists
+panel to display the detailed information at the
+Properties
+side panel. Click on the
+<Arrow>
+button against the chosen Recipent list to display the users that are assigned to the list:
+The charts at the lower part of the central frame are used for comparative analysis of today’s data against the period’s average. They help to quickly figure out whether there is deviation in Alert quantity and/or alert run time against average values. Big deviations mean that the monitored systems suffer from severe problems.
+The left chart provides info about monitored events’ summary, the right one – about average Alert run time. The data is displayed at the level of separate Alert Instances:
+By default the charts show only daily data. Click on the chart titles to switch on/off weekly and daily data. Color of the chart titles correspond with the color of the chart lines:
+Click on an Alert’s name to display detailed information at the
+Properties
+side panel. Here you can see the Alert’s Metadata (including parameters), Scheduling and drill down to change it using
+Wizard – Basic Settings
+by clicking on the
+<Edit>
+button:
+Click on a bar on a chart to display the output for the selected alert. The output data will be displayed as
+Alert management
+popover:

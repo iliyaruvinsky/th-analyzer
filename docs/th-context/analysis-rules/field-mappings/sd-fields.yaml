@@ -1,0 +1,175 @@
+# SD (Sales & Distribution) Field Mappings
+# Version: 1.0
+# Purpose: Define common SD module fields, their meanings, and analysis guidance
+
+module: SD
+full_name: Sales & Distribution
+description: |
+  SAP SD handles sales orders, deliveries, billing, and customer management.
+  Common risk areas: pricing manipulation, unauthorized discounts, revenue leakage.
+
+# =============================================================================
+# KEY TABLES
+# =============================================================================
+
+key_tables:
+
+  VBAK:
+    description: "Sales Document Header"
+    key_fields:
+      - VBELN: "Sales Document Number"
+      - AUART: "Document Type"
+      - VKORG: "Sales Organization"
+      - VTWEG: "Distribution Channel"
+      - SPART: "Division"
+      - KUNNR: "Customer Number"
+      - AUDAT: "Document Date"
+      - ERDAT: "Created Date"
+      - ERNAM: "Created By"
+      - AEDAT: "Changed Date"
+      - NETWR: "Net Value (Header)"
+      - WAERK: "Document Currency"
+
+  VBAP:
+    description: "Sales Document Item"
+    key_fields:
+      - VBELN: "Sales Document Number"
+      - POSNR: "Item Number"
+      - MATNR: "Material Number"
+      - WERKS: "Plant"
+      - NETWR: "Net Value (Item)"
+      - WAVWR: "Cost"
+      - WAERK: "Currency"
+      - KWMENG: "Order Quantity"
+      - MPROK: "Manual Price Change Flag"
+      - ABGRU: "Rejection Reason"
+      - UEPOS: "Higher-Level Item"
+
+  KNA1:
+    description: "Customer Master (General)"
+    key_fields:
+      - KUNNR: "Customer Number"
+      - NAME1: "Customer Name"
+      - LAND1: "Country"
+      - ORT01: "City"
+      - KTOKD: "Account Group"
+
+# =============================================================================
+# CRITICAL FIELDS FOR ANALYSIS
+# =============================================================================
+
+critical_fields:
+
+  # Financial fields
+  NETWR:
+    table: VBAP
+    description: "Net Value - what customer pays"
+    analysis_notes: |
+      - Compare with WAVWR (cost) to identify below-cost sales
+      - NETWR = 0 indicates zero-price items (investigate)
+      - NETWR < WAVWR = Negative profit (loss)
+
+  WAVWR:
+    table: VBAP
+    description: "Cost of goods sold"
+    analysis_notes: |
+      - Standard cost or moving average price
+      - Used to calculate profit margin
+      - WAVWR > NETWR = Loss on sale
+
+  # Manual intervention flag
+  MPROK:
+    table: VBAP
+    description: "Manual Price Change Indicator"
+    values:
+      "": "No manual change"
+      "A": "Manual price change made"
+      "B": "Price manually confirmed"
+    analysis_notes: |
+      - MPROK = 'A' is a RED FLAG
+      - If top losses have MPROK = 'A', investigate
+      - Indicates human override of system pricing
+      - Potential fraud indicator when concentrated
+
+  # Rejection/cancellation
+  ABGRU:
+    table: VBAP
+    description: "Rejection Reason"
+    analysis_notes: |
+      - Empty = active item
+      - Non-empty = rejected/cancelled
+      - Filter parameter in many alerts
+
+# =============================================================================
+# COMMON ALERT PATTERNS
+# =============================================================================
+
+alert_patterns:
+
+  negative_profit_deal:
+    detection: "VBAP-NETWR < VBAP-WAVWR"
+    meaning: "Selling price below cost"
+    risk_indicators:
+      - large_single_transaction
+      - manual_price_override
+      - concentration_by_customer
+      - concentration_by_sales_org
+    fraud_signals:
+      - "100% of top losses have manual override"
+      - "Single customer > 50% of total loss"
+      - "Single transaction > $1M loss"
+    recommended_analysis:
+      - check_mprok_flag
+      - calculate_concentration_by_customer
+      - calculate_concentration_by_sales_org
+      - identify_outlier_transactions
+
+  zero_price_items:
+    detection: "VBAP-NETWR = 0 AND VBAP-WAVWR > 0"
+    meaning: "No revenue recorded but cost exists"
+    common_causes:
+      - "Free goods/samples"
+      - "Project/WBS items with separate billing"
+      - "Configuration errors"
+      - "Potential fraud (goods given away)"
+
+# =============================================================================
+# CONCENTRATION DIMENSIONS
+# =============================================================================
+
+concentration_dimensions:
+
+  by_organization:
+    primary: VKORG  # Sales Organization
+    secondary:
+      - WERKS: "Plant"
+      - VTWEG: "Distribution Channel"
+      - SPART: "Division"
+
+  by_customer:
+    field: KUNNR
+    description_field: NAME1
+    table: KNA1
+
+  by_document_type:
+    field: AUART
+    common_types:
+      - "OR": "Standard Order"
+      - "ZOR": "Custom Order"
+      - "Z004": "Project WBS Order"
+      - "Z002": "Building Solutions Sales"
+
+# =============================================================================
+# SALES ORGANIZATION CODES (EXAMPLE)
+# =============================================================================
+
+# Note: These are client-specific, but common patterns exist
+sales_org_patterns:
+  naming_convention: |
+    Often follow pattern: {country_code}{sequence}
+    Examples: KE01 (Kenya 01), UG01 (Uganda 01), TZ01 (Tanzania 01)
+
+  common_attributes:
+    - country
+    - region
+    - business_unit

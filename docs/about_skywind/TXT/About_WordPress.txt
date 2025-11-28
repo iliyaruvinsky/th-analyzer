@@ -1,0 +1,185 @@
+URL: https://help.skywind.com/wp-admin/about.php
+Title: About ‹ Skywind Knowledge Portal — WordPress
+================================================================================
+
+Skip to main content
+Skip to toolbar
+Dashboard
+Dashboard
+Home
+Updates
+18
+Posts
+Posts
+All Posts
+Add Post
+Categories
+Tags
+Re-Order
+Taxonomy Order
+Media
+Media
+Library
+Add Media File
+Pages
+Pages
+All Pages
+Add Page
+Comments
+40
+40 Comments in moderation
+Contact
+Contact
+Contact Forms
+Add New
+Integration
+Appearance
+Appearance
+Themes
+7
+Patterns
+Customize
+Menus
+Theme File Editor
+Plugins
+11
+Plugins
+11
+Installed Plugins
+Add Plugin
+Plugin File Editor
+Users
+Users
+All Users
+Add User
+Profile
+Tools
+Tools
+Available Tools
+Import
+Export
+Site Health
+2
+Export Personal Data
+Erase Personal Data
+Settings
+Settings
+General
+Writing
+Reading
+Discussion
+Media
+Permalinks
+Privacy
+Autologin-links
+Cyr To Lat
+Post Types Order
+Taxonomy Terms Order
+Custom Fields
+Custom Fields
+Field Groups
+Add New
+Tools
+Info
+Updates
+Options
+PDF & Print
+PDF & Print
+Settings
+Headers & Footers
+BWS Panel
+Upgrade to Pro
+All Export
+All Export
+New Export
+Manage Exports
+Settings
+Collapse Menu
+Menu
+About WordPress
+About WordPress
+Get Involved
+WordPress.org
+Documentation
+Learn WordPress
+Support
+Feedback
+Skywind Knowledge Portal
+Visit Site
+18
+18 updates available
+40
+40 Comments in moderation
+New
+Post
+Media
+Page
+User
+Howdy,
+admin_help_skywind
+admin_help_skywind
+Edit Profile
+Log Out
+WordPress 6.8.3
+Maintenance and Security Releases
+Version 6.8.3
+addressed some security issues.					For more information, see
+the release notes
+.
+Version 6.8.2
+addressed 35 bugs.					For more information, see
+the release notes
+.
+Version 6.8.1
+addressed 15 bugs.					For more information, see
+the release notes
+.
+A release polished to a high sheen.
+WordPress 6.8 polishes and refines the tools you use every day, making your site faster, more secure, and easier to manage.
+The Style Book now has a structured layout and works with Classic themes, giving you more control over global styles.
+Speculative loading speeds up navigation by preloading links before users navigate to them, bcrypt hashing strengthens password security automatically, and database optimizations improve performance.
+The Style Book gets a cleaner look—and a few new tricks
+The Style Book has a new, structured layout and clearer labels, to make it even easier to edit colors, typography—almost all your site styles—in one place.
+Plus, now you can see it in Classic themes that have editor-styles or a theme.json file. Find the Style Book under Appearance > Design and use it to preview your theme’s evolution, as you edit CSS or make changes in the Customizer.
+Editor improvements
+Easier ways to see your options in Data Views, and you can exclude sticky posts from the Query Loop. Plus, you’ll find lots of little improvements in the editor that smooth your way through everything you build.
+Near-instant page loads, thanks to Speculative Loading
+In WordPress 6.8, pages load faster than ever. When you or your user hovers over or clicks a link, WordPress may preload the next page, for a smoother, near-instant experience. The system balances speed and efficiency, and you can control how it works, with a plugin or your own code. This feature only works in modern browsers—older ones will simply ignore it without any impact.
+Stronger password security with bcrypt
+Now passwords are harder to crack with bcrypt hashing, which takes a lot more computing power to break. This strengthens overall security, as do other encryption improvements across WordPress. You don’t need to do anything—everything updates automatically.
+Accessibility improvements
+100+ accessibility fixes and enhancements touch a broad spectrum of the WordPress experience. This release includes fixes to every bundled theme, improvements to the navigation menu management, the customizer, and simplified labeling. The Block Editor has over 70 improvements to blocks, DataViews, and to its overall user experience.
+Take a load off the database
+Work continues on optimizing cache key generation in the
+WP_Query
+class. The goal is, as ever, to boost your site’s performance, in this case by taking some more of the load off your database. This is especially good if you get a lot of traffic.
+Performance updates
+WordPress 6.8 packs a wide range of performance fixes and enhancements to speed up everything from editing to browsing. Beyond speculative loading, WordPress 6.8 pays special attention to the block editor, block type registration, and query caching. Plus, imagine never waiting longer than 50 milliseconds—for any interaction. In WordPress 6.8, the Interactivity API takes a first step toward that goal.
+And much more
+For a comprehensive overview of all the new features and enhancements in WordPress 6.8, please visit the feature-showcase website.
+See everything new
+Learn more about WordPress 6.8
+Learn WordPress
+is a free resource for new and experienced WordPress users. Learn is stocked with how-to videos on using various features in WordPress,
+interactive workshops
+for exploring topics in-depth, and lesson plans for diving deep into specific areas of WordPress.
+WordPress 6.8 Release Notes
+Read the WordPress 6.8 Release Notes for information on installation, enhancements, fixed issues, release contributors, learning resources, and the list of file changes.
+WordPress 6.8 Field Guide
+Explore the WordPress 6.8 Field Guide. Learn about the changes in this release with detailed developer notes to help you build with WordPress.
+Go to Dashboard → Home
+Thank you for creating with
+WordPress
+.
+Version 6.8.3
+Plugin
+PDF&Print
+Shortcode settings
+Add PDF & Print Buttons to your page or post
+PDF
+Print
+The shortcode will be inserted
+Close dialog
+Session expired
+Please log in again.
+The login page will open in a new tab. After logging in you can close it and return to this page.

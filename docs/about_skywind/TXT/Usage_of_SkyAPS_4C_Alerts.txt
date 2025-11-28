@@ -1,0 +1,19 @@
+URL: https://help.skywind.com/category/skyaps/usage-of-skyaps-4c-alerts/
+Title: Skywind Knowledge Portal
+================================================================================
+
+Home
+SkyAps™
+Usage of SkyAPS™ 4C™ Alerts
+Usage of SkyAPS™ 4C™ Alerts
+Share
+Copy URL
+Search
+Table of Contents
+FAQ
+SkyAPS™ Architecture
+Authorization and Security
+SkyAPS™ and SAP® Ecosystem
+Installation and Implementation
+Usage of SkyAPS™ 4C™ Alerts
+Example post for SkyAps

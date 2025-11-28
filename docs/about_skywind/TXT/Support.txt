@@ -1,0 +1,38 @@
+URL: https://wordpress.org/support/forums/
+Title: Forums | WordPress.org
+================================================================================
+
+Our community-based support forums are a great place to learn, share, and help each other.
+Find out how to get started
+.
+Forums
+Installing WordPress
+Need help or have questions while setting up WordPress? This is the spot for you.
+Fixing WordPress
+This forum is for questions and issues encountered after installing WordPress.
+Developing with WordPress
+Advanced techniques and discussions on WordPress development.
+WordPress Mobile App
+A forum for help on questions specific to the WordPress mobile apps.
+Networking WordPress
+Questions and discussions about running a network of WordPress sites.
+Accessibility
+Inquiries concerning WordPress accessibility and assistive technologies.
+Localhost Installs
+A forum for topics related to installing WordPress on your computer.
+Everything else WordPress
+General discussion and questions not covered in other forums.
+Requests and Feedback
+Feature suggestions and constructive feedback to improve WordPress.
+Alpha/Beta/RC
+Feedback and bug reports on WordPress development versions.
+Themes & Plugins
+Looking for help with a WordPress
+theme
+or
+plugin
+? Head to the theme or plugin's page and find the "View support forum" link to visit its specific forum.
+Topics
+All topics
+Topics with no replies
+Unresolved topics
