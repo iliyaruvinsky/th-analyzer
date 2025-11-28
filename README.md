@@ -64,9 +64,10 @@ npm run dev
 ## API Documentation
 
 Once the backend is running, visit:
-- API: http://localhost:8000
-- Swagger UI: http://localhost:8000/docs
-- ReDoc: http://localhost:8000/redoc
+- API: http://localhost:3011
+- Swagger UI: http://localhost:3011/docs
+- ReDoc: http://localhost:3011/redoc
+- Frontend: http://localhost:3010
 
 ## Documentation
 

@@ -360,15 +360,15 @@ font-weight: 600
 
 **Option 1: Copy to Local Drive (Recommended)**
 ```bash
-# Copy project to local drive
-xcopy "G:\My Drive\...\treasure-hunt-analyzer" "C:\temp\treasure-hunt-analyzer" /E /I /H /Y
+# Copy project to local drive (if needed)
+xcopy "path\to\treasure-hunt-analyzer" "C:\temp\treasure-hunt-analyzer" /E /I /H /Y
 
 # Navigate and run Docker
 cd C:\temp\treasure-hunt-analyzer
 docker-compose up -d --build
 
 # Access the dashboard
-# http://localhost:3001
+# http://localhost:3010
 ```
 
 **Option 2: Direct Docker Build**

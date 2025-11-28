@@ -43,8 +43,8 @@ docker-compose up -d
 
 This will start:
 - PostgreSQL database
-- Backend API (port 8000)
-- Frontend (port 3000)
+- Backend API (port 3011)
+- Frontend (port 3010)
 
 ### Step 4: Initialize database
 ```bash
@@ -52,9 +52,9 @@ docker-compose exec backend python -m app.utils.init_db
 ```
 
 ### Step 5: Access the application
-- **Frontend**: http://localhost:3000
-- **Backend API**: http://localhost:8000
-- **API Documentation**: http://localhost:8000/docs
+- **Frontend**: http://localhost:3010
+- **Backend API**: http://localhost:3011
+- **API Documentation**: http://localhost:3011/docs
 
 ## Option 2: Manual Setup (Local Development)
 
@@ -124,14 +124,14 @@ npm install
 npm run dev
 ```
 
-Frontend will be available at http://localhost:3000
+Frontend will be available at http://localhost:3010
 
 ## Testing the System
 
 ### Test 1: Health Check
 
 ```bash
-curl http://localhost:8000/health
+curl http://localhost:3011/health
 ```
 
 Expected response:
@@ -143,13 +143,13 @@ Expected response:
 
 Using the sample file from your directory:
 ```bash
-curl -X POST "http://localhost:8000/api/v1/ingestion/upload" \
+curl -X POST "http://localhost:3011/api/v1/ingestion/upload" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@../Skywind Output (Real Reports and Alerts)/4C Alerts/Summary_SAFAL SM04 Long Time Logged On Users (24+ hours) SLG_200025_000327.xlsx"
 ```
 
-Or use the Swagger UI at http://localhost:8000/docs:
+Or use the Swagger UI at http://localhost:3011/docs:
 1. Navigate to `/api/v1/ingestion/upload`
 2. Click "Try it out"
 3. Choose file
@@ -163,7 +163,7 @@ Expected response includes:
 ### Test 3: Upload a SoDA Report
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/ingestion/upload" \
+curl -X POST "http://localhost:3011/api/v1/ingestion/upload" \
   -H "accept: application/json" \
   -H "Content-Type: multipart/form-data" \
   -F "file=@../Skywind Output (Real Reports and Alerts)/SoDA Reports/AVR_by_UG01-Ver.00_10.11.25_12_58.xlsx"
@@ -172,7 +172,7 @@ curl -X POST "http://localhost:8000/api/v1/ingestion/upload" \
 ### Test 4: List Uploaded Data Sources
 
 ```bash
-curl http://localhost:8000/api/v1/ingestion/data-sources
+curl http://localhost:3011/api/v1/ingestion/data-sources
 ```
 
 ### Test 5: Run Analysis on Uploaded File
@@ -180,7 +180,7 @@ curl http://localhost:8000/api/v1/ingestion/data-sources
 First, get the `data_source_id` from the upload response, then:
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/analysis/run" \
+curl -X POST "http://localhost:3011/api/v1/analysis/run" \
   -H "accept: application/json" \
   -H "Content-Type: application/json" \
   -d "{\"data_source_id\": 1}"
@@ -191,13 +191,13 @@ Replace `1` with your actual `data_source_id`.
 ### Test 6: Check Analysis Results
 
 ```bash
-curl http://localhost:8000/api/v1/analysis/runs
+curl http://localhost:3011/api/v1/analysis/runs
 ```
 
 ### Test 7: View Analysis Run Details
 
 ```bash
-curl http://localhost:8000/api/v1/analysis/runs/1
+curl http://localhost:3011/api/v1/analysis/runs/1
 ```
 
 Replace `1` with your actual analysis run ID.
@@ -213,7 +213,7 @@ import requests
 with open('path/to/your/file.xlsx', 'rb') as f:
     files = {'file': f}
     response = requests.post(
-        'http://localhost:8000/api/v1/ingestion/upload',
+        'http://localhost:3011/api/v1/ingestion/upload',
         files=files
     )
     print("Upload Response:", response.json())
@@ -221,7 +221,7 @@ with open('path/to/your/file.xlsx', 'rb') as f:
 
 # Run analysis
 analysis_response = requests.post(
-    'http://localhost:8000/api/v1/analysis/run',
+    'http://localhost:3011/api/v1/analysis/run',
     json={'data_source_id': data_source_id}
 )
 print("Analysis Response:", analysis_response.json())
@@ -264,7 +264,7 @@ python test_upload.py
 - Check logs for error messages
 
 ### Frontend Not Loading
-- Verify backend is running on port 8000
+- Verify backend is running on port 3011
 - Check browser console for errors
 - Verify CORS is configured correctly
 

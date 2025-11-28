@@ -40,7 +40,7 @@ docker compose exec backend python -m app.utils.init_db
 
 ### Option A: Using Swagger UI (Easiest)
 
-1. Open http://localhost:8000/docs in your browser
+1. Open http://localhost:3011/docs in your browser
 2. Find `POST /api/v1/ingestion/upload`
 3. Click "Try it out"
 4. Click "Choose File" and select a Skywind 4C alert Excel file
@@ -50,7 +50,7 @@ docker compose exec backend python -m app.utils.init_db
 ### Option B: Using curl
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/ingestion/upload" \
+curl -X POST "http://localhost:3011/api/v1/ingestion/upload" \
   -F "file=@../Skywind Output (Real Reports and Alerts)/4C Alerts/Summary_SAFAL SM04 Long Time Logged On Users (24+ hours) SLG_200025_000327.xlsx"
 ```
 
@@ -60,7 +60,7 @@ Note the `data_source_id` from the response.
 
 ### Using Swagger UI:
 
-1. In http://localhost:8000/docs, find `POST /api/v1/analysis/run`
+1. In http://localhost:3011/docs, find `POST /api/v1/analysis/run`
 2. Click "Try it out"
 3. Enter: `{"data_source_id": 1}` (use your actual ID)
 4. Click "Execute"
@@ -69,7 +69,7 @@ Note the `data_source_id` from the response.
 ### Using curl:
 
 ```bash
-curl -X POST "http://localhost:8000/api/v1/analysis/run" \
+curl -X POST "http://localhost:3011/api/v1/analysis/run" \
   -H "Content-Type: application/json" \
   -d "{\"data_source_id\": 1}"
 ```
@@ -80,15 +80,15 @@ curl -X POST "http://localhost:8000/api/v1/analysis/run" \
 
 ```bash
 # Get all findings
-curl http://localhost:8000/api/v1/analysis/findings
+curl http://localhost:3011/api/v1/analysis/findings
 
 # Get analysis runs
-curl http://localhost:8000/api/v1/analysis/runs
+curl http://localhost:3011/api/v1/analysis/runs
 ```
 
 ### Check Frontend:
 
-1. Open http://localhost:3000 in your browser
+1. Open http://localhost:3010 in your browser
 2. You should see the Dashboard with:
    - Summary cards showing numbers
    - Charts (may be empty if no data)
@@ -146,8 +146,8 @@ If you can't install Docker, you can test manually:
    ```
 
 4. **No findings created:**
-   - Check if file was parsed: `curl http://localhost:8000/api/v1/ingestion/data-sources`
-   - Check analysis run status: `curl http://localhost:8000/api/v1/analysis/runs`
+   - Check if file was parsed: `curl http://localhost:3011/api/v1/ingestion/data-sources`
+   - Check analysis run status: `curl http://localhost:3011/api/v1/analysis/runs`
    - Check backend logs: `docker-compose logs backend`
 
 ## Quick Verification Commands
@@ -157,7 +157,7 @@ If you can't install Docker, you can test manually:
 docker-compose ps
 
 # Check backend health
-curl http://localhost:8000/health
+curl http://localhost:3011/health
 
 # Check database connection
 docker-compose exec backend python -c "from app.core.database import engine; engine.connect(); print('OK')"

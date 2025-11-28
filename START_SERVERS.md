@@ -7,10 +7,10 @@
 Open PowerShell or Command Prompt and run:
 
 ```powershell
-cd /d "G:\My Drive\SW_PLATFORM\4. MARKETING\PRESENTATIONS\CURRENT\14. Treasure Hunting\treasure-hunt-analyzer"
+cd path\to\treasure-hunt-analyzer
 ```
 
-**Note:** If you're already in the project directory, skip this step.
+**Note:** Replace with your actual project path, or skip if already in the directory.
 
 ### Step 2: Start All Services
 
@@ -28,8 +28,8 @@ docker-compose up -d
 
 **What this does:**
 - Starts PostgreSQL database
-- Starts Backend API server (port 8080)
-- Starts Frontend web server (port 3001)
+- Starts Backend API server (port 3011)
+- Starts Frontend web server (port 3010)
 - Runs everything in the background (`-d` flag)
 
 ### Step 3: Wait and Verify (30-60 seconds)
@@ -49,10 +49,10 @@ docker compose ps
 
 Once all services show "Up":
 
-- **Frontend (Web UI)**: http://localhost:3001
-- **Backend API**: http://localhost:8080
-- **API Documentation**: http://localhost:8080/docs
-- **Health Check**: http://localhost:8080/health
+- **Frontend (Web UI)**: http://localhost:3010
+- **Backend API**: http://localhost:3011
+- **API Documentation**: http://localhost:3011/docs
+- **Health Check**: http://localhost:3011/health
 
 ## Troubleshooting
 
@@ -65,8 +65,8 @@ Once all services show "Up":
    If this fails, start Docker Desktop.
 
 2. **Check for port conflicts:**
-   - Port 8080 (backend) or 3001 (frontend) might be in use
-   - Check what's using them: `netstat -ano | findstr :8080`
+   - Port 3011 (backend) or 3010 (frontend) might be in use
+   - Check what's using them: `netstat -ano | findstr :3011`
 
 3. **View logs for errors:**
    ```powershell
@@ -122,5 +122,5 @@ This creates all necessary database tables.
 - Check logs: `docker compose logs`
 - Check status: `docker compose ps`
 - Verify Docker: `docker --version`
-- Verify ports: Open http://localhost:8080/health in browser
+- Verify ports: Open http://localhost:3011/health in browser
 

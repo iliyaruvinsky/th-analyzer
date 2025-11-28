@@ -35,17 +35,17 @@ Use this checklist to systematically test the Treasure Hunt Analyzer system.
 ### Health Checks
 - [ ] Backend health endpoint responds
   ```bash
-  curl http://localhost:8000/health
+  curl http://localhost:3011/health
   ```
-- [ ] Frontend loads at http://localhost:3000
-- [ ] API docs accessible at http://localhost:8000/docs
+- [ ] Frontend loads at http://localhost:3010
+- [ ] API docs accessible at http://localhost:3011/docs
 
 ## 2. Backend API Testing
 
 ### File Upload Endpoint
 - [ ] Upload 4C alert Excel file
   ```bash
-  curl -X POST "http://localhost:8000/api/v1/ingestion/upload" \
+  curl -X POST "http://localhost:3011/api/v1/ingestion/upload" \
     -F "file=@path/to/4c-alert.xlsx"
   ```
 - [ ] Verify response contains `data_source_id`
@@ -59,7 +59,7 @@ Use this checklist to systematically test the Treasure Hunt Analyzer system.
 ### Data Source Endpoints
 - [ ] List all data sources
   ```bash
-  curl http://localhost:8000/api/v1/ingestion/data-sources
+  curl http://localhost:3011/api/v1/ingestion/data-sources
   ```
 - [ ] Get specific data source by ID
 - [ ] Verify data source metadata is correct
@@ -67,7 +67,7 @@ Use this checklist to systematically test the Treasure Hunt Analyzer system.
 ### Analysis Endpoints
 - [ ] Run analysis on uploaded file
   ```bash
-  curl -X POST "http://localhost:8000/api/v1/analysis/run" \
+  curl -X POST "http://localhost:3011/api/v1/analysis/run" \
     -H "Content-Type: application/json" \
     -d '{"data_source_id": 1}'
   ```
@@ -79,11 +79,11 @@ Use this checklist to systematically test the Treasure Hunt Analyzer system.
 ### Findings Endpoint
 - [ ] Get all findings
   ```bash
-  curl http://localhost:8000/api/v1/analysis/findings
+  curl http://localhost:3011/api/v1/analysis/findings
   ```
 - [ ] Filter by focus area
   ```bash
-  curl "http://localhost:8000/api/v1/analysis/findings?focus_area=ACCESS_GOVERNANCE"
+  curl "http://localhost:3011/api/v1/analysis/findings?focus_area=ACCESS_GOVERNANCE"
   ```
 - [ ] Filter by severity
 - [ ] Filter by status

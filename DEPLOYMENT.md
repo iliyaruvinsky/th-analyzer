@@ -15,9 +15,9 @@ docker-compose exec backend python -m app.utils.init_db
 ```
 
 3. **Access the application:**
-- Frontend: http://localhost:3000
-- Backend API: http://localhost:8000
-- API Docs: http://localhost:8000/docs
+- Frontend: http://localhost:3010
+- Backend API: http://localhost:3011
+- API Docs: http://localhost:3011/docs
 
 4. **View logs:**
 ```bash
@@ -60,7 +60,7 @@ cd frontend
 npm install
 
 # Create .env file (optional)
-echo "VITE_API_BASE_URL=http://localhost:8000/api/v1" > .env
+echo "VITE_API_BASE_URL=http://localhost:3011/api/v1" > .env
 
 # Start development server
 npm run dev
@@ -122,7 +122,7 @@ VITE_API_BASE_URL=https://api.yourdomain.com/api/v1
 ### Backend Health Endpoint
 
 ```bash
-curl http://localhost:8000/health
+curl http://localhost:3011/health
 ```
 
 Expected response:
@@ -156,7 +156,7 @@ docker-compose exec backend ping postgres
 
 1. Check backend is running:
 ```bash
-curl http://localhost:8000/health
+curl http://localhost:3011/health
 ```
 
 2. Verify CORS settings in backend

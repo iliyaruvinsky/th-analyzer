@@ -17,7 +17,7 @@ docker-compose exec backend python -m app.utils.init_db
 
 **Option A: Using curl**
 ```bash
-curl -X POST "http://localhost:8000/api/v1/ingestion/upload" \
+curl -X POST "http://localhost:3011/api/v1/ingestion/upload" \
   -F "file=@../Skywind Output (Real Reports and Alerts)/4C Alerts/Summary_SAFAL SM04 Long Time Logged On Users (24+ hours) SLG_200025_000327.xlsx"
 ```
 
@@ -27,7 +27,7 @@ python test_upload.py "../Skywind Output (Real Reports and Alerts)/4C Alerts/Sum
 ```
 
 **Option C: Using Swagger UI**
-1. Open http://localhost:8000/docs
+1. Open http://localhost:3011/docs
 2. Find `/api/v1/ingestion/upload`
 3. Click "Try it out"
 4. Upload a file
@@ -35,9 +35,9 @@ python test_upload.py "../Skywind Output (Real Reports and Alerts)/4C Alerts/Sum
 6. Use `/api/v1/analysis/run` to analyze it
 
 ### 4. View results
-- **API Docs**: http://localhost:8000/docs
-- **Frontend**: http://localhost:3000
-- **Health Check**: http://localhost:8000/health
+- **API Docs**: http://localhost:3011/docs
+- **Frontend**: http://localhost:3010
+- **Health Check**: http://localhost:3011/health
 
 ## What to Expect
 

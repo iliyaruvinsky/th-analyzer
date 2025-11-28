@@ -81,7 +81,7 @@ docker ps
 
 Then proceed with:
 ```cmd
-cd /d "G:\My Drive\SW_PLATFORM\4. MARKETING\PRESENTATIONS\CURRENT\14. Treasure Hunting\treasure-hunt-analyzer"
+cd path\to\treasure-hunt-analyzer
 docker-compose up -d
 ```
 

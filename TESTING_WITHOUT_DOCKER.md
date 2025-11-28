@@ -20,7 +20,7 @@ If you don't have PostgreSQL:
 ## Step 2: Set Up Backend
 
 ```cmd
-cd "G:\My Drive\SW_PLATFORM\4. MARKETING\PRESENTATIONS\CURRENT\14. Treasure Hunting\treasure-hunt-analyzer\backend"
+cd backend
 
 REM Create virtual environment
 python -m venv venv
@@ -60,14 +60,14 @@ Start backend:
 uvicorn app.main:app --reload
 ```
 
-Backend will run on http://localhost:8000
+Backend will run on http://localhost:3011
 
 ## Step 3: Set Up Frontend
 
 Open a NEW terminal window:
 
 ```cmd
-cd "G:\My Drive\SW_PLATFORM\4. MARKETING\PRESENTATIONS\CURRENT\14. Treasure Hunting\treasure-hunt-analyzer\frontend"
+cd frontend
 
 REM Install dependencies
 npm install
@@ -76,17 +76,17 @@ REM Start frontend
 npm run dev
 ```
 
-Frontend will run on http://localhost:3000
+Frontend will run on http://localhost:3010
 
 ## Step 4: Test the System
 
 1. **Test Backend:**
-   - Open http://localhost:8000/docs
+   - Open http://localhost:3011/docs
    - Test file upload endpoint
    - Test analysis endpoint
 
 2. **Test Frontend:**
-   - Open http://localhost:3000
+   - Open http://localhost:3010
    - Upload a file
    - View dashboard
 
@@ -98,8 +98,8 @@ Frontend will run on http://localhost:3000
 - Verify database exists
 
 **Port already in use:**
-- Backend (8000): Change port in uvicorn command
-- Frontend (3000): Vite will suggest alternative port
+- Backend (3011): Change port in uvicorn command
+- Frontend (3010): Vite will suggest alternative port
 - PostgreSQL (5432): Check if already running
 
 **Python module not found:**

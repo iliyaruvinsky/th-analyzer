@@ -26,8 +26,9 @@ I've optimized the Docker architecture. Here's what changed:
 
 ### Step 1: Navigate to Project
 ```cmd
-cd /d "G:\My Drive\SW_PLATFORM\4. MARKETING\PRESENTATIONS\CURRENT\14. Treasure Hunting\treasure-hunt-analyzer"
+cd path\to\treasure-hunt-analyzer
 ```
+(Replace with your actual project path)
 
 ### Step 2: Start Services
 ```cmd
@@ -50,9 +51,9 @@ docker compose exec backend python -m app.utils.init_db
 ```
 
 ### Step 4: Verify
-- Backend: http://localhost:8000/health
-- Frontend: http://localhost:3000
-- API Docs: http://localhost:8000/docs
+- Backend: http://localhost:3011/health
+- Frontend: http://localhost:3010
+- API Docs: http://localhost:3011/docs
 
 ## 📋 What's Optimized
 
@@ -82,7 +83,7 @@ SECRET_KEY=your-secret-key-here
 DEBUG=True
 
 # Frontend
-VITE_API_BASE_URL=http://localhost:8000/api/v1
+VITE_API_BASE_URL=http://localhost:3011/api/v1
 
 # Optional: LLM for money loss calculation
 OPENAI_API_KEY=your-key-here

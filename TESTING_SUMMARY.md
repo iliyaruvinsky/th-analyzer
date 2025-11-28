@@ -50,13 +50,13 @@ docker-compose exec backend python -m app.utils.init_db
 ```
 
 ### 2. Test Backend API
-Open http://localhost:8000/docs and test:
+Open http://localhost:3011/docs and test:
 - Upload a file
 - Run analysis
 - View findings
 
 ### 3. Test Frontend
-Open http://localhost:3000 and:
+Open http://localhost:3010 and:
 - View dashboard
 - Upload a file
 - View findings
@@ -102,7 +102,7 @@ docker-compose exec backend python -m app.utils.init_db
 
 ### Issue: Frontend can't connect to backend
 **Solution:**
-- Check backend is running: `curl http://localhost:8000/health`
+- Check backend is running: `curl http://localhost:3011/health`
 - Check CORS settings in backend
 - Verify VITE_API_BASE_URL in frontend
 
@@ -148,7 +148,7 @@ Next Actions:
 
 ## 🎓 Learning Resources
 
-- **API Documentation:** http://localhost:8000/docs
+- **API Documentation:** http://localhost:3011/docs
 - **Testing Guide:** [TESTING_GUIDE.md](TESTING_GUIDE.md)
 - **Quick Start:** [QUICK_START.md](QUICK_START.md)
 - **Next Steps:** [NEXT_STEPS.md](NEXT_STEPS.md)
