@@ -569,9 +569,9 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 
 ## Changelog
 
-### 2025-11-29 (CONTINUATION POINT - Session Active)
+### 2025-11-29 (CONTINUATION POINT)
 
-**IMPORTANT FOR NEXT SESSION**: User wants to continue from this point. DO NOT push to git.
+**Git**: Pushed to main (commit b4a88bf). Pull on other machine with `git pull origin main`.
 
 **Bug Fixes:**
 - **FIXED**: Money loss calculation showing absurd values ($603 billion instead of reasonable estimates)
