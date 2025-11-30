@@ -1,10 +1,38 @@
 # PREQ & PO Value Check - Alert Analysis
 
-> **TEMPLATE: Quantitative Alert Analysis**
+> **Alert ID:** 200025_001414 | **Module:** PUR | **Analysis Date:** November 2025
 
 ---
 
-## BUSINESS CONTEXT
+## Key Findings
+
+| Metric | Value |
+|--------|-------|
+| Records | 1,307 PR-to-PO transactions |
+| Period | 15 days (BACKDAYS parameter) |
+| Total Overpricing | ~$2.1 million USD |
+| Severity | HIGH |
+
+## Critical Discovery
+
+**PR 65773942 - 1 ZAR to 5.7M ZAR:**
+• PR value of 1 ZAR became PO of 5.7 million ZAR ($335K USD)
+• Vendor: GLOBETECH ASIA
+• Classic approval bypass pattern - dummy PR value inflated at PO stage
+
+## Concentration Pattern
+
+| Purchasing Org | Records | Avg Overpricing |
+|----------------|---------|-----------------|
+| MR03 | 8 | **$103,455** |
+| SS02 | 1 | $335,444 |
+| SS01 | 42 | $4,556 |
+
+GLOBETECH ASIA single transaction with $335K overpricing indicates deliberate approval bypass.
+
+---
+
+## Business Context
 
 > **Business Purpose:** This alert compares Purchase Requisition values against corresponding Purchase Order values to identify unauthorized price changes during PO creation. It helps detect approval bypasses where PO values exceed approved PR thresholds, potential vendor collusion through deliberate PR understatement, and budget control violations. Significant PR-to-PO value increases without proper documentation may indicate procurement fraud.
 

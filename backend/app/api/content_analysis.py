@@ -1,21 +1,26 @@
 """
 Content Analysis API Endpoints
 
-Provides endpoints for the new intelligent Content Analyzer.
-These endpoints allow testing and iterating on the analysis logic.
+Provides endpoints for the intelligent Content Analyzer pipeline.
+Supports both single alert analysis and batch processing with
+configurable report levels (summary/full LLM-generated).
 """
 
-from fastapi import APIRouter, HTTPException, Depends, UploadFile, File, Form
+from fastapi import APIRouter, HTTPException, Depends, BackgroundTasks
 from sqlalchemy.orm import Session
 from typing import List, Optional, Dict, Any
 from pydantic import BaseModel
+from enum import Enum
 import os
+import uuid
 import logging
+from datetime import datetime
 
 from app.core.database import get_db
 from app.core.config import settings
 from app.services.content_analyzer import ContentAnalyzer, create_content_analyzer
 from app.services.content_analyzer.artifact_reader import ArtifactReader, AlertArtifacts
+from app.services.content_analyzer.report_generator import ReportGenerator
 from app.models.finding import Finding
 from app.models.focus_area import FocusArea
 from app.models.risk_assessment import RiskAssessment
@@ -25,6 +30,20 @@ from app.models.data_source import DataSource, DataSourceType, FileFormat
 logger = logging.getLogger(__name__)
 
 router = APIRouter(prefix="/content-analysis", tags=["Content Analysis"])
+
+
+# ============================================================================
+# Enums and Constants
+# ============================================================================
+
+class ReportLevel(str, Enum):
+    """Report generation level."""
+    SUMMARY = "summary"  # Quick metrics extraction, no LLM (low cost)
+    FULL = "full"        # Complete LLM-generated report (higher cost)
+
+
+# In-memory batch job storage (for production, use Redis or database)
+_batch_jobs: Dict[str, Dict[str, Any]] = {}
 
 
 # Request/Response Models
@@ -43,6 +62,45 @@ class AnalyzeDirectoryRequest(BaseModel):
     """Request to analyze a directory with artifact files."""
     directory_path: str
     use_llm: bool = True
+    report_level: ReportLevel = ReportLevel.FULL  # full or summary
+
+
+class AnalyzeBatchRequest(BaseModel):
+    """Request to analyze multiple alert directories."""
+    directory_paths: List[str]
+    report_level: ReportLevel = ReportLevel.FULL
+
+
+class ScanFoldersRequest(BaseModel):
+    """Request to scan for alert folders."""
+    root_path: str = "docs/skywind-4c-alerts-output"
+
+
+class ScanFoldersResponse(BaseModel):
+    """Response with discovered alert folders."""
+    folders: List[Dict[str, Any]]
+    total: int
+
+
+class BatchJobResponse(BaseModel):
+    """Response after starting a batch job."""
+    job_id: str
+    total_alerts: int
+    status: str
+    message: str
+
+
+class BatchStatusResponse(BaseModel):
+    """Response with batch job status."""
+    job_id: str
+    status: str  # pending, processing, completed, failed
+    total: int
+    processed: int
+    successful: int
+    failed: int
+    results: List[Dict[str, Any]]
+    started_at: Optional[str]
+    completed_at: Optional[str]
 
 
 class FindingResponse(BaseModel):
@@ -213,6 +271,8 @@ class SavedFindingResponse(BaseModel):
     severity: str
     risk_score: int
     money_loss_estimate: float
+    markdown_path: Optional[str] = None
+    report_level: str = "summary"
 
 
 @router.post("/analyze-and-save", response_model=SavedFindingResponse)
@@ -221,12 +281,18 @@ async def analyze_and_save(
     db: Session = Depends(get_db)
 ):
     """
-    Analyze alert from directory AND save to database.
+    Analyze alert from directory AND save to database + generate markdown report.
 
     This endpoint:
     1. Runs the Content Analyzer on the artifact files
     2. Saves the finding to the database
     3. Creates associated RiskAssessment and MoneyLossCalculation records
+    4. Generates markdown report (full LLM or summary based on report_level)
+    5. Saves markdown to docs/analysis/ folder
+
+    Report Levels:
+    - "summary": Quick metrics extraction, no LLM (low cost)
+    - "full": Complete LLM-generated Key Findings report (higher cost)
 
     The saved finding will appear in the Dashboard.
     """
@@ -235,21 +301,26 @@ async def analyze_and_save(
             raise HTTPException(status_code=404, detail=f"Directory not found: {request.directory_path}")
 
         analyzer = get_content_analyzer()
+        artifact_reader = ArtifactReader()
 
-        # Override LLM setting if requested
+        # Read artifacts first (needed for both analysis and report generation)
+        artifacts = artifact_reader.read_from_directory(request.directory_path)
+
+        # Determine if we should use LLM based on request
+        use_llm_for_analysis = request.use_llm and request.report_level == ReportLevel.FULL
+
+        # Override LLM setting
         original_use_llm = analyzer.use_llm
-        if not request.use_llm:
-            analyzer.use_llm = False
+        analyzer.use_llm = use_llm_for_analysis
 
         try:
-            content_finding = analyzer.analyze_from_directory(request.directory_path, include_raw=True)
+            content_finding = analyzer.analyze_alert(artifacts, include_raw=True)
         finally:
             analyzer.use_llm = original_use_llm
 
         # Get or create the focus area
         focus_area = db.query(FocusArea).filter(FocusArea.code == content_finding.focus_area).first()
         if not focus_area:
-            # Create the focus area if it doesn't exist
             focus_area = FocusArea(
                 code=content_finding.focus_area,
                 name=content_finding.focus_area.replace("_", " ").title(),
@@ -263,13 +334,12 @@ async def analyze_and_save(
             DataSource.original_filename == request.directory_path
         ).first()
         if not data_source:
-            # Extract a filename from the directory path
-            dir_name = os.path.basename(request.directory_path.rstrip('/'))
+            dir_name = os.path.basename(request.directory_path.rstrip('/\\'))
             data_source = DataSource(
                 filename=f"artifacts_{dir_name}",
                 original_filename=request.directory_path,
-                file_format=FileFormat.JSON,  # Use JSON as format for artifact bundles
-                data_type=DataSourceType.ALERT,  # These are alert artifacts
+                file_format=FileFormat.JSON,
+                data_type=DataSourceType.ALERT,
                 file_path=request.directory_path,
                 file_size=0,
                 status="processed"
@@ -277,7 +347,32 @@ async def analyze_and_save(
             db.add(data_source)
             db.flush()
 
-        # Create the Finding
+        # Generate markdown report
+        markdown_path = None
+        markdown_report = None
+        try:
+            report_generator = ReportGenerator()
+            markdown_report = report_generator.generate_report(
+                artifacts=artifacts,
+                content_finding=content_finding,
+                report_level=request.report_level.value
+            )
+
+            # Save markdown to file
+            markdown_path = report_generator.save_report(
+                report=markdown_report,
+                alert_id=content_finding.alert_id,
+                alert_name=content_finding.alert_name,
+                module=_extract_module_from_path(request.directory_path)
+            )
+            logger.info(f"Generated markdown report: {markdown_path}")
+        except Exception as e:
+            logger.warning(f"Failed to generate markdown report: {e}")
+            # Continue without markdown - don't fail the whole request
+
+        # Create the Finding with new report storage fields
+        from datetime import datetime
+
         finding = Finding(
             data_source_id=data_source.id,
             focus_area_id=focus_area.id,
@@ -285,7 +380,27 @@ async def analyze_and_save(
             description=content_finding.description[:4000] if content_finding.description else None,
             severity=content_finding.severity,
             classification_confidence=content_finding.focus_area_confidence,
-            status="new"
+            status="new",
+            # New fields for content analysis pipeline
+            source_alert_id=content_finding.alert_id,
+            source_alert_name=content_finding.alert_name,
+            source_module=_extract_module_from_path(request.directory_path),
+            source_directory=request.directory_path,
+            markdown_report=markdown_report,
+            report_path=markdown_path,
+            report_level=request.report_level.value,
+            key_findings_json={
+                "risk_score": content_finding.risk_score,
+                "money_loss_estimate": content_finding.money_loss_estimate,
+                "focus_area": content_finding.focus_area,
+                "severity": content_finding.severity,
+                "total_count": content_finding.total_count,
+                "monetary_amount": content_finding.monetary_amount,
+                "currency": content_finding.currency,
+                "key_metrics": content_finding.key_metrics,
+            },
+            analysis_status="completed",
+            analyzed_at=datetime.utcnow()
         )
         db.add(finding)
         db.flush()
@@ -321,7 +436,9 @@ async def analyze_and_save(
             focus_area=content_finding.focus_area,
             severity=content_finding.severity,
             risk_score=content_finding.risk_score,
-            money_loss_estimate=content_finding.money_loss_estimate
+            money_loss_estimate=content_finding.money_loss_estimate,
+            markdown_path=markdown_path,
+            report_level=request.report_level.value
         )
 
     except HTTPException:
@@ -330,6 +447,17 @@ async def analyze_and_save(
         db.rollback()
         logger.error(f"Analysis and save failed: {e}")
         raise HTTPException(status_code=500, detail=f"Analysis and save failed: {str(e)}")
+
+
+def _extract_module_from_path(directory_path: str) -> str:
+    """Extract module code (FI, MM, SD, etc.) from directory path."""
+    path_parts = directory_path.replace("\\", "/").split("/")
+    # Look for known module codes in path
+    modules = ["FI", "MM", "SD", "MD", "PUR", "HR", "PP", "QM"]
+    for part in path_parts:
+        if part.upper() in modules:
+            return part.upper()
+    return "GENERAL"
 
 
 @router.post("/analyze-sample/{sample_name}", response_model=FindingResponse)
@@ -479,3 +607,343 @@ async def get_analyzer_status():
             "status": "error",
             "error": str(e)
         }
+
+
+# ============================================================================
+# New Pipeline Endpoints
+# ============================================================================
+
+@router.post("/scan-folders", response_model=ScanFoldersResponse)
+async def scan_folders(request: ScanFoldersRequest):
+    """
+    Scan for alert folders in a directory structure.
+
+    Discovers 4C alert folders containing artifact files (Code_*, Explanation_*, etc.)
+    Returns a list of folders ready for processing with analyze-batch.
+
+    Default scans: docs/skywind-4c-alerts-output
+    """
+    try:
+        folders = []
+        root_path = request.root_path
+
+        # Handle both absolute and relative paths
+        if not os.path.isabs(root_path):
+            # Try Docker path first, then local
+            docker_path = f"/app/{root_path}"
+            if os.path.exists(docker_path):
+                root_path = docker_path
+            elif not os.path.exists(root_path):
+                raise HTTPException(status_code=404, detail=f"Path not found: {root_path}")
+
+        if not os.path.exists(root_path):
+            raise HTTPException(status_code=404, detail=f"Path not found: {root_path}")
+
+        # Walk the directory tree to find alert folders
+        for dirpath, dirnames, filenames in os.walk(root_path):
+            # Check if this folder contains 4C artifacts
+            has_code = any(f.lower().startswith("code_") for f in filenames)
+            has_summary = any(f.lower().startswith("summary_") for f in filenames)
+            has_explanation = any(f.lower().startswith("explanation_") for f in filenames)
+            has_metadata = any(f.lower().startswith("metadata") for f in filenames)
+
+            # Need at least Summary + one other artifact
+            artifact_count = sum([has_code, has_summary, has_explanation, has_metadata])
+            if has_summary and artifact_count >= 2:
+                # Extract alert info from folder name
+                folder_name = os.path.basename(dirpath)
+                # Try to parse alert ID from folder name (e.g., "200025_001373 - Alert Name")
+                import re
+                alert_match = re.match(r'^(\d+_\d+)\s*-\s*(.+)$', folder_name)
+
+                if alert_match:
+                    alert_id = alert_match.group(1)
+                    alert_name = alert_match.group(2)
+                else:
+                    alert_id = folder_name
+                    alert_name = folder_name
+
+                # Determine module from path
+                module = _extract_module_from_path(dirpath)
+
+                folders.append({
+                    "path": dirpath,
+                    "folder_name": folder_name,
+                    "alert_id": alert_id,
+                    "alert_name": alert_name,
+                    "module": module,
+                    "artifacts": {
+                        "code": has_code,
+                        "explanation": has_explanation,
+                        "metadata": has_metadata,
+                        "summary": has_summary
+                    },
+                    "files": filenames
+                })
+
+        return ScanFoldersResponse(
+            folders=folders,
+            total=len(folders)
+        )
+
+    except HTTPException:
+        raise
+    except Exception as e:
+        logger.error(f"Scan folders failed: {e}")
+        raise HTTPException(status_code=500, detail=f"Scan folders failed: {str(e)}")
+
+
+@router.post("/analyze-batch", response_model=BatchJobResponse)
+async def analyze_batch(
+    request: AnalyzeBatchRequest,
+    background_tasks: BackgroundTasks,
+    db: Session = Depends(get_db)
+):
+    """
+    Start batch processing of multiple alert directories.
+
+    Creates a background job to process all specified directories.
+    Use batch-status/{job_id} to monitor progress.
+
+    Args:
+        directory_paths: List of paths to alert directories
+        report_level: "summary" (no LLM) or "full" (LLM-generated)
+    """
+    try:
+        job_id = str(uuid.uuid4())
+
+        # Initialize job tracking
+        _batch_jobs[job_id] = {
+            "job_id": job_id,
+            "status": "pending",
+            "total": len(request.directory_paths),
+            "processed": 0,
+            "successful": 0,
+            "failed": 0,
+            "results": [],
+            "started_at": datetime.utcnow().isoformat(),
+            "completed_at": None,
+            "report_level": request.report_level.value
+        }
+
+        # Start background processing
+        background_tasks.add_task(
+            _process_batch_job,
+            job_id,
+            request.directory_paths,
+            request.report_level.value
+        )
+
+        return BatchJobResponse(
+            job_id=job_id,
+            total_alerts=len(request.directory_paths),
+            status="pending",
+            message=f"Batch job started. Processing {len(request.directory_paths)} alerts with {request.report_level.value} report level."
+        )
+
+    except Exception as e:
+        logger.error(f"Failed to start batch job: {e}")
+        raise HTTPException(status_code=500, detail=f"Failed to start batch job: {str(e)}")
+
+
+async def _process_batch_job(job_id: str, directory_paths: List[str], report_level: str):
+    """Background task to process batch of alerts."""
+    from app.core.database import SessionLocal
+
+    job = _batch_jobs.get(job_id)
+    if not job:
+        return
+
+    job["status"] = "processing"
+
+    # Create a new database session for background task
+    db = SessionLocal()
+
+    try:
+        analyzer = get_content_analyzer()
+        artifact_reader = ArtifactReader()
+        report_generator = ReportGenerator()
+
+        use_llm = report_level == "full"
+        original_use_llm = analyzer.use_llm
+        analyzer.use_llm = use_llm
+
+        for idx, directory_path in enumerate(directory_paths):
+            result = {
+                "path": directory_path,
+                "status": "pending",
+                "finding_id": None,
+                "markdown_path": None,
+                "error": None
+            }
+
+            try:
+                if not os.path.exists(directory_path):
+                    result["status"] = "failed"
+                    result["error"] = f"Directory not found: {directory_path}"
+                    job["failed"] += 1
+                else:
+                    # Read and analyze
+                    artifacts = artifact_reader.read_from_directory(directory_path)
+                    content_finding = analyzer.analyze_alert(artifacts, include_raw=False)
+
+                    # Get or create focus area
+                    focus_area = db.query(FocusArea).filter(
+                        FocusArea.code == content_finding.focus_area
+                    ).first()
+                    if not focus_area:
+                        focus_area = FocusArea(
+                            code=content_finding.focus_area,
+                            name=content_finding.focus_area.replace("_", " ").title(),
+                            description=f"Auto-created for {content_finding.focus_area}"
+                        )
+                        db.add(focus_area)
+                        db.flush()
+
+                    # Get or create data source
+                    data_source = db.query(DataSource).filter(
+                        DataSource.original_filename == directory_path
+                    ).first()
+                    if not data_source:
+                        dir_name = os.path.basename(directory_path.rstrip('/\\'))
+                        data_source = DataSource(
+                            filename=f"artifacts_{dir_name}",
+                            original_filename=directory_path,
+                            file_format=FileFormat.JSON,
+                            data_type=DataSourceType.ALERT,
+                            file_path=directory_path,
+                            file_size=0,
+                            status="processed"
+                        )
+                        db.add(data_source)
+                        db.flush()
+
+                    # Generate markdown report
+                    markdown_path = None
+                    try:
+                        markdown_report = report_generator.generate_report(
+                            artifacts=artifacts,
+                            content_finding=content_finding,
+                            report_level=report_level
+                        )
+                        markdown_path = report_generator.save_report(
+                            report=markdown_report,
+                            alert_id=content_finding.alert_id,
+                            alert_name=content_finding.alert_name,
+                            module=_extract_module_from_path(directory_path)
+                        )
+                    except Exception as e:
+                        logger.warning(f"Failed to generate markdown for {directory_path}: {e}")
+
+                    # Create finding
+                    finding = Finding(
+                        data_source_id=data_source.id,
+                        focus_area_id=focus_area.id,
+                        title=content_finding.title,
+                        description=content_finding.description[:4000] if content_finding.description else None,
+                        severity=content_finding.severity,
+                        classification_confidence=content_finding.focus_area_confidence,
+                        status="new"
+                    )
+                    db.add(finding)
+                    db.flush()
+
+                    # Create RiskAssessment
+                    risk_assessment = RiskAssessment(
+                        finding_id=finding.id,
+                        risk_score=content_finding.risk_score,
+                        risk_level=content_finding.risk_level,
+                        risk_category=content_finding.focus_area,
+                        risk_description=content_finding.severity_reasoning,
+                        risk_factors=content_finding.risk_factors,
+                        potential_impact=content_finding.business_impact
+                    )
+                    db.add(risk_assessment)
+
+                    # Create MoneyLossCalculation
+                    money_loss = MoneyLossCalculation(
+                        finding_id=finding.id,
+                        estimated_loss=content_finding.money_loss_estimate,
+                        confidence_score=content_finding.money_loss_confidence,
+                        calculation_method="content_analyzer",
+                        final_estimate=content_finding.money_loss_estimate,
+                        reasoning=f"Batch processed: {content_finding.alert_name}"
+                    )
+                    db.add(money_loss)
+
+                    db.commit()
+
+                    result["status"] = "success"
+                    result["finding_id"] = finding.id
+                    result["markdown_path"] = markdown_path
+                    result["alert_name"] = content_finding.alert_name
+                    result["focus_area"] = content_finding.focus_area
+                    result["severity"] = content_finding.severity
+                    job["successful"] += 1
+
+            except Exception as e:
+                db.rollback()
+                result["status"] = "failed"
+                result["error"] = str(e)
+                job["failed"] += 1
+                logger.error(f"Failed to process {directory_path}: {e}")
+
+            job["results"].append(result)
+            job["processed"] = idx + 1
+
+        # Restore LLM setting
+        analyzer.use_llm = original_use_llm
+
+        job["status"] = "completed"
+        job["completed_at"] = datetime.utcnow().isoformat()
+
+    except Exception as e:
+        job["status"] = "failed"
+        job["completed_at"] = datetime.utcnow().isoformat()
+        logger.error(f"Batch job {job_id} failed: {e}")
+    finally:
+        db.close()
+
+
+@router.get("/batch-status/{job_id}", response_model=BatchStatusResponse)
+async def get_batch_status(job_id: str):
+    """
+    Get the status of a batch processing job.
+
+    Returns progress information and results for each processed alert.
+    """
+    job = _batch_jobs.get(job_id)
+    if not job:
+        raise HTTPException(status_code=404, detail=f"Job not found: {job_id}")
+
+    return BatchStatusResponse(
+        job_id=job["job_id"],
+        status=job["status"],
+        total=job["total"],
+        processed=job["processed"],
+        successful=job["successful"],
+        failed=job["failed"],
+        results=job["results"],
+        started_at=job["started_at"],
+        completed_at=job["completed_at"]
+    )
+
+
+@router.get("/batch-jobs")
+async def list_batch_jobs():
+    """
+    List all batch jobs (for debugging/monitoring).
+    """
+    jobs = []
+    for job_id, job in _batch_jobs.items():
+        jobs.append({
+            "job_id": job_id,
+            "status": job["status"],
+            "total": job["total"],
+            "processed": job["processed"],
+            "successful": job["successful"],
+            "failed": job["failed"],
+            "started_at": job["started_at"],
+            "completed_at": job["completed_at"]
+        })
+    return {"jobs": jobs, "total": len(jobs)}

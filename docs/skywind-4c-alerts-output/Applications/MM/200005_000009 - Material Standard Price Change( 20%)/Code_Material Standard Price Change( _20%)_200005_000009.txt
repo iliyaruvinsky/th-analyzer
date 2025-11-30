@@ -1,0 +1,173 @@
+FUNCTION /SKN/F_SW_10_02_MAT_PR_CNG_UN .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT OPTIONAL
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_02_MAT_PRICE_CNG OPTIONAL
+*"----------------------------------------------------------------------
+  DATA : SY_TABIX LIKE SY-TABIX .
+*--- Check Alert Information
+  DATA: LS_DATA LIKE LINE OF T_DATA,
+        LT_DATA LIKE TABLE OF LS_DATA.
+  DATA: LS_SELECT LIKE LINE OF T_SELECT,
+        LT_SELECT LIKE TABLE OF LS_SELECT.
+  DATA: LV_ALERT TYPE CHAR1.
+  DATA: LV_PER TYPE F.
+  DATA: LV_PVPRS_NEW TYPE F.
+  ""data_multy: TCODE         TCODE.
+  DATA_MULTY: VGART             CK_VGART,
+              GLVOR             GLVOR,
+              PEINH_DIFF_PRCT   PERCT,
+              PVPRS_DIFF_PERCT  PERCT,
+              STPRS_DIFF_PERCT  PERCT,
+*** 15.09.22++
+              VPRSV             VPRSV,
+              VERPR             VERPR,
+              STPRS             STPRS,
+              PEINH_MBEW        PEINH.
+*** 15.09.22++
+  SELECT_MULTY: GLVOR,
+                PEINH_DIFF_PRCT,
+                PVPRS_DIFF_PERCT,
+                STPRS_DIFF_PERCT,
+**** 15.09.22++
+                VPRSV,
+                VERPR,
+                STPRS,
+                PEINH_MBEW.
+**** 15.09.22++
+  LT_SELECT[] = T_SELECT[].
+**  refresh r_TCODE.
+**  rs_TCODE-sign = 'I'.
+**   rs_TCODE-option = 'EQ'.
+**    rs_TCODE-low = 'MR21'.
+**     append rs_TCODE to r_TCODE.
+**
+**  loop at r_TCODE into rs_TCODE.
+**    MOVE-CORRESPONDING rs_TCODE to ls_SELECT.
+**    ls_SELECT-FIELDNM = 'TCODE'.
+**    append ls_SELECT to lt_SELECT.
+**  endloop.
+  REFRESH R_VGART.
+  RS_VGART-SIGN = 'I'.
+  RS_VGART-OPTION = 'EQ'.
+  RS_VGART-LOW = 'PC'.
+  APPEND RS_VGART TO R_VGART.
+  LOOP AT R_VGART INTO RS_VGART.
+    MOVE-CORRESPONDING RS_VGART TO LS_SELECT.
+    LS_SELECT-FIELDNM = 'VGART'.
+    APPEND LS_SELECT TO LT_SELECT.
+  ENDLOOP.
+  CALL FUNCTION '/SKN/F_SW_10_02_MAT_PRICE_CNG'
+    IMPORTING
+      IS_ALERT = LV_ALERT
+    TABLES
+      T_SELECT = LT_SELECT
+      T_DATA   = LT_DATA.
+  T_DATA[] = LT_DATA[].
+**  lt_SELECT[] = T_SELECT[].
+**  refresh r_TCODE.
+**  rs_TCODE-sign = 'E'.
+**   rs_TCODE-option = 'EQ'.
+**    rs_TCODE-low = 'MR21'.
+**     append rs_TCODE to r_TCODE.
+**
+**  loop at r_TCODE into rs_TCODE.
+**    MOVE-CORRESPONDING rs_TCODE to ls_SELECT.
+**    ls_SELECT-FIELDNM = 'TCODE'.
+**    append ls_SELECT to lt_SELECT.
+**  endloop.
+  LT_SELECT[] = T_SELECT[].
+  REFRESH R_VGART.
+  RS_VGART-SIGN   = 'E'.
+  RS_VGART-OPTION = 'EQ'.
+  RS_VGART-LOW    = 'PC'.
+  APPEND RS_VGART TO R_VGART.
+  LOOP AT R_VGART INTO RS_VGART.
+    MOVE-CORRESPONDING RS_VGART TO LS_SELECT.
+    LS_SELECT-FIELDNM = 'VGART'.
+    APPEND LS_SELECT TO LT_SELECT.
+  ENDLOOP.
+  " loop at r_GLVOR into rs_GLVOR.
+  IF R_GLVOR[] IS INITIAL.
+    REFRESH R_GLVOR.
+    RS_GLVOR-SIGN   = 'I'.
+    RS_GLVOR-OPTION = 'EQ'.
+    RS_GLVOR-LOW    = 'RMWE'.
+    APPEND RS_GLVOR TO R_GLVOR.
+    LOOP AT R_GLVOR INTO RS_GLVOR.
+      MOVE-CORRESPONDING RS_GLVOR TO LS_SELECT.
+      LS_SELECT-FIELDNM = 'GLVOR'.
+      APPEND LS_SELECT TO LT_SELECT.
+    ENDLOOP.
+  ENDIF.
+  REFRESH LT_DATA.
+  CALL FUNCTION '/SKN/F_SW_10_02_MAT_PRCE_CNG2'
+    IMPORTING
+      IS_ALERT = LV_ALERT
+    TABLES
+      T_SELECT = LT_SELECT
+      T_DATA   = LT_DATA.
+  "--- Calculation aggregated values for Material
+  DATA: BEGIN OF LS_MAT_AGGR,
+         BELNR  TYPE CK_BELNR,
+         KJAHR  TYPE CK_KJAHR,
+         POSNR  TYPE CK_MLPOS,
+         BDATJ  TYPE BDATJ,
+         POPER  TYPE POPER,
+         CURTP  TYPE CURTP,
+         MATNR  TYPE MATNR,
+         SALK3  TYPE CK_SALK3D,
+         WAERS  TYPE WAERS,
+         LBKUM  TYPE CK_LBKUMD,
+         MEINS  TYPE MEINS,
+         CNT   TYPE I,
+        END OF LS_MAT_AGGR.
+  DATA: LT_MAT_AGGR LIKE TABLE OF LS_MAT_AGGR.
+  LOOP AT LT_DATA INTO LS_DATA.
+    MOVE-CORRESPONDING LS_DATA TO LS_MAT_AGGR.
+    CLEAR LS_MAT_AGGR-POSNR.  "!!!
+    LS_MAT_AGGR-CNT = 1.
+    COLLECT LS_MAT_AGGR INTO LT_MAT_AGGR.
+  ENDLOOP.
+  DELETE LT_MAT_AGGR WHERE CNT < 2.
+  SORT LT_MAT_AGGR BY BELNR KJAHR BDATJ POPER CURTP MATNR.
+  .
+  LOOP AT LT_DATA INTO LS_DATA.
+    SY_TABIX = SY-TABIX.
+    READ TABLE LT_MAT_AGGR INTO LS_MAT_AGGR
+               WITH KEY  BELNR = LS_DATA-BELNR
+                         KJAHR = LS_DATA-KJAHR
+                         BDATJ = LS_DATA-BDATJ
+                         POPER = LS_DATA-POPER
+                         CURTP = LS_DATA-CURTP
+                         MATNR = LS_DATA-MATNR
+               BINARY SEARCH.
+    IF SY-SUBRC IS INITIAL.
+      LS_DATA-SALK3 = LS_MAT_AGGR-SALK3.
+      LS_DATA-LBKUM = LS_MAT_AGGR-LBKUM.
+      IF ( LS_DATA-LBKUM_OLD + LS_DATA-LBKUM ) <> 0.
+        LV_PVPRS_NEW =  LS_DATA-PEINH * ( LS_DATA-SALK3_OLD + LS_DATA-SALK3 )  / ( LS_DATA-LBKUM_OLD + LS_DATA-LBKUM ).
+        LS_DATA-PVPRS_NEW = LV_PVPRS_NEW.
+        LS_DATA-PVPRS_DIFF = ABS( LS_DATA-PVPRS_NEW - LS_DATA-PVPRS_OLD ) .
+        IF LS_DATA-PVPRS_OLD <> 0.
+          LV_PER = ( LS_DATA-PVPRS_DIFF / LS_DATA-PVPRS_OLD ) * 100.
+          IF LV_PER > '999.99'.
+            LV_PER = '999.99'.
+          ENDIF.
+          LS_DATA-PVPRS_DIFF_PERCT = LV_PER.
+        ENDIF.
+      ENDIF.
+      MODIFY LT_DATA FROM LS_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+  DELETE LT_DATA WHERE  PEINH_DIFF_PRCT  NOT IN R_PEINH_DIFF_PRCT .
+  DELETE LT_DATA WHERE  PVPRS_DIFF_PERCT NOT IN R_PVPRS_DIFF_PERCT.
+  DELETE LT_DATA WHERE  STPRS_DIFF_PERCT NOT IN R_STPRS_DIFF_PERCT.
+  APPEND LINES OF LT_DATA TO T_DATA.
+  READ TABLE T_DATA INDEX 1.
+  CHECK NOT SY-TFILL  IS INITIAL .
+  IS_ALERT = 'X' .
+ENDFUNCTION.

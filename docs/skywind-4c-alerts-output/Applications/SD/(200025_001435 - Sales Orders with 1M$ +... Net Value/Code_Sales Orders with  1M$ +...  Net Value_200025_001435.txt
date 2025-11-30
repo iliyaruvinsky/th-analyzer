@@ -1,0 +1,339 @@
+FUNCTION /SKN/F_SW_10_01_ORD_VAL_NEW .
+*"----------------------------------------------------------------------
+*"*"Local Interface:
+*"  EXPORTING
+*"     VALUE(IS_ALERT) TYPE  CHAR1
+*"  TABLES
+*"      T_SELECT STRUCTURE  RSSELECT OPTIONAL
+*"      T_DATA STRUCTURE  /SKN/S_SW_10_01_ORD_VAL_NEW OPTIONAL
+*"----------------------------------------------------------------------
+DATA_SINGLE: MANAGE_IN_UTC  CHAR1 ,
+             LANGU  LANGU,
+             BACKDAYS INT4,
+             BP1_FUNCT      PARVW,
+             BP2_FUNCT      PARVW,
+             BP3_FUNCT      PARVW,
+             DATE_REF_FLD   NAME_FELD,
+             DURATION_UNIT  /SKN/E_SW_DURATION_UNIT,
+             WAERK_FR       WAERK.  " Foreign Currency
+ LV_BACKDAYS = 1.
+ LV_DATE_REF_FLD = 'VDATU'.  "'ERDAT'.
+ LV_DURATION_UNIT = 'D'.
+ SELECT_SINGLE: MANAGE_IN_UTC,
+                LANGU,
+                BACKDAYS,
+                BP1_FUNCT,
+                BP2_FUNCT,
+                BP3_FUNCT,
+                DATE_REF_FLD,
+                DURATION_UNIT,
+                WAERK_FR.
+DATA_MULTY: KUNNR        VBAK-KUNNR,
+            VBELN        VBAK-VBELN,
+            VKORG        VBAK-VKORG,
+            VTWEG        VBAK-VTWEG,
+            BSTNK        VBAK-BSTNK,
+            NETWR        VBAK-NETWR,
+            NETWR_FR     VBAK-NETWR, " In Foreign Curr
+            VBTYP        VBAK-VBTYP,
+            AUART        VBAK-AUART,
+            SPART        VBAK-SPART,
+            VKGRP        VBAK-VKGRP,
+            VKBUR        VBAK-VKBUR,
+            AEDAT        VBAK-AEDAT, "Changed on
+            AUDAT        VBAK-AUDAT, "Document Date (Date Received/Sent)
+            ERDAT        VBAK-ERDAT, "Date on Which Record Was Created
+            VDATU        VBAK-VDATU, "Requested delivery date
+            DATUM        SY-DATUM,
+            DURATION     /SKN/E_SW_DURATION,
+            STAT        J_STATUS,
+            BP1_CODE     KUNNR,
+            BP2_CODE     KUNNR,
+            BP3_CODE     KUNNR,
+            BP_FUNCT     PARVW."Not for External parametrization
+*            DURATION_D   /SKN/E_SW_DURATION_D
+SELECT_MULTY: KUNNR,
+            VBELN,
+            VKORG ,
+            VTWEG ,
+            BSTNK,
+            NETWR,
+            NETWR_FR,
+            AUART,
+            VBTYP,
+            SPART,
+            VKGRP,
+            VKBUR,
+            AUDAT, ""Document Date
+            AEDAT, "Changed on
+            ERDAT,
+            DATUM,
+            VDATU, "Requested delivery date
+            DURATION,
+            STAT,
+            BP1_CODE,
+            BP2_CODE,
+            BP3_CODE.
+*            DURATION_D.
+CONVERT_MULTY: KUNNR ALPHA,
+               VBELN ALPHA,
+               BP1_CODE ALPHA,
+               BP2_CODE ALPHA,
+               BP3_CODE ALPHA.
+    ""Tanya 14/11/18 :
+  CONVERT_SINGLE:  BP1_FUNCT PARVW ,
+                   BP2_FUNCT PARVW ,
+                   BP3_FUNCT PARVW .
+  """ ?????? """"convert_multy_C:  bp_funct PARVW lv_langu lv_sw_dest
+  CONVERT_MULTY:  AUART AUART . """Tanya 14/11/18
+RANGES : R_FLD_NAME FOR DD03P-FIELDNAME,
+         R_FLD_VAL FOR DD03P-FIELDNAME .
+DATA :   FLD_NAME TYPE FIELDNAME.
+DATA : I TYPE I,
+       CI(1) TYPE C,
+       NFIELDS TYPE I VALUE 3.   "
+DATA : BACKDAYS  TYPE I ,
+       FORWDAYS TYPE I,
+       DATE_FROM LIKE SY-DATUM,
+       DATE_TO LIKE SY-DATUM .
+DATA : LANGU LIKE SY-LANGU .
+DATA : IS_OUT(1) TYPE C.
+DATA : TIME_DIFF TYPE  INT4 .
+DATA : W_DATA LIKE LINE OF T_DATA .
+DATA : WA_VBPA TYPE VBPA.
+DATA : LV_VBELN TYPE VBELN,
+       LV_POSNR TYPE POSNR,
+       LV_PARVW TYPE PARVW,
+       LV_KUNNR TYPE  KUNNR,
+       LV_KUNNR_NAME TYPE  NAME1_GP,
+       LV_LIFNR TYPE  LIFNR,
+       LV_LIFNR_NAME TYPE  NAME1_GP,
+       LV_PERNR TYPE  PERNR_D,
+       LV_PERNR_NAME TYPE  NAME1_GP,
+       LV_NRART TYPE NRART.
+DATA: LV_VBTYP TYPE VBTYP.
+DATA : SY_TABIX LIKE SY-TABIX .
+DATA : FLD(60) TYPE C .
+DATA : REF_DATE TYPE D.
+FIELD-SYMBOLS:  TYPE ANY ,
+               <FS_V> TYPE ANY .
+DATA : BEGIN OF SW_STRUCTURE OCCURS 0.
+  INCLUDE STRUCTURE /SKN/S_SW_S_FCAT .
+DATA : END OF SW_STRUCTURE .
+DATA : LS_VBPA TYPE VBPA,
+       LT_VBPA LIKE TABLE OF LS_VBPA.
+DATA : LV_DATA_POSNR TYPE POSNR.
+DATA: LS_STATUS TYPE JSTAT,
+      LT_STATUS LIKE TABLE OF LS_STATUS,
+      LV_STATUS TYPE J_STATUS,
+      LV_STATUS_OK(1) TYPE C.
+   IF R_DATUM[] IS INITIAL .
+     RS_DATUM-SIGN = 'I' .
+      RS_DATUM-OPTION = 'GE' .
+       DATE_FROM = SY-DATUM - LV_BACKDAYS .
+       RS_DATUM-LOW = DATE_FROM .
+        APPEND RS_DATUM TO R_DATUM.
+   ENDIF.
+ "--- Set Reference Date Field
+   CASE LV_DATE_REF_FLD.
+     WHEN 'ERDAT'.
+       R_ERDAT[] = R_DATUM[]. "Document created
+     WHEN 'AUDAT'.
+       R_AUDAT[] = R_DATUM[]. " "Document Date'.
+     WHEN  'VDATU'.
+       R_VDATU[] = R_DATUM[]. "Requested delivery date
+     WHEN 'AEDAT'.
+       R_AEDAT[] = R_DATUM[]. "changed on
+     WHEN OTHERS.
+       R_ERDAT[] = R_DATUM[]. "Document created
+   ENDCASE.
+"--- Run Cloud Mode -----
+  DATA_SINGLE: SW_DEST RFCDEST.             .
+  SELECT_SINGLE: SW_DEST.
+  IF LV_SW_DEST IS NOT INITIAL.
+    CALL FUNCTION '/SKN/FC_SW_10_01_ORD_VAL_NEW'
+      IMPORTING
+        IS_ALERT       = IS_ALERT
+      TABLES
+        T_SELECT       = T_SELECT
+        T_DATA         = T_DATA.
+  ENDIF.
+  CHECK LV_SW_DEST IS INITIAL.
+"--- Run Cloud Mode -----
+*--- Retrieve data
+  CLEAR IS_ALERT .
+  REFRESH T_DATA.
+  SELECT *
+    FROM VBAK
+    INTO CORRESPONDING FIELDS OF TABLE T_DATA
+    WHERE VBELN IN R_VBELN
+      AND  KUNNR IN R_KUNNR
+      AND VKORG IN R_VKORG
+      AND VTWEG IN R_VTWEG
+      AND BSTNK IN R_BSTNK
+      AND AUART IN R_AUART
+      AND VBTYP IN R_VBTYP
+      AND SPART IN R_SPART
+      AND VKGRP IN R_VKGRP
+      AND VKBUR IN R_VKBUR
+      AND ERDAT IN R_ERDAT
+      AND VDATU IN R_VDATU
+      AND AEDAT IN R_AEDAT
+      AND AUDAT IN R_AUDAT.
+  DELETE T_DATA WHERE NETWR NOT IN R_NETWR.
+ "--- Check STAT Parameter
+ IF R_STAT[] IS NOT INITIAL.
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    CLEAR LV_STATUS_OK.
+    IF T_DATA-OBJNR IS NOT INITIAL.
+      CALL FUNCTION 'STATUS_READ'
+        EXPORTING
+*         CLIENT                 = SY-MANDT
+          OBJNR                  = T_DATA-OBJNR
+          ONLY_ACTIVE            = 'X'
+*       IMPORTING
+*         OBTYP                  =
+*         STSMA                  =
+*         STONR                  =
+        TABLES
+          STATUS                 = LT_STATUS
+        EXCEPTIONS
+          OBJECT_NOT_FOUND       = 1
+          OTHERS                 = 2.
+      IF SY-SUBRC = 0.
+        LOOP AT LT_STATUS INTO LS_STATUS.
+          IF LS_STATUS-STAT IN R_STAT.
+            LV_STATUS_OK = 'X'.
+            EXIT.
+          ENDIF.
+        ENDLOOP.
+      ENDIF.
+    ENDIF.
+    IF LV_STATUS_OK IS INITIAL.
+      DELETE T_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+ ENDIF.
+ "--- Check STAT Parameter
+***************************************************************************
+*********************************************************************************
+*-- Calculate Status Duration (associating to Reference Field (DATE_REF_FLD)
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    CONCATENATE 'T_DATA-' LV_DATE_REF_FLD INTO FLD .
+    ASSIGN (FLD) TO .
+    IF  IS NOT ASSIGNED.
+      CONTINUE.
+    ENDIF.
+    REF_DATE =  .
+    IF NOT REF_DATE IS INITIAL.
+      T_DATA-DURATION_UNIT = LV_DURATION_UNIT.
+      CALL FUNCTION '/SKN/F_SW_GET_TIME_DIFF'
+        EXPORTING
+          D_FROM            = REF_DATE
+          T_FROM            = SY-UZEIT
+          D_TO              = SY-DATUM
+          T_TO              = SY-UZEIT
+          TIME_UNIT         = LV_DURATION_UNIT
+        IMPORTING
+          TIME_DIFF         = TIME_DIFF
+        EXCEPTIONS
+          WRONG_VALUE       = 1
+          OTHERS            = 2    .
+      IF SY-SUBRC = 0.
+        T_DATA-DURATION = TIME_DIFF .
+      ELSE.
+         T_DATA-DURATION = '999999'.
+      ENDIF.
+      MODIFY T_DATA INDEX SY_TABIX.
+    ENDIF.
+  ENDLOOP.
+  DELETE T_DATA WHERE DURATION NOT IN R_DURATION.
+******************************************************************************
+************************************************************************
+  "--- Get BPs
+    "--- Fill R_BP_FUNCT ----
+    REFRESH R_BP_FUNCT.
+    SET_BP_RANGE 1.
+    SET_BP_RANGE 2.
+    SET_BP_RANGE 3.
+  IF R_BP_FUNCT[] IS NOT INITIAL.
+    SELECT * FROM VBPA
+      INTO CORRESPONDING FIELDS OF TABLE LT_VBPA
+      FOR ALL ENTRIES IN T_DATA
+      WHERE VBELN = T_DATA-VBELN
+        AND PARVW IN R_BP_FUNCT.
+    SORT LT_VBPA BY VBELN POSNR PARVW.
+    LOOP AT T_DATA.
+      SY_TABIX = SY-TABIX .
+      GET_BP_ATTR 1.
+      GET_BP_ATTR 2.
+      GET_BP_ATTR 3.
+      MODIFY T_DATA INDEX SY_TABIX.
+    ENDLOOP.
+    "--- Get BPs
+    DELETE T_DATA WHERE BP1_CODE NOT IN R_BP1_CODE.
+    DELETE T_DATA WHERE BP2_CODE NOT IN R_BP2_CODE.
+    DELETE T_DATA WHERE BP3_CODE NOT IN R_BP3_CODE.
+  ENDIF.
+   LOOP AT T_DATA .
+     SY_TABIX = SY-TABIX .
+     T_DATA-WAERK_FR = LV_WAERK_FR.
+     IF  T_DATA-WAERK = LV_WAERK_FR.
+         T_DATA-NETWR_FR = T_DATA-NETWR.
+     ELSE.
+       "convert
+       IF LV_WAERK_FR IS NOT INITIAL.
+         CALL FUNCTION 'CONVERT_TO_FOREIGN_CURRENCY'
+           EXPORTING
+*            CLIENT                  = SY-MANDT
+             DATE                    = SY-DATUM
+             FOREIGN_CURRENCY        = LV_WAERK_FR   " 'USD'
+             LOCAL_AMOUNT            = T_DATA-NETWR
+             LOCAL_CURRENCY          = T_DATA-WAERK
+*            RATE                    = 0
+*            TYPE_OF_RATE            = 'M'
+*            READ_TCURR              = 'X'
+          IMPORTING
+*           EXCHANGE_RATE           =
+            FOREIGN_AMOUNT          = T_DATA-NETWR_FR
+*           FOREIGN_FACTOR          =
+*           LOCAL_FACTOR            =
+*           EXCHANGE_RATEX          =
+*           DERIVED_RATE_TYPE       =
+*           FIXED_RATE              =
+          EXCEPTIONS
+            NO_RATE_FOUND           = 1
+            OVERFLOW                = 2
+            NO_FACTORS_FOUND        = 3
+            NO_SPREAD_FOUND         = 4
+            DERIVED_2_TIMES         = 5
+            OTHERS                  = 6.
+         IF SY-SUBRC <> 0.
+* Implement suitable error handling here
+         ENDIF.
+       ENDIF.
+     ENDIF.
+     MODIFY T_DATA INDEX SY_TABIX.
+   ENDLOOP.
+   DELETE T_DATA WHERE NETWR_FR NOT IN R_NETWR_FR.
+  LOOP AT T_DATA .
+    SY_TABIX = SY-TABIX .
+    CALL FUNCTION '/SKN/F_SW_10_CUST_DESC'
+      EXPORTING
+        KUNNR                = T_DATA-KUNNR
+      IMPORTING
+        CUST_DESC            = T_DATA-CUST_DESC
+      EXCEPTIONS
+        WRONG_CUSTOMER       = 1
+        OTHERS               = 2              .
+    IF SY-SUBRC <> 0.
+    ENDIF.
+    MODIFY T_DATA INDEX SY_TABIX.
+  ENDLOOP.
+*--- Check Alert Information
+ READ TABLE T_DATA INDEX 1.
+ CHECK NOT SY-TFILL  IS INITIAL .
+ IS_ALERT = 'X' .
+ENDFUNCTION.

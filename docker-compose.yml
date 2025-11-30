@@ -47,6 +47,8 @@ services:
       # For now, code changes require rebuild: docker compose up -d --build
       # - ./backend:/app
       - storage_data:/app/storage
+      # Mount docs folder for alert analysis
+      - ./docs:/app/docs:ro
     depends_on:
       postgres:
         condition: service_healthy

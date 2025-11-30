@@ -1,10 +1,39 @@
 # Comparison of Monthly Purchase Volume by Vendor - Alert Analysis
 
-> **TEMPLATE: Quantitative Alert Analysis**
+> **Alert ID:** 200025_001373 | **Module:** FI | **Analysis Date:** November 2025
 
 ---
 
-## BUSINESS CONTEXT
+## Key Findings
+
+| Metric | Value |
+|--------|-------|
+| Records | 233 vendors flagged |
+| Period | October 2025 vs October 2024 (YoY) |
+| Variance Range | -6,583% to +27,465% |
+| Severity | HIGH |
+
+## Critical Discovery
+
+**AON MINET INSURANCE BROKERS - +27,465% Variance:**
+• Extreme spike in KE03 purchasing organization
+• 95 vendors with >200% increase in purchasing volume
+• Single month variance too extreme for normal business
+
+## Concentration Pattern
+
+| Company Code | Vendors | Avg Variance |
+|--------------|---------|--------------|
+| RW01 (Rwanda) | 12 | **+1,856%** |
+| TZ01 (Tanzania) | 47 | +585% |
+| KE03 (Kenya) | 31 | +579% |
+| KE01 (Kenya) | 64 | +379% |
+
+5 vendors with >5,000% variance require immediate procurement review.
+
+---
+
+## Business Context
 
 > **Business Purpose:** This alert monitors vendor spending patterns to identify unusual changes in purchase volumes compared to the same period last year. It helps procurement and finance teams detect potential maverick spending, unauthorized vendor relationships, budget overruns, or fraudulent activity such as fictitious vendors or kickback schemes. Extreme variances often indicate either business opportunities that need proper controls or risks that require immediate investigation.
 

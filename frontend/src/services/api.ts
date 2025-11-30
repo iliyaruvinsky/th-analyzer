@@ -133,6 +133,101 @@ export const getKpiSummary = async (): Promise<{
     return data;
 };
 
+// Content Analysis API Types
+export interface AlertFolder {
+  path: string;
+  alert_id: string;
+  alert_name: string;
+  module: string;
+  has_code: boolean;
+  has_explanation: boolean;
+  has_metadata: boolean;
+  has_summary: boolean;
+  is_complete: boolean;
+}
+
+export interface ScanFoldersResponse {
+  folders: AlertFolder[];
+  total: number;
+  complete: number;
+  incomplete: number;
+}
+
+export interface AnalyzeAndSaveResponse {
+  finding_id: number;
+  message: string;
+  focus_area: string;
+  severity: string;
+  risk_score: number;
+  money_loss_estimate: number;
+  markdown_path?: string;
+  report_level: string;
+}
+
+export interface BatchJobResponse {
+  job_id: string;
+  message: string;
+  total_alerts: number;
+}
+
+export interface BatchStatusResponse {
+  job_id: string;
+  status: string;
+  total: number;
+  completed: number;
+  failed: number;
+  results: Array<{
+    directory: string;
+    alert_name: string;
+    status: string;
+    finding_id?: number;
+    error?: string;
+  }>;
+}
+
+// Content Analysis API Functions
+export const scanFolders = async (basePath: string, recursive = true): Promise<ScanFoldersResponse> => {
+  const response = await apiClient.post('/content-analysis/scan-folders', {
+    base_path: basePath,
+    recursive,
+  });
+  return response.data;
+};
+
+export const analyzeAndSave = async (
+  directoryPath: string,
+  reportLevel: 'summary' | 'full' = 'summary',
+  useLlm = true
+): Promise<AnalyzeAndSaveResponse> => {
+  const response = await apiClient.post('/content-analysis/analyze-and-save', {
+    directory_path: directoryPath,
+    report_level: reportLevel,
+    use_llm: useLlm,
+  });
+  return response.data;
+};
+
+export const analyzeBatch = async (
+  directoryPaths: string[],
+  reportLevel: 'summary' | 'full' = 'summary'
+): Promise<BatchJobResponse> => {
+  const response = await apiClient.post('/content-analysis/analyze-batch', {
+    directory_paths: directoryPaths,
+    report_level: reportLevel,
+  });
+  return response.data;
+};
+
+export const getBatchStatus = async (jobId: string): Promise<BatchStatusResponse> => {
+  const response = await apiClient.get(`/content-analysis/batch-status/${jobId}`);
+  return response.data;
+};
+
+export const getBatchJobs = async (): Promise<BatchJobResponse[]> => {
+  const response = await apiClient.get('/content-analysis/batch-jobs');
+  return response.data;
+};
+
 // Maintain backwards compatibility for existing imports
 export const api = {
     getDataSources,
@@ -146,5 +241,11 @@ export const api = {
     deleteAllDataSources,
     getAuditLogs,
     getKpiSummary,
+    // Content Analysis
+    scanFolders,
+    analyzeAndSave,
+    analyzeBatch,
+    getBatchStatus,
+    getBatchJobs,
 };
 

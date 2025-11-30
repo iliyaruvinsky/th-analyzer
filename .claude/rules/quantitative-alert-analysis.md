@@ -2,6 +2,34 @@
 
 > **Mandatory rules for analyzing Skywind 4C alerts with measurable data**
 
+---
+
+## ⛔ CRITICAL - NO DEVIATION FROM TEMPLATE
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│   BEFORE EVERY ANALYSIS REPORT:                                             │
+│                                                                             │
+│   1. READ templates/quantitative-alert.yaml FIRST                           │
+│   2. FOLLOW the structure EXACTLY as defined                                │
+│   3. DO NOT rename sections (e.g., "Alert Purpose" instead of "Business     │
+│      Context" is FORBIDDEN)                                                 │
+│   4. DO NOT omit required subsections                                       │
+│   5. DO NOT add creative variations to the format                           │
+│                                                                             │
+│   CLIENT REPORTS MUST BE 100% CONSISTENT                                    │
+│   EVERY REPORT MUST LOOK IDENTICAL IN STRUCTURE                             │
+│                                                                             │
+│   VIOLATION = REJECTED REPORT                                               │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+**This rule exists because:** The client cannot receive reports in different formats. Consistency is mandatory for professional delivery and automated processing.
+
+---
+
 ## When This Applies
 
 Use these rules when analyzing alerts that produce:
@@ -16,9 +44,34 @@ Use these rules when analyzing alerts that produce:
 
 ## Mandatory Document Structure
 
-### 1. BUSINESS CONTEXT (Must Be First)
+### 0. KEY FINDINGS (Must Be First)
 
-**Principle:** Reader needs context BEFORE seeing data. Put Business Context right after template header.
+**Principle:** Key findings upfront - scannable at a glance.
+
+Three subsections in order:
+
+1. **Metrics Table** - 4-row table with clean format:
+   - Records (with context, e.g., "1,274 billing documents")
+   - Period (dates and duration)
+   - Total Value (with currency)
+   - Severity (CRITICAL/HIGH/MEDIUM/LOW)
+
+2. **Critical Discovery** - The single most important finding:
+   - Bold heading with entity name + amount
+   - Use bullet points (•) not dashes
+   - 3 bullets explaining why it matters
+
+3. **Concentration Pattern** - Single table with closing note:
+   - One table showing main concentration
+   - No Risk column - keep it clean
+   - Bold only the critical percentage
+   - Add closing observation as plain text after table
+
+**Format:** Clean, minimal bold, scannable. Half page max.
+
+### 1. BUSINESS CONTEXT (After Key Findings)
+
+**Principle:** Reader needs detailed context AFTER seeing the key findings.
 
 Four subsections:
 1. **Business Purpose** (blockquote) - 2-3 sentences explaining what business risk this alert detects. Source: Explanation_* file
@@ -149,7 +202,10 @@ Three tiers:
 
 Before finalizing any quantitative alert analysis:
 
-- [ ] Business Context is FIRST (right after template header)?
+- [ ] Key Findings is FIRST (right after template header)?
+- [ ] Key Findings has all 3 subsections (Metrics, Critical Discovery, Concentration Pattern)?
+- [ ] Key Findings is clean and scannable (half page max)?
+- [ ] Business Context is SECOND (after Key Findings)?
 - [ ] Business Purpose blockquote derived from Explanation_* file?
 - [ ] Executive Summary contains ALL 7 required sections?
 - [ ] ALL parameters from Metadata included (even empty ones)?

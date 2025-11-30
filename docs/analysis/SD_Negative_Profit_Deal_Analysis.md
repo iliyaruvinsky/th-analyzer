@@ -1,10 +1,38 @@
 # Negative Profit Deal - Alert Analysis
 
-> **TEMPLATE: Quantitative Alert Analysis**
+> **Alert ID:** 200025_001441 | **Module:** SD | **Analysis Date:** November 2025
 
 ---
 
-## BUSINESS CONTEXT
+## Key Findings
+
+| Metric | Value |
+|--------|-------|
+| Records | 2,044 line items |
+| Period | Nov 2024 - Nov 2025 (365 days) |
+| Total Loss | $14.15 million USD |
+| Severity | CRITICAL |
+
+## Critical Discovery
+
+**KAMURU TRADING COMPANY - $8.1M Loss:**
+• 14 items totaling $8,148,934 loss (58% of total)
+• All via manual price override (MPROK='A')
+• Single customer receiving below-cost goods = fraud pattern
+
+## Concentration Pattern
+
+| Sales Org | Loss | % of Total |
+|-----------|------|------------|
+| KE01 (Kenya) | $11.4M | **81%** |
+| TZ01 (Tanzania) | $1.4M | 10% |
+| UG01 (Uganda) | $830K | 6% |
+
+KAMURU TRADING COMPANY alone accounts for 58% of all losses via manual price overrides.
+
+---
+
+## Business Context
 
 > **Business Purpose:** This alert identifies sales transactions where products are sold below their cost price, resulting in direct financial loss to the company. It helps detect pricing errors, unauthorized discounts, or potential fraud schemes where employees may be favoring specific customers through below-cost pricing. Every flagged transaction represents real money lost that cannot be recovered.
 

@@ -1,14 +1,14 @@
 # Quantitative Alert Analysis Template
-# Version: 1.0
+# Version: 1.2
 # Purpose: Define the structure and required elements for analyzing alerts with measurable financial data
 #
 # ENFORCEMENT: .claude/rules/quantitative-alert-analysis.md
 # KNOWLEDGE BASE: docs/th-context/skywind-4c-knowledge.md
-# EXAMPLES: docs/analysis/SD_Negative_Profit_Deal_Analysis.md
-#           docs/analysis/FI_Comparison_Monthly_Purchase_Volume_Analysis.md
+# EXAMPLES: docs/analysis/SD_Billing_Document_Status_Analysis.md
+#           docs/analysis/SD_Negative_Profit_Deal_Analysis.md
 
 template_name: quantitative_alert
-version: "1.0"
+version: "1.2"
 description: |
   Use this template for alerts that produce numeric, measurable outputs:
   - Financial amounts (losses, gains, exposures)
@@ -17,15 +17,84 @@ description: |
   - Aggregatable data that can be sliced by dimensions
 
 # =============================================================================
-# BUSINESS CONTEXT SECTION - MUST BE FIRST
+# KEY FINDINGS - MUST BE FIRST (SCANNABLE UPFRONT SUMMARY)
+# =============================================================================
+# Purpose: Key findings upfront for quick scanning
+# Format: Clean, simple, minimal bold - focus on readability
+
+key_findings:
+  position: first
+  principle: "Key findings upfront - scannable at a glance"
+  max_length: "Half page max"
+
+  required_subsections:
+
+    # 1. Key Metrics Table (Required)
+    - section: metrics_table
+      format: two_column_table
+      rows: 4
+      content: |
+        Quick-glance metrics. Clean format, minimal bold.
+        4 rows: Records, Period, Total Value, Severity
+      example: |
+        ## Key Findings
+
+        | Metric | Value |
+        |--------|-------|
+        | Records | 1,274 billing documents |
+        | Period | Nov 19-27, 2025 (9 days) |
+        | Total Value | ~$7.9 million USD |
+        | Severity | MEDIUM |
+      note: "Clean format. No excessive bold. Include context in values."
+
+    # 2. Critical Discovery (Required)
+    - section: critical_discovery
+      format: heading_with_bullets
+      bullet_style: "•"
+      max_bullets: 3
+      content: |
+        The single most important finding that requires attention.
+        Use bullet points (•) not dashes.
+      example: |
+        ## Critical Discovery
+
+        **Credit Memo to One-Time Customer:**
+        • 167.8 million TZS (~$67K USD) credit memo issued to "One time customer for Tanzania"
+        • Credit memos to unidentified one-time customers are a classic fraud indicator
+        • Requires immediate investigation: authorization, supporting docs, original invoice
+      note: "Use • bullets. Entity name + amount in bold heading."
+
+    # 3. Concentration Pattern (Required)
+    - section: concentration_pattern
+      format: single_table_with_note
+      columns: [entity, records, percentage]
+      max_rows: 4
+      content: |
+        Single table showing main concentration pattern.
+        No Risk column - keep it clean.
+        Add closing observation as plain text after table.
+      example: |
+        ## Concentration Pattern
+
+        | Sales Org | Records | % of Value |
+        |-----------|---------|------------|
+        | TZ01 (Tanzania) | 336 (26%) | **92%** |
+        | KE01 (Kenya) | 411 (32%) | 3% |
+        | SA01 (South Africa) | 314 (25%) | 4% |
+
+        All top 10 customers by value are from Tanzania.
+      note: "One table. Add insight note after. Bold only the critical percentage."
+
+# =============================================================================
+# BUSINESS CONTEXT SECTION - AFTER EXECUTIVE BRIEF
 # =============================================================================
 # Purpose: Help reader understand WHY this alert matters BEFORE seeing data
 # Provides orientation - reader needs context to interpret the numbers
 # Keep it SHORT - 4 subsections max
 
 business_context:
-  position: first
-  principle: "Context before data - reader must understand what they're looking at"
+  position: after_executive_brief
+  principle: "Context before detailed data - reader needs orientation after seeing brief"
   max_length: "Half a page"
 
   required_subsections:

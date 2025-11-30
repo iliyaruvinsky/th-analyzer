@@ -1,10 +1,38 @@
 # Exceptional Posting by GL Account - Alert Analysis
 
-> **TEMPLATE: Quantitative Alert Analysis**
+> **Alert ID:** 200025_001359 | **Module:** FI | **Analysis Date:** November 2025
 
 ---
 
-## BUSINESS CONTEXT
+## Key Findings
+
+| Metric | Value |
+|--------|-------|
+| Records | 521 line items |
+| Period | 3 days (BACKDAYS parameter) |
+| Total Amount | ~$736.9 million USD |
+| Severity | HIGH |
+
+## Critical Discovery
+
+**JKOCK - $11.5M Average Per Posting:**
+• 12 postings totaling $138.6M (19% of total)
+• $11.55M average vs ~$1M average for other users
+• Single user with 10x higher transaction values = control bypass risk
+
+## Concentration Pattern
+
+| User | Records | Avg/Record |
+|------|---------|------------|
+| WCHIGWADA | 82 | $1.81M |
+| JKOCK | 12 | **$11.55M** |
+| ASAM | 70 | $1.17M |
+
+$82.5M posted to GRIR Clearing account (170002100) requires GR/IR reconciliation review.
+
+---
+
+## Business Context
 
 > **Business Purpose:** This alert monitors high-value financial postings to General Ledger accounts to identify transactions that may require additional scrutiny. It helps finance controllers and auditors detect potential accounting errors, unauthorized transactions, or control bypasses where users may be posting amounts that exceed their authorization limits. Large GL postings can significantly impact financial statements and require proper approval chains.
 

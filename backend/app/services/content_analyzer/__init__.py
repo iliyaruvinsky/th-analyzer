@@ -11,13 +11,21 @@ Key Components:
 - ArtifactReader: Parses the 4 alert artifacts (Code, Explanation, Metadata, Summary)
 - LLMClassifier: LLM-based focus area classification
 - ScoringEngine: Qualitative and quantitative scoring
+- ReportGenerator: Generates markdown reports (summary/full)
 """
 
 from .analyzer import ContentAnalyzer, create_content_analyzer
 from .context_loader import ContextLoader, get_context_loader
-from .artifact_reader import ArtifactReader, AlertArtifacts
+from .artifact_reader import (
+    ArtifactReader,
+    AlertArtifacts,
+    ColumnType,
+    ColumnInfo,
+    SummaryData,
+)
 from .llm_classifier import LLMClassifier
 from .scoring_engine import ScoringEngine
+from .report_generator import ReportGenerator
 
 __all__ = [
     "ContentAnalyzer",
@@ -26,6 +34,10 @@ __all__ = [
     "get_context_loader",
     "ArtifactReader",
     "AlertArtifacts",
+    "ColumnType",
+    "ColumnInfo",
+    "SummaryData",
     "LLMClassifier",
     "ScoringEngine",
+    "ReportGenerator",
 ]

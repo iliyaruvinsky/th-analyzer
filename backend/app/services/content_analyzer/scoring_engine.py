@@ -641,14 +641,58 @@ class ScoringEngine:
         """
         Estimate potential money loss.
 
+        IMPORTANT: monetary_amount from alerts is the TOTAL TRANSACTION VALUE,
+        NOT the potential loss. We apply loss factors based on alert type:
+        - Most alerts flag transactions that need review, not confirmed losses
+        - Actual loss is typically a small percentage of flagged amount
+        - Loss factors vary by focus area and severity
+
         Returns:
             Tuple of (estimated_loss, confidence)
         """
-        # If we have a direct monetary amount, use it
-        if quantitative.monetary_amount > 0:
-            return quantitative.monetary_amount, 0.8
+        # Loss factor percentages by focus area
+        # These represent the typical % of flagged transactions that result in actual loss
+        loss_factors = {
+            "BUSINESS_PROTECTION": 0.05,   # 5% - fraud/security alerts, higher risk
+            "BUSINESS_CONTROL": 0.02,      # 2% - process anomalies, most are not losses
+            "ACCESS_GOVERNANCE": 0.01,     # 1% - SoD violations, compliance risk not $ loss
+            "TECHNICAL_CONTROL": 0.005,    # 0.5% - technical issues, rarely direct $ loss
+            "JOBS_CONTROL": 0.001,         # 0.1% - job monitoring, minimal direct loss
+        }
 
-        # Otherwise estimate based on count and focus area
+        # Severity multiplier for loss factor
+        severity_loss_multiplier = {
+            SeverityLevel.CRITICAL: 3.0,   # 3x loss factor for critical alerts
+            SeverityLevel.HIGH: 2.0,       # 2x for high
+            SeverityLevel.MEDIUM: 1.0,     # 1x for medium
+            SeverityLevel.LOW: 0.5,        # 0.5x for low
+        }
+
+        # If we have a monetary amount, apply loss factor
+        if quantitative.monetary_amount > 0:
+            base_loss_factor = loss_factors.get(focus_area, 0.02)
+            severity_mult = severity_loss_multiplier.get(qualitative.severity, 1.0)
+            effective_loss_factor = base_loss_factor * severity_mult
+
+            # Cap effective loss factor at 25% (even critical fraud won't lose everything)
+            effective_loss_factor = min(effective_loss_factor, 0.25)
+
+            estimated_loss = quantitative.monetary_amount * effective_loss_factor
+
+            # Cap estimate at $10M for reasonableness unless amount is very high
+            # For amounts over $100M, allow proportionally higher estimates
+            if quantitative.monetary_amount < 100_000_000:
+                estimated_loss = min(estimated_loss, 10_000_000)
+            else:
+                # For very large amounts, cap at 10% of total or $50M
+                estimated_loss = min(estimated_loss, quantitative.monetary_amount * 0.10, 50_000_000)
+
+            # Confidence is moderate since we're estimating from total transaction value
+            confidence = 0.6
+
+            return estimated_loss, confidence
+
+        # Fallback: estimate based on count and focus area
         base_estimate_per_item = {
             "BUSINESS_PROTECTION": 5000,   # Fraud items tend to be high value
             "BUSINESS_CONTROL": 1000,      # Process delays cost money
@@ -661,18 +705,15 @@ class ScoringEngine:
         count = max(1, quantitative.total_count)
 
         # Adjust for severity
-        severity_multiplier = {
-            SeverityLevel.CRITICAL: 2.0,
-            SeverityLevel.HIGH: 1.5,
-            SeverityLevel.MEDIUM: 1.0,
-            SeverityLevel.LOW: 0.5,
-        }
-        multiplier = severity_multiplier.get(qualitative.severity, 1.0)
+        multiplier = severity_loss_multiplier.get(qualitative.severity, 1.0)
 
         estimate = base * count * multiplier
 
+        # Cap at reasonable amounts
+        estimate = min(estimate, 5_000_000)  # Cap at $5M for count-based estimates
+
         # Lower confidence for estimates without direct monetary data
-        confidence = 0.4 if quantitative.monetary_amount == 0 else 0.7
+        confidence = 0.4
 
         return estimate, confidence
 

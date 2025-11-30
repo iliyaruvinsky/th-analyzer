@@ -1,6 +1,52 @@
 # Quantitative Alert Analysis Workflow
 
-> **Version:** 1.0 | **Last Updated:** November 2025
+> **Version:** 1.2 | **Last Updated:** 28 November 2025
+
+---
+
+## ⛔ MANDATORY RULE - READ BEFORE EVERY ANALYSIS
+
+```
+┌─────────────────────────────────────────────────────────────────────────────┐
+│                                                                             │
+│   BEFORE CREATING ANY ANALYSIS REPORT:                                      │
+│                                                                             │
+│   1. READ the template: templates/quantitative-alert.yaml                   │
+│   2. FOLLOW the structure EXACTLY - no deviations                           │
+│   3. VERIFY all required sections are present                               │
+│                                                                             │
+│   CLIENT REPORTS MUST BE 100% CONSISTENT IN FORMAT                          │
+│   NO EXCEPTIONS. NO CREATIVE VARIATIONS.                                    │
+│                                                                             │
+└─────────────────────────────────────────────────────────────────────────────┘
+```
+
+### Required Report Structure (from template)
+
+| Section | Position | Required |
+|---------|----------|----------|
+| **Business Context** | FIRST | YES |
+| ├─ Business Purpose | blockquote | YES |
+| ├─ What This Alert Monitors | paragraph | YES |
+| ├─ Why It Matters | table | YES |
+| └─ Interpreting Findings | table | Optional |
+| **Executive Summary** | SECOND | YES |
+| ├─ Alert Identity | table | YES |
+| ├─ Execution Context | table | YES |
+| ├─ Alert Parameters | table | YES |
+| ├─ The Bottom Line | table | YES |
+| ├─ What Happened | paragraph | YES |
+| ├─ Top Findings | numbered list | YES |
+| └─ Immediate Actions | numbered list | YES |
+| **Key Metrics** | after summary | YES |
+| **Concentration Analysis** | after metrics | YES |
+| **Risk Assessment** | after concentration | YES |
+| **Recommended Actions** | after risk | YES |
+| **Technical Details** | LAST | Optional |
+
+**FAILURE TO FOLLOW THIS STRUCTURE = REJECTED REPORT**
+
+---
 
 ## The 4 Input Artifacts
 
@@ -13,10 +59,15 @@
 │  1. Code_*.txt           ─── ABAP/SQL detection logic                       │
 │  2. Summary_*.xlsx       ─── Actual findings data (the records)             │
 │  3. Metadata_*.xlsx      ─── Alert configuration & parameters               │
-│  4. Explanation_*.pdf    ─── Business purpose documentation                 │
+│  4. Explanation_*.*      ─── Business purpose (PDF, DOCX, or HTML)          │
 │                                                                              │
 └─────────────────────────────────────────────────────────────────────────────┘
 ```
+
+**Note on Explanation File Formats:**
+- `.pdf` - Read directly with Read tool
+- `.docx` - Use Python `python-docx` library via Bash
+- `.html` - Read directly with Read tool (parse HTML tags)
 
 ## Graphical Processing Flow
 
@@ -301,19 +352,24 @@ The final analysis document follows this exact order:
    ├── By Entity             (flag >50%)
    └── Largest Transactions  (top 5, check manual flags)
 
-5. RISK ASSESSMENT
+5. ANOMALY DEEP DIVE        (CONDITIONAL - only when significant pattern found)
+   ├── Specific Entity Focus (e.g., Material HRC, Vendor 2011720)
+   ├── Change Sequence       (temporal ordering with visual table)
+   └── Pattern Analysis      (what the sequence reveals)
+
+6. RISK ASSESSMENT
    ├── Focus Area            (with reasoning)
    ├── Severity              (with reasoning)
    ├── Risk Score            (0-100 with breakdown)
    ├── Fraud Indicator       (YES/NO/INVESTIGATE - explicit!)
    └── Risk Indicators Table
 
-6. RECOMMENDED ACTIONS
+7. RECOMMENDED ACTIONS
    ├── Immediate (24-48h)    (max 3 with substeps)
    ├── Short-term (1-2 wks)  (max 3 with substeps)
    └── Process Improvements  (max 3, brief)
 
-7. TECHNICAL DETAILS         (at bottom for deep-dive readers)
+8. TECHNICAL DETAILS         (at bottom for deep-dive readers)
    ├── Detection Logic
    ├── Artifacts Analyzed
    └── Content Analyzer JSON Output
@@ -321,14 +377,180 @@ The final analysis document follows this exact order:
 
 ---
 
+## Anomaly Deep Dive: When to Include
+
+The **Anomaly Deep Dive** section is CONDITIONAL - include it only when the data reveals a significant pattern that warrants focused analysis.
+
+### Include When:
+
+| Trigger | Example |
+|---------|---------|
+| **Oscillating values** | Material price going up/down/up within hours |
+| **Repetitive changes** | Same vendor bank account changed 4+ times |
+| **Suspicious sequence** | Create → Delete → Create within minutes |
+| **Single entity dominates** | One material/vendor accounts for majority of anomalies |
+| **Pattern tells a story** | Temporal ordering reveals deliberate manipulation |
+
+### Do NOT Include When:
+
+| Scenario | Reason |
+|----------|--------|
+| All records are similar | No standout entity to focus on |
+| Changes are distributed evenly | No concentration to deep dive |
+| Simple threshold breach | Alert caught what it was designed to catch, nothing unusual |
+| No temporal pattern | Sorting by time doesn't reveal anything new |
+
+### Key Principle:
+
+> **The Anomaly Deep Dive transforms data rows into a NARRATIVE.**
+>
+> If sorting by time, grouping by entity, or sequencing changes doesn't reveal
+> something that wasn't obvious from aggregate statistics - skip the section.
+>
+> When it DOES reveal something (like HRC's oscillating prices or Vendor 2011720's
+> 6-minute fraud probe), it becomes the most valuable part of the report.
+
+---
+
+## Pattern Recognition Catalog
+
+Patterns discovered during analysis that indicate specific issues. When you see these patterns, investigate accordingly.
+
+### Data Quality Patterns
+
+| Pattern | Example | Root Cause | Action |
+|---------|---------|------------|--------|
+| **999.99% Cap Hit** | 14,273 records at max % | True variance exceeds system limit | Investigate actual % - often 10,000%+ indicates data corruption |
+| **1000x Price Jump** | Price: 1,500 → 1,350,000 | Price Unit (PEINH) configuration error | Check if PEINH changed from per-1000 to per-1 |
+| **Book Qty = 0, Physical > 0** | "Ghost Inventory" | Unrecorded goods receipts, prior write-offs, or consignment | Trace receipt history, verify consignment agreements |
+| **Mirror Variances** | +4,416 and -4,416 same material | Stock moved but not updated in system | Audit storage location transfers |
+
+### Fraud Indicator Patterns
+
+| Pattern | Example | Risk Level | Investigation |
+|---------|---------|------------|---------------|
+| **Repetitive Changes** | Same vendor bank account changed 4x in 6 minutes | CRITICAL | Immediate freeze, forensic review |
+| **Same Account Multiple Vendors** | Account 62349726747 used for 4 different vendors | CRITICAL | Verify account ownership, freeze payments |
+| **Create → Delete Same Day** | Bank account created then deleted within hours | HIGH | Recover deleted data, interview users |
+| **User Concentration >60%** | PMBURU: 69% of all changes | HIGH | SoD review, audit authorization |
+| **Credit Memo to One-Time Customer** | 167M TZS credit to "One time customer" | CRITICAL | Verify authorization, supporting docs, original invoice |
+
+### Process Gap Patterns
+
+| Pattern | Example | Indicates | Improvement |
+|---------|---------|-----------|-------------|
+| **All Records Same Day** | 82% of vendors changed same day | Batch operation or rapid probing | Add velocity controls |
+| **Oscillating Values** | Price up/down/up within hours | Posting errors or deliberate manipulation | Implement approval workflow |
+| **Zero-Value Transactions** | Large qty change, $0 value | Pricing issue or cost not yet rolled | Review material pricing |
+
+### Module-Specific Patterns
+
+#### MM (Materials Management)
+- **Standard vs Moving Average confusion** - VPRSV indicator mismatch
+- **Price Unit errors** - PEINH changing without price adjustment
+- **Valuation Area inconsistency** - Same material, different behavior per plant
+
+#### MD (Master Data)
+- **Vendor bank churning** - Multiple changes to same vendor
+- **Country hopping** - Bank accounts across different countries for same vendor
+- **Timing clusters** - Multiple changes within minutes = red flag
+
+#### FI (Finance)
+- **GL account concentration** - >80% of exceptions in single account
+- **Period-end spikes** - Unusual activity at month/year end
+- **Manual entry flags** - High manual + high value = investigate
+
+#### SD (Sales & Distribution)
+- **Credit memo to OTC customer** - Credits to one-time/unnamed customers = fraud risk
+- **Sales org concentration** - >80% of value in single org warrants review
+- **Document category mismatch** - Credit memo (VBTYP=O) without valid original invoice
+- **Payment term override** - Document terms differ from customer master = unauthorized credit extension
+- **Cash to credit conversion** - Changing from C100 (cash) to credit terms = CRITICAL fraud risk
+- **User concentration on overrides** - Single user >50% of payment term changes = investigation required
+
+---
+
 ## Related Files
 
 | File | Purpose |
 |------|---------|
+| `docs/th-context/analysis-rules/ALERT_CLASSIFICATION_PRINCIPLES.md` | **Core principle: severity is context-dependent, not type-dependent** |
 | `docs/th-context/analysis-rules/templates/quantitative-alert.yaml` | Template definition |
 | `.claude/rules/quantitative-alert-analysis.md` | Enforcement rules |
 | `docs/th-context/skywind-4c-knowledge.md` | Skywind 4C knowledge base |
-| `docs/analysis/` | Example analysis documents |
+| `docs/analysis/` | Example analysis documents (9 completed) |
+
+---
+
+## Important Note
+
+> **Quantitative alerts are processed first because they are easier to interpret - NOT because they are more important.**
+>
+> Severity is determined by **context and content**, not by whether an alert produces numbers or events.
+> A qualitative cyber breach alert can be far more critical than a quantitative variance report.
+>
+> See `ALERT_CLASSIFICATION_PRINCIPLES.md` for full guidance.
+
+---
+
+## Data Segmentation: Context-Specific Keys
+
+### The Plant Manager Principle
+
+> **"The plant manager in Singapore doesn't care about price changes in USA."**
+>
+> Data must be segmented by the appropriate organizational key so that
+> findings are **ACTIONABLE by the responsible person**.
+
+### Why This Matters
+
+A report showing "Material HRC had 10 price changes" is useless if those changes span 3 different plants across 2 countries. The plant manager needs to know:
+- How many changes affected **MY plant**?
+- What's the financial impact **in MY valuation area**?
+- Which changes require **MY action**?
+
+### Common Segmentation Keys by Module
+
+| Module | Primary Key | Field | Why |
+|--------|-------------|-------|-----|
+| **MM** | Valuation Area | `BWKEY` | Material prices are plant/valuation-area specific |
+| **SD** | Sales Organization | `VKORG` | Pricing, customers, and revenue are sales-org specific |
+| **FI** | Company Code | `BUKRS` | Financial data is legal entity specific |
+| **PUR** | Purchasing Organization | `EKORG` | Procurement is org-specific |
+| **MD** | Company Code / Country | `BUKRS` / `BANKS` | Vendor data often needs country-level view |
+
+### When to Apply Segmentation
+
+| Scenario | Action |
+|----------|--------|
+| Alert spans multiple organizational units | **Segment first**, then analyze each unit separately |
+| Single organizational unit | No segmentation needed |
+| Cross-unit patterns are the concern | Show both: aggregated AND by unit |
+
+### Example: Right vs Wrong Approach
+
+**WRONG (aggregated only):**
+```
+Material HRC: 10 price changes, $6.2M impact
+```
+*Problem: Who is responsible? Which plant? Whose budget?*
+
+**RIGHT (segmented by BWKEY):**
+```
+Material HRC by Valuation Area:
+├── MA01 (Mabati, Kenya): 8 changes, $75K impact, oscillating pattern
+├── MR99 (Mabati, Kenya): 2 changes, $5.38M impact, 999% spike
+└── DA01 (ALAF, Tanzania): 0 changes for HRC
+```
+*Now: MA01 plant manager investigates posting errors, MR99 plant manager investigates data corruption*
+
+### Implementation in Analysis
+
+1. **Identify the segmentation key** from Metadata (check `BWKEY`, `BUKRS`, `VKORG`, etc.)
+2. **Group data by that key first** before calculating metrics
+3. **Report metrics per segment** in Concentration Analysis
+4. **Identify anomalies per segment** - same material may be fine in one plant, problematic in another
+5. **Recommend actions per responsible party** - "MA01 plant manager should..." not "Someone should..."
 
 ---
 
