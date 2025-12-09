@@ -9,7 +9,19 @@ from .focus_area import FocusArea
 from .analysis_run import AnalysisRun
 from .field_mapping import FieldMapping
 
+# Alert Analysis Dashboard Models
+from .client import Client
+from .source_system import SourceSystem
+from .exception_indicator import ExceptionIndicator, EIVocabulary
+from .alert_instance import AlertInstance
+from .alert_analysis import AlertAnalysis
+from .critical_discovery import CriticalDiscovery
+from .key_finding import KeyFinding
+from .concentration_metric import ConcentrationMetric
+from .action_item import ActionItem
+
 __all__ = [
+    # Original models
     "DataSource",
     "Alert",
     "AlertMetadata",
@@ -23,5 +35,16 @@ __all__ = [
     "FocusArea",
     "AnalysisRun",
     "FieldMapping",
+    # Alert Analysis Dashboard Models
+    "Client",
+    "SourceSystem",
+    "ExceptionIndicator",
+    "EIVocabulary",
+    "AlertInstance",
+    "AlertAnalysis",
+    "CriticalDiscovery",
+    "KeyFinding",
+    "ConcentrationMetric",
+    "ActionItem",
 ]
 

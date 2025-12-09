@@ -1,5 +1,7 @@
 import React from 'react'
 import { Link, useLocation } from 'react-router-dom'
+import SkywindLogo from './SkywindLogo'
+import './Layout.css'
 
 interface LayoutProps {
   children: React.ReactNode
@@ -9,45 +11,47 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation()
 
   const navItems = [
-    { path: '/', label: 'Dashboard' },
-    { path: '/upload', label: 'Upload' },
-    { path: '/alert-analysis', label: 'Alert Analysis' },
-    { path: '/findings', label: 'Findings' },
-    { path: '/reports', label: 'Reports' },
-    { path: '/maintenance', label: 'Maintenance' },
-    { path: '/logs', label: 'Logs' },
+    { path: '/', label: 'Dashboard', icon: '◆' },
+    { path: '/upload', label: 'Upload', icon: '↑' },
+    { path: '/alert-analysis', label: 'Alert Analysis', icon: '⚡' },
+    { path: '/findings', label: 'Findings', icon: '⬢' },
+    { path: '/reports', label: 'Reports', icon: '▤' },
+    { path: '/maintenance', label: 'Maintenance', icon: '⚙' },
+    { path: '/logs', label: 'Logs', icon: '☰' },
   ]
 
   return (
-    <div style={{ display: 'flex', minHeight: '100vh' }}>
-      <nav style={{
-        width: '200px',
-        backgroundColor: '#2c3e50',
-        color: 'white',
-        padding: '20px'
-      }}>
-        <h2 style={{ marginBottom: '30px' }}>THA</h2>
-        <ul style={{ listStyle: 'none' }}>
+    <div className="app-layout">
+      <nav className="sidebar">
+        {/* Skywind Logo */}
+        <div className="sidebar-header">
+          <SkywindLogo size="medium" showText={true} variant="light" />
+        </div>
+
+        {/* Divider */}
+        <div className="sidebar-divider"></div>
+
+        {/* Navigation */}
+        <ul className="nav-list">
           {navItems.map(item => (
-            <li key={item.path} style={{ marginBottom: '10px' }}>
+            <li key={item.path} className="nav-item">
               <Link
                 to={item.path}
-                style={{
-                  color: location.pathname === item.path ? '#3498db' : 'white',
-                  textDecoration: 'none',
-                  display: 'block',
-                  padding: '10px',
-                  borderRadius: '4px',
-                  backgroundColor: location.pathname === item.path ? '#34495e' : 'transparent'
-                }}
+                className={`nav-link ${location.pathname === item.path ? 'active' : ''}`}
               >
-                {item.label}
+                <span className="nav-icon">{item.icon}</span>
+                <span className="nav-label">{item.label}</span>
               </Link>
             </li>
           ))}
         </ul>
+
+        {/* Footer */}
+        <div className="sidebar-footer">
+          <div className="app-version">THA v1.0</div>
+        </div>
       </nav>
-      <main style={{ flex: 1, padding: '20px', backgroundColor: '#ecf0f1' }}>
+      <main className="main-content">
         {children}
       </main>
     </div>
@@ -55,4 +59,3 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
 }
 
 export default Layout
-

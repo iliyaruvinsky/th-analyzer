@@ -26,6 +26,12 @@ from app.models.focus_area import FocusArea
 from app.models.risk_assessment import RiskAssessment
 from app.models.money_loss import MoneyLossCalculation
 from app.models.data_source import DataSource, DataSourceType, FileFormat
+# Dashboard models for integrated pipeline
+from app.models.alert_instance import AlertInstance
+from app.models.alert_analysis import AlertAnalysis
+from app.models.critical_discovery import CriticalDiscovery
+from app.models.key_finding import KeyFinding
+from app.models.action_item import ActionItem
 
 logger = logging.getLogger(__name__)
 
@@ -428,11 +434,25 @@ async def analyze_and_save(
         )
         db.add(money_loss)
 
+        # Populate Alert Dashboard tables for unified visualization
+        dashboard_result = _populate_dashboard_tables(
+            db=db,
+            content_finding=content_finding,
+            directory_path=request.directory_path,
+            finding_id=finding.id
+        )
+        logger.info(f"Dashboard integration: {dashboard_result}")
+
         db.commit()
+
+        # Build success message with dashboard info
+        dashboard_msg = ""
+        if dashboard_result.get("alert_analysis_id"):
+            dashboard_msg = f" Dashboard populated: {dashboard_result.get('critical_discoveries', 0)} discoveries, {dashboard_result.get('action_items', 0)} action items."
 
         return SavedFindingResponse(
             finding_id=finding.id,
-            message=f"Finding saved successfully for alert: {content_finding.alert_name}",
+            message=f"Finding saved successfully for alert: {content_finding.alert_name}.{dashboard_msg}",
             focus_area=content_finding.focus_area,
             severity=content_finding.severity,
             risk_score=content_finding.risk_score,
@@ -458,6 +478,237 @@ def _extract_module_from_path(directory_path: str) -> str:
         if part.upper() in modules:
             return part.upper()
     return "GENERAL"
+
+
+def _populate_dashboard_tables(
+    db: Session,
+    content_finding,
+    directory_path: str,
+    finding_id: int
+) -> dict:
+    """
+    Populate the Alert Dashboard tables from content analysis results.
+
+    Creates:
+    - AlertInstance (or reuses existing)
+    - AlertAnalysis (linked to AlertInstance)
+    - CriticalDiscovery records (from notable_items)
+    - KeyFinding records
+    - ActionItem records (for high-risk findings)
+
+    Returns dict with created record IDs.
+    """
+    try:
+        module = _extract_module_from_path(directory_path)
+
+        # Map focus area to severity
+        severity_map = {
+            "BUSINESS_PROTECTION": "HIGH",
+            "ACCESS_GOVERNANCE": "HIGH",
+            "BUSINESS_CONTROL": "MEDIUM",
+            "TECHNICAL_CONTROL": "MEDIUM",
+            "JOBS_CONTROL": "LOW",
+            "S4HANA_EXCELLENCE": "MEDIUM"
+        }
+
+        # Map risk_score to fraud_indicator
+        def get_fraud_indicator(risk_score: int, severity: str) -> str:
+            if risk_score >= 80 or severity == "CRITICAL":
+                return "INVESTIGATE"
+            elif risk_score >= 60 or severity == "HIGH":
+                return "MONITOR"
+            else:
+                return "NONE"
+
+        # 1. Create or get AlertInstance
+        alert_instance = db.query(AlertInstance).filter(
+            AlertInstance.alert_id == content_finding.alert_id
+        ).first()
+
+        if not alert_instance:
+            alert_instance = AlertInstance(
+                alert_id=content_finding.alert_id,
+                alert_name=content_finding.alert_name,
+                focus_area=content_finding.focus_area,
+                subcategory=module,
+                parameters={
+                    "directory_path": directory_path,
+                    "module": module
+                },
+                business_purpose=content_finding.business_impact or content_finding.description[:500] if content_finding.description else None
+            )
+            db.add(alert_instance)
+            db.flush()
+            logger.info(f"Created AlertInstance: {alert_instance.alert_id}")
+
+        # 2. Create AlertAnalysis
+        severity = content_finding.severity.upper() if content_finding.severity else "MEDIUM"
+        fraud_indicator = get_fraud_indicator(content_finding.risk_score, severity)
+
+        # Convert money_loss_estimate to proper decimal
+        financial_impact = content_finding.money_loss_estimate or 0.0
+
+        # Cap records_affected to PostgreSQL Integer max (2,147,483,647)
+        records_affected = content_finding.total_count or 0
+        if records_affected > 2147483647:
+            records_affected = 2147483647  # Cap to max INT value
+
+        alert_analysis = AlertAnalysis(
+            alert_instance_id=alert_instance.id,
+            analysis_type="QUANTI",  # Quantitative analysis
+            execution_date=datetime.utcnow().date(),
+            records_affected=records_affected,
+            severity=severity,
+            risk_score=content_finding.risk_score or 50,
+            fraud_indicator=fraud_indicator,
+            financial_impact_usd=financial_impact,
+            local_currency=content_finding.currency or "USD",
+            report_path=directory_path,
+            raw_summary_data={
+                "key_metrics": content_finding.key_metrics,
+                "risk_factors": content_finding.risk_factors,
+                "recommended_actions": content_finding.recommended_actions,
+                "finding_id": finding_id
+            },
+            created_by="content_analyzer_pipeline"
+        )
+        db.add(alert_analysis)
+        db.flush()
+        logger.info(f"Created AlertAnalysis: {alert_analysis.id}")
+
+        # 3. Create CriticalDiscovery records from notable_items
+        discovery_count = 0
+        if hasattr(content_finding, 'notable_items') and content_finding.notable_items:
+            for idx, item in enumerate(content_finding.notable_items[:5], 1):  # Max 5 discoveries
+                # Handle both dict and object notable items
+                if isinstance(item, dict):
+                    title = item.get('title', item.get('entity', f'Discovery {idx}'))
+                    description = item.get('description', item.get('details', str(item)))
+                    entity = item.get('entity', item.get('id', ''))
+                    amount = item.get('amount', item.get('value', 0))
+                    percentage = item.get('percentage', 0)
+                else:
+                    title = getattr(item, 'title', f'Discovery {idx}')
+                    description = getattr(item, 'description', str(item))
+                    entity = getattr(item, 'entity', '')
+                    amount = getattr(item, 'amount', 0)
+                    percentage = getattr(item, 'percentage', 0)
+
+                discovery = CriticalDiscovery(
+                    alert_analysis_id=alert_analysis.id,
+                    discovery_order=idx,
+                    title=str(title)[:255],
+                    description=str(description)[:2000],
+                    affected_entity=str(entity)[:255] if entity else None,
+                    metric_value=float(amount) if amount else None,
+                    percentage_of_total=float(percentage) if percentage else None,
+                    is_fraud_indicator=(fraud_indicator == "INVESTIGATE")
+                )
+                db.add(discovery)
+                discovery_count += 1
+
+        # If no notable items, create one from the main finding
+        if discovery_count == 0 and content_finding.title:
+            discovery = CriticalDiscovery(
+                alert_analysis_id=alert_analysis.id,
+                discovery_order=1,
+                title=content_finding.title[:255],
+                description=(content_finding.description or content_finding.business_impact or "")[:2000],
+                metric_value=float(financial_impact) if financial_impact else None,
+                is_fraud_indicator=(fraud_indicator == "INVESTIGATE")
+            )
+            db.add(discovery)
+            discovery_count = 1
+
+        logger.info(f"Created {discovery_count} CriticalDiscovery records")
+
+        # 4. Create KeyFinding records
+        key_finding_count = 0
+
+        # First key finding: main business impact
+        if content_finding.business_impact:
+            kf = KeyFinding(
+                alert_analysis_id=alert_analysis.id,
+                finding_rank=1,
+                finding_text=content_finding.business_impact[:2000],
+                finding_category="Impact",
+                financial_impact_usd=financial_impact
+            )
+            db.add(kf)
+            key_finding_count += 1
+
+        # Second key finding: risk description
+        if hasattr(content_finding, 'severity_reasoning') and content_finding.severity_reasoning:
+            kf = KeyFinding(
+                alert_analysis_id=alert_analysis.id,
+                finding_rank=2,
+                finding_text=content_finding.severity_reasoning[:2000],
+                finding_category="Risk"
+            )
+            db.add(kf)
+            key_finding_count += 1
+
+        # Third key finding from risk_factors
+        if hasattr(content_finding, 'risk_factors') and content_finding.risk_factors:
+            factors_text = "; ".join(content_finding.risk_factors[:3])
+            kf = KeyFinding(
+                alert_analysis_id=alert_analysis.id,
+                finding_rank=3,
+                finding_text=f"Risk Factors: {factors_text}"[:2000],
+                finding_category="Concentration"
+            )
+            db.add(kf)
+            key_finding_count += 1
+
+        logger.info(f"Created {key_finding_count} KeyFinding records")
+
+        # 5. Create ActionItem records for high-risk findings
+        action_count = 0
+        if fraud_indicator == "INVESTIGATE" or severity in ["CRITICAL", "HIGH"]:
+            # Immediate action for investigation
+            action = ActionItem(
+                alert_analysis_id=alert_analysis.id,
+                action_type="IMMEDIATE",
+                priority=1,
+                title=f"Investigate {content_finding.alert_name}",
+                description=f"High-risk alert detected with {severity} severity and risk score {content_finding.risk_score}. Review findings and determine if fraudulent activity occurred.",
+                status="OPEN"
+            )
+            db.add(action)
+            action_count += 1
+
+        # Short-term action from recommended_actions
+        if hasattr(content_finding, 'recommended_actions') and content_finding.recommended_actions:
+            for idx, rec_action in enumerate(content_finding.recommended_actions[:2], 1):
+                action = ActionItem(
+                    alert_analysis_id=alert_analysis.id,
+                    action_type="SHORT_TERM",
+                    priority=2 + idx,
+                    title=str(rec_action)[:255],
+                    description=f"Recommended action from analysis: {rec_action}",
+                    status="OPEN"
+                )
+                db.add(action)
+                action_count += 1
+
+        logger.info(f"Created {action_count} ActionItem records")
+
+        return {
+            "alert_instance_id": alert_instance.id,
+            "alert_analysis_id": alert_analysis.id,
+            "critical_discoveries": discovery_count,
+            "key_findings": key_finding_count,
+            "action_items": action_count
+        }
+
+    except Exception as e:
+        logger.error(f"Failed to populate dashboard tables: {e}")
+        # Don't fail the whole request - dashboard population is supplementary
+        return {
+            "error": str(e),
+            "alert_instance_id": None,
+            "alert_analysis_id": None
+        }
 
 
 @router.post("/analyze-sample/{sample_name}", response_model=FindingResponse)
@@ -871,6 +1122,14 @@ async def _process_batch_job(job_id: str, directory_paths: List[str], report_lev
                     )
                     db.add(money_loss)
 
+                    # Populate Alert Dashboard tables for batch processing
+                    dashboard_result = _populate_dashboard_tables(
+                        db=db,
+                        content_finding=content_finding,
+                        directory_path=directory_path,
+                        finding_id=finding.id
+                    )
+
                     db.commit()
 
                     result["status"] = "success"
@@ -879,6 +1138,7 @@ async def _process_batch_job(job_id: str, directory_paths: List[str], report_lev
                     result["alert_name"] = content_finding.alert_name
                     result["focus_area"] = content_finding.focus_area
                     result["severity"] = content_finding.severity
+                    result["dashboard"] = dashboard_result
                     job["successful"] += 1
 
             except Exception as e:

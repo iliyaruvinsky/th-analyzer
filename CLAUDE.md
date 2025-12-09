@@ -4,6 +4,26 @@ This document provides AI assistants with essential context for working effectiv
 
 > **Important:** Also read [`llm_handover.md`](llm_handover.md) for detailed operational context, recent milestones, known issues, and project state. That document is updated after each verified milestone.
 
+## CRITICAL: Preserve Working Code
+
+**NEVER DESTROY UNCOMMITTED WORK.**
+
+Before running `git checkout`, `git reset`, or any revert operation:
+
+1. Run `git status <file>` to check for uncommitted changes
+2. If file is modified (M) or untracked (??): **STOP AND ASK USER**
+3. Backup first or suggest committing
+
+After successful development:
+
+1. Document in llm_handover.md immediately
+2. Suggest committing to user
+3. Warn if user declines: "This code could be lost"
+
+**See `.claude/rules/preserve-working-code.md` for full policy.**
+
+This rule exists because working code was destroyed on 2024-12-09 by carelessly running `git checkout` without checking for uncommitted changes.
+
 ## Project Overview
 
 **Treasure Hunt Analyzer (THA)** is an enterprise system for analyzing Skywind platform alerts and reports. It provides insights across 6 focus areas with advanced visualization, risk assessment, and financial impact analysis.
@@ -490,4 +510,5 @@ Before considering work complete, verify:
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Plugin contributions
 - [aws/README.md](aws/README.md) - AWS deployment
 - [llm_handover.md](llm_handover.md) - **AI handover document (read first!)**
+- [docs/APPLICATION_FLOW_MAP.md](docs/APPLICATION_FLOW_MAP.md) - **Complete workflow diagram with all artifacts**
 - [.claude/rules/llm-handover-maintenance.md](.claude/rules/llm-handover-maintenance.md) - Handover update rules

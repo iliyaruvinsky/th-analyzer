@@ -1,8 +1,19 @@
 # LLM Handover Document - Treasure Hunt Analyzer (THA)
 
-**Last Updated**: 2025-11-29 (Session Active - CONTINUATION POINT)
-**Project Status**: Development - Content Analysis Pipeline IMPLEMENTED + Bug Fixes
-**Current Version**: 1.4.1
+**Last Updated**: 2025-12-09 (10-Cycle Audit Complete + Application Flow Map)
+**Project Status**: Development - Unified Dashboard with Tabbed Navigation
+**Current Version**: 1.7.1
+
+---
+
+## Quick Navigation
+
+| Document | Purpose |
+|----------|---------|
+| [CLAUDE.md](CLAUDE.md) | AI Assistant Guide |
+| [APPLICATION_FLOW_MAP.md](docs/APPLICATION_FLOW_MAP.md) | **Complete workflow diagram with all artifacts** |
+| [BUSINESS_PROTECTION.md](docs/scoring-rules/BUSINESS_PROTECTION.md) | Severity scores (90/75/60/50) |
+| [quantitative-alert.yaml](docs/th-context/analysis-rules/templates/quantitative-alert.yaml) | Report template |
 
 ---
 
@@ -77,7 +88,153 @@ SKYWIND PRODUCTS (Root)
 
 ## CRITICAL: Current Work in Progress
 
-### Active Development: Content Analysis Pipeline (IMPLEMENTED)
+### COMPLETED: Content Analysis Pipeline → Alert Dashboard Integration (2025-12-05)
+
+The Content Analysis Pipeline now **automatically populates Alert Dashboard tables** when alerts are analyzed via `analyze-and-save` endpoint.
+
+**Integration Flow:**
+```
+analyze-and-save API → Finding Created → _populate_dashboard_tables()
+                                              ↓
+                        ┌─────────────────────┴─────────────────────┐
+                        ↓                     ↓                     ↓
+                  AlertInstance         AlertAnalysis         CriticalDiscovery
+                  (alert config)        (results)             (findings)
+                        │                     │                     │
+                        └─────────────────────┴─────────────────────┤
+                                              ↓                     ↓
+                                         KeyFinding            ActionItem
+                                         (top findings)        (queue)
+```
+
+**Key Implementation:**
+- **File Modified**: `backend/app/api/content_analysis.py`
+- **New Function**: `_populate_dashboard_tables()` (lines 463-691)
+- **Integration Points**:
+  - Single alert: `analyze_and_save` endpoint (lines 431-444)
+  - Batch processing: `_process_batch_job` function (lines 874-880)
+
+**Bug Fix Applied:**
+- PostgreSQL `integer out of range` error for `records_affected` field
+- Cause: Large counts (99+ billion) exceeded Integer max (2,147,483,647)
+- Fix: Capped `records_affected` to PostgreSQL Integer max value
+
+**Verified Working:**
+```bash
+curl -X POST "http://localhost:3011/api/v1/content-analysis/analyze-and-save" \
+  -H "Content-Type: application/json" \
+  -d '{"directory_path": "/app/docs/skywind-4c-alerts-output/Applications/FI/200025_001374 - Comparison of monthly sales volume by customer"}'
+
+# Response: {"finding_id":31084,"message":"Finding saved successfully for alert: Comparison of monthly sales volume by customer. Dashboard populated: 1 discoveries, 2 action items.",...}
+```
+
+**Dashboard Data (Live):**
+- Critical Discoveries: 1
+- Alerts Analyzed: 1
+- Financial Exposure: $5,000,000
+- Avg Risk Score: 75.0 / 100
+- Action Items: 2 open (SHORT_TERM priority)
+
+---
+
+### COMPLETED: Unified Dashboard with Tabbed Navigation (2025-12-05)
+
+The Main Dashboard and Alert Dashboard have been **merged into a single unified dashboard** with tabbed navigation.
+
+**Dashboard Layout:**
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  TREASURE HUNT ANALYZER                                         │
+├─────────────────────────────────────────────────────────────────┤
+│  [ Overview ]  [ Alert Analysis ]  [ Action Queue ]             │
+├─────────────────────────────────────────────────────────────────┤
+│  TAB CONTENT                                                    │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Tab 1: Overview** (Default)
+- KPI Cards: Total Findings, Risk Score (avg), Financial Exposure, Analysis Runs
+- Focus Area + Risk Level distribution charts
+- Financial Exposure Timeline
+- Security Findings Table with sorting
+
+**Tab 2: Alert Analysis**
+- KPI Cards: Critical Discoveries, Alerts Analyzed, Financial Exposure (USD), Avg Risk
+- Distribution charts: By Severity, By SAP Module
+- Critical Discoveries drilldown table
+
+**Tab 3: Action Queue**
+- Full-width Action Items Table
+- Priority indicators (P1-P5)
+- Status badges (OPEN, IN_REVIEW, etc.)
+
+**Files Created:**
+- `frontend/src/components/DashboardTabs.tsx` - Tab navigation component
+
+**Files Modified:**
+- `frontend/src/pages/Dashboard.tsx` - Added tabs and merged Alert Dashboard content
+- `frontend/src/pages/AlertDashboard.css` - Improved font sizes for readability
+- `frontend/src/styles/dashboard.css` - Added tab styling
+- `frontend/src/App.tsx` - Removed Alert Dashboard route
+- `frontend/src/components/Layout.tsx` - Removed Alert Dashboard nav link
+
+**Files Deleted:**
+- `frontend/src/pages/AlertDashboard.tsx` - Content merged into Dashboard.tsx
+
+**Font Size Improvements (AlertDashboard.css):**
+| Element | Before | After |
+|---------|--------|-------|
+| Distribution labels | 11px | 12px |
+| Table headers | 10px | 11px |
+| Table body | 13px | 14px |
+| Badges | 10px | 11px |
+| Priority circles | 28px | 32px |
+
+**Verified Working:**
+- All 3 tabs render correctly
+- Tab switching works smoothly
+- Data loads on tab activation (conditional queries)
+- Critical Discoveries table displays
+- Action Queue table with priority badges
+- Screenshot saved: `.playwright-mcp/dashboard-action-queue-tab.png`
+
+---
+
+### Database Schema: Alert Analysis (10 tables)
+
+A comprehensive data layer for storing parsed alert analysis results and EI vocabulary catalog:
+
+| Table | Purpose |
+|-------|---------|
+| `clients` | Client entities (e.g., Safal Group) |
+| `source_systems` | SAP source systems (PS4, ECP, BIP) |
+| `exception_indicators` | EI definitions (SW_10_01_ORD_VAL_TOT) |
+| `ei_vocabulary` | LLM-generated ABAP code interpretations |
+| `alert_instances` | Alert configurations (EI + parameters) |
+| `alert_analyses` | Analysis results per execution |
+| `critical_discoveries` | Top findings requiring attention |
+| `key_findings` | Top N findings per analysis |
+| `concentration_metrics` | Concentration data by dimension |
+| `action_items` | Investigation queue with status |
+
+**API Endpoints (Alert Dashboard):**
+
+| Endpoint | Method | Purpose |
+|----------|--------|---------|
+| `/alert-dashboard/kpis` | GET | Dashboard KPI summary |
+| `/alert-dashboard/critical-discoveries` | GET | Drilldown for critical findings |
+| `/alert-dashboard/action-queue` | GET | Open action items |
+| `/alert-dashboard/clients` | GET/POST | Client management |
+| `/alert-dashboard/source-systems` | GET/POST | Source system management |
+| `/alert-dashboard/exception-indicators` | GET/POST | EI catalog |
+| `/alert-dashboard/ei-vocabulary` | GET/POST | EI vocabulary entries |
+| `/alert-dashboard/alert-instances` | GET/POST | Alert instances |
+| `/alert-dashboard/analyses` | GET/POST | Analysis results |
+| `/alert-dashboard/action-items` | GET/POST/PATCH | Action item CRUD |
+
+---
+
+### Previous Development: Content Analysis Pipeline (IMPLEMENTED)
 
 A scalable pipeline for processing hundreds of 4C alerts with automated analysis and report generation.
 
@@ -197,7 +354,7 @@ The user compared **AI interpretation vs User interpretation** of real alerts. K
 ## Project Overview
 
 **Name**: Treasure Hunt Analyzer (THA)
-**Purpose**: Enterprise system for analyzing Skywind platform alerts (4C) and reports (SoDA), providing insights across 5 focus areas with risk assessment and financial impact analysis.
+**Purpose**: Enterprise system for analyzing Skywind platform alerts (4C) and reports (SoDA), providing insights across 6 focus areas with risk assessment and financial impact analysis.
 
 **Tech Stack**:
 - **Backend**: FastAPI (Python 3.11), PostgreSQL 15, SQLAlchemy 2.0
@@ -230,7 +387,7 @@ The user compared **AI interpretation vs User interpretation** of real alerts. K
 3. **Content Analyzer (Pattern-Based)**
    - Reads 4 artifact files from uploaded directory
    - Extracts text from .txt, .docx, .xlsx files
-   - Classifies into 5 Focus Areas (keyword matching)
+   - Classifies into 6 Focus Areas (keyword matching)
    - Extracts counts (handles comma-separated: "1,943")
    - Extracts monetary amounts (handles $45M format)
    - Calculates risk score with breakdown
@@ -265,7 +422,7 @@ The user compared **AI interpretation vs User interpretation** of real alerts. K
 
 ---
 
-## 5 Focus Areas (Classification)
+## 6 Focus Areas (Classification)
 
 | Focus Area | Description | Keywords |
 |------------|-------------|----------|
@@ -274,6 +431,7 @@ The user compared **AI interpretation vs User interpretation** of real alerts. K
 | **ACCESS_GOVERNANCE** | SoD violations, authorization control | sod, segregation of duties, privilege, authorization |
 | **TECHNICAL_CONTROL** | System dumps, infrastructure issues | memory dump, abap dump, cpu usage, system crash |
 | **JOBS_CONTROL** | Job performance, resource utilization | job failed, batch job, background job, job runtime |
+| **S/4HANA_EXCELLENCE** | Post-migration safeguarding, configuration drift | s/4hana, migration, hana, fiori, custom code, adaptation |
 
 **Classification Logic**: `backend/app/services/content_analyzer/llm_classifier.py` → `analyze_without_llm()` method
 
@@ -297,7 +455,7 @@ PHASE 2: ARTIFACT READING (Sequential)
 PHASE 3: ANALYSIS
 ├── Summary_* is PRIMARY data source
 ├── Other artifacts provide CONTEXT
-├── Classify into 1 of 5 Focus Areas
+├── Classify into 1 of 6 Focus Areas
 └── Perform Qualitative + Quantitative analysis
 
 PHASE 4: SCORING
@@ -569,7 +727,103 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 
 ## Changelog
 
-### 2025-11-29 (CONTINUATION POINT)
+### 2025-12-05 (DASHBOARD MERGE COMPLETE)
+
+**Unified Dashboard with Tabbed Navigation:**
+
+Merged the separate Alert Dashboard into the Main Dashboard as a unified experience with 3 tabs.
+
+**What Changed:**
+- Created `DashboardTabs.tsx` component with Overview, Alert Analysis, Action Queue tabs
+- Modified `Dashboard.tsx` to include tab navigation and conditional rendering
+- Added Alert Dashboard API queries with conditional enabling (only fetch when tab is active)
+- Improved font sizes in `AlertDashboard.css` for better readability
+- Added tab styles to `dashboard.css` with Skywind red accent color
+- Removed `/alert-dashboard` route from `App.tsx`
+- Removed Alert Dashboard nav link from `Layout.tsx`
+- Deleted `AlertDashboard.tsx` (content merged into Dashboard.tsx)
+
+**Tab Content:**
+- **Overview**: Original dashboard - KPIs, charts, findings table
+- **Alert Analysis**: Critical Discoveries, severity/module distributions, discoveries table
+- **Action Queue**: Action items table with priority badges and status
+
+**Verification:**
+- All 3 tabs render correctly
+- Tab switching is smooth
+- Data loads on tab activation
+- Screenshot: `.playwright-mcp/dashboard-action-queue-tab.png`
+
+---
+
+### 2025-12-05 (INTEGRATION COMPLETE - Earlier)
+
+**Content Analysis Pipeline → Alert Dashboard Integration:**
+
+The analyze-and-save endpoint now automatically populates Alert Dashboard tables when processing alerts.
+
+**New Implementation:**
+- Added `_populate_dashboard_tables()` helper function in `content_analysis.py`
+- Creates: AlertInstance, AlertAnalysis, CriticalDiscovery, KeyFinding, ActionItem records
+- Integrated into both single alert (`analyze_and_save`) and batch processing (`_process_batch_job`)
+
+**Bug Fix:**
+- Fixed PostgreSQL `integer out of range` error for `records_affected` field
+- Large counts (99+ billion) were exceeding Integer max (2,147,483,647)
+- Solution: Capped values to PostgreSQL Integer maximum
+
+**Verification:**
+- Dashboard UI accessible at http://localhost:3010/alert-dashboard
+- KPI cards showing: 1 discovery, 1 alert, $5M exposure, 75 risk score
+- Action Queue showing: 2 open SHORT_TERM items
+- Screenshot saved: `.playwright-mcp/alert-dashboard-working.png`
+
+**Alert Analysis Dashboard Implementation (Earlier):**
+
+A comprehensive dashboard system for visualizing quantitative alert analysis results with EI vocabulary catalog.
+
+**Database Schema (10 new tables):**
+1. `clients` - Client entities with relationships to source systems
+2. `source_systems` - SAP source systems (PS4, ECP, BIP) per client
+3. `exception_indicators` - EI definitions (function names, modules)
+4. `ei_vocabulary` - LLM-generated ABAP code interpretations with versioning
+5. `alert_instances` - Alert configurations (EI + parameters from Metadata)
+6. `alert_analyses` - Analysis results with severity, risk_score, financial_impact
+7. `critical_discoveries` - High-signal findings requiring immediate attention
+8. `key_findings` - Top N findings per analysis with categories
+9. `concentration_metrics` - Concentration data by dimension (SALES_ORG, CUSTOMER)
+10. `action_items` - Investigation queue with status workflow
+
+**Backend Implementation:**
+- Created 9 SQLAlchemy models in `backend/app/models/`
+- Created Pydantic schemas in `backend/app/schemas/alert_dashboard.py`
+- Created API endpoints in `backend/app/api/alert_dashboard.py`
+- Alembic migration applied successfully
+
+**Frontend Implementation:**
+- AlertDashboard page component (`frontend/src/pages/AlertDashboard.tsx`)
+- CSS styles (`frontend/src/pages/AlertDashboard.css`)
+- API functions in `frontend/src/services/api.ts`
+- Route and navigation added
+
+**KPI Dashboard Features:**
+- 4 KPI cards: Critical Discoveries, Alerts Analyzed, Financial Exposure, Avg Risk Score
+- 3 distribution charts: By Severity, By Module, By Focus Area
+- Critical Discoveries drilldown table
+- Action Queue table with priority indicators
+- Trend Analysis placeholder with hierarchy display
+
+**API Verified Working:**
+```bash
+curl http://localhost:3011/api/v1/alert-dashboard/kpis
+# Returns: total_critical_discoveries, total_alerts_analyzed, etc.
+```
+
+**Note:** Frontend rebuild required for new UI components (npm registry had transient errors during build).
+
+---
+
+### 2025-11-29 (Previous Session)
 
 **Git**: Pushed to main (commit b4a88bf). Pull on other machine with `git pull origin main`.
 
@@ -647,9 +901,12 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 - **FIXED**: API URLs in Upload page (port 3011)
 - **FIXED**: File categorization (handles "Metadata " with space)
 - **TESTED**: "Rarely Used Vendors" alert → $45M exposure, Risk 80
+- **FIXED**: Severity base scores now consistent (90/75/60/50) across all files:
+  - `risk_scorer.py` - CRITICAL=90, HIGH=75, MEDIUM=60, LOW=50
+  - `content_analyzer/analyzer.py` - fallback scores aligned
+  - `scoring_engine.py` - source of truth (was already correct)
 - **IN PROGRESS**: Defining BUSINESS_PROTECTION scoring rules
 - **PENDING**: BACKDAYS parameter extraction from Metadata file (for context, not normalization)
-- **PENDING**: Updated severity base scores (90/75/60/50)
 
 ### 2025-11-26 (Earlier)
 - **ADDED**: Intelligent Content Analyzer module

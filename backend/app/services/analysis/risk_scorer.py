@@ -6,12 +6,12 @@ from app.models.issue_type import IssueType
 class RiskScorer:
     """Calculate risk scores for findings"""
     
-    # Base risk scores by severity
+    # Base risk scores by severity (per BUSINESS_PROTECTION.md)
     SEVERITY_SCORES = {
         "Critical": 90,
-        "High": 70,
-        "Medium": 50,
-        "Low": 30,
+        "High": 75,
+        "Medium": 60,
+        "Low": 50,
     }
     
     # Risk multipliers by issue type

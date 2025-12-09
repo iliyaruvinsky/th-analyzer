@@ -1,0 +1,14 @@
+/* Skywind Logo Component Styles */
+
+.skywind-logo {
+  display: flex;
+  align-items: center;
+  user-select: none;
+}
+
+.skywind-logo-img {
+  display: block;
+  height: 30px;
+  width: auto;
+  object-fit: contain;
+}

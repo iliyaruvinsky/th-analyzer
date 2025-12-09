@@ -20,8 +20,9 @@ async def get_kpi_summary(db: Session = Depends(get_db)):
     """
     total_findings = db.query(func.count(Finding.id)).scalar() or 0
     
-    total_risk_score_query = db.query(func.sum(RiskAssessment.risk_score)).scalar()
-    total_risk_score = float(total_risk_score_query) if total_risk_score_query is not None else 0.0
+    # Use average risk score, not sum
+    avg_risk_score_query = db.query(func.avg(RiskAssessment.risk_score)).scalar()
+    total_risk_score = float(avg_risk_score_query) if avg_risk_score_query is not None else 0.0
 
     total_money_loss_query = db.query(func.sum(MoneyLossCalculation.estimated_loss)).scalar()
     total_money_loss = float(total_money_loss_query) if total_money_loss_query is not None else 0.0

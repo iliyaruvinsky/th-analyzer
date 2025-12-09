@@ -407,13 +407,14 @@ class ContentAnalyzer:
 
     def _fallback_risk_score(self, analysis: AnalysisResult) -> RiskScore:
         """Fallback risk scoring when LLM is not available."""
+        # Severity scores per BUSINESS_PROTECTION.md
         severity_scores = {
-            "Critical": 80,
-            "High": 60,
-            "Medium": 40,
-            "Low": 20
+            "Critical": 90,
+            "High": 75,
+            "Medium": 60,
+            "Low": 50
         }
-        base_score = severity_scores.get(analysis.severity, 40)
+        base_score = severity_scores.get(analysis.severity, 60)
 
         return RiskScore(
             risk_score=base_score,

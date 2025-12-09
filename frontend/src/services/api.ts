@@ -228,6 +228,176 @@ export const getBatchJobs = async (): Promise<BatchJobResponse[]> => {
   return response.data;
 };
 
+// =============================================================================
+// Alert Dashboard API Types
+// =============================================================================
+
+export interface AlertDashboardKPIs {
+  total_critical_discoveries: number;
+  total_alerts_analyzed: number;
+  total_financial_exposure_usd: string;
+  avg_risk_score: number;
+  alerts_by_severity: Record<string, number>;
+  alerts_by_focus_area: Record<string, number>;
+  alerts_by_module: Record<string, number>;
+  open_investigations: number;
+  open_action_items: number;
+}
+
+export interface CriticalDiscovery {
+  id: number;
+  alert_analysis_id: number;
+  discovery_order: number;
+  title: string;
+  description: string;
+  affected_entity?: string;
+  affected_entity_id?: string;
+  metric_value?: string;
+  metric_unit?: string;
+  percentage_of_total?: string;
+  is_fraud_indicator: boolean;
+  created_at: string;
+}
+
+export interface ConcentrationMetric {
+  id: number;
+  alert_analysis_id: number;
+  dimension_type: string;
+  dimension_code: string;
+  dimension_name?: string;
+  record_count?: number;
+  value_local?: string;
+  value_usd?: string;
+  percentage_of_total?: string;
+  rank?: number;
+  created_at: string;
+}
+
+export interface KeyFinding {
+  id: number;
+  alert_analysis_id: number;
+  finding_rank: number;
+  finding_text: string;
+  finding_category?: string;
+  financial_impact_usd?: string;
+  created_at: string;
+}
+
+export interface CriticalDiscoveryDrilldown {
+  alert_id: string;
+  alert_name: string;
+  module: string;
+  focus_area: string;
+  severity: string;
+  discovery_count: number;
+  financial_impact_usd?: string;
+  discoveries: CriticalDiscovery[];
+  concentration_metrics?: ConcentrationMetric[];
+  key_findings?: KeyFinding[];
+  // Summary Data fields from AlertAnalysis
+  records_affected?: number;
+  unique_entities?: number;
+  period_start?: string;
+  period_end?: string;
+  risk_score?: number;
+  raw_summary_data?: Record<string, unknown>;
+}
+
+export interface ActionItem {
+  id: number;
+  alert_analysis_id: number;
+  action_type: string;
+  priority?: number;
+  title: string;
+  description?: string;
+  status: string;
+  assigned_to?: string;
+  due_date?: string;
+  resolution_notes?: string;
+  resolved_at?: string;
+  resolved_by?: string;
+  created_at: string;
+}
+
+export interface AlertAnalysisSummary {
+  id: number;
+  alert_instance_id: number;
+  analysis_type: string;
+  execution_date: string;
+  severity: string;
+  risk_score?: number;
+  fraud_indicator?: string;
+  financial_impact_usd?: string;
+  created_at: string;
+}
+
+export interface Client {
+  id: number;
+  code: string;
+  name: string;
+  description?: string;
+  website?: string;
+  created_at: string;
+}
+
+export interface ExceptionIndicator {
+  id: number;
+  ei_id: string;
+  function_name?: string;
+  module: string;
+  category?: string;
+  created_at: string;
+}
+
+// =============================================================================
+// Alert Dashboard API Functions
+// =============================================================================
+
+export const getAlertDashboardKPIs = async (): Promise<AlertDashboardKPIs> => {
+  const response = await apiClient.get('/alert-dashboard/kpis');
+  return response.data;
+};
+
+export const getCriticalDiscoveries = async (limit = 10): Promise<CriticalDiscoveryDrilldown[]> => {
+  const response = await apiClient.get('/alert-dashboard/critical-discoveries', {
+    params: { limit },
+  });
+  return response.data;
+};
+
+export const getActionQueue = async (status = 'OPEN', limit = 50): Promise<ActionItem[]> => {
+  const response = await apiClient.get('/alert-dashboard/action-queue', {
+    params: { status, limit },
+  });
+  return response.data;
+};
+
+// Alias for Dashboard.tsx compatibility
+export const getActionItems = getActionQueue;
+
+export const getAlertAnalyses = async (params?: {
+  focus_area?: string;
+  severity?: string;
+  analysis_type?: string;
+  skip?: number;
+  limit?: number;
+}): Promise<AlertAnalysisSummary[]> => {
+  const response = await apiClient.get('/alert-dashboard/analyses', { params });
+  return response.data;
+};
+
+export const getClients = async (): Promise<Client[]> => {
+  const response = await apiClient.get('/alert-dashboard/clients');
+  return response.data;
+};
+
+export const getExceptionIndicators = async (module?: string): Promise<ExceptionIndicator[]> => {
+  const response = await apiClient.get('/alert-dashboard/exception-indicators', {
+    params: module ? { module } : {},
+  });
+  return response.data;
+};
+
 // Maintain backwards compatibility for existing imports
 export const api = {
     getDataSources,
@@ -247,5 +417,13 @@ export const api = {
     analyzeBatch,
     getBatchStatus,
     getBatchJobs,
+    // Alert Dashboard
+    getAlertDashboardKPIs,
+    getCriticalDiscoveries,
+    getActionQueue,
+    getActionItems,
+    getAlertAnalyses,
+    getClients,
+    getExceptionIndicators,
 };
 

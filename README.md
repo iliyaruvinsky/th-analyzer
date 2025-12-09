@@ -17,9 +17,10 @@ Comprehensive system for analyzing Skywind platform alerts and reports, providin
 treasure-hunt-analyzer/
 ├── backend/          # FastAPI backend
 ├── frontend/          # React frontend
-├── ml_models/        # Trained ML models
 ├── docs/             # Documentation and context
 ├── scripts/          # Utility scripts
+├── plugins/          # AI assistant plugins
+├── aws/              # AWS deployment configs
 └── docker-compose.yml
 ```
 
@@ -74,11 +75,11 @@ Once the backend is running, visit:
 - [Quick Start Guide](QUICK_START.md)
 - [Quick Test Guide](QUICK_TEST.md) - **Start here for testing!**
 - [Testing Checklist](TESTING_CHECKLIST.md) - Comprehensive testing
-- [Testing Summary](TESTING_SUMMARY.md) - Testing overview
+- [Testing Guide](TESTING_GUIDE.md) - Detailed testing procedures
 - [Next Steps](NEXT_STEPS.md) - Roadmap and enhancements
 - [Deployment Guide](DEPLOYMENT.md)
-- [Validation Report](VALIDATION_REPORT.md)
-- [Merge Strategy](MERGE_STRATEGY.md)
+- [Docker Setup Guide](DOCKER_SETUP_GUIDE.md) - Docker configuration
+- [Docker Troubleshooting](DOCKER_TROUBLESHOOTING.md) - Container issues
 
 ## Related Projects
 

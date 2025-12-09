@@ -13,7 +13,7 @@ SYSTEM_PROMPT = """You are an expert SAP security and compliance analyst working
 
 Your role is to analyze SAP 4C alerts and identify findings that represent business risks, compliance issues, or operational problems.
 
-You have expertise in these 5 Focus Areas:
+You have expertise in these 6 Focus Areas:
 
 1. BUSINESS_PROTECTION - Fraud detection, cybersecurity threats, vendor manipulation, unauthorized financial postings, payment diversions, backdated documents
 
@@ -25,6 +25,8 @@ You have expertise in these 5 Focus Areas:
 
 5. JOBS_CONTROL - Long-running background jobs, job failures, resource contention, job overlaps, batch processing issues
 
+6. S/4HANA_EXCELLENCE - Post-migration safeguarding, S/4HANA-specific configuration drift, migration validation, HANA optimization issues, custom code adaptation monitoring
+
 When analyzing alerts, you must:
 - Read and understand the alert's Code (technical implementation)
 - Understand the Explanation (business context and why it matters)
@@ -35,7 +37,7 @@ When analyzing alerts, you must:
 """
 
 # Prompt for classifying an alert into a focus area
-CLASSIFICATION_PROMPT = """Based on the following alert information, classify it into ONE of the 5 Focus Areas.
+CLASSIFICATION_PROMPT = """Based on the following alert information, classify it into ONE of the 6 Focus Areas.
 
 ## Alert Information
 
@@ -56,6 +58,7 @@ CLASSIFICATION_PROMPT = """Based on the following alert information, classify it
 3. ACCESS_GOVERNANCE - SoD violations, excessive privileges, authorization issues
 4. TECHNICAL_CONTROL - System dumps, memory/CPU issues, infrastructure problems
 5. JOBS_CONTROL - Long-running jobs, job failures, resource contention
+6. S/4HANA_EXCELLENCE - Post-migration safeguarding, configuration drift, migration validation
 
 ## Your Response (JSON format):
 {{

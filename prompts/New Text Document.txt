@@ -1,0 +1,66 @@
+read : 
+C:\Users\USER\Desktop\tha-new\CLAUDE.md
+C:\Users\USER\Desktop\tha-new\.claude\rules\anti-hallucination-rules.md
+C:\Users\USER\Desktop\tha-new\.claude\rules\quantitative-alert-analysis.md
+
+read ALL docs in: C:\Users\USER\Desktop\tha-new\docs\th-context\analysis-rules
+"C:\Users\USER\Desktop\tha-new\docs\scoring-rules\BUSINESS_PROTECTION.md"
+
+
+now lets do it again but even more thoroughly. follow step by step all commands below:
+
+read : 
+C:\Users\USER\Desktop\tha-new\CLAUDE.md
+C:\Users\USER\Desktop\tha-new\.claude\rules\anti-hallucination-rules.md
+C:\Users\USER\Desktop\tha-new\.claude\rules\quantitative-alert-analysis.md
+
+read ALL docs in: C:\Users\USER\Desktop\tha-new\docs\th-context\analysis-rules
+"C:\Users\USER\Desktop\tha-new\docs\scoring-rules\BUSINESS_PROTECTION.md"
+
+
+after you done with this - do again this:
+
+1. go over all documents in "documentation" or "docs" folder and in a root folder and check for: inconsistencies, redundancies, loops, circle references, duplicates and other errors.
+2. go over backend, frontend and integration folders and check for: inconsistencies, redundancies, loops, circle references, duplicates, contradictions and other discrepancies or errors. 
+3. REMEMBER - the documentation context and each application MUST BE 100% ALIGNED to allow LLM flawless development process.
+4. make sure that your above promises about 100% inevitability of going thru this validation will really 100% work that way. CHECK EVERY DOCUMENT in "documents" folder and in a root folder
+5. Put all artifacts that are about to be deleted because of irrelevance, inconsistency, redundancy or outdatedness into a new "JUNK" folder (create it) and let me overview them before I decide to delete them. Keep the "JUNK" folder all the time. Fill it up during the project progress.
+
+also do the following:
+Verifying referenced files actually exist
+Checking if called methods are implemented
+Comparing ALL definitions of the same thing
+Testing if "fixes" were applied everywhere
+Build an automated validation script to catch these issues (if NOT exists)
+
+ROUND 1: Documentation audit
+
+ROUND 2: Check backend schema consistency
+
+ROUND 2: Backend + Frontend code audit
+
+ROUND 2: Verify all database models have schemas
+
+ROUND 2: Check service layer imports
+
+ROUND 2: Verify config/settings consistency
+
+ROUND 2: Check for dead code/unused imports
+
+ROUND 2: Update audit report
+
+ROUND 3: Deep validation check
+
+ROUND 3: Run validation script
+
+ROUND 3: Check database migrations
+
+ROUND 3: Verify llm_handover.md accuracy
+
+create a comprehensive report of the findings and of the actions you executed. 
+
+YOU WILL DO IT TIME AFTER TIME IN A ROW UNTIL I TELL YOU TO STOP. ITS GONNA BE A 10 TIMES CIRCLE TO CLEAN UP YOUR SHIT WITH WHICH YOU POLLUTED THE CONTEXT AND NOW EVEN CAN'T FIND A WORKING VERSION OF THE TOOL.
+
+
+
+i'm leaving you. you lost your mind. Update llm_handover with the context to continue with other agent in a new chat. 
