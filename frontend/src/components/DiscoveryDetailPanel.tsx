@@ -50,11 +50,11 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
     <div className={`discovery-detail ${mode}`}>
       {/* Header */}
       <div className="discovery-detail-header">
-        <div className="discovery-detail-title">
-          <h3>{discovery.alert_name}</h3>
-          <span className="discovery-detail-id">{discovery.alert_id}</span>
-        </div>
-        <div className="discovery-header-actions">
+        <div className="discovery-detail-title-row">
+          <div className="discovery-detail-title">
+            <h3>{discovery.alert_name}</h3>
+            <span className="discovery-detail-id">{discovery.alert_id}</span>
+          </div>
           <button
             className="action-btn-primary"
             onClick={() => onCreateAction?.(discovery)}
@@ -62,11 +62,11 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
           >
             <span>+</span> Create Action Item
           </button>
-          {/* Close button hidden in popover mode - parent provides it */}
-          {mode !== 'popover' && (
-            <button className="discovery-close-btn" onClick={onClose}>×</button>
-          )}
         </div>
+        {/* Close button hidden in popover mode - parent provides it */}
+        {mode !== 'popover' && (
+          <button className="discovery-close-btn" onClick={onClose}>×</button>
+        )}
       </div>
 
       {/* FRAUD WARNING - TOP PRIORITY (moved to top) */}
@@ -110,13 +110,33 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
         {/* Two-Pane Layout: 2/3 Left, 1/3 Right */}
         <div className="discovery-two-pane">
 
-          {/* LEFT PANE (2/3): Key Findings */}
+          {/* LEFT PANE (2/3): Story & Findings */}
           <div className="discovery-left-pane">
 
-            {/* Key Findings Table */}
+            {/* Critical Discovery Text Block - PRIMARY STORY */}
+            {hasDiscoveries && discovery.discoveries[0]?.description && (
+              <div className="critical-discovery-text-block">
+                <h4 className="cd-text-title">CRITICAL DISCOVERY</h4>
+                <div className="cd-text-content">
+                  <h5 className="cd-text-subtitle">{discovery.discoveries[0].title}</h5>
+                  <ul className="cd-text-bullets">
+                    {(() => {
+                      const desc = discovery.discoveries[0].description;
+                      // Split on sentence boundaries (period/semicolon followed by space and uppercase)
+                      const parts = desc.split(/(?<=[.;])\s+(?=[A-Z])/).filter(p => p.trim().length > 20);
+                      return parts.slice(0, 4).map((part, i) => (
+                        <li key={i}>{part.trim()}</li>
+                      ));
+                    })()}
+                  </ul>
+                </div>
+              </div>
+            )}
+
+            {/* Key Findings Table - SUPPORTING EVIDENCE */}
             {discovery.key_findings && discovery.key_findings.length > 0 && (
               <div className="findings-block">
-                <h4 className="findings-title">Key Findings</h4>
+                <h4 className="findings-title">KEY FINDINGS</h4>
                 <table className="findings-table">
                   <thead>
                     <tr>
@@ -141,26 +161,6 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
                 </table>
               </div>
             )}
-
-            {/* Critical Discovery Text Block - Moved here to fill left pane space */}
-            {hasDiscoveries && discovery.discoveries[0]?.description && (
-              <div className="critical-discovery-text-block">
-                <h4 className="cd-text-title">Critical Discovery</h4>
-                <div className="cd-text-content">
-                  <h5 className="cd-text-subtitle">{discovery.discoveries[0].title}</h5>
-                  <ul className="cd-text-bullets">
-                    {(() => {
-                      const desc = discovery.discoveries[0].description;
-                      // Split on sentence boundaries (period/semicolon followed by space and uppercase)
-                      const parts = desc.split(/(?<=[.;])\s+(?=[A-Z])/).filter(p => p.trim().length > 20);
-                      return parts.slice(0, 4).map((part, i) => (
-                        <li key={i}>{part.trim()}</li>
-                      ));
-                    })()}
-                  </ul>
-                </div>
-              </div>
-            )}
           </div>
 
           {/* RIGHT PANE (1/3): KPI Metrics + Concentration */}
@@ -169,8 +169,8 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
             {/* Large KPI Metrics */}
             {hasDiscoveries && (
               <div className="kpi-metrics-block">
-                <h4 className="kpi-title">Critical Discovery</h4>
-                <div className="kpi-subtitle">{discovery.discoveries[0]?.title}</div>
+                <h4 className="kpi-title">IMPACT ANALYSIS</h4>
+                {/* Removed redundant subtitle to avoid duplication with left pane */}
                 <div className="kpi-metrics-grid">
                   {(() => {
                     const text = discovery.discoveries[0]?.description || '';
@@ -239,7 +239,7 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
             {/* Concentration Pattern Table */}
             {discovery.concentration_metrics && discovery.concentration_metrics.length > 0 && (
               <div className="concentration-block">
-                <h4 className="concentration-title">Concentration Pattern</h4>
+                <h4 className="concentration-title">CONCENTRATION PATTERN</h4>
                 <table className="concentration-table">
                   <thead>
                     <tr>

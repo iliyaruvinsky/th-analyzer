@@ -1,3 +1,4 @@
+
 """
 Alert Dashboard API - Endpoints for alert analysis dashboard and EI vocabulary.
 """
@@ -86,17 +87,22 @@ async def get_dashboard_kpis(db: Session = Depends(get_db)):
             alerts_by_severity[severity] = count
 
     # Alerts by focus area (through alert_instance relationship)
+    # Start from AlertAnalysis and join to AlertInstance to get proper counts
     focus_area_counts = db.query(
         AlertInstance.focus_area,
         func.count(AlertAnalysis.id)
-    ).join(AlertInstance).group_by(AlertInstance.focus_area).all()
+    ).select_from(AlertAnalysis).join(
+        AlertInstance, AlertAnalysis.alert_instance_id == AlertInstance.id
+    ).group_by(AlertInstance.focus_area).all()
     alerts_by_focus_area = {fa: count for fa, count in focus_area_counts}
 
     # Alerts by module (from alert_instance.subcategory which stores module extracted from path)
+    # Start from AlertAnalysis and join to AlertInstance for proper aggregation
     module_counts = db.query(
         AlertInstance.subcategory,
         func.count(AlertAnalysis.id)
-    ).join(AlertInstance, AlertAnalysis.alert_instance_id == AlertInstance.id
+    ).select_from(AlertAnalysis).join(
+        AlertInstance, AlertAnalysis.alert_instance_id == AlertInstance.id
     ).filter(AlertInstance.subcategory.isnot(None)
     ).group_by(AlertInstance.subcategory).all()
     alerts_by_module = {module: count for module, count in module_counts if module}

@@ -14,6 +14,10 @@ import { useNavigate } from 'react-router-dom';
 import '../styles/dashboard.css';
 import './AlertDashboard.css';
 
+// Sort configuration type
+type SortField = 'alert_name' | 'module' | 'severity' | 'discovery_count' | 'financial_impact_usd';
+type SortDirection = 'asc' | 'desc';
+
 const Dashboard: React.FC = () => {
   const navigate = useNavigate();
   const [activeTab, setActiveTab] = useState<DashboardTabType>('overview');
@@ -26,6 +30,8 @@ const Dashboard: React.FC = () => {
   });
   const [selectedDiscovery, setSelectedDiscovery] = useState<CriticalDiscoveryDrilldown | null>(null);
   const [selectedActionItem, setSelectedActionItem] = useState<ActionItem | null>(null);
+  const [sortField, setSortField] = useState<SortField>('financial_impact_usd');
+  const [sortDirection, setSortDirection] = useState<SortDirection>('desc');
 
   // ESC key handler to close discovery popover
   useEffect(() => {
@@ -135,6 +141,50 @@ const Dashboard: React.FC = () => {
   const handleCreateAction = (discovery: CriticalDiscoveryDrilldown) => {
     console.log('Create action for:', discovery.alert_name);
   };
+
+  // Handle column sort
+  const handleSort = (field: SortField) => {
+    if (sortField === field) {
+      setSortDirection(sortDirection === 'asc' ? 'desc' : 'asc');
+    } else {
+      setSortField(field);
+      setSortDirection('desc');
+    }
+  };
+
+  // Severity order for sorting
+  const severityOrder: Record<string, number> = { 'CRITICAL': 4, 'HIGH': 3, 'MEDIUM': 2, 'LOW': 1 };
+
+  // Sort discoveries
+  const sortedDiscoveries = useMemo(() => {
+    if (!criticalDiscoveries) return [];
+
+    return [...criticalDiscoveries].sort((a, b) => {
+      let comparison = 0;
+
+      switch (sortField) {
+        case 'alert_name':
+          comparison = a.alert_name.localeCompare(b.alert_name);
+          break;
+        case 'module':
+          comparison = a.module.localeCompare(b.module);
+          break;
+        case 'severity':
+          comparison = (severityOrder[a.severity] || 0) - (severityOrder[b.severity] || 0);
+          break;
+        case 'discovery_count':
+          comparison = a.discovery_count - b.discovery_count;
+          break;
+        case 'financial_impact_usd':
+          const aVal = a.financial_impact_usd ? parseFloat(a.financial_impact_usd) : 0;
+          const bVal = b.financial_impact_usd ? parseFloat(b.financial_impact_usd) : 0;
+          comparison = aVal - bVal;
+          break;
+      }
+
+      return sortDirection === 'asc' ? comparison : -comparison;
+    });
+  }, [criticalDiscoveries, sortField, sortDirection]);
 
   if (isLoadingKpis || isLoadingFindings || runsLoading) {
     return (
@@ -265,16 +315,85 @@ const Dashboard: React.FC = () => {
     </>
   );
 
-  const renderAlertsTab = () => (
+  const renderAlertsTab = () => {
+    // Compute KPI summaries from criticalDiscoveries
+    const totalDiscoveries = criticalDiscoveries?.length || 0;
+    const totalFinancialImpact = criticalDiscoveries?.reduce((sum, d) =>
+      sum + (d.financial_impact_usd ? parseFloat(d.financial_impact_usd) : 0), 0) || 0;
+
+    // Severity breakdown
+    const severityCounts = criticalDiscoveries?.reduce((acc, d) => {
+      acc[d.severity] = (acc[d.severity] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>) || {};
+
+    // Module breakdown
+    const moduleCounts = criticalDiscoveries?.reduce((acc, d) => {
+      const mod = d.module.split(' ')[0]; // Get first word (FI, MM, SD, etc.)
+      acc[mod] = (acc[mod] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>) || {};
+
+    // Focus area breakdown
+    const areaCounts = criticalDiscoveries?.reduce((acc, d) => {
+      const area = d.focus_area || 'Unknown';
+      acc[area] = (acc[area] || 0) + 1;
+      return acc;
+    }, {} as Record<string, number>) || {};
+
+    return (
     <div className="ad-container">
       <div className="ad-section">
         <div className="ad-section-header">
-          <h2 className="ad-section-title">
-            <span className="ad-section-icon">⚡</span>
-            Critical Discoveries
-          </h2>
+          <div className="ad-header-content">
+            <h2 className="ad-section-title">
+              <span className="ad-section-icon">⚡</span>
+              Critical Discoveries
+            </h2>
+            <p className="ad-section-description">
+              Automated analysis of SAP alerts identifying high-risk patterns, anomalies, and potential compliance issues requiring immediate attention.
+            </p>
+          </div>
           <span className="ad-hint">{selectedDiscovery ? 'Press ESC or click × to close detail panel' : 'Click a row to view details'}</span>
         </div>
+
+        {/* KPI Summary Cards */}
+        {!selectedDiscovery && criticalDiscoveries && criticalDiscoveries.length > 0 && (
+          <div className="ad-kpi-grid">
+            <div className="ad-kpi-card">
+              <div className="ad-kpi-value">{totalDiscoveries}</div>
+              <div className="ad-kpi-label">Total Discoveries</div>
+            </div>
+            <div className="ad-kpi-card financial">
+              <div className="ad-kpi-value">{currencyFormatter.format(totalFinancialImpact)}</div>
+              <div className="ad-kpi-label">Total Financial Exposure</div>
+            </div>
+            <div className="ad-kpi-card">
+              <div className="ad-kpi-value">
+                {Object.entries(severityCounts).map(([sev, count]) => (
+                  <span key={sev} className={`ad-kpi-tag severity-${sev.toLowerCase()}`}>{count} {sev}</span>
+                ))}
+              </div>
+              <div className="ad-kpi-label">By Severity</div>
+            </div>
+            <div className="ad-kpi-card">
+              <div className="ad-kpi-value">
+                {Object.entries(moduleCounts).slice(0, 4).map(([mod, count]) => (
+                  <span key={mod} className="ad-kpi-tag module">{count} {mod}</span>
+                ))}
+              </div>
+              <div className="ad-kpi-label">SAP Modules</div>
+            </div>
+            <div className="ad-kpi-card">
+              <div className="ad-kpi-value">
+                {Object.entries(areaCounts).slice(0, 3).map(([area, count]) => (
+                  <span key={area} className="ad-kpi-tag area">{count} {area.replace('_', ' ')}</span>
+                ))}
+              </div>
+              <div className="ad-kpi-label">Focus Areas</div>
+            </div>
+          </div>
+        )}
 
         {discoveriesLoading ? (
           <div className="ad-loading">Loading critical discoveries...</div>
@@ -285,15 +404,25 @@ const Dashboard: React.FC = () => {
               <table className="ad-table">
                 <thead>
                   <tr>
-                    <th>Alert</th>
-                    <th>Module</th>
-                    <th>Severity</th>
-                    <th>Discoveries</th>
-                    <th>Financial Impact</th>
+                    <th className={`sortable ${sortField === 'alert_name' ? 'sorted' : ''}`} onClick={() => handleSort('alert_name')}>
+                      Alert {sortField === 'alert_name' && <span className="sort-indicator">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </th>
+                    <th className={`sortable ${sortField === 'module' ? 'sorted' : ''}`} onClick={() => handleSort('module')}>
+                      Module {sortField === 'module' && <span className="sort-indicator">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </th>
+                    <th className={`sortable ${sortField === 'severity' ? 'sorted' : ''}`} onClick={() => handleSort('severity')}>
+                      Severity {sortField === 'severity' && <span className="sort-indicator">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </th>
+                    <th className={`sortable ${sortField === 'discovery_count' ? 'sorted' : ''}`} onClick={() => handleSort('discovery_count')}>
+                      Discoveries {sortField === 'discovery_count' && <span className="sort-indicator">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </th>
+                    <th className={`sortable ${sortField === 'financial_impact_usd' ? 'sorted' : ''}`} onClick={() => handleSort('financial_impact_usd')}>
+                      Financial Impact {sortField === 'financial_impact_usd' && <span className="sort-indicator">{sortDirection === 'asc' ? '▲' : '▼'}</span>}
+                    </th>
                   </tr>
                 </thead>
                 <tbody>
-                  {criticalDiscoveries.map((discovery: CriticalDiscoveryDrilldown) => (
+                  {sortedDiscoveries.map((discovery: CriticalDiscoveryDrilldown) => (
                     <tr
                       key={discovery.id}
                       className={`ad-row ${selectedDiscovery?.id === discovery.id ? 'selected' : ''}`}
@@ -332,7 +461,8 @@ const Dashboard: React.FC = () => {
         )}
       </div>
     </div>
-  );
+    );
+  };
 
   const renderActionsTab = () => (
     <div className="ad-container">
