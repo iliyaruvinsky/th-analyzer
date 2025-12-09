@@ -3,7 +3,7 @@ import { CriticalDiscoveryDrilldown, CriticalDiscovery, ConcentrationMetric, Key
 
 interface DiscoveryDetailPanelProps {
   discovery: CriticalDiscoveryDrilldown;
-  mode: 'modal' | 'inline' | 'popover';
+  mode: 'modal' | 'inline' | 'popover' | 'page';
   onClose: () => void;
   currencyFormatter: Intl.NumberFormat;
   onViewAnalysis?: (discovery: CriticalDiscoveryDrilldown) => void;
@@ -63,8 +63,8 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
             <span>+</span> Create Action Item
           </button>
         </div>
-        {/* Close button hidden in popover mode - parent provides it */}
-        {mode !== 'popover' && (
+        {/* Close button hidden in popover and page mode */}
+        {mode !== 'popover' && mode !== 'page' && (
           <button className="discovery-close-btn" onClick={onClose}>×</button>
         )}
       </div>
@@ -289,6 +289,11 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
 
   // Popover mode: just return content (parent handles container)
   if (mode === 'popover') {
+    return content;
+  }
+
+  // Page mode: full width rendering without container
+  if (mode === 'page') {
     return content;
   }
 
