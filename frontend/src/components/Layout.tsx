@@ -1,8 +1,9 @@
-import React, { useState } from 'react'
+import React, { useState, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
 import { useQuery } from '@tanstack/react-query'
 import { getCriticalDiscoveries, CriticalDiscoveryDrilldown } from '../services/api'
 import SkywindLogo from './SkywindLogo'
+import SidebarFilters, { FilterValues } from './SidebarFilters'
 import './Layout.css'
 
 interface LayoutProps {
@@ -13,6 +14,11 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation()
   const navigate = useNavigate()
   const [expandedSections, setExpandedSections] = useState<string[]>(['discoveries'])
+  const [filters, setFilters] = useState<FilterValues>({
+    focusArea: '',
+    module: '',
+    severity: '',
+  })
 
   // Fetch discoveries for sidebar
   const { data: discoveries = [] } = useQuery<CriticalDiscoveryDrilldown[]>({
@@ -20,6 +26,41 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
     queryFn: () => getCriticalDiscoveries(50),
     staleTime: 60000,
   })
+
+  // Extract unique filter options from discoveries
+  const filterOptions = useMemo(() => {
+    const focusAreas = new Set<string>()
+    const modules = new Set<string>()
+    const severities = new Set<string>()
+
+    discoveries.forEach((d) => {
+      if (d.focus_area) focusAreas.add(d.focus_area)
+      if (d.module) modules.add(d.module)
+      if (d.severity) severities.add(d.severity)
+    })
+
+    return {
+      focusAreas: Array.from(focusAreas).sort(),
+      modules: Array.from(modules).sort(),
+      severities: ['CRITICAL', 'HIGH', 'MEDIUM', 'LOW'].filter((s) => severities.has(s)),
+    }
+  }, [discoveries])
+
+  // Filter discoveries based on selected filters
+  const filteredDiscoveries = useMemo(() => {
+    return discoveries.filter((d) => {
+      if (filters.focusArea && d.focus_area !== filters.focusArea) return false
+      if (filters.module && d.module !== filters.module) return false
+      if (filters.severity && d.severity !== filters.severity) return false
+      return true
+    })
+  }, [discoveries, filters])
+
+  const hasActiveFilters = filters.focusArea !== '' || filters.module !== '' || filters.severity !== ''
+
+  const clearFilters = () => {
+    setFilters({ focusArea: '', module: '', severity: '' })
+  }
 
   const toggleSection = (section: string) => {
     setExpandedSections(prev =>
@@ -103,50 +144,70 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               className={`nav-link expandable-header ${isOnDiscoveriesPage ? 'active' : ''}`}
               onClick={() => {
                 toggleSection('discoveries')
-                if (!isOnDiscoveriesPage && discoveries.length > 0) {
-                  navigate(`/alert-discoveries/${discoveries[0]?.alert_id || ''}`)
+                if (!isOnDiscoveriesPage && filteredDiscoveries.length > 0) {
+                  navigate(`/alert-discoveries/${filteredDiscoveries[0]?.alert_id || ''}`)
                 }
               }}
             >
               <span className="nav-icon">⚡</span>
               <span className="nav-label">Discoveries</span>
-              <span className="nav-badge">{discoveries.length}</span>
+              <span className={`nav-badge ${hasActiveFilters ? 'filtered' : ''}`}>
+                {hasActiveFilters ? `${filteredDiscoveries.length}/${discoveries.length}` : discoveries.length}
+              </span>
               <span className="nav-chevron">{isDiscoveriesExpanded ? '▼' : '▶'}</span>
             </div>
 
             {/* Expandable Discovery List - Card Layout */}
             {isDiscoveriesExpanded && (
-              <div className="discovery-cards-container">
-                {discoveries.map((discovery) => (
-                  <div
-                    key={discovery.alert_id}
-                    className={`discovery-card ${isDiscoverySelected(discovery.alert_id) ? 'selected' : ''} ${getSeverityClass(discovery.severity)}`}
-                    onClick={() => navigate(`/alert-discoveries/${discovery.alert_id}`)}
-                  >
-                    {/* Alert Name - Full */}
-                    <div className="card-alert-name">{discovery.alert_name}</div>
+              <>
+                {/* Sidebar Filters */}
+                <SidebarFilters
+                  filters={filters}
+                  onFilterChange={setFilters}
+                  onClearFilters={clearFilters}
+                  focusAreaOptions={filterOptions.focusAreas}
+                  moduleOptions={filterOptions.modules}
+                  severityOptions={filterOptions.severities}
+                  hasActiveFilters={hasActiveFilters}
+                />
 
-                    {/* Simplified KPI: Focus Area + Financial Impact */}
-                    <div className="card-kpi-row">
-                      <div className="card-kpi">
-                        <span className="card-kpi-label">Focus Area</span>
-                        <span className="card-kpi-value focus-area">{discovery.focus_area}</span>
-                      </div>
-                      <div className="card-kpi">
-                        <span className="card-kpi-label">Financial Impact</span>
-                        <span className="card-kpi-value impact">
-                          {formatCurrency(discovery.financial_impact_usd)}
-                        </span>
+                <div className="discovery-cards-container">
+                  {filteredDiscoveries.map((discovery) => (
+                    <div
+                      key={discovery.alert_id}
+                      className={`discovery-card ${isDiscoverySelected(discovery.alert_id) ? 'selected' : ''} ${getSeverityClass(discovery.severity)}`}
+                      onClick={() => navigate(`/alert-discoveries/${discovery.alert_id}`)}
+                    >
+                      {/* Alert Name - Full */}
+                      <div className="card-alert-name">{discovery.alert_name}</div>
+
+                      {/* Simplified KPI: Focus Area + Financial Impact */}
+                      <div className="card-kpi-row">
+                        <div className="card-kpi">
+                          <span className="card-kpi-label">Focus Area</span>
+                          <span className="card-kpi-value focus-area">{discovery.focus_area}</span>
+                        </div>
+                        <div className="card-kpi">
+                          <span className="card-kpi-label">Financial Impact</span>
+                          <span className="card-kpi-value impact">
+                            {formatCurrency(discovery.financial_impact_usd)}
+                          </span>
+                        </div>
                       </div>
                     </div>
-                  </div>
-                ))}
-                {discoveries.length === 0 && (
-                  <div className="discovery-card empty">
-                    <span className="empty-text">No discoveries yet</span>
-                  </div>
-                )}
-              </div>
+                  ))}
+                  {filteredDiscoveries.length === 0 && discoveries.length > 0 && (
+                    <div className="no-results-message">
+                      No discoveries match your filters
+                    </div>
+                  )}
+                  {discoveries.length === 0 && (
+                    <div className="discovery-card empty">
+                      <span className="empty-text">No discoveries yet</span>
+                    </div>
+                  )}
+                </div>
+              </>
             )}
           </li>
 

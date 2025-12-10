@@ -338,6 +338,9 @@ class CriticalDiscoveryDrilldown(BaseModel):
     period_end: Optional[date] = None
     risk_score: Optional[int] = None
     raw_summary_data: Optional[Dict[str, Any]] = None
+    # Alert configuration from AlertInstance
+    business_purpose: Optional[str] = None  # From Explanation_* file
+    parameters: Optional[Dict[str, Any]] = None  # From Metadata_* file
 
 
 class AlertAnalysisWithDetails(AlertAnalysisResponse):

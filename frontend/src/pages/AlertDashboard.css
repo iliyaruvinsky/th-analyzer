@@ -810,11 +810,11 @@
   padding: 16px;
 }
 
-/* Title row with button on left side */
+/* Title row with buttons inline */
 .discovery-detail-title-row {
   display: flex;
-  align-items: flex-start;
-  gap: 24px;
+  align-items: center;
+  gap: 16px;
   flex: 1;
 }
 
@@ -872,6 +872,39 @@
 
 .discovery-close-btn:hover {
   color: #1f2937;
+}
+
+/* Alert Explanation Box - Subtle neutral style */
+.discovery-explanation-box {
+  display: flex;
+  align-items: flex-start;
+  gap: 8px;
+  margin-top: 12px;
+  padding: 10px 14px;
+  background: transparent;
+  border: none;
+  border-radius: 0;
+  font-size: 13px;
+  line-height: 1.5;
+  color: #4b5563;
+}
+
+.discovery-explanation-box .explanation-icon {
+  flex-shrink: 0;
+  font-size: 14px;
+  color: #6b7280;
+  margin-top: 2px;
+}
+
+.discovery-explanation-box .explanation-text {
+  flex: 1;
+  font-style: italic;
+}
+
+.discovery-detail.inline .discovery-explanation-box {
+  margin-top: 8px;
+  font-size: 12px;
+  padding: 8px 12px;
 }
 
 .discovery-detail-body {
@@ -3000,6 +3033,19 @@
   color: #1f2937;
 }
 
+.kpi-explanations .risk-warning {
+  background: rgba(239, 68, 68, 0.1);
+  border-left: 3px solid #ef4444;
+  padding: 8px 10px;
+  margin: 0 -12px;
+  margin-bottom: 6px;
+  color: #dc2626;
+}
+
+.kpi-explanations .risk-warning strong {
+  color: #dc2626;
+}
+
 /* Right pane action button container */
 .right-pane-action {
   margin-top: auto;
@@ -3547,4 +3593,161 @@
   .summary-kpi .kpi-value {
     font-size: 24px;
   }
+}
+
+/* ==========================================
+   JSON Data Popover Styles
+   ========================================== */
+
+.json-popover-container {
+  position: relative;
+  display: inline-block;
+}
+
+.json-popover-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 6px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 6px;
+  cursor: pointer;
+  transition: all 0.2s;
+  border: 1px solid #d1d5db;
+  background: white;
+  color: #4b5563;
+}
+
+.json-popover-btn:hover:not(.disabled) {
+  background: #f9fafb;
+  border-color: #9ca3af;
+}
+
+.json-popover-btn.secondary {
+  background: #f3f4f6;
+  border-color: #e5e7eb;
+}
+
+.json-popover-btn.secondary:hover:not(.disabled) {
+  background: #e5e7eb;
+}
+
+.json-popover-btn.disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.json-popover-btn .btn-icon {
+  font-size: 14px;
+}
+
+.json-popover {
+  position: absolute;
+  top: calc(100% + 8px);
+  left: 0;
+  z-index: 100;
+  min-width: 320px;
+  max-width: 420px;
+  background: white;
+  border-radius: 10px;
+  box-shadow: 0 10px 40px rgba(0, 0, 0, 0.15), 0 2px 10px rgba(0, 0, 0, 0.1);
+  border: 1px solid #e5e7eb;
+  animation: popoverFadeIn 0.2s ease-out;
+}
+
+@keyframes popoverFadeIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.json-popover-header {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 12px 16px;
+  border-bottom: 1px solid #e5e7eb;
+  background: #f9fafb;
+  border-radius: 10px 10px 0 0;
+}
+
+.json-popover-header h4 {
+  margin: 0;
+  font-size: 14px;
+  font-weight: 600;
+  color: #1f2937;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.json-popover-close {
+  background: none;
+  border: none;
+  font-size: 20px;
+  color: #9ca3af;
+  cursor: pointer;
+  padding: 0;
+  line-height: 1;
+  transition: color 0.2s;
+}
+
+.json-popover-close:hover {
+  color: #1f2937;
+}
+
+.json-popover-body {
+  padding: 12px 0;
+  max-height: 350px;
+  overflow-y: auto;
+}
+
+.json-data-table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+.json-data-table tr:hover {
+  background: #f9fafb;
+}
+
+.json-data-table td {
+  padding: 8px 16px;
+  font-size: 13px;
+  vertical-align: top;
+  border-bottom: 1px solid #f3f4f6;
+}
+
+.json-data-table tr:last-child td {
+  border-bottom: none;
+}
+
+.json-data-table .json-key {
+  font-weight: 500;
+  color: #6b7280;
+  white-space: nowrap;
+  width: 40%;
+}
+
+.json-data-table .json-value {
+  color: #1f2937;
+  word-break: break-word;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+}
+
+/* Header buttons row for Output/Params */
+.discovery-header-buttons {
+  display: flex;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.discovery-header-buttons .json-popover-container {
+  flex-shrink: 0;
 }

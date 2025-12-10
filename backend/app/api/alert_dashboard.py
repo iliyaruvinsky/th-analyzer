@@ -188,7 +188,10 @@ async def get_critical_discoveries_drilldown(
             period_start=analysis.period_start,
             period_end=analysis.period_end,
             risk_score=analysis.risk_score,
-            raw_summary_data=analysis.raw_summary_data
+            raw_summary_data=analysis.raw_summary_data,
+            # Alert configuration from AlertInstance
+            business_purpose=alert_instance.business_purpose if alert_instance else None,
+            parameters=alert_instance.parameters if alert_instance else None
         )
         result.append(drilldown)
 

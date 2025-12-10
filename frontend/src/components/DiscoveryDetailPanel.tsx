@@ -1,5 +1,6 @@
 import React from 'react';
 import { CriticalDiscoveryDrilldown, CriticalDiscovery, ConcentrationMetric, KeyFinding } from '../services/api';
+import JsonDataPopover from './JsonDataPopover';
 
 interface DiscoveryDetailPanelProps {
   discovery: CriticalDiscoveryDrilldown;
@@ -55,6 +56,22 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
             <h3>{discovery.alert_name}</h3>
             <span className="discovery-detail-id">{discovery.alert_id}</span>
           </div>
+          {/* Output/Params Buttons - inline with title */}
+          <div className="discovery-header-buttons">
+            <JsonDataPopover
+              data={discovery.raw_summary_data}
+              title="Alert Output Data"
+              buttonLabel="Output"
+              buttonIcon="📊"
+            />
+            <JsonDataPopover
+              data={discovery.parameters}
+              title="Alert Parameters"
+              buttonLabel="Params"
+              buttonIcon="⚙"
+              variant="secondary"
+            />
+          </div>
           <button
             className="action-btn-primary"
             onClick={() => onCreateAction?.(discovery)}
@@ -66,6 +83,13 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
         {/* Close button hidden in popover and page mode */}
         {mode !== 'popover' && mode !== 'page' && (
           <button className="discovery-close-btn" onClick={onClose}>×</button>
+        )}
+        {/* Alert Explanation - subtle text below title */}
+        {discovery.business_purpose && (
+          <div className="discovery-explanation-box">
+            <span className="explanation-icon">ℹ</span>
+            <span className="explanation-text">{discovery.business_purpose}</span>
+          </div>
         )}
       </div>
 
@@ -228,10 +252,17 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
                     return metrics;
                   })()}
                 </div>
-                {/* KPI Explanations - Issue 4 fix: Clear and specific explanations */}
+                {/* KPI Explanations - Dynamic based on actual values */}
                 <div className="kpi-explanations">
-                  <p><strong>FINDINGS:</strong> Key findings identified from alert analysis</p>
-                  <p><strong>RISK SCORE:</strong> Risk score (0-100) based on severity + financial impact + fraud indicators</p>
+                  {discovery.risk_score && discovery.risk_score >= 70 && (
+                    <p className="risk-warning"><strong>High Risk Alert:</strong> Score {discovery.risk_score}/100 indicates urgent review needed</p>
+                  )}
+                  {discovery.risk_score && discovery.risk_score >= 40 && discovery.risk_score < 70 && (
+                    <p><strong>Moderate Risk:</strong> Score {discovery.risk_score}/100 - monitor and investigate as capacity allows</p>
+                  )}
+                  {discovery.risk_score && discovery.risk_score < 40 && (
+                    <p><strong>Low Risk:</strong> Score {discovery.risk_score}/100 - routine monitoring recommended</p>
+                  )}
                 </div>
               </div>
             )}

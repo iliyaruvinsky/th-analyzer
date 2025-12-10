@@ -1,8 +1,8 @@
 # LLM Handover Document - Treasure Hunt Analyzer (THA)
 
-**Last Updated**: 2025-12-09 (10-Cycle Audit Complete + Application Flow Map)
-**Project Status**: Development - Unified Dashboard with Tabbed Navigation
-**Current Version**: 1.7.1
+**Last Updated**: 2025-12-10 (Discovery Detail Features + Layout Fixes)
+**Project Status**: Development - Critical Discoveries with Detail Panel
+**Current Version**: 1.8.0
 
 ---
 
@@ -87,6 +87,64 @@ SKYWIND PRODUCTS (Root)
 ---
 
 ## CRITICAL: Current Work in Progress
+
+### COMPLETED: Discovery Detail Panel Features (2025-12-10)
+
+Enhanced the Critical Discoveries detail panel with 4 new features for better alert investigation:
+
+**Features Implemented:**
+
+| Feature | Description | Data Source |
+|---------|-------------|-------------|
+| **Alert Explanation** | Business purpose text displayed below alert title | `business_purpose` from Explanation_* file |
+| **Output Popover** | JSON popover showing alert output data | `raw_summary_data` from Summary_* file |
+| **Params Popover** | JSON popover showing alert parameters | `parameters` from Metadata_* file |
+| **Sidebar Filters** | Collapsible filters for Focus Area, Module, Severity | Client-side filtering |
+| **Dynamic Risk Score** | Risk explanation based on actual score value | Threshold-based (≥70 high, 40-69 moderate, <40 low) |
+
+**Files Created:**
+
+- `frontend/src/components/JsonDataPopover.tsx` - Reusable popover for JSON data display
+- `frontend/src/components/SidebarFilters.tsx` - Collapsible filter component
+
+**Files Modified:**
+
+- `frontend/src/components/DiscoveryDetailPanel.tsx` - Added explanation box, Output/Params buttons, dynamic risk score
+- `frontend/src/components/Layout.tsx` - Added filter state and sidebar filter integration
+- `frontend/src/components/Layout.css` - Collapsible filter styles
+- `frontend/src/pages/AlertDashboard.css` - Explanation box and popover styles (removed blue background)
+- `frontend/src/services/api.ts` - Added `business_purpose` and `parameters` to TypeScript interface
+- `backend/app/schemas/alert_dashboard.py` - Added fields to Pydantic schema
+- `backend/app/api/alert_dashboard.py` - Include new fields in API response
+- `frontend/vite.config.ts` - Added `allowedHosts` for Docker browser testing
+
+**Layout Fixes (2025-12-10):**
+
+- Removed blue background from explanation box → now transparent with gray italic text
+- Repositioned Output/Params buttons inline with title row
+- Fixed title row alignment (center-aligned elements)
+
+**UI State:**
+
+```
+┌─────────────────────────────────────────────────────────────────┐
+│  Alert Title                    [Output] [Params] [+ Action]    │
+│  ℹ Business purpose explanation text (gray italic)              │
+├─────────────────────────────────────────────────────────────────┤
+│  ⚠ Fraud Indicator Detected - Immediate Review Required         │
+├─────────────────────────────────────────────────────────────────┤
+│  MODULE | SEVERITY | RECORDS | PERIOD | FINANCIAL EXPOSURE      │
+└─────────────────────────────────────────────────────────────────┘
+```
+
+**Sidebar Filters:**
+
+- Collapsible header with "⊞ FILTERS ▼" toggle
+- Shows active filter count badge when filters applied
+- Filter by: Focus Area, Module (SAP), Severity
+- Client-side filtering (max 50 discoveries loaded)
+
+---
 
 ### COMPLETED: Content Analysis Pipeline → Alert Dashboard Integration (2025-12-05)
 
@@ -726,6 +784,40 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 ---
 
 ## Changelog
+
+### 2025-12-10 (DISCOVERY DETAIL FEATURES)
+
+**New Features:**
+
+- Added Alert Explanation box showing business_purpose from Explanation_* file
+- Added Output popover button to display raw_summary_data JSON
+- Added Params popover button to display parameters JSON from Metadata
+- Added collapsible sidebar filters (Focus Area, Module, Severity)
+- Added dynamic Risk Score explanation based on score thresholds
+
+**Layout Fixes:**
+
+- Removed blue background from explanation box (now transparent with gray italic text)
+- Repositioned Output/Params buttons inline with title row
+- Fixed title row alignment to center elements
+
+**Files Created:**
+
+- `frontend/src/components/JsonDataPopover.tsx`
+- `frontend/src/components/SidebarFilters.tsx`
+
+**Files Modified:**
+
+- `frontend/src/components/DiscoveryDetailPanel.tsx`
+- `frontend/src/components/Layout.tsx`
+- `frontend/src/components/Layout.css`
+- `frontend/src/pages/AlertDashboard.css`
+- `frontend/src/services/api.ts`
+- `backend/app/schemas/alert_dashboard.py`
+- `backend/app/api/alert_dashboard.py`
+- `frontend/vite.config.ts`
+
+---
 
 ### 2025-12-05 (DASHBOARD MERGE COMPLETE)
 

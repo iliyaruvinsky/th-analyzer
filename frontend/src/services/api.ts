@@ -301,6 +301,9 @@ export interface CriticalDiscoveryDrilldown {
   period_end?: string;
   risk_score?: number;
   raw_summary_data?: Record<string, unknown>;
+  // Alert configuration from AlertInstance
+  business_purpose?: string;  // From Explanation_* file
+  parameters?: Record<string, unknown>;  // From Metadata_* file
 }
 
 export interface ActionItem {
