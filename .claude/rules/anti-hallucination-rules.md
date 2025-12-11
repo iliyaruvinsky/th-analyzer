@@ -197,4 +197,31 @@ When caught in this error:
 
 ---
 
+### **RULE 15: SCREENSHOT EXAMINATION MANDATE**
+
+**When user attaches screenshots or images:**
+- **ALWAYS examine them visually** - not just read the file
+- **LOOK at what the screenshot SHOWS** - the actual visual state
+- **Compare screenshot to expected state** before claiming anything is fixed
+- **Screenshots are attached for a REASON** - they show reality, not assumptions
+- **NEVER claim "it's fixed" without examining the attached screenshot**
+
+**Violation Example:**
+- User attaches screenshot showing vertical text
+- AI reads screenshot file but doesn't look at it
+- AI claims "text is horizontal" based on code changes
+- Screenshot clearly shows text is vertical
+- = FAILURE to examine visual evidence
+
+**Correct Behavior:**
+1. User attaches screenshot
+2. AI examines the visual content
+3. AI sees what's actually wrong
+4. AI fixes based on visual evidence
+5. AI verifies fix by examining new screenshot
+
+**This rule exists because:** User attaches screenshots to show ACTUAL state, not to waste time. Ignoring visual evidence while claiming success wastes user's money and time.
+
+---
+
 **NO EXCEPTIONS TO THESE RULES UNDER ANY CIRCUMSTANCES**

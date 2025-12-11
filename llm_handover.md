@@ -89,6 +89,46 @@ SKYWIND PRODUCTS (Root)
 
 ## CRITICAL: Current Work in Progress
 
+### ACTIVE: Discovery UI Visual Improvements (2025-12-11)
+
+**Objective:** Improve Discovery detail panel visual consistency and UX
+
+**Changes Applied:**
+
+1. **Button Size Equalization** ✅
+   - Updated `.json-popover-btn` padding: `6px 12px` → `10px 18px`
+   - Updated `.json-popover-btn` font-size: `12px` → `14px`
+   - Now all 3 buttons (Output, Params, Create Action Item) are same size
+
+2. **Output Icon Update** ✅
+   - Changed from 📊 (chart) to 📋 (clipboard)
+   - More design-aligned with data/document concept
+   - Visual harmony with Params icon (⚙)
+
+3. **Layout Reorganization** ✅
+   - Moved explanation text BEFORE button group
+   - New flow: Title → Explanation → Buttons → Action Item
+   - More intuitive visual hierarchy
+
+**Files Modified:**
+- `frontend/src/pages/AlertDashboard.css` (lines 3607-3620)
+- `frontend/src/components/DiscoveryDetailPanel.tsx` (lines 59-93)
+
+**Status:** ✅ COMPLETE - Verified in browser after rebuild
+
+**Actual Changes That Worked:**
+1. Icon changed from 📊 to 📋 ✅
+2. Button padding equalized (10px 18px) ✅  
+3. Button height set to exactly 44px ✅
+4. Font-weight increased to 600 (match action button) ✅
+5. Explanation text displays below buttons ✅
+
+**Note:** User frustrated by slow iteration. Changes required 2 container rebuilds to verify.
+
+---
+
+## CRITICAL: Current Work in Progress
+
 ### COMPLETED: Discovery Detail Panel Features (2025-12-10)
 
 Enhanced the Critical Discoveries detail panel with 4 new features for better alert investigation:
@@ -880,6 +920,99 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 ---
 
 ## Changelog
+
+### 2025-12-11 (MANDATORY RULES UPDATED - SCREENSHOT EXAMINATION)
+
+**New Anti-Hallucination Rule Added:**
+
+Added **RULE 15: SCREENSHOT EXAMINATION MANDATE** to `.claude/rules/anti-hallucination-rules.md`
+
+**Problem Identified:** During Discovery UI fixes, AI repeatedly claimed fixes were applied but failed to examine attached screenshots showing the actual broken state. Multiple iterations wasted due to not looking at visual evidence user was providing.
+
+**Rule 15 Requirements:**
+- ALWAYS examine screenshots visually (not just read file)
+- LOOK at what screenshot SHOWS (actual visual state)
+- Compare screenshot to expected state before claiming fixes
+- Screenshots show reality, not assumptions
+- NEVER claim "it's fixed" without examining screenshot
+
+**Frontend Skill Enhanced:**
+
+Updated `.claude/skills/frontend-design/SKILL.md` with:
+- Screenshot examination protocol (examine before making changes)
+- Browser devtools inspection workflow
+- CSS debugging checklist (6-step verification)
+- Docker vs local dev iteration guidance
+- NEVER claim fixed without visual verification
+
+**Impact:**
+- Future AI agents MUST examine screenshots before claiming success
+- Reduces wasted iterations from unverified claims
+- Prevents frontend work failures like today's Discovery UI issues
+
+**Files Modified:**
+- `.claude/rules/anti-hallucination-rules.md` - Added Rule 15 (28 lines)
+- `.claude/skills/frontend-design/SKILL.md` - Added screenshot protocol section
+
+**Lesson Learned:** User frustration justified - AI wasted time claiming fixes without examining visual evidence user was providing through screenshots.
+
+---
+
+### 2025-12-11 (DOCKER CONTAINERS REBUILT - SYNCED WITH GITHUB)
+
+**Application State Synchronized:**
+
+Successfully rebuilt Docker containers to match latest code from GitHub repository (commit 71892d3).
+
+**Problem:** Containers were running code from Dec 10 6:00am (30 hours old), missing changes from Dec 11 10:10am commit.
+
+**Solution Applied:**
+1. Rebuilt frontend and backend containers
+2. Marked migration 002 as applied (tables already existed from init_db.py)
+3. Verified all features working via browser testing
+
+**Verification Results:**
+- ✅ Containers rebuilt: Dec 11, 13:57 (fresh images)
+- ✅ Migration status: `002_legacy_tha_tables` (head) - correct
+- ✅ Backend health: Connected and healthy
+- ✅ Frontend: "Alert Analysis" navigation link NOW VISIBLE in sidebar
+- ✅ CreateActionItemModal: Working correctly (opened and tested)
+- ✅ Alert discoveries: All 15 discoveries displaying with filters
+- ✅ Discovery detail panel: All features working (Output/Params buttons, Create Action Item)
+- ✅ Dashboard: Loading correctly with all tabs (Overview, Alert Analysis, Action Queue)
+
+**Features Confirmed Present (from commit 71892d3):**
+- ✅ Alert Analysis navigation link in sidebar (between Upload and Discoveries)
+- ✅ CreateActionItemModal component functional
+- ✅ Updated Layout.tsx with Alert Analysis route
+- ✅ Updated App.tsx with /alert-analysis route
+- ✅ Updated api.ts with ActionItemCreate interface and CRUD functions
+- ✅ Backend cleaned imports in content_analysis.py
+
+**Database State:**
+- ✅ Migration 002 marked as applied (tables exist via init_db.py)
+- ✅ All 13 legacy tables present
+- ✅ Alert dashboard tables functional
+
+**Container Status:**
+```
+tha-backend   → Built Dec 11 13:57 → Running commit 71892d3 ✅
+tha-frontend  → Built Dec 11 13:57 → Running commit 71892d3 ✅
+tha-postgres  → 5 days old → No rebuild needed ✅
+```
+
+**Application URLs:**
+- Frontend: http://localhost:3010 ✅ WORKING
+- Backend: http://localhost:3011 ✅ WORKING
+- API Docs: http://localhost:3011/docs ✅ WORKING
+
+**Assessment Report:**
+- Created: `docs/reports/APPLICATION_STATE_2025-12-11.md`
+- Documents: Container state, missing features, rebuild steps, verification
+
+**Current Status:** All 9 pages functional, containers in sync with GitHub repository, ready for development.
+
+---
 
 ### 2025-12-11 (ARTIFACT STRUCTURE SPECIFICATION)
 

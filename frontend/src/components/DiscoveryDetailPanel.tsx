@@ -56,13 +56,20 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
             <h3>{discovery.alert_name}</h3>
             <span className="discovery-detail-id">{discovery.alert_id}</span>
           </div>
-          {/* Output/Params Buttons - inline with title */}
+          {/* Alert Explanation - on the right side */}
+          {discovery.business_purpose && (
+            <div className="discovery-explanation-box-inline">
+              <span className="explanation-icon">ℹ</span>
+              <span className="explanation-text">{discovery.business_purpose}</span>
+            </div>
+          )}
+          {/* Output/Params Buttons - after explanation */}
           <div className="discovery-header-buttons">
             <JsonDataPopover
               data={discovery.raw_summary_data}
               title="Alert Output Data"
               buttonLabel="Output"
-              buttonIcon="📊"
+              buttonIcon="📄"
             />
             <JsonDataPopover
               data={discovery.parameters}
@@ -83,13 +90,6 @@ const DiscoveryDetailPanel: React.FC<DiscoveryDetailPanelProps> = ({
         {/* Close button hidden in popover and page mode */}
         {mode !== 'popover' && mode !== 'page' && (
           <button className="discovery-close-btn" onClick={onClose}>×</button>
-        )}
-        {/* Alert Explanation - subtle text below title */}
-        {discovery.business_purpose && (
-          <div className="discovery-explanation-box">
-            <span className="explanation-icon">ℹ</span>
-            <span className="explanation-text">{discovery.business_purpose}</span>
-          </div>
         )}
       </div>
 

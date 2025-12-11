@@ -8,6 +8,40 @@ This skill guides creation of distinctive, production-grade frontend interfaces 
 
 The user provides frontend requirements: a component, page, application, or interface to build. They may include context about the purpose, audience, or technical constraints.
 
+## CRITICAL: Screenshot Examination Protocol
+
+**BEFORE making any frontend changes:**
+
+1. **If user attaches screenshots:**
+   - EXAMINE them visually (don't just read the file)
+   - Identify EXACTLY what's wrong visually
+   - Take notes of specific issues (sizes, colors, positions, text rendering)
+   - Compare to what should be there
+
+2. **Use browser devtools to inspect:**
+   - Check computed styles (not just CSS file)
+   - Verify actual rendered dimensions
+   - Check for conflicting CSS rules
+   - Test changes in browser console first
+
+3. **Iteration workflow:**
+   - Docker rebuild is SLOW (2-3 min per iteration)
+   - Consider suggesting local dev server for CSS work
+   - Always verify changes in browser before claiming success
+   - Take screenshot after changes to compare
+
+4. **CSS Debugging Checklist:**
+   - [ ] Examined user's screenshot
+   - [ ] Identified specific visual issues
+   - [ ] Checked computed styles in browser
+   - [ ] Made changes based on actual rendered state
+   - [ ] Verified in browser (not just code)
+   - [ ] Compared result to user's requirements
+
+**NEVER claim "it's fixed" without examining the visual result.**
+
+---
+
 ## Design Thinking
 
 Before coding, understand the context and commit to a BOLD aesthetic direction:
