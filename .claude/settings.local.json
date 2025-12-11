@@ -91,7 +91,20 @@
       "Bash(timeout:*)",
       "Bash(ls:*)",
       "Bash(git checkout:*)",
-      "Bash(git stash:*)"
+      "Bash(git stash:*)",
+      "Bash(grep:*)",
+      "Bash(backend/app/api/alert_dashboard.py )",
+      "Bash(backend/app/schemas/alert_dashboard.py )",
+      "Bash(frontend/src/components/DiscoveryDetailPanel.tsx )",
+      "Bash(frontend/src/components/Layout.css )",
+      "Bash(frontend/src/components/Layout.tsx )",
+      "Bash(frontend/src/pages/AlertDashboard.css )",
+      "Bash(frontend/src/services/api.ts )",
+      "Bash(frontend/src/components/JsonDataPopover.tsx )",
+      "Bash(frontend/src/components/SidebarFilters.tsx )",
+      "Bash(frontend/vite.config.ts )",
+      "Bash(llm_handover.md)",
+      "Bash(git pull:*)"
     ],
     "deny": [],
     "ask": []

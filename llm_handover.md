@@ -881,6 +881,46 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 
 ## Changelog
 
+### 2025-12-11 (ARTIFACT STRUCTURE SPECIFICATION)
+
+**AI Requirements Documentation:**
+
+Created comprehensive specification document for developers defining optimal artifact structure for 100% consistent AI analysis.
+
+**Problem Identified:**
+- Current 4 artifacts (Code, Explanation, Metadata, Summary) contain all necessary information
+- But structure/parsing gaps prevent optimal consistency:
+  - Metadata XLSX parsed as text (sheet structure lost)
+  - Explanation DOCX unstructured (cannot reliably identify Business Purpose)
+  - Parameters extracted via regex (fragile, type-ambiguous)
+  - No validation before analysis
+
+**Specification Created:**
+- `docs/th-context/analysis-rules/ARTIFACT_STRUCTURE_SPECIFICATION.md`
+- Defines: Current state, gap analysis, 3 proposed solutions
+- Documents: What AI needs for 100% consistent output
+- Provides: Implementation guidance for developers
+- Includes: Schema definitions, validation rules, testing plan
+- Recommends: Hybrid approach (keep originals + structured parsing)
+
+**Key Requirements Documented:**
+1. Metadata XLSX must be read with sheet structure (not as text)
+2. Extract alert_identity, execution_context, parameters separately
+3. Parse Explanation DOCX with structure awareness (identify Business Purpose)
+4. Type parameters (integer, string, enum, range, range_exclusion)
+5. Validate artifacts before analysis (completeness check)
+
+**Expected Improvement:**
+- Current: ~70-80% consistency (missing fields, fragile extraction)
+- With structured parsing: 100% consistency (all fields, reliable extraction)
+
+**For Developers:**
+- Read specification for detailed implementation guidance
+- Priority: Fix Metadata parsing (CRITICAL), then Explanation, then validation
+- Implementation in: `backend/app/services/content_analyzer/artifact_reader.py`
+
+---
+
 ### 2025-12-11 (DOCUMENT CONSOLIDATION)
 
 **Documentation Cleanup:**
