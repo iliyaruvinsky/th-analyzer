@@ -496,6 +496,23 @@ Refer to `aws/README.md` for production deployment:
 4. **Test current functionality** - Ensure nothing is broken
 5. **Review recent changes** in git log
 
+### Development Workflow
+**For complete work process instructions, see [`.claude/WORKFLOW.md`](.claude/WORKFLOW.md) (v2.0)**
+
+This workflow guide defines:
+- Which documents to use during each phase (Planning, Development, Debugging, Testing, Deployment)
+- Where to document different types of work
+- Decision trees for documentation placement
+- Common mistakes to avoid
+- Session start/end checklists
+- **INTEGRATED MANDATORY RULES** from `.claude/rules/`:
+  - Anti-Hallucination Protocol (14 rules)
+  - Preserve Working Code (git safety)
+  - LLM Handover Maintenance (documentation)
+  - Quantitative Alert Analysis (template standards)
+
+**Critical:** Read WORKFLOW.md before starting any work. It contains mandatory behavioral rules and verification protocols.
+
 ### When Making Changes
 1. **Update `llm_handover.md`** after verified milestones
 2. **Test thoroughly** before marking as complete
@@ -515,6 +532,36 @@ The `llm_handover.md` must be updated when:
 **Rule:** Do not mark a task complete without updating `llm_handover.md`.
 
 See `.claude/rules/llm-handover-maintenance.md` for detailed update guidelines.
+
+### Documentation Structure Rules (NEW - 2025-12-11)
+
+**CRITICAL:** The project maintains a **6-document core structure**. DO NOT create new root-level markdown files.
+
+**Core Documents (ONLY UPDATE THESE):**
+1. `README.md` - User entry point
+2. `CLAUDE.md` - AI assistant guide (this file)
+3. `llm_handover.md` - Current state, changelog (THE source of truth)
+4. `prompt_read_the_flow.md` - AI reading sequence
+5. `TESTING.md` - Consolidated testing guide
+6. `DEPLOYMENT.md` - Deployment + Docker troubleshooting
+7. `CONTRIBUTING.md` - Contribution guidelines (optional)
+
+**Where to Document Different Things:**
+- **Current state, features, roadmap** → Update `llm_handover.md`
+- **Bug analysis, investigations** → Create GitHub issue OR add inline code comments
+- **Alert analyses** → Create in `docs/analysis/` folder (not root)
+- **Audit reports** → Create in `docs/reports/` folder (not root)
+- **Temporary analysis** → DO NOT create document, put in GitHub issue instead
+- **Testing procedures** → Update `TESTING.md`
+- **Deployment issues** → Update `DEPLOYMENT.md`
+
+**FORBIDDEN:**
+- ❌ Creating new root-level .md files (e.g., ANALYSIS_XYZ.md, INVESTIGATION_ABC.md)
+- ❌ Creating feature inventory docs (update llm_handover.md instead)
+- ❌ Creating roadmap docs (update llm_handover.md instead)
+- ❌ Duplicating content across multiple documents
+
+**Rationale:** Document sprawl (21+ files) caused AI agents to read outdated/conflicting info. The 6-document structure ensures single source of truth.
 
 ### Testing Checklist
 Before considering work complete, verify:

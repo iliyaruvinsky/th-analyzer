@@ -27,39 +27,52 @@ treasure-hunt-analyzer/
 ## Quick Start
 
 ### Prerequisites
-- Docker and Docker Compose
-- Python 3.11+ (for local development)
-- Node.js 18+ (for local frontend development)
+- Docker Desktop installed and running
+- Git (to clone the repository)
 
-### Using Docker Compose
+### 5-Minute Setup
 
 ```bash
-# Start all services
+# 1. Start all services
 docker compose up -d
 
-# View logs
-docker compose logs -f
+# 2. Initialize database
+docker compose exec backend python -m app.utils.init_db
 
-# Stop services
+# 3. Verify services
+curl http://localhost:3011/health
+```
+
+### Access the Application
+
+- **Frontend**: http://localhost:3010
+- **Backend API**: http://localhost:3011
+- **API Documentation**: http://localhost:3011/docs
+
+### Test with Sample File
+
+**Using Swagger UI:**
+1. Open http://localhost:3011/docs
+2. Find `POST /api/v1/ingestion/upload`
+3. Upload a Skywind alert file
+4. Run analysis with the returned `data_source_id`
+
+**Using curl:**
+```bash
+# Upload file
+curl -X POST "http://localhost:3011/api/v1/ingestion/upload" \
+  -F "file=@path/to/alert.xlsx"
+
+# Run analysis (use data_source_id from upload response)
+curl -X POST "http://localhost:3011/api/v1/analysis/run" \
+  -H "Content-Type: application/json" \
+  -d '{"data_source_id": 1}'
+```
+
+### Stopping Services
+
+```bash
 docker compose down
-```
-
-### Local Development
-
-#### Backend
-```bash
-cd backend
-pip install -r requirements.txt
-cp .env.example .env
-# Edit .env with your configuration
-uvicorn app.main:app --reload
-```
-
-#### Frontend
-```bash
-cd frontend
-npm install
-npm run dev
 ```
 
 ## API Documentation
@@ -72,12 +85,10 @@ Once the backend is running, visit:
 
 ## Documentation
 
-- [Quick Start Guide](QUICK_START.md)
-- [Quick Test Guide](QUICK_TEST.md) - **Start here for testing!**
-- [Testing Checklist](TESTING_CHECKLIST.md) - Comprehensive testing
-- [Testing Guide](TESTING_GUIDE.md) - Detailed testing procedures
-- [Next Steps](NEXT_STEPS.md) - Roadmap and enhancements
-- [Deployment Guide](DEPLOYMENT.md)
+- [Testing Guide](TESTING.md) - **Start here for testing!** (Quick test + comprehensive checklist)
+- [Deployment Guide](DEPLOYMENT.md) - Production deployment and Docker troubleshooting
+- [AI Assistant Guide](CLAUDE.md) - For AI agents working on the project
+- [Development Handover](llm_handover.md) - Current project state and changelog
 - [Docker Setup Guide](DOCKER_SETUP_GUIDE.md) - Docker configuration
 - [Docker Troubleshooting](DOCKER_TROUBLESHOOTING.md) - Container issues
 

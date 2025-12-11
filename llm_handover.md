@@ -710,33 +710,128 @@ Risk = f(Normalized_Count, ...)
 
 ---
 
-## Next Steps (Prioritized)
+## Current Feature Inventory & Status
 
-### Immediate (Current Session)
+**Last Updated:** 2025-12-11  
+**Overall Status:** ✅ 9/9 Pages Functional (100%)
 
-1. **✅ Complete AI interpretation of "Negative Profit Deal" alert** - DONE
-2. **⏳ Receive user's interpretation** for comparison
-3. **Compare AI vs User interpretation** - identify gaps
-4. **Analyze remaining 2 alerts** (user mentioned 3 total)
+### Quick Stats
 
-### After Comparison Exercise
+| Metric | Value |
+|--------|-------|
+| Total Pages | 9 |
+| Working Pages | 9 (100%) |
+| API Endpoints | 15+ |
+| Shared Components | 12 |
+| Database Models | 23 models with migrations |
 
-5. **Implement Content Analyzer improvements** based on identified gaps
-6. **Implement updated severity base scores** (90/75/60/50)
-7. **Add BACKDAYS parameter extraction** from Metadata_* file
-8. **Normalize count by BACKDAYS** for meaningful risk scoring
+### Navigation Map
 
-### Short-term
+| Sidebar Item | Route | Page File | Status |
+|--------------|-------|-----------|--------|
+| Dashboard | `/` | `Dashboard.tsx` | ✅ Working |
+| Upload | `/upload` | `Upload.tsx` | ✅ Working |
+| Alert Analysis | `/alert-analysis` | `AlertAnalysis.tsx` | ✅ Working |
+| Discoveries | `/alert-discoveries/:id?` | `AlertDiscoveries.tsx` | ✅ Working |
+| Findings | `/findings` | `Findings.tsx` | ✅ Working |
+| Finding Detail | `/findings/:id` | `FindingDetail.tsx` | ✅ Working |
+| Reports | `/reports` | `Reports.tsx` | ✅ Working |
+| Maintenance | `/maintenance` | `Maintenance.tsx` | ✅ Working |
+| Logs | `/logs` | `Logs.tsx` | ✅ Working |
 
-9. **Create rules database structure** for storing scoring logic
-10. **Define scoring rules for each Focus Area** (5 total)
-11. **Improve qualitative analysis** (severity reasoning, what_happened)
+### Shared Components
 
-### Medium-term
+| Component | Used In | Purpose |
+|-----------|---------|---------|
+| `DashboardFilters` | Dashboard, Findings, Reports | Filter form (Focus Area, Severity, Status, Dates) |
+| `FindingsTable` | Dashboard, Findings | Sortable/clickable findings table |
+| `DashboardTabs` | Dashboard | Tab switcher (Overview/Alerts/Actions) |
+| `DiscoveryDetailPanel` | Dashboard, AlertDiscoveries | Detailed discovery view |
+| `ActionItemModal` | Dashboard | Modal for viewing action items |
+| `CreateActionItemModal` | AlertDiscoveries | Modal for creating action items |
+| `AlertSummary` | AlertDiscoveries | KPI summary header |
+| `SidebarFilters` | Layout | Sidebar filter controls |
+| `JsonDataPopover` | DiscoveryDetailPanel | JSON data display popover |
 
-12. **Enable LLM mode** for better classification (requires API key)
-13. **Add SoDA report support** (different artifact structure)
-14. **Create feedback loop** for iterative improvement
+---
+
+## Roadmap & Next Steps
+
+### ✅ Completed Core Features
+
+- ✅ Backend API with file ingestion and analysis
+- ✅ Frontend dashboard with charts and tables
+- ✅ Report generation (PDF/Excel)
+- ✅ Docker deployment configurations
+- ✅ AWS deployment templates
+- ✅ Content Analysis Pipeline for 4C alerts
+- ✅ Alert Dashboard integration
+- ✅ Discovery detail panel with Output/Params popovers
+- ✅ Comprehensive audit (31 issues found and fixed)
+
+### 🔄 Immediate Priorities (Current Focus)
+
+1. **Fix `_fallback_analysis()` omitted procedures** - Use `artifacts.summary_data` instead of text extraction
+2. **Implement updated severity base scores** (90/75/60/50)
+3. **Add BACKDAYS parameter extraction** from Metadata_* file
+4. **Normalize count by BACKDAYS** for meaningful risk scoring
+
+### Short-term (Next 2-4 Weeks)
+
+**Testing & Validation (Priority: HIGH)**
+- [ ] Test file upload with real Skywind 4C alert files
+- [ ] Test file upload with real SoDA report files
+- [ ] Verify analysis creates findings correctly
+- [ ] Test frontend dashboard displays data properly
+- [ ] Validate chart rendering with real data
+- [ ] Test report export functionality
+
+**Enhancement (Priority: MEDIUM)**
+- [ ] Create rules database structure for storing scoring logic
+- [ ] Define scoring rules for each Focus Area (6 total)
+- [ ] Improve qualitative analysis (severity reasoning, what_happened)
+- [ ] Add loading states and error handling in frontend
+- [ ] Improve responsive design for mobile
+
+### Medium-term (1-3 Months)
+
+**Advanced Features:**
+- [ ] Enable LLM mode for better classification (requires API key)
+- [ ] Add SoDA report support (different artifact structure)
+- [ ] Create feedback loop for iterative improvement
+- [ ] Add pagination for large findings tables
+- [ ] Implement advanced filtering options
+- [ ] Add rate limiting for API endpoints
+
+**ML Model Development:**
+- [ ] Collect historical data for training
+- [ ] Train initial money loss prediction model
+- [ ] Validate model accuracy
+- [ ] Implement model versioning
+
+### Long-term (3-6 Months)
+
+**Production Readiness (Priority: HIGH)**
+- [ ] Add authentication (JWT/OAuth)
+- [ ] Implement role-based access control
+- [ ] Add input validation and sanitization
+- [ ] Set up HTTPS/SSL certificates
+- [ ] Configure proper CORS for production
+- [ ] Set up application logging (ELK/CloudWatch)
+- [ ] Implement metrics collection (Prometheus)
+- [ ] Set up database backups
+- [ ] Add database indexes for performance
+- [ ] Set up read replicas if needed
+
+**Advanced Features:**
+- [ ] Real-time notifications (WebSockets)
+- [ ] Advanced analytics and insights
+- [ ] Custom report templates
+- [ ] Email report delivery
+- [ ] Integration with external systems
+- [ ] Mobile app (React Native)
+- [ ] Multi-tenant support
+- [ ] Advanced search capabilities
 
 ---
 
@@ -785,6 +880,82 @@ git pull origin claude/content-analyzer-alerts-01BpHADP1KyVMhdC8e6K2bsf
 ---
 
 ## Changelog
+
+### 2025-12-11 (DOCUMENT CONSOLIDATION)
+
+**Documentation Cleanup:**
+
+Major cleanup to reduce document sprawl and improve AI agent focus.
+
+**Problem:** 21+ markdown files at root level with significant overlap causing:
+- AI agents reading outdated/conflicting instructions
+- Maintenance burden (updating same info in 5+ places)
+- User confusion about authoritative sources
+
+**Solution:** Consolidated from 21 documents to **6 core documents**.
+
+**Core Structure (KEEP):**
+1. `README.md` - User entry point (added Quick Start section)
+2. `CLAUDE.md` - AI assistant guide (added documentation rules)
+3. `llm_handover.md` - Current state, changelog (added Feature Inventory & Roadmap sections)
+4. `prompt_read_the_flow.md` - AI reading sequence
+5. `TESTING.md` - **NEW** consolidated testing guide (4 docs merged)
+6. `DEPLOYMENT.md` - Deployment guide (added Docker setup & troubleshooting)
+7. `CONTRIBUTING.md` - Optional contribution guidelines
+
+**Files Consolidated:**
+
+| Category | Files Merged | Merged Into |
+|----------|--------------|-------------|
+| Testing (4 files) | QUICK_TEST, TESTING_GUIDE, TESTING_CHECKLIST, TESTING_WITHOUT_DOCKER | → TESTING.md |
+| Docker (3 files) | DOCKER_SETUP_GUIDE, DOCKER_TROUBLESHOOTING, REBUILD_FRONTEND | → DEPLOYMENT.md |
+| Features/Roadmap (2 files) | FEATURES.md, NEXT_STEPS.md | → llm_handover.md |
+| Quick Start (1 file) | QUICK_START.md | → README.md |
+| Redundant (2 files) | llm_prompt.md, SETUP_NEW_COMPUTER.md | → Moved to JUNK/ |
+
+**Files Moved:**
+- All 14 redundant files → `JUNK/` (safe recovery, can delete after review)
+- `AUDIT_REPORT_2025-12-10.md` → `docs/reports/`
+- `DOCUMENT_STRUCTURE_ANALYSIS.md` → `docs/reports/`
+
+**New Documentation Rules:**
+- ❌ DO NOT create new root-level .md files
+- ✅ Update llm_handover.md for features/roadmap
+- ✅ Create GitHub issues for investigations
+- ✅ Use docs/analysis/ for alert analyses
+- ✅ Use docs/reports/ for audit/analysis reports
+
+**Benefits:**
+- Single source of truth (llm_handover.md)
+- No duplicate/conflicting info
+- Faster AI onboarding (read 6 instead of 21 files)
+- Easier maintenance (update 1-2 files instead of 5+)
+
+**Files Created:**
+- `TESTING.md` - Consolidated testing guide
+- `JUNK/README.md` - Explains archived files
+
+**Files Modified:**
+- `README.md` - Added Quick Start section
+- `DEPLOYMENT.md` - Added Docker setup, troubleshooting, frontend rebuild
+- `llm_handover.md` - Added Feature Inventory and Roadmap sections
+- `CLAUDE.md` - Added documentation structure rules, workflow reference
+
+**Workflow Documentation Created:**
+- `.claude/WORKFLOW.md` - **NEW** comprehensive work process instruction for AI agents (v2.0)
+  - Defines complete workflow for all development phases
+  - Shows which documents to use when (Planning, Development, Debugging, Testing, Deployment)
+  - Includes decision trees, checklists, and common mistakes to avoid
+  - **INTEGRATED ALL MANDATORY RULES** from `.claude/rules/`:
+    - Anti-Hallucination Protocol (14 rules) - Verify before claiming, no assumptions as facts
+    - Preserve Working Code Rules - Git safety protocols
+    - LLM Handover Maintenance - Documentation requirements
+    - Quantitative Alert Analysis - Template adherence standards
+  - Added rule checkpoints to each workflow phase
+  - Added verification checklists for session start/end
+  - Major improvement for AI agent consistency, accuracy, and safety
+
+---
 
 ### 2025-12-10 (COMPREHENSIVE AUDIT + FIXES)
 

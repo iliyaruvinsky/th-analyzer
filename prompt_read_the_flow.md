@@ -334,14 +334,21 @@ Before starting any analysis work, verify:
 
 These are supporting documents for specific scenarios:
 
+### AI Agent Workflow (NEW - 2025-12-11)
+- **`.claude/WORKFLOW.md`** - **Complete work process instruction for AI agents**
+  - Defines which documents to use during each development phase
+  - Shows workflow for Planning, Development, Debugging, Testing, Deployment
+  - Includes decision trees, checklists, and best practices
+  - **Read this to understand HOW to use the core 6 documents**
+
 ### Product Documentation
 - `docs/product-docs/Skywind SAP Protection & Anti-Fraud Documentation.md`
 - `docs/product-docs/Skywind SoDA.md`
 
 ### Technical Setup
-- `DOCKER_SETUP_GUIDE.md`
-- `QUICK_START.md`
-- `README.md`
+- `TESTING.md` - Consolidated testing guide
+- `DEPLOYMENT.md` - Deployment and Docker troubleshooting
+- `README.md` - Quick start and overview
 
 ### Field Mappings
 - `docs/th-context/analysis-rules/field-mappings/sd-fields.yaml`

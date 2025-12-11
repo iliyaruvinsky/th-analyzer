@@ -136,44 +136,219 @@ Expected response:
 docker compose exec backend python -c "from app.core.database import engine; engine.connect(); print('Database connected')"
 ```
 
+## Docker Setup and Configuration
+
+### Docker Architecture
+
+The optimized Docker setup includes:
+- ✅ Health checks for all services
+- ✅ Auto-restart on failure (`unless-stopped`)
+- ✅ Named volumes for data persistence
+- ✅ Isolated network for security
+- ✅ Separate dev and production configs
+
+### Environment Variables
+
+Create `.env` file in project root (optional - defaults work):
+
+```env
+# Database
+POSTGRES_USER=tha_user
+POSTGRES_PASSWORD=tha_password
+POSTGRES_DB=treasure_hunt_analyzer
+
+# Backend
+SECRET_KEY=your-secret-key-here
+DEBUG=True
+
+# Frontend
+VITE_API_BASE_URL=http://localhost:3011/api/v1
+
+# Optional: LLM for money loss calculation
+OPENAI_API_KEY=your-key-here
+ANTHROPIC_API_KEY=your-key-here
+```
+
+### Rebuilding Containers
+
+After code changes:
+
+```bash
+# Rebuild backend
+docker compose build backend && docker compose up -d backend
+
+# Rebuild frontend
+docker compose build frontend && docker compose up -d frontend
+
+# Rebuild all (no cache)
+docker compose build --no-cache
+docker compose up -d
+```
+
+### Frontend Rebuild
+
+After CSS/TSX changes:
+
+**In Docker:**
+```bash
+docker compose build frontend && docker compose up -d frontend
+```
+
+**Local dev server:**
+```bash
+cd frontend
+npm run dev  # Restart if running
+```
+
+**Clear browser cache:**
+- Hard refresh: `Ctrl+Shift+R` or `Ctrl+F5`
+- Clear cache: `Ctrl+Shift+Delete`
+
+---
+
 ## Troubleshooting
+
+### Docker Issues
+
+#### Docker Command Not Recognized
+
+**Quick Fix:**
+1. Check Docker Desktop is running (system tray icon)
+2. **Close and reopen terminal** (PATH updated when Docker starts)
+3. Try `docker --version` in new terminal
+4. If still failing, restart computer
+
+**Verification:**
+```bash
+docker --version
+docker compose version
+```
+
+**Still Not Working:**
+- Reinstall Docker Desktop
+- Enable WSL 2 and Virtual Machine Platform (Windows Features)
+- Enable virtualization in BIOS
+- Check Windows version (Windows 10/11 64-bit Pro/Enterprise/Education)
+
+#### Port Already in Use
+
+```bash
+# Stop all containers
+docker compose down
+
+# Or change ports in docker-compose.yml
+# Frontend: 3010 → 3020
+# Backend: 3011 → 3021
+# PostgreSQL: 5433 → 5444
+```
+
+#### Containers Won't Start
+
+```bash
+# View logs
+docker compose logs backend
+docker compose logs frontend
+docker compose logs postgres
+
+# Full rebuild
+docker compose down -v  # WARNING: Deletes volumes
+docker compose build --no-cache
+docker compose up -d
+docker compose exec backend python -m app.utils.init_db
+```
+
+#### Health Check Fails
+
+```bash
+# Wait longer (services need time to start)
+sleep 30
+
+# Check specific service logs
+docker compose logs -f backend
+
+# Restart unhealthy service
+docker compose restart backend
+```
 
 ### Database Connection Issues
 
-1. Verify PostgreSQL is running:
+1. **Verify PostgreSQL is running:**
 ```bash
 docker compose ps postgres
 ```
 
-2. Check connection string in `.env`
+2. **Check connection string in `.env`:**
+   - Host should be `postgres` (not `localhost`) in Docker
+   - Port is `5432` internally (5433 is external)
 
-3. Verify network connectivity:
+3. **Re-initialize database:**
 ```bash
-docker compose exec backend ping postgres
+docker compose exec backend python -m app.utils.init_db
+```
+
+4. **Check database logs:**
+```bash
+docker compose logs postgres
 ```
 
 ### Frontend Not Loading
 
-1. Check backend is running:
+1. **Check backend is running:**
 ```bash
 curl http://localhost:3011/health
 ```
 
-2. Verify CORS settings in backend
-3. Check browser console for errors
-4. Verify API base URL in frontend `.env`
+2. **Check browser console** (F12) for errors
+
+3. **Verify CORS settings:** Backend `main.py` should allow `http://localhost:3010`
+
+4. **Clear browser cache:**
+   - Hard refresh: `Ctrl+Shift+R`
+   - Or: `Ctrl+Shift+Delete` → Clear cached images and files
+
+5. **Rebuild frontend:**
+```bash
+docker compose build frontend && docker compose up -d frontend
+```
 
 ### File Upload Issues
 
-1. Check storage directory permissions:
+1. **Check storage directory permissions:**
 ```bash
-ls -la storage/
+docker compose exec backend ls -la /app/storage
 ```
 
-2. Verify file size limits in backend
-3. Check disk space:
+2. **Verify file size limits** in backend configuration
+
+3. **Check disk space:**
 ```bash
-df -h
+docker compose exec backend df -h
+```
+
+4. **View upload errors:**
+```bash
+docker compose logs -f backend | grep upload
+```
+
+### Performance Issues
+
+**Slow uploads:**
+- Check file size (very large files take time)
+- Verify disk space: `docker system df`
+- Clean up unused data: `docker system prune`
+
+**Slow analysis:**
+- Normal for first run (database warming up)
+- Check CPU: `docker stats`
+- Check memory: `docker stats`
+
+**High memory usage:**
+```bash
+# Check container stats
+docker stats
+
+# Restart containers
+docker compose restart
 ```
 
 ## Scaling
