@@ -21,7 +21,7 @@ treasure-hunt-analyzer/
 ├── scripts/          # Utility scripts
 ├── plugins/          # AI assistant plugins
 ├── aws/              # AWS deployment configs
-└── docker-compose.yml
+└── docker compose.yml
 ```
 
 ## Quick Start
@@ -35,13 +35,13 @@ treasure-hunt-analyzer/
 
 ```bash
 # Start all services
-docker-compose up -d
+docker compose up -d
 
 # View logs
-docker-compose logs -f
+docker compose logs -f
 
 # Stop services
-docker-compose down
+docker compose down
 ```
 
 ### Local Development

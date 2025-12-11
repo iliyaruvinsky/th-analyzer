@@ -14,10 +14,10 @@ Fastest way to verify the system works end-to-end.
 
 ```bash
 cd treasure-hunt-analyzer
-docker-compose up -d
+docker compose up -d
 ```
 
-**Note:** If you get `'docker-compose' is not recognized`, try:
+**Note:** If you get `'docker compose' is not recognized`, try:
 - `docker compose up -d` (newer Docker versions use space instead of hyphen)
 - Or install Docker Desktop: https://www.docker.com/products/docker-desktop/
 
@@ -28,7 +28,7 @@ See [TESTING_WITHOUT_DOCKER.md](TESTING_WITHOUT_DOCKER.md) for manual setup inst
 Wait for containers to start (about 30 seconds), then:
 
 ```bash
-docker-compose exec backend python -m app.utils.init_db
+docker compose exec backend python -m app.utils.init_db
 ```
 
 **If using `docker compose` (without hyphen):**
@@ -131,39 +131,39 @@ If you can't install Docker, you can test manually:
 
 1. **Backend not responding:**
    ```bash
-   docker-compose logs backend
+   docker compose logs backend
    ```
 
 2. **Frontend not loading:**
    ```bash
-   docker-compose logs frontend
+   docker compose logs frontend
    ```
 
 3. **Database errors:**
    ```bash
-   docker-compose logs postgres
-   docker-compose exec backend python -m app.utils.init_db
+   docker compose logs postgres
+   docker compose exec backend python -m app.utils.init_db
    ```
 
 4. **No findings created:**
    - Check if file was parsed: `curl http://localhost:3011/api/v1/ingestion/data-sources`
    - Check analysis run status: `curl http://localhost:3011/api/v1/analysis/runs`
-   - Check backend logs: `docker-compose logs backend`
+   - Check backend logs: `docker compose logs backend`
 
 ## Quick Verification Commands
 
 ```bash
 # Check all services are running
-docker-compose ps
+docker compose ps
 
 # Check backend health
 curl http://localhost:3011/health
 
 # Check database connection
-docker-compose exec backend python -c "from app.core.database import engine; engine.connect(); print('OK')"
+docker compose exec backend python -c "from app.core.database import engine; engine.connect(); print('OK')"
 
 # View recent logs
-docker-compose logs --tail=50
+docker compose logs --tail=50
 ```
 
 ## Next Steps After Quick Test

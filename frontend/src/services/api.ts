@@ -320,6 +320,18 @@ export interface ActionItem {
   resolved_at?: string;
   resolved_by?: string;
   created_at: string;
+  finding_id?: number;
+}
+
+export interface ActionItemCreate {
+  alert_analysis_id: number;
+  action_type: string;
+  priority?: number;
+  title: string;
+  description?: string;
+  status?: string;
+  assigned_to?: string;
+  due_date?: string;
 }
 
 export interface AlertAnalysisSummary {
@@ -401,6 +413,19 @@ export const getExceptionIndicators = async (module?: string): Promise<Exception
   return response.data;
 };
 
+export const createActionItem = async (actionItem: ActionItemCreate): Promise<ActionItem> => {
+  const response = await apiClient.post('/alert-dashboard/action-items', actionItem);
+  return response.data;
+};
+
+export const updateActionItem = async (
+  itemId: number,
+  update: Partial<ActionItem>
+): Promise<ActionItem> => {
+  const response = await apiClient.patch(`/alert-dashboard/action-items/${itemId}`, update);
+  return response.data;
+};
+
 // Maintain backwards compatibility for existing imports
 export const api = {
     getDataSources,
@@ -428,5 +453,8 @@ export const api = {
     getAlertAnalyses,
     getClients,
     getExceptionIndicators,
+    // Action Items
+    createActionItem,
+    updateActionItem,
 };
 

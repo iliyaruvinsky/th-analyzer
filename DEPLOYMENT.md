@@ -6,12 +6,12 @@
 
 1. **Start all services:**
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
 
 2. **Initialize database:**
 ```bash
-docker-compose exec backend python -m app.utils.init_db
+docker compose exec backend python -m app.utils.init_db
 ```
 
 3. **Access the application:**
@@ -21,12 +21,12 @@ docker-compose exec backend python -m app.utils.init_db
 
 4. **View logs:**
 ```bash
-docker-compose logs -f
+docker compose logs -f
 ```
 
 5. **Stop services:**
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ### Manual Local Setup
@@ -76,7 +76,7 @@ docker build -t tha-backend:latest ./backend
 docker build -t tha-frontend:latest ./frontend
 
 # Run with production settings
-docker-compose -f docker-compose.prod.yml up -d
+docker compose -f docker compose.prod.yml up -d
 ```
 
 ### AWS Deployment
@@ -133,7 +133,7 @@ Expected response:
 ### Database Connection Check
 
 ```bash
-docker-compose exec backend python -c "from app.core.database import engine; engine.connect(); print('Database connected')"
+docker compose exec backend python -c "from app.core.database import engine; engine.connect(); print('Database connected')"
 ```
 
 ## Troubleshooting
@@ -142,14 +142,14 @@ docker-compose exec backend python -c "from app.core.database import engine; eng
 
 1. Verify PostgreSQL is running:
 ```bash
-docker-compose ps postgres
+docker compose ps postgres
 ```
 
 2. Check connection string in `.env`
 
 3. Verify network connectivity:
 ```bash
-docker-compose exec backend ping postgres
+docker compose exec backend ping postgres
 ```
 
 ### Frontend Not Loading
@@ -200,10 +200,10 @@ aws ecs update-service \
 
 ```bash
 # Manual backup
-docker-compose exec postgres pg_dump -U tha_user treasure_hunt_analyzer > backup.sql
+docker compose exec postgres pg_dump -U tha_user treasure_hunt_analyzer > backup.sql
 
 # Restore
-docker-compose exec -T postgres psql -U tha_user treasure_hunt_analyzer < backup.sql
+docker compose exec -T postgres psql -U tha_user treasure_hunt_analyzer < backup.sql
 ```
 
 ### File Storage Backup

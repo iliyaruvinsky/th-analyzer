@@ -103,6 +103,7 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
   const navItems = [
     { path: '/', label: 'Dashboard', icon: '◆' },
     { path: '/upload', label: 'Upload', icon: '↑' },
+    { path: '/alert-analysis', label: 'Alert Analysis', icon: '⚡' },
   ]
 
   const navItemsAfterDiscoveries = [

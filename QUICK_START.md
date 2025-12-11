@@ -5,12 +5,12 @@
 ### 1. Start the system
 ```bash
 cd treasure-hunt-analyzer
-docker-compose up -d
+docker compose up -d
 ```
 
 ### 2. Initialize database
 ```bash
-docker-compose exec backend python -m app.utils.init_db
+docker compose exec backend python -m app.utils.init_db
 ```
 
 ### 3. Test with a sample file
@@ -57,9 +57,9 @@ After running analysis:
 **Port already in use?**
 ```bash
 # Stop existing containers
-docker-compose down
+docker compose down
 
-# Or change ports in docker-compose.yml
+# Or change ports in docker compose.yml
 ```
 
 **Database connection error?**
@@ -69,5 +69,5 @@ docker-compose down
 **File upload fails?**
 - Check file path is correct
 - Verify file format is supported (XLSX, PDF, CSV, DOCX)
-- Check backend logs: `docker-compose logs backend`
+- Check backend logs: `docker compose logs backend`
 

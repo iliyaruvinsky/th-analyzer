@@ -12,22 +12,22 @@ Use this checklist to systematically test the Treasure Hunt Analyzer system.
 ## 1. System Startup Testing
 
 ### Docker Compose
-- [ ] Run `docker-compose up -d`
+- [ ] Run `docker compose up -d`
 - [ ] Verify all containers start successfully
   ```bash
-  docker-compose ps
+  docker compose ps
   ```
 - [ ] Check container logs for errors
   ```bash
-  docker-compose logs backend
-  docker-compose logs frontend
-  docker-compose logs postgres
+  docker compose logs backend
+  docker compose logs frontend
+  docker compose logs postgres
   ```
 
 ### Database Initialization
 - [ ] Run database initialization
   ```bash
-  docker-compose exec backend python -m app.utils.init_db
+  docker compose exec backend python -m app.utils.init_db
   ```
 - [ ] Verify focus areas are created (should see 6)
 - [ ] Verify issue types are created

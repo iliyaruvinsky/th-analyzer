@@ -11,13 +11,13 @@ I've optimized the Docker architecture. Here's what changed:
 3. **Restart Policies** - Auto-restart on failure (`unless-stopped`)
 4. **Named Volumes** - Better data persistence
 5. **Docker Networks** - Isolated network for services
-6. **Separate Configs** - Dev and production docker-compose files
+6. **Separate Configs** - Dev and production docker compose files
 7. **Security** - Added curl for health checks, better defaults
 
 ### Files Created/Updated
 
-- ✅ `docker-compose.yml` - **Optimized for development**
-- ✅ `docker-compose.prod.yml` - Production configuration
+- ✅ `docker compose.yml` - **Optimized for development**
+- ✅ `docker compose.prod.yml` - Production configuration
 - ✅ `backend/Dockerfile` - Optimized with health checks
 - ✅ `frontend/Dockerfile.dev` - Development Dockerfile
 - ✅ `.env.example` - Environment variable template
@@ -32,17 +32,17 @@ cd path\to\treasure-hunt-analyzer
 
 ### Step 2: Start Services
 ```cmd
-docker-compose up -d
+docker compose up -d
 ```
 
-**Note:** If you get `docker-compose` not found, try:
+**Note:** If you get `docker compose` not found, try:
 ```cmd
 docker compose up -d
 ```
 
 ### Step 3: Initialize Database
 ```cmd
-docker-compose exec backend python -m app.utils.init_db
+docker compose exec backend python -m app.utils.init_db
 ```
 
 Or with newer Docker:
@@ -112,7 +112,7 @@ OPENAI_API_KEY=your-key-here
 ✅ **Reliable** - Auto-restart, proper dependencies
 ✅ **Maintainable** - Clear separation, good defaults
 
-**Recommendation:** Use the optimized `docker-compose.yml` - it's the best balance of development ease and production readiness.
+**Recommendation:** Use the optimized `docker compose.yml` - it's the best balance of development ease and production readiness.
 
 ## 🐛 Troubleshooting
 
@@ -121,21 +121,21 @@ OPENAI_API_KEY=your-key-here
 - Restart computer after installation
 
 **Port already in use:**
-- Change ports in `.env` file or docker-compose.yml
+- Change ports in `.env` file or docker compose.yml
 - Or stop conflicting services
 
 **Health check fails:**
 - Wait a bit longer (services need time to start)
-- Check logs: `docker-compose logs backend`
+- Check logs: `docker compose logs backend`
 
 **Database connection error:**
-- Verify PostgreSQL container is running: `docker-compose ps`
-- Check database initialized: `docker-compose exec backend python -m app.utils.init_db`
+- Verify PostgreSQL container is running: `docker compose ps`
+- Check database initialized: `docker compose exec backend python -m app.utils.init_db`
 
 ## 📚 Next Steps
 
 1. Install Docker Desktop
-2. Start services: `docker-compose up -d`
+2. Start services: `docker compose up -d`
 3. Initialize database
 4. Test the system (see QUICK_TEST.md)
 

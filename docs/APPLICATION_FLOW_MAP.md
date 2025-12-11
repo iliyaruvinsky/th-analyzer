@@ -602,8 +602,8 @@ CONTEXT                  → docs/th-context/
 ├─────────────────────────────────────────────────────────────────────────┤
 │                                                                          │
 │ Docker:                                                                  │
-│   • docker-compose.yml              [Development Setup]                  │
-│   • docker-compose.prod.yml         [Production Setup]                   │
+│   • docker compose.yml              [Development Setup]                  │
+│   • docker compose.prod.yml         [Production Setup]                   │
 │   • backend/Dockerfile              [Backend Container]                  │
 │   • frontend/Dockerfile             [Frontend Container]                 │
 │                                                                          │
@@ -668,20 +668,20 @@ CONTEXT                  → docs/th-context/
 
 ```bash
 # Start Development Environment
-docker-compose up -d
+docker compose up -d
 
 # Initialize Database
-docker-compose exec backend python -m app.utils.init_db
+docker compose exec backend python -m app.utils.init_db
 
 # View Logs
-docker-compose logs -f backend
-docker-compose logs -f frontend
+docker compose logs -f backend
+docker compose logs -f frontend
 
 # Stop Services
-docker-compose down
+docker compose down
 
 # Rebuild After Code Changes
-docker-compose down && docker-compose up -d --build
+docker compose down && docker compose up -d --build
 
 # Access Points
 Frontend:     http://localhost:3010

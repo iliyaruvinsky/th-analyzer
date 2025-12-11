@@ -18,8 +18,8 @@ from datetime import datetime
 
 from app.core.database import get_db
 from app.core.config import settings
-from app.services.content_analyzer import ContentAnalyzer, create_content_analyzer
-from app.services.content_analyzer.artifact_reader import ArtifactReader, AlertArtifacts
+from app.services.content_analyzer import ContentAnalyzer
+from app.services.content_analyzer.artifact_reader import ArtifactReader
 from app.services.content_analyzer.report_generator import ReportGenerator
 from app.models.finding import Finding
 from app.models.focus_area import FocusArea
@@ -377,8 +377,6 @@ async def analyze_and_save(
             # Continue without markdown - don't fail the whole request
 
         # Create the Finding with new report storage fields
-        from datetime import datetime
-
         finding = Finding(
             data_source_id=data_source.id,
             focus_area_id=focus_area.id,

@@ -38,7 +38,7 @@ LLM_PROVIDER=openai  # or anthropic
 ### Step 3: Start services with Docker Compose
 ```bash
 cd ..
-docker-compose up -d
+docker compose up -d
 ```
 
 This will start:
@@ -48,7 +48,7 @@ This will start:
 
 ### Step 4: Initialize database
 ```bash
-docker-compose exec backend python -m app.utils.init_db
+docker compose exec backend python -m app.utils.init_db
 ```
 
 ### Step 5: Access the application

@@ -1,15 +1,16 @@
 import React, { useState, useEffect } from 'react';
 import { useParams, useNavigate } from 'react-router-dom';
-import { useQuery } from '@tanstack/react-query';
+import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCriticalDiscoveries, CriticalDiscoveryDrilldown } from '../services/api';
 import AlertSummary from '../components/AlertSummary';
 import DiscoveryDetailPanel from '../components/DiscoveryDetailPanel';
-import ActionItemModal from '../components/ActionItemModal';
+import CreateActionItemModal from '../components/CreateActionItemModal';
 import '../pages/AlertDashboard.css';
 
 const AlertDiscoveries: React.FC = () => {
   const { id } = useParams<{ id: string }>();
   const navigate = useNavigate();
+  const queryClient = useQueryClient();
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [selectedForAction, setSelectedForAction] = useState<CriticalDiscoveryDrilldown | null>(null);
 
@@ -101,9 +102,9 @@ const AlertDiscoveries: React.FC = () => {
         )}
       </div>
 
-      {/* Action Item Modal */}
+      {/* Create Action Item Modal */}
       {actionModalOpen && selectedForAction && (
-        <ActionItemModal
+        <CreateActionItemModal
           discovery={selectedForAction}
           onClose={() => {
             setActionModalOpen(false);
@@ -112,6 +113,8 @@ const AlertDiscoveries: React.FC = () => {
           onSuccess={() => {
             setActionModalOpen(false);
             setSelectedForAction(null);
+            // Invalidate action queue to refresh
+            queryClient.invalidateQueries({ queryKey: ['action-queue'] });
           }}
         />
       )}

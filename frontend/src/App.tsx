@@ -8,6 +8,7 @@ import Reports from './pages/Reports'
 import Maintenance from './pages/Maintenance'
 import Logs from './pages/Logs'
 import AlertDiscoveries from './pages/AlertDiscoveries'
+import AlertAnalysis from './pages/AlertAnalysis'
 import Layout from './components/Layout'
 
 // Create a client
@@ -28,6 +29,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Dashboard />} />
             <Route path="/upload" element={<Upload />} />
+            <Route path="/alert-analysis" element={<AlertAnalysis />} />
             <Route path="/alert-discoveries" element={<AlertDiscoveries />} />
             <Route path="/alert-discoveries/:id" element={<AlertDiscoveries />} />
             <Route path="/findings" element={<Findings />} />

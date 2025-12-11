@@ -24,6 +24,31 @@ After successful development:
 
 This rule exists because working code was destroyed on 2024-12-09 by carelessly running `git checkout` without checking for uncommitted changes.
 
+## CRITICAL: Docker Operations - ASK USER FIRST
+
+**NEVER run Docker service operations yourself.**
+
+For ANY of these operations, **STOP and ask the user to do it**:
+- `docker compose up` / `docker compose down`
+- `docker compose build`
+- `docker compose restart`
+- `docker rm` / `docker stop` / `docker kill`
+- Any service start/stop/restart/delete commands
+
+**Why:** The user can execute these commands 1000x faster locally. Running them through Claude is slow and expensive.
+
+**What to do instead:**
+1. Tell the user exactly what command to run
+2. Wait for them to confirm it's done
+3. Then verify the result (e.g., check health endpoint)
+
+**Example:**
+```
+WRONG: *runs docker compose up -d --build*
+RIGHT: "Please run: docker compose up -d --build
+       Let me know when it's done and I'll verify the services are healthy."
+```
+
 ## Project Overview
 
 **Treasure Hunt Analyzer (THA)** is an enterprise system for analyzing Skywind platform alerts and reports. It provides insights across 6 focus areas with advanced visualization, risk assessment, and financial impact analysis.
@@ -42,8 +67,8 @@ This rule exists because working code was destroyed on 2024-12-09 by carelessly 
 
 ### Start Development Environment
 ```bash
-docker-compose up -d
-docker-compose exec backend python -m app.utils.init_db
+docker compose up -d
+docker compose exec backend python -m app.utils.init_db
 ```
 
 ### Access Points
@@ -57,7 +82,7 @@ docker-compose exec backend python -m app.utils.init_db
 
 ### Stop Services
 ```bash
-docker-compose down
+docker compose down
 ```
 
 ## Technology Stack
@@ -148,9 +173,9 @@ th-analyzer/
 │   ├── settings.local.json       # Permissions
 │   └── skills/                   # Custom skills
 │
-├── docker-compose.yml            # Development setup
-├── docker-compose.prod.yml       # Production setup
-└── docker-compose.optimized.yml  # Optimized variant
+├── docker compose.yml            # Development setup
+├── docker compose.prod.yml       # Production setup
+└── docker compose.optimized.yml  # Optimized variant
 ```
 
 ## Domain Model
@@ -242,13 +267,13 @@ curl http://localhost:3011/health
 ### Database Operations
 ```bash
 # Initialize/seed database
-docker-compose exec backend python -m app.utils.init_db
+docker compose exec backend python -m app.utils.init_db
 
 # View logs
-docker-compose logs -f backend
+docker compose logs -f backend
 
 # Database shell
-docker-compose exec postgres psql -U tha_user -d tha_db
+docker compose exec postgres psql -U tha_user -d tha_db
 ```
 
 ### Frontend Development
@@ -312,7 +337,7 @@ npm run lint     # ESLint
 | `backend/app/services/hybrid_engine.py` | LLM+ML money loss calculation |
 | `frontend/src/services/api.ts` | All API client functions |
 | `frontend/src/pages/Dashboard.tsx` | Main dashboard logic |
-| `docker-compose.yml` | Container orchestration |
+| `docker compose.yml` | Container orchestration |
 | `llm_handover.md` | **AI handover doc - read first!** |
 
 ### Critical Files - Do Not Break
@@ -320,7 +345,7 @@ These files are essential for system operation. Exercise extra caution when modi
 - `backend/app/core/database.py` - Database connection
 - `backend/app/main.py` - FastAPI app initialization
 - `frontend/src/services/api.ts` - API client
-- `docker-compose.yml` - Service orchestration
+- `docker compose.yml` - Service orchestration
 - `backend/app/utils/init_db.py` - Database initialization
 
 ## Configuration
@@ -377,33 +402,33 @@ curl http://localhost:3011/health
 ### Container Issues
 ```bash
 # Rebuild containers
-docker-compose down
-docker-compose build --no-cache
-docker-compose up -d
+docker compose down
+docker compose build --no-cache
+docker compose up -d
 
 # Check logs
-docker-compose logs -f backend
-docker-compose logs -f frontend
+docker compose logs -f backend
+docker compose logs -f frontend
 
 # Full reset with volume cleanup
-docker-compose down -v
-docker-compose up -d --build
-docker-compose exec backend python -m app.utils.init_db
+docker compose down -v
+docker compose up -d --build
+docker compose exec backend python -m app.utils.init_db
 ```
 
 ### Database Connection Issues
-- Verify PostgreSQL container is running: `docker-compose ps`
+- Verify PostgreSQL container is running: `docker compose ps`
 - Check DATABASE_URL format in backend/.env
 - Ensure port 5433 is available
-- Try database shell: `docker-compose exec postgres psql -U tha_user -d treasure_hunt_analyzer`
+- Try database shell: `docker compose exec postgres psql -U tha_user -d treasure_hunt_analyzer`
 
 ### Backend 500 Errors
 - Check database schema matches models
-- View logs: `docker-compose logs backend`
+- View logs: `docker compose logs backend`
 - Common fix - schema mismatch:
 ```bash
 # Add missing columns manually if needed
-docker-compose exec backend python -c "from app.core.database import engine; from sqlalchemy import text; engine.connect().execute(text('ALTER TABLE analysis_runs ADD COLUMN IF NOT EXISTS data_source_id INTEGER REFERENCES data_sources(id)'))"
+docker compose exec backend python -c "from app.core.database import engine; from sqlalchemy import text; engine.connect().execute(text('ALTER TABLE analysis_runs ADD COLUMN IF NOT EXISTS data_source_id INTEGER REFERENCES data_sources(id)'))"
 ```
 
 ### Frontend Can't Connect to Backend
@@ -427,7 +452,7 @@ Refer to `aws/README.md` for production deployment:
 
 ## Important Notes
 
-1. **Volume Mounts:** Disabled in docker-compose.yml due to Windows/Google Drive path issues
+1. **Volume Mounts:** Disabled in docker compose.yml due to Windows/Google Drive path issues
 2. **Hot Reload:** Disabled in Docker dev setup; restart containers for changes
 3. **CORS:** Configured for localhost; update for production domains
 4. **Authentication:** JWT infrastructure ready but not enforced
