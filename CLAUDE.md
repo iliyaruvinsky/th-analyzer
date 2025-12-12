@@ -322,8 +322,8 @@ npm run lint     # ESLint
 ### General
 - Environment variables for configuration
 - No hardcoded secrets
-- Meaningful commit messages
-- Feature branches for development
+- Meaningful commit messages (see `.claude/rules/git-workflow.md`)
+- Feature branches for major work, direct to main for small fixes (see `.claude/rules/git-workflow.md`)
 
 ## Key Files Reference
 
@@ -491,7 +491,7 @@ Refer to `aws/README.md` for production deployment:
 
 ### Before Starting Work
 1. **Read `llm_handover.md` completely** - Contains current project state
-2. **Check git status** - Understand uncommitted changes
+2. **Check git status** - Understand uncommitted changes (see `.claude/rules/git-workflow.md` for branching strategy)
 3. **Verify Docker environment** - `docker compose ps`
 4. **Test current functionality** - Ensure nothing is broken
 5. **Review recent changes** in git log
@@ -517,7 +517,7 @@ This workflow guide defines:
 1. **Update `llm_handover.md`** after verified milestones
 2. **Test thoroughly** before marking as complete
 3. **Document breaking changes** clearly
-4. **Commit frequently** with descriptive messages
+4. **Commit frequently** with descriptive messages (see `.claude/rules/git-workflow.md` for commit standards)
 5. **Update relevant .md files** (README, documentation)
 
 ### Handover Document Maintenance

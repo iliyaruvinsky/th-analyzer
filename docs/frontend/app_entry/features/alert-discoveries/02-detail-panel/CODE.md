@@ -15,6 +15,7 @@
 ### Usage
 
 **In AlertDiscoveries.tsx:**
+
 ```typescript
 import DiscoveryDetailPanel from './alert-discoveries/features/detail-panel';
 
@@ -28,6 +29,7 @@ import DiscoveryDetailPanel from './alert-discoveries/features/detail-panel';
 ```
 
 **In Dashboard.tsx:**
+
 ```typescript
 import DiscoveryDetailPanel from './alert-discoveries/features/detail-panel';
 
@@ -83,4 +85,3 @@ interface DiscoveryDetailPanelProps {
 - `frontend/src/pages/AlertDiscoveries.tsx` - Main page
 - `frontend/src/pages/Dashboard.tsx` - Dashboard popover usage
 - `frontend/src/pages/AlertDashboard.css` - Styles
-

@@ -14,6 +14,7 @@
 
 - `.claude/rules/anti-hallucination-rules.md` - **Behavioral rules (MANDATORY)**
 - `.claude/rules/preserve-working-code.md` - **Git safety (CRITICAL)**
+- `.claude/rules/git-workflow.md` - **Git branching and commit strategy**
 - `.claude/rules/llm-handover-maintenance.md` - **Documentation rules**
 - `.claude/rules/quantitative-alert-analysis.md` - **Alert analysis standards**
 
@@ -170,7 +171,18 @@ This workflow guide shows **which documents to use during each development phase
        ├── List files created/modified
        └── Note any breaking changes
 
-5. IF WORKING ON APP ENTRY (Frontend page/route):
+5. GIT COMMIT (Following git-workflow.md rules):
+   └── DECIDE: Feature branch or direct to main?
+       ├── Major feature/refactoring → Use feature branch
+       │   ├── Create branch: `git checkout -b feature/[name]`
+       │   ├── Commit: `git commit -m "feat: [description]"`
+       │   └── Push: `git push origin feature/[name]`
+       └── Small fix/docs → Direct to main
+           ├── Commit: `git commit -m "fix: [description]"`
+           └── Push: `git push origin main`
+   └── See `.claude/rules/git-workflow.md` for full guidelines
+
+6. IF WORKING ON APP ENTRY (Frontend page/route):
    └── UPDATE: docs/frontend/app_entry/features/[entry-name]/DEVELOPMENT_STATE.md
        ├── Update "What's Working" section
        ├── Update "What's Broken" section
@@ -180,14 +192,14 @@ This workflow guide shows **which documents to use during each development phase
    └── UPDATE: docs/frontend/app_entry/features/[entry-name]/README.md
        └── Link to DEVELOPMENT_STATE.md in Related Documentation
 
-6. IF ARCHITECTURAL CHANGE:
+7. IF ARCHITECTURAL CHANGE:
    └── UPDATE: CLAUDE.md
        ├── Update Project Structure (if new directories)
        ├── Update API Endpoints (if new endpoints)
        ├── Update Key Files Reference (if critical files)
        └── Update Domain Model (if data model changed)
 
-7. IF USER-FACING CHANGE:
+8. IF USER-FACING CHANGE:
    └── UPDATE: README.md
        └── Only if Quick Start or main features affected
 ```
@@ -337,6 +349,18 @@ Before ANY git operation:
 ✅ Are there uncommitted changes?
 ✅ Did I ask user before destructive operation?
 ✅ Did I create backup if needed?
+```
+
+**Git Workflow Checkpoints:**
+
+Before committing:
+
+```
+✅ Is this major work? → Use feature branch (see git-workflow.md)
+✅ Is this small fix? → Can commit to main
+✅ Did I write descriptive commit message?
+✅ Did I update llm_handover.md first?
+✅ Did I show user what will be committed?
 ```
 
 **What NOT to Do:**
