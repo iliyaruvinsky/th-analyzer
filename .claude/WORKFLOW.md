@@ -170,17 +170,152 @@ This workflow guide shows **which documents to use during each development phase
        ├── List files created/modified
        └── Note any breaking changes
 
-5. IF ARCHITECTURAL CHANGE:
+5. IF WORKING ON APP ENTRY (Frontend page/route):
+   └── UPDATE: docs/frontend/app_entry/features/[entry-name]/DEVELOPMENT_STATE.md
+       ├── Update "What's Working" section
+       ├── Update "What's Broken" section
+       ├── Update feature-by-feature status table
+       ├── Update development priorities
+       └── Update completion percentage
+   └── UPDATE: docs/frontend/app_entry/features/[entry-name]/README.md
+       └── Link to DEVELOPMENT_STATE.md in Related Documentation
+
+6. IF ARCHITECTURAL CHANGE:
    └── UPDATE: CLAUDE.md
        ├── Update Project Structure (if new directories)
        ├── Update API Endpoints (if new endpoints)
        ├── Update Key Files Reference (if critical files)
        └── Update Domain Model (if data model changed)
 
-6. IF USER-FACING CHANGE:
+7. IF USER-FACING CHANGE:
    └── UPDATE: README.md
        └── Only if Quick Start or main features affected
 ```
+
+### App Entry Documentation Standard
+
+**MANDATORY:** Each app entry (frontend page/route) MUST have:
+
+```
+docs/frontend/app_entry/features/[entry-name]/
+├── README.md (overview, feature list, navigation)
+├── DEVELOPMENT_STATE.md (current development status - REQUIRED)
+└── [feature-folders]/
+    ├── SPEC.md (requirements)
+    ├── ANALYSIS.md (issues)
+    └── CODE.md (code locations)
+```
+
+**DEVELOPMENT_STATE.md Structure (Standard Template):**
+
+```markdown
+# [Entry Name] Entry - Development State Assessment
+
+**Date:** YYYY-MM-DD
+**Assessed By:** AI Agent
+**Status:** ✅ Working / ⚠️ Partially Working / ❌ Broken
+
+---
+
+## Executive Summary
+
+[Overall completion %, key gaps, status]
+
+---
+
+## What's Actually Working ✅
+
+### Backend Infrastructure
+- [List backend endpoints, models, schemas]
+
+### Frontend Rendering
+- [List components that render correctly]
+
+### Data Flow
+- [List data fetching, state management]
+
+---
+
+## What's Broken or Incomplete ⚠️
+
+### 🔴 Critical Issues (Blocks Functionality)
+1. [Issue name] - [Description]
+2. [Issue name] - [Description]
+
+### ⚠️ High Priority Issues (Poor UX)
+1. [Issue name] - [Description]
+
+### 🟡 Medium Priority Issues (Enhancements)
+1. [Issue name] - [Description]
+
+---
+
+## Code Structure Analysis
+
+[File organization, line counts, structure]
+
+---
+
+## Data Structure Analysis
+
+[Data models, API responses, TypeScript interfaces]
+
+---
+
+## Feature-by-Feature Status
+
+| # | Feature | Status | Working | Issues |
+|---|---------|--------|---------|--------|
+| 01 | [Feature] | ⚠️ | ✅ | [Issues] |
+
+---
+
+## Development Priorities
+
+### Phase 1: Critical Fixes (Must Do)
+1. [Fix description]
+
+### Phase 2: UX Improvements (Should Do)
+1. [Improvement description]
+
+### Phase 3: Enhancements (Nice to Have)
+1. [Enhancement description]
+
+---
+
+## Testing Status
+
+### What's Been Tested ✅
+- [List tested scenarios]
+
+### What Needs Testing ⚠️
+- [List untested scenarios]
+
+---
+
+## Documentation Status
+
+[Documentation completeness, quality]
+
+---
+
+## Conclusion
+
+[Summary, next steps]
+
+---
+
+## Related Documents
+
+- [Links to related docs]
+```
+
+**When to Update DEVELOPMENT_STATE.md:**
+- ✅ After completing a feature fix
+- ✅ After identifying new issues
+- ✅ After architectural changes
+- ✅ Before starting major refactoring
+- ✅ When status changes (Working → Partially Working, etc.)
 
 **Anti-Hallucination Checkpoints:**
 

@@ -1,0 +1,16 @@
+/* DiscoveryDetailPanel Component Styles
+ * 
+ * CSS Location: frontend/src/pages/AlertDashboard.css
+ * 
+ * Related CSS Sections:
+ * - Lines 798-1615: .discovery-detail-* classes (header, body, title, etc.)
+ * - Lines 1617-1626: .discovery-two-pane layout (2/3 left, 1/3 right)
+ * - Lines 2454-2676: .findings-block, .findings-table classes
+ * - Lines 2677-3220: .concentration-block, .concentration-table classes
+ * - Lines 2952-3009: .kpi-metrics-block, .kpi-metric-card classes
+ * - Lines 3348-3417: .discovery-detail.page mode styles
+ * - Lines 893-916: .discovery-explanation-box-inline
+ * 
+ * Note: Styles are currently in AlertDashboard.css for shared usage.
+ * This file can be used for feature-specific overrides when needed.
+ */

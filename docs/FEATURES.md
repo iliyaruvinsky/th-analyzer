@@ -1,8 +1,21 @@
 # THA Features & Status Document
 
-**Last Updated:** 2025-12-10
-**Version:** 1.0
-**Overall Status:** ✅ 9/9 Pages Functional (100%)
+**Last Updated:** 2025-12-11  
+**Version:** 1.1  
+**Overall Status:** ✅ 9/9 Pages Functional (100%)  
+**Purpose:** Working document for tracking features per app entry and documenting corrections
+
+---
+
+## Document Purpose
+
+This document serves as the **feature map** for tracking:
+
+- ✅ Working features per app entry (page)
+- ⚠️ Non-working features that need correction
+- 📝 Feature corrections documented as: **App Entry → Specific Feature**
+
+**Usage:** When fixing or enhancing features, document changes here per entry → feature, then update `llm_handover.md` changelog.
 
 ---
 
@@ -42,6 +55,7 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - 3-tab interface: Overview, Alerts, Actions
 - **Overview Tab:**
   - 4 KPI cards (Total Findings, Risk Score, Financial Exposure, Analysis Runs)
@@ -60,6 +74,7 @@
   - Click opens ActionItemModal
 
 **API Dependencies:**
+
 - `GET /dashboard/kpis` (5s refresh)
 - `GET /analysis/findings` (5s refresh)
 - `GET /analysis/runs` (5s refresh)
@@ -75,6 +90,7 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - **Alert Artifacts Upload:**
   - Multi-file upload (one at a time)
   - Auto-categorization (Code, Explanation, Metadata, Summary)
@@ -88,6 +104,7 @@
   - Progress bar
 
 **API Dependencies:**
+
 - `POST /ingestion/upload`
 - `POST /analysis/run`
 - `POST /ingestion/upload-artifacts`
@@ -102,6 +119,7 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - **4-Panel Workflow:**
   1. **Scan:** Base path input, scan button, stats display
   2. **Select:** Module filter, Select All/Clear, searchable table with checkboxes
@@ -112,6 +130,7 @@
 - Error handling with inline alerts
 
 **API Dependencies:**
+
 - `POST /content-analysis/scan-folders`
 - `POST /content-analysis/analyze-and-save`
 - `POST /content-analysis/analyze-batch`
@@ -123,9 +142,10 @@
 
 ### 4. Alert Discoveries (`/alert-discoveries/:id?`)
 
-**Status:** ✅ Working | **Last Verified:** 2025-12-10
+**Status:** ⚠️ Partially Working | **Last Verified:** 2025-12-11
 
 **Features:**
+
 - AlertSummary header with KPI cards
 - Full-page discovery detail view
 - Auto-navigation to first discovery
@@ -138,10 +158,23 @@
   - Key findings
 
 **API Dependencies:**
+
 - `GET /alert-dashboard/critical-discoveries`
 - `POST /alert-dashboard/action-items`
 
-**Known Issues:** None
+**Known Issues:** See [Feature Documentation](frontend/app_entry/features/alert-discoveries/) for detailed analysis
+
+**Feature Documentation:** [docs/frontend/app_entry/features/alert-discoveries/](frontend/app_entry/features/alert-discoveries/)
+
+**Code Structure:** `frontend/src/pages/alert-discoveries/features/`
+
+**Recent Corrections (2025-12-11):**
+
+- ✅ **Alert Discoveries → Discovery Detail Panel:** Button sizing fixed (25px height, matching badges)
+- ✅ **Alert Discoveries → Button Layout:** Title → Explanation → [Output] [Params] [+Create Action Item]
+- ✅ **Alert Discoveries → Button Colors:** Output/Params light grey, Create Action Item dark blue
+- ✅ **Alert Discoveries → Output Icon:** Changed to 📄 (document icon)
+- ✅ **Alert Discoveries → Title Rendering:** Fixed vertical stacking issue (now horizontal)
 
 ---
 
@@ -150,12 +183,14 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - Global findings list table
 - DashboardFilters (Focus Area, Severity, Status, Date Range)
 - Clickable rows navigate to detail view
 - Responsive table display
 
 **API Dependencies:**
+
 - `GET /analysis/findings`
 
 **Known Issues:** None
@@ -167,6 +202,7 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - Back button navigation
 - Two-column layout:
   - Left: Focus Area, Issue Type, Severity, Status, Detected At
@@ -175,6 +211,7 @@
 - Color-coded severity badges
 
 **API Dependencies:**
+
 - `GET /analysis/findings` (filtered client-side by ID)
 
 **Known Issues:** None
@@ -186,6 +223,7 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - KPI summary cards (Total Findings, Total Money Loss, Export Options)
 - DashboardFilters
 - **Export to PDF** (jsPDF library)
@@ -198,6 +236,7 @@
 - Report preview with focus area breakdown
 
 **API Dependencies:**
+
 - `GET /analysis/findings`
 - `GET /analysis/runs`
 
@@ -210,6 +249,7 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - Summary cards (Total Data Sources, Total Findings, Total Size)
 - Multi-select data source table
 - Select All / Deselect All checkboxes
@@ -219,6 +259,7 @@
 - Table columns: Filename, Type, Status, Findings, Size, Upload Date
 
 **API Dependencies:**
+
 - `GET /maintenance/data-sources`
 - `DELETE /maintenance/data-sources/{id}`
 - `DELETE /maintenance/data-sources?confirm=true`
@@ -232,6 +273,7 @@
 **Status:** ✅ Working | **Last Verified:** 2025-12-10
 
 **Features:**
+
 - Audit log table with auto-refresh (5s)
 - Filter panel:
   - Action filter (dynamically populated)
@@ -244,6 +286,7 @@
 - Details modal (JSON view)
 
 **API Dependencies:**
+
 - `GET /maintenance/logs`
 
 **Known Issues:** None
@@ -273,6 +316,7 @@
 ## API Endpoint Coverage
 
 ### Ingestion API (`/api/v1/ingestion`)
+
 | Endpoint | Method | Used By |
 |----------|--------|---------|
 | `/upload` | POST | Upload |
@@ -280,6 +324,7 @@
 | `/data-sources` | GET | Upload |
 
 ### Analysis API (`/api/v1/analysis`)
+
 | Endpoint | Method | Used By |
 |----------|--------|---------|
 | `/run` | POST | Upload |
@@ -287,6 +332,7 @@
 | `/findings` | GET | Dashboard, Findings, FindingDetail, Reports |
 
 ### Content Analysis API (`/api/v1/content-analysis`)
+
 | Endpoint | Method | Used By |
 |----------|--------|---------|
 | `/scan-folders` | POST | AlertAnalysis |
@@ -295,6 +341,7 @@
 | `/batch-status/{jobId}` | GET | AlertAnalysis |
 
 ### Alert Dashboard API (`/api/v1/alert-dashboard`)
+
 | Endpoint | Method | Used By |
 |----------|--------|---------|
 | `/kpis` | GET | Dashboard |
@@ -304,11 +351,13 @@
 | `/action-items/{id}` | PATCH | ActionItemModal |
 
 ### Dashboard API (`/api/v1/dashboard`)
+
 | Endpoint | Method | Used By |
 |----------|--------|---------|
 | `/kpis` | GET | Dashboard |
 
 ### Maintenance API (`/api/v1/maintenance`)
+
 | Endpoint | Method | Used By |
 |----------|--------|---------|
 | `/data-sources` | GET | Maintenance |
@@ -321,31 +370,37 @@
 ## Development Progress
 
 ### Completion Summary
+
 - **Frontend Pages:** 9/9 (100%)
 - **Backend APIs:** All required endpoints implemented
 - **Database Models:** 23 models with migrations
 - **Documentation:** Comprehensive (CLAUDE.md, llm_handover.md, APPLICATION_FLOW_MAP.md)
 
 ### Recent Milestones
+
 | Date | Milestone |
 |------|-----------|
+| 2025-12-11 | Golden Commit: Perfect UI, incomplete Backend |
+| 2025-12-11 | Discovery detail panel UI fixes (buttons, layout, icons) |
 | 2025-12-10 | Comprehensive audit completed (31 issues found, fixed) |
 | 2025-12-10 | Discovery detail panel features added |
 | 2025-12-10 | Alert Analysis page routed and accessible |
 | 2025-12-05 | Dashboard tabs merged (Overview/Alerts/Actions) |
 | 2025-12-05 | Alert Dashboard integration complete |
 
-See [llm_handover.md](llm_handover.md#changelog) for full changelog.
+See [llm_handover.md](../llm_handover.md#changelog) for full changelog.
 
 ---
 
 ## Testing Status
 
 ### Last Full Test
-**Date:** 2025-12-10
+
+**Date:** 2025-12-10  
 **Method:** Manual verification via browser + API curl tests
 
 ### Verified Working
+
 - [x] Dashboard loads with data
 - [x] Upload accepts files
 - [x] Alert Analysis scans and analyzes
@@ -357,20 +412,39 @@ See [llm_handover.md](llm_handover.md#changelog) for full changelog.
 - [x] All API endpoints respond
 
 ### Testing Resources
-- **Quick Test Guide:** [QUICK_TEST.md](QUICK_TEST.md)
-- **Testing Checklist:** [TESTING_CHECKLIST.md](TESTING_CHECKLIST.md)
-- **API Docs:** http://localhost:3011/docs
+
+- **Quick Test Guide:** [TESTING.md](../TESTING.md)
+- **API Docs:** <http://localhost:3011/docs>
 
 ---
 
-## Roadmap
+## Feature Correction Tracking
 
-See [NEXT_STEPS.md](NEXT_STEPS.md) for planned features:
-- ML-powered analysis enhancements
-- Additional report formats
-- User authentication
-- AWS deployment
-- Performance optimizations
+**Format for documenting corrections:**
+
+```markdown
+### [App Entry] → [Specific Feature]
+
+**Date:** YYYY-MM-DD
+**Issue:** Description of what was broken
+**Fix:** Description of what was fixed
+**Files Modified:** List of files changed
+**Status:** ✅ Fixed / ⚠️ In Progress / ❌ Broken
+```
+
+**Example:**
+
+```markdown
+### Alert Discoveries → Discovery Detail Panel Buttons
+
+**Date:** 2025-12-11
+**Issue:** Buttons were too large, wrong colors, incorrect icon
+**Fix:** Set height to 25px, light grey for Output/Params, dark blue for Create Action Item, changed icon to 📄
+**Files Modified:** 
+- `frontend/src/components/DiscoveryDetailPanel.tsx`
+- `frontend/src/pages/AlertDashboard.css`
+**Status:** ✅ Fixed
+```
 
 ---
 
@@ -378,12 +452,12 @@ See [NEXT_STEPS.md](NEXT_STEPS.md) for planned features:
 
 | Document | Purpose |
 |----------|---------|
-| [CLAUDE.md](CLAUDE.md) | AI assistant guide, project structure |
-| [llm_handover.md](llm_handover.md) | Development handover, changelog |
-| [APPLICATION_FLOW_MAP.md](docs/APPLICATION_FLOW_MAP.md) | Complete workflow diagrams |
-| [QUICK_START.md](QUICK_START.md) | 5-minute setup guide |
-| [NEXT_STEPS.md](NEXT_STEPS.md) | Roadmap and planned features |
+| [CLAUDE.md](../CLAUDE.md) | AI assistant guide, project structure |
+| [llm_handover.md](../llm_handover.md) | Development handover, changelog |
+| [APPLICATION_FLOW_MAP.md](APPLICATION_FLOW_MAP.md) | Complete workflow diagrams |
+| [TESTING.md](../TESTING.md) | Testing procedures |
+| [.claude/WORKFLOW.md](../.claude/WORKFLOW.md) | Development workflow |
 
 ---
 
-*Document maintained as part of THA v1.8.2*
+*Document maintained as part of THA v1.8.3 - Golden Commit: Perfect UI, incomplete Backend*

@@ -1,0 +1,13 @@
+/* JsonDataPopover Component Styles
+ * 
+ * CSS Location: frontend/src/pages/AlertDashboard.css
+ * 
+ * Related CSS Sections:
+ * - Lines 3616-3620: .json-popover-container
+ * - Lines 3621-3661: .json-popover-btn (including .secondary, .disabled variants)
+ * - Lines 3662-3767: .json-popover, .json-popover-header, .json-popover-body
+ * - Line 3768: .discovery-header-buttons .json-popover-container
+ * 
+ * Note: Styles are currently in AlertDashboard.css for shared usage.
+ * This file can be used for feature-specific overrides when needed.
+ */

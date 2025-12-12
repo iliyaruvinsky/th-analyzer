@@ -1,6 +1,6 @@
 import React from 'react';
-import { CriticalDiscoveryDrilldown, CriticalDiscovery, ConcentrationMetric, KeyFinding } from '../services/api';
-import JsonDataPopover from './JsonDataPopover';
+import { CriticalDiscoveryDrilldown, CriticalDiscovery, ConcentrationMetric, KeyFinding } from '../../../../services/api';
+import JsonDataPopover from '../json-popovers';
 
 interface DiscoveryDetailPanelProps {
   discovery: CriticalDiscoveryDrilldown;

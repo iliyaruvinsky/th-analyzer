@@ -8,7 +8,7 @@ import FindingsTable from '../components/tables/FindingsTable';
 import DashboardFilters, { FilterState } from '../components/filters/DashboardFilters';
 import KpiCard from '../components/KpiCard';
 import DashboardTabs, { DashboardTabType } from '../components/DashboardTabs';
-import DiscoveryDetailPanel from '../components/DiscoveryDetailPanel';
+import DiscoveryDetailPanel from './alert-discoveries/features/detail-panel';
 import ActionItemModal from '../components/ActionItemModal';
 import { useNavigate } from 'react-router-dom';
 import '../styles/dashboard.css';

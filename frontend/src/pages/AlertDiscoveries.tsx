@@ -1,15 +1,15 @@
-import React, { useState, useEffect } from 'react';
-import { useParams, useNavigate } from 'react-router-dom';
+import React, { useState } from 'react';
+import { useParams } from 'react-router-dom';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { getCriticalDiscoveries, CriticalDiscoveryDrilldown } from '../services/api';
-import AlertSummary from '../components/AlertSummary';
-import DiscoveryDetailPanel from '../components/DiscoveryDetailPanel';
-import CreateActionItemModal from '../components/CreateActionItemModal';
+import AlertSummary from './alert-discoveries/features/alert-summary';
+import DiscoveryDetailPanel from './alert-discoveries/features/detail-panel';
+import CreateActionItemModal from './alert-discoveries/features/create-action-item';
+import { useAutoNavigation } from './alert-discoveries/features/auto-navigation';
 import '../pages/AlertDashboard.css';
 
 const AlertDiscoveries: React.FC = () => {
   const { id } = useParams<{ id: string }>();
-  const navigate = useNavigate();
   const queryClient = useQueryClient();
   const [actionModalOpen, setActionModalOpen] = useState(false);
   const [selectedForAction, setSelectedForAction] = useState<CriticalDiscoveryDrilldown | null>(null);
@@ -35,11 +35,7 @@ const AlertDiscoveries: React.FC = () => {
     : discoveries[0];
 
   // Auto-select first discovery if none selected
-  useEffect(() => {
-    if (!id && discoveries.length > 0 && discoveries[0]?.alert_id) {
-      navigate(`/alert-discoveries/${discoveries[0].alert_id}`, { replace: true });
-    }
-  }, [id, discoveries, navigate]);
+  useAutoNavigation({ id, discoveries, replace: true });
 
   const handleCreateAction = (discovery: CriticalDiscoveryDrilldown) => {
     setSelectedForAction(discovery);

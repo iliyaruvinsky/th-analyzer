@@ -1,0 +1,13 @@
+/* AlertSummary Component Styles
+ * 
+ * CSS Location: frontend/src/pages/AlertDashboard.css
+ * 
+ * Related CSS Sections:
+ * - Lines 3475-3610: .alert-summary-header, .alert-summary-title, .alert-summary-kpis
+ * - Lines 3501-3534: .summary-kpi, .kpi-value, .kpi-label
+ * - Lines 3536-3594: .severity-badge, .module-badge classes
+ * - Lines 3596-3610: Responsive adjustments
+ * 
+ * Note: Styles are currently in AlertDashboard.css for shared usage.
+ * This file can be used for feature-specific overrides when needed.
+ */

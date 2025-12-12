@@ -1,5 +1,5 @@
 import React from 'react';
-import { CriticalDiscoveryDrilldown } from '../services/api';
+import { CriticalDiscoveryDrilldown } from '../../../../services/api';
 
 interface AlertSummaryProps {
   discoveries: CriticalDiscoveryDrilldown[];

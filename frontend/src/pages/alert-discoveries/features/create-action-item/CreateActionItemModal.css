@@ -1,0 +1,14 @@
+/* CreateActionItemModal Component Styles
+ * 
+ * CSS Location: frontend/src/pages/AlertDashboard.css
+ * 
+ * Related CSS Sections:
+ * - Lines 1632-1645: .action-modal-overlay
+ * - Lines 1647-1656: .action-modal
+ * - Lines 1658-1688: .action-modal-header, .action-modal-close
+ * - Lines 1690-1825: .action-modal-body, .action-field, .action-input, etc.
+ * - Lines 1826-1923: .action-modal-footer, .action-btn classes
+ * 
+ * Note: Styles are currently in AlertDashboard.css for shared usage.
+ * This file can be used for feature-specific overrides when needed.
+ */
