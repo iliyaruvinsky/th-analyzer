@@ -575,10 +575,9 @@ Before considering work complete, verify:
 
 ## Related Documentation
 
-- [README.md](README.md) - Project overview
-- [QUICK_START.md](QUICK_START.md) - 5-minute setup
-- [DEPLOYMENT.md](DEPLOYMENT.md) - Deployment guide
-- [TESTING_GUIDE.md](TESTING_GUIDE.md) - Testing details
+- [README.md](README.md) - Project overview (includes Quick Start)
+- [DEPLOYMENT.md](DEPLOYMENT.md) - Deployment guide and Docker troubleshooting
+- [TESTING.md](TESTING.md) - Testing details
 - [CONTRIBUTING.md](CONTRIBUTING.md) - Plugin contributions
 - [aws/README.md](aws/README.md) - AWS deployment
 - [llm_handover.md](llm_handover.md) - **AI handover document (read first!)**

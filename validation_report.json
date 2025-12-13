@@ -2,49 +2,205 @@
   {
     "type": "missing_file",
     "severity": "high",
-    "file": "docs\\product-docs\\about-us.md",
-    "message": "Referenced file does not exist: mailto:info@skywindsoftware.com"
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\DEVELOPMENT_STATE.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/DEVELOPMENT_STATE.md"
   },
   {
     "type": "missing_file",
     "severity": "high",
-    "file": "frontend\\src\\main.tsx",
-    "message": "Referenced file does not exist: ./App"
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\DEVELOPMENT_STATE.md",
+    "message": "Referenced file does not exist: ../../../FEATURES.md"
   },
   {
     "type": "missing_file",
     "severity": "high",
-    "file": "frontend\\src\\App.tsx",
-    "message": "Referenced file does not exist: ./pages/Dashboard"
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\DEVELOPMENT_STATE.md",
+    "message": "Referenced file does not exist: ../../../../llm_handover.md"
   },
   {
     "type": "missing_file",
     "severity": "high",
-    "file": "frontend\\src\\App.tsx",
-    "message": "Referenced file does not exist: ./pages/Upload"
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\README.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/README.md"
   },
   {
     "type": "missing_file",
     "severity": "high",
-    "file": "frontend\\src\\App.tsx",
-    "message": "Referenced file does not exist: ./pages/Findings"
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\README.md",
+    "message": "Referenced file does not exist: ../../../FEATURES.md"
   },
   {
     "type": "missing_file",
     "severity": "high",
-    "file": "frontend\\src\\App.tsx",
-    "message": "Referenced file does not exist: ./pages/Reports"
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\README.md",
+    "message": "Referenced file does not exist: ../../../../llm_handover.md"
   },
   {
     "type": "missing_file",
     "severity": "high",
-    "file": "frontend\\src\\App.tsx",
-    "message": "Referenced file does not exist: ./components/Layout"
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\01-alert-summary-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/01-alert-summary/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/analyzer.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/artifact_reader.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/analyzer.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/scoring_engine.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/api/content_analysis.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/analyzer.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/artifact_reader.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/llm_classifier.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/services/content_analyzer/scoring_engine.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\ANALYSIS_FLOW.md",
+    "message": "Referenced file does not exist: backend/app/api/content_analysis.py"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\02-detail-panel-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/02-detail-panel/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\03-auto-navigation-backend\\ANALYSIS.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/03-auto-navigation/ANALYSIS.md"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\03-auto-navigation-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/03-auto-navigation/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\03-auto-navigation-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/03-auto-navigation/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\04-create-action-item-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/04-create-action-item/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\05-alert-explanation-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/05-alert-explanation/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\06-json-data-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/06-json-popovers/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\07-risk-score-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/07-risk-score/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\08-concentration-metrics-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/08-concentration-metrics/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\backend\\app_entry\\features\\alert-discoveries\\09-key-findings-backend\\SPEC.md",
+    "message": "Referenced file does not exist: ../../../frontend/app_entry/features/alert-discoveries/09-key-findings/"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\frontend\\app_entry\\features\\_TEMPLATE_DEVELOPMENT_STATE.md",
+    "message": "Referenced file does not exist: README.md"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\frontend\\app_entry\\features\\alert-discoveries\\DEVELOPMENT_STATE.md",
+    "message": "Referenced file does not exist: ../../../FEATURES.md"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\frontend\\app_entry\\features\\alert-discoveries\\DEVELOPMENT_STATE.md",
+    "message": "Referenced file does not exist: ../../../../llm_handover.md"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\frontend\\app_entry\\features\\alert-discoveries\\README.md",
+    "message": "Referenced file does not exist: ../../../FEATURES.md"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\frontend\\app_entry\\features\\alert-discoveries\\README.md",
+    "message": "Referenced file does not exist: ../../../../llm_handover.md"
+  },
+  {
+    "type": "missing_file",
+    "severity": "high",
+    "file": "docs\\scoring-rules\\BUSINESS_CONTROL.md",
+    "message": "Referenced file does not exist: ../../../backend/app/services/content_analyzer/scoring_engine.py"
   },
   {
     "type": "duplicate_definition",
     "severity": "high",
     "file": "multiple",
-    "message": "Duplicate focus area codes found: ['Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'Access Governance', 'Business Control', 'Business Protection', 'Jobs Control', 'S/4HANA Excellence', 'Technical Control', 'Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'Business Protection', 'Business Control', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'ACCESS_GOVERNANCE', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'S4HANA_EXCELLENCE']"
+    "message": "Duplicate focus area codes found: ['BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'S4HANA_EXCELLENCE', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'BUSINESS_CONTROL', 'BUSINESS_CONTROL', 'BUSINESS_CONTROL', 'BUSINESS_PROTECTION', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'BUSINESS_CONTROL', 'BUSINESS_CONTROL', 'BUSINESS_CONTROL', 'BUSINESS_CONTROL', 'BUSINESS_PROTECTION', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'BUSINESS_CONTROL', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'S4HANA_EXCELLENCE', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'BUSINESS_PROTECTION', 'Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'BUSINESS_PROTECTION', 'BUSINESS_PROTECTION', 'Business Protection', 'Business Control', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'S4HANA_EXCELLENCE', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'TECHNICAL_CONTROL', 'BUSINESS_PROTECTION', 'Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'Access Governance', 'Business Control', 'Business Protection', 'Jobs Control', 'S/4HANA Excellence', 'Technical Control', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'BUSINESS_PROTECTION', 'BUSINESS_CONTROL', 'ACCESS_GOVERNANCE', 'TECHNICAL_CONTROL', 'JOBS_CONTROL', 'BUSINESS_PROTECTION', 'Business Protection', 'Business Control', 'Access Governance', 'Technical Control', 'Jobs Control', 'S/4HANA Excellence', 'ACCESS_GOVERNANCE']"
   }
 ]

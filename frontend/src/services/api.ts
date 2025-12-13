@@ -426,6 +426,41 @@ export const updateActionItem = async (
   return response.data;
 };
 
+// Delete Response Interface
+export interface DeleteResponse {
+  success: boolean;
+  message: string;
+  deleted_records?: Record<string, number>;
+}
+
+// Deletion API Functions
+export const deleteAlertAnalysis = async (analysisId: number): Promise<DeleteResponse> => {
+  const response = await apiClient.delete(`/alert-dashboard/analyses/${analysisId}`);
+  return response.data;
+};
+
+export const deleteAlertInstance = async (alertInstanceId: number): Promise<DeleteResponse> => {
+  const response = await apiClient.delete(`/alert-dashboard/alert-instances/${alertInstanceId}`);
+  return response.data;
+};
+
+export const deleteAlertInstanceByAlertId = async (alertId: string): Promise<DeleteResponse> => {
+  const response = await apiClient.delete(`/alert-dashboard/alert-instances/by-alert-id/${alertId}`);
+  return response.data;
+};
+
+export const deleteAllAlertInstances = async (): Promise<DeleteResponse> => {
+  const response = await apiClient.delete('/alert-dashboard/alert-instances', {
+    params: { confirm: true },
+  });
+  return response.data;
+};
+
+export const deleteCriticalDiscovery = async (discoveryId: number): Promise<DeleteResponse> => {
+  const response = await apiClient.delete(`/alert-dashboard/discoveries/${discoveryId}`);
+  return response.data;
+};
+
 // Maintain backwards compatibility for existing imports
 export const api = {
     getDataSources,
@@ -456,5 +491,11 @@ export const api = {
     // Action Items
     createActionItem,
     updateActionItem,
+    // Deletion
+    deleteAlertAnalysis,
+    deleteAlertInstance,
+    deleteAlertInstanceByAlertId,
+    deleteAllAlertInstances,
+    deleteCriticalDiscovery,
 };
 

@@ -647,3 +647,35 @@
   font-size: 12px;
   font-style: italic;
 }
+
+/* Refresh Icon Button */
+.nav-refresh-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 20px;
+  height: 20px;
+  padding: 0;
+  margin-left: 6px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  color: #6a6d70;
+  transition: all 0.2s ease;
+  border-radius: 4px;
+}
+
+.nav-refresh-icon:hover {
+  color: #0a6ed1;
+  background: rgba(10, 110, 209, 0.1);
+}
+
+.nav-refresh-icon:active {
+  transform: rotate(180deg);
+}
+
+.nav-refresh-icon svg {
+  width: 14px;
+  height: 14px;
+  display: block;
+}

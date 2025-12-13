@@ -1,6 +1,6 @@
 import React, { useState, useMemo } from 'react'
 import { Link, useLocation, useNavigate } from 'react-router-dom'
-import { useQuery } from '@tanstack/react-query'
+import { useQuery, useQueryClient } from '@tanstack/react-query'
 import { getCriticalDiscoveries, CriticalDiscoveryDrilldown } from '../services/api'
 import SkywindLogo from './SkywindLogo'
 import SidebarFilters, { FilterValues } from './SidebarFilters'
@@ -13,6 +13,7 @@ interface LayoutProps {
 const Layout: React.FC<LayoutProps> = ({ children }) => {
   const location = useLocation()
   const navigate = useNavigate()
+  const queryClient = useQueryClient()
   const [expandedSections, setExpandedSections] = useState<string[]>(['discoveries'])
   const [filters, setFilters] = useState<FilterValues>({
     focusArea: '',
@@ -155,6 +156,22 @@ const Layout: React.FC<LayoutProps> = ({ children }) => {
               <span className={`nav-badge ${hasActiveFilters ? 'filtered' : ''}`}>
                 {hasActiveFilters ? `${filteredDiscoveries.length}/${discoveries.length}` : discoveries.length}
               </span>
+              <button
+                className="nav-refresh-icon"
+                onClick={(e) => {
+                  e.stopPropagation();
+                  queryClient.refetchQueries({ queryKey: ['critical-discoveries-sidebar'] });
+                  queryClient.refetchQueries({ queryKey: ['critical-discoveries'] });
+                }}
+                title="Refresh discoveries"
+              >
+                <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                  <path d="M3 12a9 9 0 0 1 9-9 9.75 9.75 0 0 1 6.74 2.74L21 8"></path>
+                  <path d="M21 3v5h-5"></path>
+                  <path d="M21 12a9 9 0 0 1-9 9 9.75 9.75 0 0 1-6.74-2.74L3 16"></path>
+                  <path d="M3 21v-5h5"></path>
+                </svg>
+              </button>
               <span className="nav-chevron">{isDiscoveriesExpanded ? '▼' : '▶'}</span>
             </div>
 

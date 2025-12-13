@@ -218,6 +218,186 @@ class TestBusinessProtectionSeverity:
         assert severity == SeverityLevel.LOW
 
 
+class TestBusinessControlSeverity:
+    """Tests for BUSINESS_CONTROL severity determination."""
+
+    @pytest.fixture
+    def scoring_engine(self):
+        """Create a scoring engine instance for testing."""
+        return ScoringEngine()
+
+    # =========================================================================
+    # HIGH Severity (Base Score: 75)
+    # Significant business process issues requiring prompt review
+    # =========================================================================
+
+    def test_unbilled_delivery_is_high(self, scoring_engine):
+        """Unbilled delivery is revenue risk - HIGH."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Unbilled Delivery Alert",
+            focus_area="BUSINESS_CONTROL",
+            explanation="Goods shipped but not invoiced."
+        )
+        assert severity == SeverityLevel.HIGH
+        assert "unbilled" in reasoning.lower()
+
+    def test_unbilled_delivery_pattern_matches(self, scoring_engine):
+        """Test unbilled delivery pattern matching."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Unbilled Deliveries Report",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.HIGH
+
+    def test_process_bottleneck_is_high(self, scoring_engine):
+        """Process bottleneck is critical process stuck - HIGH."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Process Bottleneck Detected",
+            focus_area="BUSINESS_CONTROL",
+            explanation="Critical process is stuck."
+        )
+        assert severity == SeverityLevel.HIGH
+
+    def test_stuck_order_is_high(self, scoring_engine):
+        """Stuck order is customer impact - HIGH."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Stuck Purchase Orders",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.HIGH
+
+    def test_blocked_order_is_high(self, scoring_engine):
+        """Blocked order is customer impact - HIGH."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Blocked Sales Orders",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.HIGH
+
+    def test_negative_profit_is_high(self, scoring_engine):
+        """Negative profit deal is financial loss - HIGH."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Negative Profit Deals",
+            focus_area="BUSINESS_CONTROL",
+            explanation="Deals with negative profit detected."
+        )
+        assert severity == SeverityLevel.HIGH
+
+    def test_exceptional_posting_is_high(self, scoring_engine):
+        """Exceptional posting may indicate errors - HIGH."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Exceptional Posting Alert",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.HIGH
+
+    def test_overdue_order_is_high(self, scoring_engine):
+        """Overdue order is customer impact - HIGH."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Overdue Purchase Orders",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.HIGH
+
+    # =========================================================================
+    # MEDIUM Severity (Base Score: 60)
+    # Process deviations, approval delays, pricing issues
+    # =========================================================================
+
+    def test_payment_terms_mismatch_is_medium(self, scoring_engine):
+        """Payment terms mismatch is process error - MEDIUM."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Payment Terms Mismatch",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.MEDIUM
+
+    def test_approval_delay_is_medium(self, scoring_engine):
+        """Approval delay may be normal - MEDIUM."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Approval Delay Warning",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.MEDIUM
+
+    def test_waiting_approval_is_medium(self, scoring_engine):
+        """Waiting approval may be normal - MEDIUM."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="PO Waiting for Approval",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.MEDIUM
+
+    def test_pricing_issue_is_medium(self, scoring_engine):
+        """Pricing issue needs review - MEDIUM."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Pricing Issue Detected",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.MEDIUM
+
+    def test_delay_pattern_is_medium(self, scoring_engine):
+        """General delay pattern - MEDIUM."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Delivery Delay Alert",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.MEDIUM
+
+    # =========================================================================
+    # LOW Severity (Base Score: 50)
+    # Tracking/housekeeping items
+    # =========================================================================
+
+    def test_credit_limit_changed_is_low(self, scoring_engine):
+        """Credit limit changed is business decision - LOW."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Credit Limit Changed",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.LOW
+
+    def test_inactive_vendor_no_balance_is_low(self, scoring_engine):
+        """Inactive vendor with no balance is housekeeping - LOW."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Inactive Vendor No Balance",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.LOW
+
+    def test_master_data_change_is_low(self, scoring_engine):
+        """Master data change is informational - LOW."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Master Data Change",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.LOW
+
+    # =========================================================================
+    # Default Behavior
+    # =========================================================================
+
+    def test_unknown_alert_defaults_to_medium_for_business_control(self, scoring_engine):
+        """Unknown alert in BUSINESS_CONTROL defaults to MEDIUM."""
+        severity, reasoning = scoring_engine.determine_severity_from_alert_type(
+            alert_name="Unknown Alert Type XYZ",
+            focus_area="BUSINESS_CONTROL"
+        )
+        assert severity == SeverityLevel.MEDIUM
+        assert "default" in reasoning.lower() or "business control" in reasoning.lower()
+
+    def test_pattern_priority_critical_over_high(self, scoring_engine):
+        """CRITICAL patterns should match before HIGH patterns."""
+        # This test ensures pattern matching order is correct
+        # If an alert matches both CRITICAL and HIGH, CRITICAL should win
+        severity, _ = scoring_engine.determine_severity_from_alert_type(
+            alert_name="DEBUG Mode Unbilled Delivery",  # Matches both DEBUG (CRITICAL) and unbilled (HIGH)
+            focus_area="BUSINESS_PROTECTION"  # DEBUG is BUSINESS_PROTECTION CRITICAL
+        )
+        # Should be CRITICAL because CRITICAL is checked first
+        assert severity == SeverityLevel.CRITICAL
+
+
 class TestSeverityBaseScores:
     """Tests for severity base score values."""
 

@@ -1,7 +1,7 @@
 # LLM Handover Document - Treasure Hunt Analyzer (THA)
 
-**Last Updated**: 2025-12-11 (Golden Commit - Perfect UI, Incomplete Backend)
-**Project Status**: Development - UI Perfected, Backend Needs Structured Data Fix
+**Last Updated**: 2025-12-12 (Docker Rebuild Required for Frontend UI Changes; Upload Bulk Artifacts Implemented)
+**Project Status**: Development - Standalone path + Upload UX improvements in progress/verified; continue with manual upload → analyze → Discoveries validation
 **Current Version**: 1.8.3
 **Golden Commit**: cfcc00f
 
@@ -479,7 +479,8 @@ The user compared **AI interpretation vs User interpretation** of real alerts. K
 
 2. **Multi-File Artifact Upload (UI)**
    - Upload page at http://localhost:3010/upload
-   - Add files one-by-one (Code, Explanation, Metadata, Summary)
+   - **Select all 4 artifacts at once** (single file picker with `multiple`)
+   - UI validates presence of: Code / Explanation / Metadata / Summary (must be exactly 4)
    - Color-coded file categorization (green=found, yellow=pending)
    - Flexible file name matching (handles spaces after prefix)
    - Auto-analyze after upload
@@ -657,6 +658,37 @@ docker compose build frontend && docker compose up -d frontend
 # Full rebuild (slow - no cache)
 docker compose build --no-cache backend && docker compose up -d backend
 ```
+
+---
+
+## 2025-12-12 (UPLOAD BULK ARTIFACTS + DOCKER FRONTEND REBUILD GOTCHA)
+
+### What Changed (Verified)
+
+- **Upload page UX**: The alert-artifacts upload flow now supports selecting all 4 artifacts at once (instead of one-by-one).
+- **Post-upload UX**: Progress/status messaging improved; after success the UI can navigate to Discoveries and should refresh relevant lists.
+
+### Critical Docker Note (Why UI looked unchanged)
+
+The dev `docker-compose.yml` has **frontend volume mounts disabled**, so **code changes in `frontend/` do NOT hot-reload into the container**.
+
+If you pull changes or edit `frontend/src/pages/Upload.tsx`, you must rebuild the frontend image:
+
+```bash
+docker compose up -d --build frontend
+```
+
+Then do a **hard refresh** in the browser (cached JS can keep showing the old UI).
+
+### Current Manual Test Target (Recommended)
+
+Use one of the included sample alert folders under `docs/skywind-4c-alerts-output/` that contains:
+- `Code_*.txt`
+- `Explanation_*.docx`
+- `Metadata_*.xlsx`
+- `Summary_*.xlsx` (or `.csv`)
+
+Goal: **select all 4 files in one shot**, click Upload & Analyze, then confirm a new entry appears in **Discoveries**.
 
 ---
 

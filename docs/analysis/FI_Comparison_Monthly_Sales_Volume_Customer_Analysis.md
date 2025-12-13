@@ -14,6 +14,7 @@
 ### Critical Discovery
 
 **Tanzania (TZ01) Concentration with Major Declines:**
+
 * 91.8% of total sales value concentrated in TZ01 company code ($4.3M USD)
 * Top 8 of 10 largest customers show DECLINES between -58% and -98%
 * Largest customer dropped 89% (from $634K to $69K) - requires immediate investigation
@@ -223,35 +224,35 @@ Compares customer transaction figures (KNC1 table) between fiscal periods, calcu
 ### Immediate (24-48 hours)
 
 1. **Review TZ01 top 10 declining customers**
-   - Contact sales team for Tanzania region
-   - Verify if customer relationships are at risk
-   - Check for contract renewals, competitor activity
+   * Contact sales team for Tanzania region
+   * Verify if customer relationships are at risk
+   * Check for contract renewals, competitor activity
 
 2. **Validate extreme variance records**
-   - RW01: 5 customers with +11,897% variance
-   - UG01: Customer with +6,920% variance
-   - Confirm if these are new customers or data errors
+   * RW01: 5 customers with +11,897% variance
+   * UG01: Customer with +6,920% variance
+   * Confirm if these are new customers or data errors
 
 3. **Investigate data quality issues**
-   - KE01: Customer with negative prior year sales
-   - UG01: Customer with negative prior year sales
-   - Coordinate with finance team for corrections
+   * KE01: Customer with negative prior year sales
+   * UG01: Customer with negative prior year sales
+   * Coordinate with finance team for corrections
 
 ### Short-term (1-2 weeks)
 
 1. **Customer retention analysis for TZ01**
-   - Analyze top 20 declining customers
-   - Identify root causes (pricing, service, competition)
-   - Develop retention strategy
+   * Analyze top 20 declining customers
+   * Identify root causes (pricing, service, competition)
+   * Develop retention strategy
 
 2. **Sales variance investigation**
-   - Compare October 2025 invoicing against contracts
-   - Check for delayed billing or timing differences
-   - Validate revenue recognition
+   * Compare October 2025 invoicing against contracts
+   * Check for delayed billing or timing differences
+   * Validate revenue recognition
 
 3. **Cross-company code comparison**
-   - Why is KE01 showing average -406% while TZ01 shows +152%?
-   - Regional market analysis required
+   * Why is KE01 showing average -406% while TZ01 shows +152%?
+   * Regional market analysis required
 
 ### Process Improvements
 

@@ -92,7 +92,7 @@
 }
 
 .status-flow {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
   font-size: 12px;
   font-weight: 600;
   color: #06b6d4;
@@ -338,7 +338,7 @@
   width: 100px;
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
 }
 
@@ -391,7 +391,7 @@
   text-align: right;
   font-size: 13px;
   font-weight: 700;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
   color: #374151;
 }
 
@@ -416,7 +416,7 @@
   text-align: left;
   font-size: 13px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
 }
@@ -465,7 +465,7 @@
 .ad-alert-id {
   font-size: 11px;
   color: #6b7280;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .ad-badge {
@@ -474,7 +474,7 @@
   border-radius: 4px;
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
 }
 
@@ -545,7 +545,7 @@
 }
 
 .ad-count {
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
   font-weight: 700;
   font-size: 14px;
   color: #06b6d4;
@@ -616,7 +616,7 @@
   border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
 }
 
 .ad-status.status-open {
@@ -814,7 +814,7 @@
   align-items: center;
   gap: 16px;
   flex: 1;
-  flex-wrap: nowrap;
+  flex-wrap: nowrap !important;
 }
 
 .discovery-detail-title {
@@ -835,7 +835,7 @@
   display: block;
   font-size: 14px;
   color: #6b7280;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
   margin-top: 4px;
 }
 
@@ -950,7 +950,7 @@
   display: block;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
   margin-bottom: 8px;
@@ -968,7 +968,7 @@
 
 .metric-value.money {
   color: #eab308;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 /* Risk Section */
@@ -1108,7 +1108,7 @@
   font-size: 14px;
   font-weight: 700;
   color: #1f2937;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
 }
 
@@ -1200,7 +1200,7 @@
   border-radius: 4px;
   font-size: 11px;
   font-weight: 700;
-  text-transform: uppercase;
+  
 }
 
 /* Discoveries List Section */
@@ -1299,13 +1299,13 @@
 
 .detail-value.metric {
   color: #06b6d4;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .detail-id {
   font-size: 11px;
   color: #9ca3af;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 /* What to Look For Section */
@@ -1699,7 +1699,7 @@
   display: block;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
   margin-bottom: 8px;
@@ -1819,7 +1819,7 @@
   font-size: 14px;
   font-weight: 500;
   color: #3b82f6;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 /* Modal Footer */
@@ -2003,7 +2003,7 @@
 .action-meta-label {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #9ca3af;
 }
@@ -2014,7 +2014,7 @@
   border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   width: fit-content;
 }
 
@@ -2151,7 +2151,7 @@
   background: #dc2626;
   padding: 4px 8px;
   border-radius: 3px;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
 }
 
@@ -2203,7 +2203,7 @@
   font-size: 12px;
   font-weight: 500;
   color: #6b7280;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   margin-top: 6px;
 }
@@ -2376,7 +2376,7 @@
   font-size: 16px;
   font-weight: 600;
   color: #2c3e50;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   padding-bottom: 10px;
   border-bottom: 2px solid #e63946;
@@ -2401,7 +2401,7 @@
 .param-label {
   font-size: 12px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
 }
@@ -2434,7 +2434,7 @@
   border-radius: 4px;
   font-size: 14px;
   font-weight: 600;
-  text-transform: uppercase;
+  
 }
 
 .param-badge.module-fi { background: #dbeafe; color: #1e40af; }
@@ -2463,7 +2463,7 @@
   font-size: 16px;
   font-weight: 700;
   color: #2c3e50;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   padding-bottom: 8px;
   border-bottom: 2px solid #e63946;
@@ -2484,7 +2484,7 @@
   text-align: left;
   font-size: 13px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
   border-bottom: 1px solid #e5e7eb;
@@ -2533,7 +2533,7 @@
   border-radius: 4px;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   color: #6b7280;
 }
 
@@ -2579,7 +2579,7 @@
   font-size: 13px;
   font-weight: 600;
   color: #2c3e50;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   padding-bottom: 8px;
   border-bottom: 2px solid #e63946;
@@ -2619,7 +2619,7 @@
   color: #dc2626;
   font-size: 9px;
   font-weight: 700;
-  text-transform: uppercase;
+  
   border-radius: 3px;
 }
 
@@ -2658,7 +2658,7 @@
   display: block;
   font-size: 9px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   color: #6b7280;
   margin-top: 2px;
 }
@@ -2686,7 +2686,7 @@
   font-size: 16px;
   font-weight: 700;
   color: #2c3e50;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   padding-bottom: 6px;
   border-bottom: 2px solid #e63946;
@@ -2707,7 +2707,7 @@
   text-align: left;
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
   border-bottom: 1px solid #e5e7eb;
@@ -2904,7 +2904,7 @@
   font-size: 16px;
   font-weight: 700;
   color: #2c3e50;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   padding-bottom: 8px;
   border-bottom: 2px solid #e63946;
@@ -2961,7 +2961,7 @@
   font-size: 16px;
   font-weight: 700;
   color: #2c3e50;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   padding-bottom: 8px;
   border-bottom: 2px solid #e63946;
@@ -3010,7 +3010,7 @@
   display: block;
   font-size: 12px;
   font-weight: 700;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
   margin-top: 4px;
@@ -3112,7 +3112,7 @@
 .badge-label {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6b7280;
   margin-bottom: 4px;
@@ -3360,9 +3360,11 @@
   font-size: 24px;
   line-height: 1.3;
   color: #1f2937;
-  /* Allow title to wrap naturally */
-  white-space: normal;
-  overflow-wrap: break-word;
+  /* Force single line */
+  white-space: nowrap !important;
+  overflow: hidden !important;
+  text-overflow: ellipsis !important;
+  max-width: 600px;
 }
 
 /* KPI subtitle truncation */
@@ -3396,6 +3398,188 @@
   border-radius: 12px;
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
   overflow: hidden;
+  margin-bottom: 56px; /* Space for fixed footer (48px height + 8px margin) */
+}
+
+/* Discovery Footer - Matching Alert Summary Header Style */
+.discovery-footer {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  background: #ffffff;
+  border-top: 1px solid #e5e5e5;
+  box-shadow: 0 -1px 3px rgba(0, 0, 0, 0.08);
+  z-index: 100;
+  padding: 16px 24px;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+
+.discovery-footer-content {
+  max-width: 1400px;
+  margin: 0 auto;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  gap: 16px;
+}
+
+.discovery-footer-left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.discovery-footer-right {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-left: auto;
+}
+
+.discovery-footer-separator {
+  color: #d1d5db;
+  font-size: 14px;
+  margin: 0 4px;
+}
+
+.discovery-footer-selection-count {
+  color: #32363a;
+  font-size: 12px;
+  font-weight: 600;
+  padding: 0 8px;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+
+/* Footer Button Styles - Matching KPI badge sizes with Calibri font */
+.btn-footer-select {
+  background: #f3f4f6;
+  border: 1px solid #d1d5db;
+  color: #374151;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.btn-footer-select:hover:not(:disabled) {
+  background: #e5e7eb;
+  border-color: #9ca3af;
+  color: #111827;
+}
+
+.btn-footer-select:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.btn-footer-clear {
+  background: #fef3c7;
+  border: 1px solid #fbbf24;
+  color: #92400e;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.btn-footer-clear:hover {
+  background: #fde68a;
+  border-color: #f59e0b;
+  color: #78350f;
+}
+
+.btn-footer-delete-single {
+  background: #e5e7eb !important;
+  border: 1px solid #9ca3af !important;
+  color: #374151 !important;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px !important;
+  font-weight: 700;
+  text-transform: none !important;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+}
+
+.btn-footer-delete-single:hover:not(:disabled) {
+  background: #d1d5db;
+  border-color: #6b7280;
+  color: #1f2937;
+  box-shadow: 0 1px 4px rgba(107, 114, 128, 0.2);
+}
+
+.btn-footer-delete-selected {
+  background: #fef3c7 !important;
+  border: 1px solid #f59e0b !important;
+  color: #92400e !important;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: none !important;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+
+.btn-footer-delete-selected:hover:not(:disabled) {
+  background: #3D5A80;
+  border-color: #1B4965;
+  box-shadow: 0 1px 4px rgba(61, 90, 128, 0.3);
+}
+
+.btn-footer-delete-selected:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-footer-delete-single:hover:not(:disabled) {
+  background: #fecaca;
+  border-color: #ef4444;
+  color: #7f1d1d;
+  box-shadow: 0 1px 4px rgba(239, 68, 68, 0.2);
+}
+
+.btn-footer-delete-single:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
+}
+
+.btn-footer-delete-all {
+  background: #fee2e2 !important;
+  border: 1px solid #f87171 !important;
+  color: #991b1b !important;
+  padding: 4px 10px;
+  border-radius: 4px;
+  font-size: 11px;
+  font-weight: 700;
+  text-transform: none !important;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  line-height: 1.4;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
+}
+
+.btn-footer-delete-all:hover:not(:disabled) {
+  background: #5C677D;
+  border-color: #3D5A80;
+  box-shadow: 0 2px 6px rgba(92, 103, 125, 0.3);
+}
+
+.btn-footer-delete-all:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
 }
 
 /* Page mode adjustments for discovery detail */
@@ -3487,7 +3671,7 @@
   font-size: 14px;
   font-weight: 700;
   letter-spacing: 1px;
-  text-transform: uppercase;
+  
   color: #6a6d70;
 }
 
@@ -3519,6 +3703,7 @@
   font-weight: 700;
   color: #32363a;
   line-height: 1.2;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .summary-kpi.financial .kpi-value {
@@ -3528,9 +3713,10 @@
 .summary-kpi .kpi-label {
   font-size: 11px;
   font-weight: 600;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
   color: #6a6d70;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .severity-badges,
@@ -3545,7 +3731,8 @@
   border-radius: 4px;
   font-size: 11px;
   font-weight: 700;
-  text-transform: uppercase;
+  
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .severity-badge.critical {
@@ -3575,6 +3762,7 @@
   font-weight: 600;
   background: #3D5A80;
   color: white;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
 }
 
 .module-badge.module-fi {
@@ -3699,7 +3887,7 @@
   font-size: 14px;
   font-weight: 600;
   color: #1f2937;
-  text-transform: uppercase;
+  
   letter-spacing: 0.5px;
 }
 
@@ -3754,7 +3942,7 @@
 .json-data-table .json-value {
   color: #1f2937;
   word-break: break-word;
-  font-family: 'JetBrains Mono', monospace;
+  font-family: Calibri, 'Segoe UI', Arial, Helvetica, sans-serif;
   font-size: 12px;
 }
 

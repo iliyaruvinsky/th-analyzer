@@ -110,6 +110,8 @@ class ScoringEngine:
             "unauthorized transaction",        # Security bypass
             "dialog user by unauthorized",     # User master manipulation
             "activating transaction",          # Unauthorized transaction execution
+            "unauthorized.*activating",        # Unauthorized transaction activation
+            "creating dialog user.*unauthorized", # User master manipulation by non-authorized party
         ],
         # HIGH: Possible fraud/theft, SoD+fraud combo, sensitive transactions, rarely used vendors
         "HIGH": [
@@ -122,6 +124,8 @@ class ScoringEngine:
             "account payable fraud",           # Possible fraud
             "inventory variance",              # Possible theft
             "inventory count.*differ",         # Possible theft
+            "inventory.*count.*difference",     # Inventory count discrepancy
+            "material.*movement.*suspicious",  # Suspicious material movements
             "login.*password.*not.*sso",       # SSO bypass
             "rarely used vendor",              # Silent vendor with rare transactions = fraud indicator
             "rarely used vendors",             # Plural form
@@ -146,6 +150,58 @@ class ScoringEngine:
             "credit limit changed",            # Business decision
             "inactive vendor.*no balance",     # Housekeeping
             "inactive vendor$",                # Housekeeping (without high balance)
+        ],
+    }
+
+    # Alert type to severity mapping for BUSINESS_CONTROL focus area
+    # These patterns help determine severity based on alert name/type
+    BUSINESS_CONTROL_ALERT_SEVERITY = {
+        # CRITICAL: System-wide failures, critical business process breakdowns
+        "CRITICAL": [
+            # No critical patterns defined yet - BUSINESS_CONTROL typically doesn't have critical alerts
+            # Critical issues would typically be classified as BUSINESS_PROTECTION (fraud) or TECHNICAL_CONTROL
+        ],
+        # HIGH: Significant business process issues requiring prompt review
+        "HIGH": [
+            "unbilled.*deliver",               # Goods shipped but not invoiced - revenue risk (matches "delivery" or "deliveries")
+            "unbilled delivery",                # Direct form
+            "process.*bottleneck",             # Critical process stuck
+            "stuck.*order",                     # Orders blocked/stuck
+            "blocked.*order",                   # Orders blocked
+            "delivery.*block",                  # Delivery blocked
+            "negative.*profit",                 # Negative profit deals - business loss
+            "profit.*deal.*negative",          # Negative profit deals
+            "exceptional posting",             # Unusual accounting entries - may indicate errors
+            "data.*exchange.*failure",         # Critical integration failure
+            "incomplete.*service",              # Service delivery incomplete
+            "overdue.*order",                   # Overdue orders - customer impact
+            "overdue.*delivery",                # Overdue deliveries
+        ],
+        # MEDIUM: Process deviations, approval delays, pricing issues
+        "MEDIUM": [
+            "payment.*terms.*mismatch",        # Process error - needs review
+            "over.*delivery.*tolerance",       # Control bypass potential
+            "approval.*delay",                  # Process delay
+            "waiting.*approval",                # Pending approval
+            "pending.*approval",                # Pending approval
+            "pricing.*issue",                   # Pricing anomaly
+            "margin.*issue",                    # Margin concern
+            "goods.*receipt.*issue",            # GR/IR issues
+            "purchase.*order.*issue",          # PO process issues
+            "sales.*order.*issue",              # SO process issues
+            "delay",                           # General delays
+            "anomal",                          # Business anomalies
+        ],
+        # LOW: Tracking/housekeeping, informational alerts
+        "LOW": [
+            "credit limit changed",            # Business decision - tracking
+            "inactive vendor.*no balance",     # Housekeeping
+            "inactive customer.*no balance",   # Housekeeping
+            "inactive vendor$",                 # Housekeeping (without high balance)
+            "inactive customer$",              # Housekeeping
+            "master data.*change",             # Master data updates - informational
+            "vendor.*created",                 # Vendor creation - tracking
+            "customer.*created",                # Customer creation - tracking
         ],
     }
 
@@ -177,11 +233,20 @@ class ScoringEngine:
         self._currency_patterns = self._build_currency_patterns()
         self._compiled_alert_patterns = self._compile_alert_patterns()
 
-    def _compile_alert_patterns(self) -> Dict[str, List[re.Pattern]]:
-        """Pre-compile regex patterns for alert severity matching."""
+    def _compile_alert_patterns(self) -> Dict[str, Dict[str, List[re.Pattern]]]:
+        """Pre-compile regex patterns for alert severity matching per focus area."""
         compiled = {}
+        
+        # Compile BUSINESS_PROTECTION patterns
+        compiled["BUSINESS_PROTECTION"] = {}
         for severity, patterns in self.BUSINESS_PROTECTION_ALERT_SEVERITY.items():
-            compiled[severity] = [re.compile(p, re.IGNORECASE) for p in patterns]
+            compiled["BUSINESS_PROTECTION"][severity] = [re.compile(p, re.IGNORECASE) for p in patterns]
+        
+        # Compile BUSINESS_CONTROL patterns
+        compiled["BUSINESS_CONTROL"] = {}
+        for severity, patterns in self.BUSINESS_CONTROL_ALERT_SEVERITY.items():
+            compiled["BUSINESS_CONTROL"][severity] = [re.compile(p, re.IGNORECASE) for p in patterns]
+        
         return compiled
 
     def determine_severity_from_alert_type(
@@ -211,13 +276,18 @@ class ScoringEngine:
         """
         combined_text = f"{alert_name} {explanation} {code_summary}".lower()
 
-        # For BUSINESS_PROTECTION, use specific alert-type mapping
-        if focus_area == "BUSINESS_PROTECTION":
-            for severity_name, patterns in self._compiled_alert_patterns.items():
+        # For BUSINESS_PROTECTION and BUSINESS_CONTROL, use specific alert-type mapping
+        if focus_area in ["BUSINESS_PROTECTION", "BUSINESS_CONTROL"]:
+            # Get compiled patterns for this focus area
+            focus_patterns = self._compiled_alert_patterns.get(focus_area, {})
+            
+            # Check patterns in order: CRITICAL -> HIGH -> MEDIUM -> LOW
+            for severity_name in ["CRITICAL", "HIGH", "MEDIUM", "LOW"]:
+                patterns = focus_patterns.get(severity_name, [])
                 for pattern in patterns:
                     if pattern.search(combined_text):
                         severity_level = getattr(SeverityLevel, severity_name)
-                        reasoning = f"Alert type matches {severity_name} pattern: {pattern.pattern}"
+                        reasoning = f"Alert type matches {severity_name} pattern for {focus_area}: {pattern.pattern}"
                         return severity_level, reasoning
 
         # Check for specific high-risk indicators across all focus areas

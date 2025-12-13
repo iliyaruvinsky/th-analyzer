@@ -13,7 +13,7 @@ read :
 C:\Users\USER\Desktop\tha-new\CLAUDE.md
 C:\Users\USER\Desktop\tha-new\.claude\rules\anti-hallucination-rules.md
 C:\Users\USER\Desktop\tha-new\.claude\rules\quantitative-alert-analysis.md
-
+C:\Users\USER\Desktop\tha-new\.claude\WORKFLOW.md
 read ALL docs in: C:\Users\USER\Desktop\tha-new\docs\th-context\analysis-rules
 "C:\Users\USER\Desktop\tha-new\docs\scoring-rules\BUSINESS_PROTECTION.md"
 

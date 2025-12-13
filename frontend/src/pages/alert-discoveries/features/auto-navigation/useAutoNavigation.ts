@@ -13,9 +13,9 @@ interface UseAutoNavigationOptions {
  * 
  * @param id - Current discovery ID from URL params
  * @param discoveries - Array of available discoveries
- * @param replace - Whether to replace history entry (default: true)
+ * @param replace - Whether to replace history entry (default: false - preserves browser history)
  */
-export const useAutoNavigation = ({ id, discoveries, replace = true }: UseAutoNavigationOptions) => {
+export const useAutoNavigation = ({ id, discoveries, replace = false }: UseAutoNavigationOptions) => {
   const navigate = useNavigate();
 
   useEffect(() => {

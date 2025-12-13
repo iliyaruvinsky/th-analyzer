@@ -32,7 +32,7 @@ const AlertSummary: React.FC<AlertSummaryProps> = ({ discoveries, currencyFormat
 
   return (
     <div className="alert-summary-header">
-      <h2 className="alert-summary-title">ALERT SUMMARY</h2>
+      <h2 className="alert-summary-title">Alert Summary</h2>
       <div className="alert-summary-kpis">
         <div className="summary-kpi">
           <span className="kpi-value">{totalDiscoveries}</span>

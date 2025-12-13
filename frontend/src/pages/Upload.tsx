@@ -69,18 +69,34 @@ const Upload: React.FC = () => {
     }
   };
 
-  // Multi-file artifact handlers - add files one by one
-  const handleAddArtifactFile = (e: React.ChangeEvent<HTMLInputElement>) => {
-    if (e.target.files && e.target.files[0]) {
-      const newFile = e.target.files[0];
-      // Check if file with same name already exists
-      const exists = artifactFiles.some(f => f.name === newFile.name);
-      if (!exists) {
-        setArtifactFiles(prev => [...prev, newFile]);
+  // Multi-file artifact handlers - add all files at once
+  const handleAddArtifactFiles = (e: React.ChangeEvent<HTMLInputElement>) => {
+    if (e.target.files && e.target.files.length > 0) {
+      const newFiles = Array.from(e.target.files);
+      
+      // Validate we have exactly 4 files
+      if (newFiles.length !== 4) {
+        setArtifactError('Please select exactly 4 files (Code, Explanation, Metadata, Summary)');
+        setArtifactSuccess(null);
+        e.target.value = '';
+        return;
       }
+      
+      // Check for duplicate files
+      const duplicates = newFiles.filter((file, index) => 
+        newFiles.findIndex(f => f.name === file.name) !== index
+      );
+      if (duplicates.length > 0) {
+        setArtifactError(`Duplicate files detected: ${duplicates.map(f => f.name).join(', ')}`);
+        setArtifactSuccess(null);
+        e.target.value = '';
+        return;
+      }
+      
+      setArtifactFiles(newFiles);
       setArtifactError(null);
       setArtifactSuccess(null);
-      // Reset the input so same file can be re-selected if removed
+      // Reset the input so same files can be re-selected if cleared
       e.target.value = '';
     }
   };
@@ -141,21 +157,34 @@ const Upload: React.FC = () => {
       console.log('Analysis result:', analyzeResult);
       setArtifactUploadProgress(100);
 
-      // Refresh data
+      // Refresh all relevant data - force immediate refetch
       await queryClient.invalidateQueries({ queryKey: ['findings'] });
       await queryClient.invalidateQueries({ queryKey: ['kpis'] });
-      await queryClient.refetchQueries({ queryKey: ['findings'] });
+      await queryClient.invalidateQueries({ queryKey: ['critical-discoveries'] });
+      await queryClient.invalidateQueries({ queryKey: ['criticalDiscoveries'] });
+      await queryClient.invalidateQueries({ queryKey: ['alert-dashboard-kpis'] });
+      // Force refetch of active queries immediately
+      await queryClient.refetchQueries({ queryKey: ['findings'], type: 'active' });
+      await queryClient.refetchQueries({ queryKey: ['critical-discoveries'], type: 'active' });
+      await queryClient.refetchQueries({ queryKey: ['criticalDiscoveries'], type: 'active' });
 
+      // Extract alert info from results
+      const alertName = uploadResult.alert_name || 'Alert';
+      const focusArea = analyzeResult.focus_area || 'Unknown';
+      const exposure = (analyzeResult.money_loss_estimate || 0).toLocaleString();
+      const severity = analyzeResult.severity || 'Unknown';
+      
       setArtifactSuccess(
-        `Success! Finding "${analyzeResult.focus_area}" created with ` +
-        `$${(analyzeResult.money_loss_estimate || 0).toLocaleString()} exposure`
+        `Success! Alert "${alertName}" analyzed as ${focusArea} (${severity}). ` +
+        `$${exposure} exposure. Redirecting to Discoveries...`
       );
 
       setTimeout(() => {
         setArtifactUploadProgress(0);
         setArtifactFiles([]);
-        navigate('/');
-      }, 2000);
+        // Navigate to Discoveries page instead of Dashboard
+        navigate('/alert-discoveries');
+      }, 3000);
 
     } catch (error: any) {
       console.error('Artifact upload/analysis failed:', error);
@@ -211,22 +240,27 @@ const Upload: React.FC = () => {
           </p>
 
           <div className="mb-3">
-            <label className="form-label">Add Artifact Files (one by one)</label>
+            <label className="form-label">Select All 4 Artifact Files</label>
             <input
               type="file"
               className="form-control"
               accept=".txt,.csv,.xlsx,.docx,.pdf"
-              onChange={handleAddArtifactFile}
+              multiple
+              onChange={handleAddArtifactFiles}
             />
             <small className="form-text text-muted">
-              Add each file one at a time. Files: Code_*, Explanation_*, Metadata_*, Summary_*
+              Select all 4 files at once: Code_*, Explanation_*, Metadata_*, Summary_*
             </small>
           </div>
 
           {artifactFiles.length > 0 && (
             <div className="mb-3">
               <div className="d-flex justify-content-between align-items-center mb-2">
-                <h6 className="mb-0">Added Files ({artifactFiles.length}/4):</h6>
+                <h6 className="mb-0">
+                  Selected Files ({artifactFiles.length}/4):
+                  {artifactFiles.length === 4 && <span className="text-success ms-2">✓ Ready to upload</span>}
+                  {artifactFiles.length !== 4 && <span className="text-warning ms-2">⚠ Need {4 - artifactFiles.length} more file(s)</span>}
+                </h6>
                 <button
                   className="btn btn-sm btn-outline-danger"
                   onClick={handleClearArtifactFiles}
@@ -236,32 +270,56 @@ const Upload: React.FC = () => {
               </div>
               <ul className="list-group list-group-flush">
                 <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.code ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <span><strong>Code:</strong> {fileCategories.code?.name || '(not added yet)'}</span>
+                  <span>
+                    <strong>Code:</strong> {fileCategories.code ? (
+                      <span className="text-success">✓ {fileCategories.code.name}</span>
+                    ) : (
+                      <span className="text-warning">⚠ (not found)</span>
+                    )}
+                  </span>
                   {fileCategories.code && (
                     <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.code!.name)}>×</button>
                   )}
                 </li>
                 <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.explanation ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <span><strong>Explanation:</strong> {fileCategories.explanation?.name || '(not added yet)'}</span>
+                  <span>
+                    <strong>Explanation:</strong> {fileCategories.explanation ? (
+                      <span className="text-success">✓ {fileCategories.explanation.name}</span>
+                    ) : (
+                      <span className="text-warning">⚠ (not found)</span>
+                    )}
+                  </span>
                   {fileCategories.explanation && (
                     <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.explanation!.name)}>×</button>
                   )}
                 </li>
                 <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.metadata ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <span><strong>Metadata:</strong> {fileCategories.metadata?.name || '(not added yet)'}</span>
+                  <span>
+                    <strong>Metadata:</strong> {fileCategories.metadata ? (
+                      <span className="text-success">✓ {fileCategories.metadata.name}</span>
+                    ) : (
+                      <span className="text-warning">⚠ (not found)</span>
+                    )}
+                  </span>
                   {fileCategories.metadata && (
                     <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.metadata!.name)}>×</button>
                   )}
                 </li>
                 <li className={`list-group-item d-flex justify-content-between align-items-center ${fileCategories.summary ? 'list-group-item-success' : 'list-group-item-warning'}`}>
-                  <span><strong>Summary:</strong> {fileCategories.summary?.name || '(not added yet)'}</span>
+                  <span>
+                    <strong>Summary:</strong> {fileCategories.summary ? (
+                      <span className="text-success">✓ {fileCategories.summary.name}</span>
+                    ) : (
+                      <span className="text-warning">⚠ (not found)</span>
+                    )}
+                  </span>
                   {fileCategories.summary && (
                     <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(fileCategories.summary!.name)}>×</button>
                   )}
                 </li>
                 {fileCategories.other.length > 0 && fileCategories.other.map(f => (
                   <li key={f.name} className="list-group-item list-group-item-info d-flex justify-content-between align-items-center">
-                    <span><strong>Other:</strong> {f.name}</span>
+                    <span><strong>Other (unrecognized):</strong> {f.name}</span>
                     <button className="btn btn-sm btn-outline-danger" onClick={() => handleRemoveArtifactFile(f.name)}>×</button>
                   </li>
                 ))}
@@ -271,24 +329,34 @@ const Upload: React.FC = () => {
 
           {artifactUploadProgress > 0 && (
             <div className="mb-3">
-              <div className="progress">
+              <div className="progress mb-2">
                 <div
-                  className="progress-bar bg-primary"
+                  className="progress-bar bg-primary progress-bar-striped progress-bar-animated"
                   role="progressbar"
                   style={{ width: `${artifactUploadProgress}%` }}
                 >
-                  {artifactUploadProgress < 50 ? 'Uploading...' : artifactUploadProgress < 100 ? 'Analyzing...' : 'Done!'}
+                  {artifactUploadProgress < 25 ? 'Uploading files...' : 
+                   artifactUploadProgress < 50 ? 'Uploading files...' : 
+                   artifactUploadProgress < 75 ? 'Analyzing artifacts...' : 
+                   artifactUploadProgress < 100 ? 'Saving to database...' : 'Done!'}
                 </div>
               </div>
+              <small className="text-muted">
+                {artifactUploadProgress < 25 ? 'Step 1/4: Uploading files to server...' :
+                 artifactUploadProgress < 50 ? 'Step 2/4: Files uploaded, starting analysis...' :
+                 artifactUploadProgress < 75 ? 'Step 3/4: Analyzing artifacts (standalone mode)...' :
+                 artifactUploadProgress < 100 ? 'Step 4/4: Saving results to database...' :
+                 'All steps completed successfully!'}
+              </small>
             </div>
           )}
 
           <button
             className="btn btn-primary"
             onClick={handleArtifactUpload}
-            disabled={artifactFiles.length === 0 || artifactUploadProgress > 0}
+            disabled={artifactFiles.length !== 4 || artifactUploadProgress > 0}
           >
-            {artifactUploadProgress > 0 ? 'Processing...' : 'Upload & Analyze Artifacts'}
+            {artifactUploadProgress > 0 ? 'Processing...' : artifactFiles.length === 4 ? 'Upload & Analyze Artifacts' : `Select ${4 - artifactFiles.length} more file(s)`}
           </button>
 
           {artifactError && (
@@ -299,7 +367,15 @@ const Upload: React.FC = () => {
 
           {artifactSuccess && (
             <div className="alert alert-success mt-3">
-              {artifactSuccess}
+              <div className="d-flex justify-content-between align-items-center">
+                <span>{artifactSuccess}</span>
+                <button
+                  className="btn btn-sm btn-outline-success"
+                  onClick={() => navigate('/alert-discoveries')}
+                >
+                  Go to Discoveries →
+                </button>
+              </div>
             </div>
           )}
         </div>

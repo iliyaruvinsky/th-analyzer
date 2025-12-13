@@ -86,11 +86,9 @@ Once the backend is running, visit:
 ## Documentation
 
 - [Testing Guide](TESTING.md) - **Start here for testing!** (Quick test + comprehensive checklist)
-- [Deployment Guide](DEPLOYMENT.md) - Production deployment and Docker troubleshooting
+- [Deployment Guide](DEPLOYMENT.md) - Production deployment and Docker troubleshooting (includes setup and troubleshooting)
 - [AI Assistant Guide](CLAUDE.md) - For AI agents working on the project
 - [Development Handover](llm_handover.md) - Current project state and changelog
-- [Docker Setup Guide](DOCKER_SETUP_GUIDE.md) - Docker configuration
-- [Docker Troubleshooting](DOCKER_TROUBLESHOOTING.md) - Container issues
 
 ## Related Projects
 

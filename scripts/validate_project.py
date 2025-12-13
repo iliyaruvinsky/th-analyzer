@@ -131,13 +131,39 @@ class ProjectValidator:
         
         for file_path, references in self.file_references.items():
             for ref in references:
-                ref_path = Path(ref)
+                # Skip TypeScript/JavaScript file extensions that might not exist
+                # TypeScript compiler handles .ts/.tsx resolution
+                if ref.endswith(('.ts', '.tsx', '.js', '.jsx')):
+                    # Try to resolve without extension first
+                    ref_no_ext = ref.rsplit('.', 1)[0]
+                    ref_path = Path(ref_no_ext)
+                else:
+                    ref_path = Path(ref)
+                
                 if not ref_path.is_absolute():
                     # Resolve relative to referencing file
                     base_path = Path(file_path).parent
-                    ref_path = base_path / ref
+                    ref_path = base_path / ref_path
+                    
+                    # Try with common extensions if no extension
+                    if not ref_path.suffix and not ref_path.exists():
+                        for ext in ['.md', '.py', '.ts', '.tsx', '.js', '.jsx', '.json']:
+                            test_path = ref_path.with_suffix(ext)
+                            if test_path.exists():
+                                ref_path = test_path
+                                break
                 
+                # Check if file exists
                 if not ref_path.exists():
+                    # Check if it's a directory reference (ends with /)
+                    if ref.endswith('/'):
+                        dir_path = ref_path
+                        if not dir_path.is_absolute():
+                            base_path = Path(file_path).parent
+                            dir_path = base_path / dir_path
+                        if dir_path.is_dir():
+                            continue  # Directory exists, skip
+                    
                     self.issues.append({
                         'type': 'missing_file',
                         'severity': 'high',
@@ -231,8 +257,15 @@ class ProjectValidator:
             if url.startswith('http'):
                 continue  # External links
             
+            # Handle anchor links - separate file path from anchor
+            if '#' in url:
+                file_part, anchor = url.split('#', 1)
+                if not file_part:  # Just anchor, same file
+                    continue
+                url = file_part  # Check file part only
+            
             if url.startswith('#'):
-                continue  # Anchor links
+                continue  # Anchor links in same file
             
             self.file_references[str(file_path)].append(url)
     
@@ -274,18 +307,11 @@ class ProjectValidator:
                 pass
     
     def _check_typescript_file(self, file_path: Path, content: str):
-        """Check TypeScript file"""
-        # Check for imports
-        import_pattern = r"import\s+.*from\s+['\"]([^'\"]+)['\"]"
-        imports = re.findall(import_pattern, content)
-        
-        for imp in imports:
-            if not imp.startswith('.'):
-                continue  # External package
-            
-            # Resolve relative import
-            if imp.startswith('./') or imp.startswith('../'):
-                self.file_references[str(file_path)].append(imp)
+        """Check TypeScript file - skip import checking as TypeScript compiler handles this"""
+        # TypeScript imports are resolved by the TypeScript compiler
+        # We skip checking them to avoid false positives
+        # The compiler will catch any actual import errors
+        pass
     
     def report_results(self):
         """Report all found issues"""

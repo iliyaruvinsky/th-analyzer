@@ -272,10 +272,97 @@ frontend/src/pages/alert-discoveries/
 
 ---
 
+## Detailed Feature Analysis
+
+### Feature-by-Feature Implementation Details
+
+This section consolidates the detailed analysis from `ANALYSIS_DISCOVERIES_INCONSISTENCIES.md`:
+
+#### 1. AlertSummary Header with KPI Cards
+- ✅ Component exists and renders
+- ⚠️ **ISSUE:** KPI calculation is client-side aggregation from `discoveries` array
+- ⚠️ **ISSUE:** No real-time updates - uses stale data (30s staleTime)
+- ⚠️ **ISSUE:** Financial Exposure is sum of `financial_impact_usd` - may not match backend reality
+- ⚠️ **ISSUE:** Severity counts are derived from discovery objects, not from authoritative source
+- **Recommendation:** Use `GET /alert-dashboard/kpis` endpoint instead of client-side calculation
+
+#### 2. Full-Page Discovery Detail View
+- ✅ Component exists with `mode="page"`
+- ✅ Renders in full-width layout
+- ⚠️ **ISSUE:** Layout depends on CSS - not truly "full-page" (still within page container)
+- ⚠️ **ISSUE:** No breadcrumb navigation
+- ⚠️ **ISSUE:** No back button to return to discoveries list
+- ⚠️ **ISSUE:** URL changes but no browser back/forward handling
+
+#### 3. Auto-Navigation to First Discovery
+- ✅ Automatically navigates to first discovery if no `id` in URL
+- ⚠️ **ISSUE:** Uses `replace: true` - removes history entry (can't go back) - **FIXED** (changed to `replace: false`)
+- ⚠️ **ISSUE:** Only triggers if `discoveries.length > 0` - no handling for empty state navigation
+- ⚠️ **ISSUE:** Race condition possible if discoveries load after component mounts
+
+#### 4. Create Action Item Functionality
+- ✅ Modal exists and opens
+- ✅ Form fields present
+- ⚠️ **ISSUE:** Requires `alert_analysis_id` from `discovery.discoveries[0]?.alert_analysis_id`
+- ⚠️ **ISSUE:** If no discoveries exist, action item creation fails silently
+- ⚠️ **ISSUE:** No validation of required fields before submission
+- **Recommendation:** Add `alert_analysis_id` to `CriticalDiscoveryDrilldown` schema
+
+#### 5. Alert Explanation (business_purpose)
+- ✅ Displays `discovery.business_purpose`
+- ⚠️ **ISSUE:** No fallback if `business_purpose` is null/undefined
+- ⚠️ **ISSUE:** Text may overflow - no truncation or "read more" functionality
+- **Recommendation:** Add "No business purpose available" message when null
+
+#### 6. Output/Params JSON Popovers
+- ✅ Buttons exist and open popovers
+- ⚠️ **ISSUE:** `raw_summary_data` may be null/undefined - no handling
+- ⚠️ **ISSUE:** `parameters` may be null/undefined - no handling
+- ⚠️ **ISSUE:** No indication if data is empty before clicking
+- **Recommendation:** Disable buttons or show indicator when data is missing
+
+#### 7. Risk Score Explanation
+- ✅ Risk score displayed
+- ✅ Explanation text exists
+- ⚠️ **ISSUE:** Explanation is **hardcoded text** based on score ranges, not real explanation
+- ⚠️ **ISSUE:** No explanation of HOW risk score was calculated
+- ⚠️ **ISSUE:** No link to scoring methodology
+- **Recommendation:** Link to scoring docs, show contributing factors from backend
+
+#### 8. Concentration Metrics
+- ✅ Table exists and displays data
+- ⚠️ **ISSUE:** Table only renders if `discovery.concentration_metrics.length > 0`
+- ⚠️ **ISSUE:** No indication if concentration metrics are missing/empty
+- ⚠️ **ISSUE:** No highlighting of high concentration (>50%) as mentioned in analysis rules
+- **Recommendation:** Show "No concentration data" message, highlight >50% concentrations
+
+#### 9. Key Findings
+- ✅ Table exists and displays data
+- ⚠️ **ISSUE:** Table only renders if `discovery.key_findings.length > 0`
+- ⚠️ **ISSUE:** No indication if key findings are missing/empty
+- ⚠️ **ISSUE:** No link to full analysis report
+- **Recommendation:** Show "No key findings" message, add link to analysis report
+
+### API Dependencies Analysis
+
+#### GET /alert-dashboard/critical-discoveries
+- ✅ Endpoint exists and returns data
+- ⚠️ **ISSUE:** Endpoint requires `AlertAnalysis.critical_discoveries.any()` filter
+- ⚠️ **ISSUE:** Only returns analyses that have critical discoveries - may exclude valid alerts
+- ⚠️ **ISSUE:** Orders by `financial_impact_usd DESC` - may not be desired sort order
+- ⚠️ **ISSUE:** `business_purpose` and `parameters` come from `alert_instance` - may be null
+
+#### POST /alert-dashboard/action-items
+- ✅ Endpoint exists and creates items
+- ⚠️ **ISSUE:** Requires `alert_analysis_id` - must come from nested `discovery.discoveries[0]`
+- ⚠️ **ISSUE:** If discovery has no `discoveries` array or empty array, creation fails
+- **Recommendation:** Add `alert_analysis_id` to top-level `CriticalDiscoveryDrilldown` response
+
 ## Related Documents
 
 - [Feature Documentation](README.md) - Overview and navigation
-- [Inconsistency Analysis](../../../ANALYSIS_DISCOVERIES_INCONSISTENCIES.md) - Detailed comparison
 - [FEATURES.md](../../../FEATURES.md) - Overall feature inventory
 - [llm_handover.md](../../../../llm_handover.md) - Project handover
+
+**Note:** Detailed inconsistency analysis from `ANALYSIS_DISCOVERIES_INCONSISTENCIES.md` has been consolidated into this document above.
 

@@ -224,4 +224,73 @@ When caught in this error:
 
 ---
 
+### **RULE 16: DOCKER BUILD CONTEXT VERIFICATION (CRITICAL FOR UI CHANGES)**
+
+**When editing files for Docker-based projects (especially frontend UI):**
+
+**BEFORE editing ANY file:**
+
+1. **Identify Docker build root:**
+   - **ASK USER:** "Where do you run `docker compose` commands from?"
+   - **OR detect:** Check terminal working directory (usually main repo directory)
+   - **CRITICAL:** Build root = WHERE user runs command, NOT where docker-compose.yml exists
+   - docker-compose.yml exists in multiple places (main + worktrees), but build root is command location
+   - Note the absolute path: `C:\Users\USER\Desktop\tha-new` (example - user's command location)
+
+2. **Detect current workspace:**
+   - Check current workspace path (may be a worktree)
+   - Compare with Docker build root
+   - If mismatch: **WARN USER** and ask which to use
+
+3. **Use absolute path to build root:**
+   - Edit files using absolute path: `C:\Users\USER\Desktop\tha-new\frontend\src\...`
+   - **NOT** workspace-relative: `{workspace}\frontend\src\...`
+   - **NOT** worktree paths: `C:\Users\USER\.cursor\worktrees\tha-new\bep\frontend\src\...`
+
+**AFTER editing file:**
+
+4. **Verify in Docker build location:**
+   - Read file from Docker build root using absolute path
+   - Verify change exists THERE (not in workspace)
+   - If change not in build root: **ADMIT FAILURE** and fix immediately
+
+5. **Visual verification (after user rebuilds):**
+   - User rebuilds Docker: `docker compose up -d --build frontend`
+   - AI uses Playwright to navigate to page
+   - AI takes screenshot
+   - AI verifies change is visible in screenshot
+   - **ONLY THEN** claim success
+
+**Violation Consequences:**
+
+- Editing in wrong directory and claiming success = **IMMEDIATE CORRECTION REQUIRED**
+- 20-30 iteration cycles = **ROOT CAUSE: This rule violation**
+- User frustration = **Direct result of not following this rule**
+
+**Why This Rule Exists:**
+
+- Cursor creates multiple git worktrees automatically
+- AI edits in worktree (e.g., `C:\Users\USER\.cursor\worktrees\tha-new\bep`)
+- Docker builds from main directory (e.g., `C:\Users\USER\Desktop\tha-new`)
+- Changes never appear in running container
+- AI claims success without verifying build location
+- User rebuilds 20-30 times before AI accidentally edits correct location
+- **This wastes 12-36x more time and 10-20x more tokens than necessary**
+
+**Example Violation:**
+- AI edits: `C:\Users\USER\.cursor\worktrees\tha-new\bep\frontend\src\components\Layout.tsx`
+- AI verifies: Same worktree path
+- Docker builds from: `C:\Users\USER\Desktop\tha-new\frontend\src\components\Layout.tsx`
+- Result: Change never appears, 20+ rebuild cycles wasted
+
+**Correct Behavior:**
+1. Ask user OR detect: Build root is `C:\Users\USER\Desktop\tha-new` (where user runs docker compose)
+2. Edit: `C:\Users\USER\Desktop\tha-new\frontend\src\components\Layout.tsx` (absolute path to build root)
+3. Verify: Read from `C:\Users\USER\Desktop\tha-new\frontend\src\components\Layout.tsx` (build root, not workspace)
+4. User rebuilds from build root
+5. Playwright verifies change is visible
+6. Claim success
+
+---
+
 **NO EXCEPTIONS TO THESE RULES UNDER ANY CIRCUMSTANCES**

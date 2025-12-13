@@ -65,7 +65,7 @@ frontend/src/pages/alert-discoveries/
 
 ## Known Issues Summary
 
-See [ANALYSIS_DISCOVERIES_INCONSISTENCIES.md](../../../ANALYSIS_DISCOVERIES_INCONSISTENCIES.md) for complete analysis.
+See [DEVELOPMENT_STATE.md](DEVELOPMENT_STATE.md) for complete analysis (includes consolidated inconsistency analysis).
 
 **Critical Issues:**
 - Action Item Creation depends on nested data structure
@@ -81,9 +81,8 @@ See [ANALYSIS_DISCOVERIES_INCONSISTENCIES.md](../../../ANALYSIS_DISCOVERIES_INCO
 
 ## Related Documentation
 
-- **[DEVELOPMENT_STATE.md](DEVELOPMENT_STATE.md)** - Current development status and assessment ⭐
+- **[DEVELOPMENT_STATE.md](DEVELOPMENT_STATE.md)** - Current development status and assessment ⭐ (includes consolidated inconsistency analysis)
 - [FEATURES.md](../../../FEATURES.md) - Overall feature inventory
-- [ANALYSIS_DISCOVERIES_INCONSISTENCIES.md](../../../ANALYSIS_DISCOVERIES_INCONSISTENCIES.md) - Detailed inconsistency analysis
 - [llm_handover.md](../../../../llm_handover.md) - Project handover document
 
 ---

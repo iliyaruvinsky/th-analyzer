@@ -39,8 +39,12 @@ from app.schemas.alert_dashboard import (
     # Dashboard
     DashboardKPIsResponse, CriticalDiscoveryDrilldown
 )
+from app.schemas.maintenance import DeleteResponse
+from app.utils.audit_logger import audit_log
+import logging
 
 router = APIRouter(prefix="/alert-dashboard", tags=["alert-dashboard"])
+logger = logging.getLogger(__name__)
 
 
 # =============================================================================
@@ -148,7 +152,10 @@ async def get_critical_discoveries_drilldown(
         joinedload(AlertAnalysis.alert_instance).joinedload(AlertInstance.exception_indicator)
     ).filter(
         AlertAnalysis.critical_discoveries.any()
-    ).order_by(desc(AlertAnalysis.financial_impact_usd)).limit(limit).all()
+    ).order_by(
+        desc(AlertAnalysis.financial_impact_usd),
+        desc(AlertAnalysis.created_at)  # Secondary sort by creation date (newest first for same financial impact)
+    ).limit(limit).all()
 
     result = []
     for analysis in analyses:
@@ -638,3 +645,371 @@ async def create_action_items_bulk(
     for item in db_items:
         db.refresh(item)
     return [ActionItemResponse.model_validate(item) for item in db_items]
+
+
+# =============================================================================
+# Deletion Endpoints
+# =============================================================================
+
+@router.delete("/analyses/{analysis_id}", response_model=DeleteResponse)
+async def delete_alert_analysis(
+    analysis_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Delete a single alert analysis and all related data.
+    
+    Cascades to:
+    - CriticalDiscoveries
+    - KeyFindings
+    - ConcentrationMetrics
+    - ActionItems
+    """
+    analysis = db.query(AlertAnalysis).filter(AlertAnalysis.id == analysis_id).first()
+    if not analysis:
+        raise HTTPException(status_code=404, detail=f"Alert analysis {analysis_id} not found")
+    
+    try:
+        # Count related records before deletion
+        discovery_count = len(analysis.critical_discoveries)
+        key_finding_count = len(analysis.key_findings)
+        concentration_count = len(analysis.concentration_metrics)
+        action_item_count = len(analysis.action_items)
+        
+        alert_instance = analysis.alert_instance
+        alert_id = alert_instance.alert_id if alert_instance else "UNKNOWN"
+        alert_name = alert_instance.alert_name if alert_instance else "Unknown Alert"
+        
+        # Delete the analysis (cascade deletes will handle children)
+        db.delete(analysis)
+        db.commit()
+        
+        # Audit log
+        audit_log(
+            db=db,
+            action="delete",
+            entity_type="alert_analysis",
+            entity_id=analysis_id,
+            description=f"Deleted alert analysis {analysis_id} for alert {alert_id}: {alert_name}",
+            details={
+                "alert_id": alert_id,
+                "alert_name": alert_name,
+                "discoveries_deleted": discovery_count,
+                "key_findings_deleted": key_finding_count,
+                "concentration_metrics_deleted": concentration_count,
+                "action_items_deleted": action_item_count
+            },
+            status="success"
+        )
+        
+        return DeleteResponse(
+            success=True,
+            message=f"Alert analysis {analysis_id} and all related data deleted successfully",
+            deleted_records={
+                "alert_analysis": 1,
+                "critical_discoveries": discovery_count,
+                "key_findings": key_finding_count,
+                "concentration_metrics": concentration_count,
+                "action_items": action_item_count
+            }
+        )
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error deleting alert analysis {analysis_id}: {str(e)}")
+        
+        audit_log(
+            db=db,
+            action="delete",
+            entity_type="alert_analysis",
+            entity_id=analysis_id,
+            description=f"Failed to delete alert analysis {analysis_id}",
+            status="error",
+            error_message=str(e)
+        )
+        
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error deleting alert analysis: {str(e)}"
+        )
+
+
+@router.delete("/alert-instances/by-alert-id/{alert_id}", response_model=DeleteResponse)
+async def delete_alert_instance_by_alert_id(
+    alert_id: str,
+    db: Session = Depends(get_db)
+):
+    """
+    Delete an alert instance by alert_id (e.g., "200025_001444") and all its analyses.
+    
+    Cascades to:
+    - All AlertAnalyses for this instance
+    - All CriticalDiscoveries, KeyFindings, ConcentrationMetrics, ActionItems
+    """
+    alert_instance = db.query(AlertInstance).filter(AlertInstance.alert_id == alert_id).first()
+    if not alert_instance:
+        raise HTTPException(status_code=404, detail=f"Alert instance with alert_id '{alert_id}' not found")
+    
+    alert_instance_id = alert_instance.id
+    return await _delete_alert_instance_internal(alert_instance_id, alert_instance, db)
+
+
+@router.delete("/alert-instances/{alert_instance_id}", response_model=DeleteResponse)
+async def delete_alert_instance(
+    alert_instance_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Delete an alert instance and all its analyses.
+    
+    Cascades to:
+    - All AlertAnalyses for this instance
+    - All CriticalDiscoveries, KeyFindings, ConcentrationMetrics, ActionItems
+    """
+    alert_instance = db.query(AlertInstance).filter(AlertInstance.id == alert_instance_id).first()
+    if not alert_instance:
+        raise HTTPException(status_code=404, detail=f"Alert instance {alert_instance_id} not found")
+    
+    return await _delete_alert_instance_internal(alert_instance_id, alert_instance, db)
+
+
+def _delete_alert_instance_internal(
+    alert_instance_id: int,
+    alert_instance: AlertInstance,
+    db: Session
+) -> DeleteResponse:
+    """
+    Internal function to delete an alert instance.
+    """
+    
+    try:
+        # Count related records before deletion
+        analyses = alert_instance.analyses
+        analysis_count = len(analyses)
+        
+        total_discoveries = sum(len(a.critical_discoveries) for a in analyses)
+        total_key_findings = sum(len(a.key_findings) for a in analyses)
+        total_concentration = sum(len(a.concentration_metrics) for a in analyses)
+        total_action_items = sum(len(a.action_items) for a in analyses)
+        
+        alert_id = alert_instance.alert_id
+        alert_name = alert_instance.alert_name
+        
+        # Delete the instance (cascade deletes will handle all analyses and their children)
+        db.delete(alert_instance)
+        db.commit()
+        
+        # Audit log
+        audit_log(
+            db=db,
+            action="delete",
+            entity_type="alert_instance",
+            entity_id=alert_instance_id,
+            description=f"Deleted alert instance {alert_instance_id}: {alert_id} - {alert_name}",
+            details={
+                "alert_id": alert_id,
+                "alert_name": alert_name,
+                "analyses_deleted": analysis_count,
+                "discoveries_deleted": total_discoveries,
+                "key_findings_deleted": total_key_findings,
+                "concentration_metrics_deleted": total_concentration,
+                "action_items_deleted": total_action_items
+            },
+            status="success"
+        )
+        
+        return DeleteResponse(
+            success=True,
+            message=f"Alert instance {alert_instance_id} ({alert_id}) and all related data deleted successfully",
+            deleted_records={
+                "alert_instance": 1,
+                "alert_analyses": analysis_count,
+                "critical_discoveries": total_discoveries,
+                "key_findings": total_key_findings,
+                "concentration_metrics": total_concentration,
+                "action_items": total_action_items
+            }
+        )
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error deleting alert instance {alert_instance_id}: {str(e)}")
+        
+        audit_log(
+            db=db,
+            action="delete",
+            entity_type="alert_instance",
+            entity_id=alert_instance_id,
+            description=f"Failed to delete alert instance {alert_instance_id}",
+            status="error",
+            error_message=str(e)
+        )
+        
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error deleting alert instance: {str(e)}"
+        )
+
+
+@router.delete("/alert-instances", response_model=DeleteResponse)
+async def delete_all_alert_instances(
+    confirm: bool = Query(False, description="Must be True to confirm deletion"),
+    db: Session = Depends(get_db)
+):
+    """
+    Delete ALL alert instances and all related data.
+    
+    WARNING: This is a destructive operation that will delete:
+    - All AlertInstances
+    - All AlertAnalyses
+    - All CriticalDiscoveries
+    - All KeyFindings
+    - All ConcentrationMetrics
+    - All ActionItems
+    
+    Requires confirm=true query parameter.
+    """
+    if not confirm:
+        raise HTTPException(
+            status_code=400,
+            detail="Must set confirm=true to delete all alert instances"
+        )
+    
+    try:
+        # Count all records before deletion
+        all_instances = db.query(AlertInstance).all()
+        instance_count = len(all_instances)
+        
+        total_analyses = 0
+        total_discoveries = 0
+        total_key_findings = 0
+        total_concentration = 0
+        total_action_items = 0
+        
+        for instance in all_instances:
+            analyses = instance.analyses
+            total_analyses += len(analyses)
+            for analysis in analyses:
+                total_discoveries += len(analysis.critical_discoveries)
+                total_key_findings += len(analysis.key_findings)
+                total_concentration += len(analysis.concentration_metrics)
+                total_action_items += len(analysis.action_items)
+        
+        # Delete all instances (cascade deletes will handle everything)
+        db.query(AlertInstance).delete()
+        db.commit()
+        
+        # Audit log
+        audit_log(
+            db=db,
+            action="delete_all",
+            entity_type="alert_instance",
+            description="Deleted all alert instances and related data",
+            details={
+                "alert_instances_deleted": instance_count,
+                "alert_analyses_deleted": total_analyses,
+                "critical_discoveries_deleted": total_discoveries,
+                "key_findings_deleted": total_key_findings,
+                "concentration_metrics_deleted": total_concentration,
+                "action_items_deleted": total_action_items
+            },
+            status="success"
+        )
+        
+        return DeleteResponse(
+            success=True,
+            message="All alert instances and related data deleted successfully",
+            deleted_records={
+                "alert_instances": instance_count,
+                "alert_analyses": total_analyses,
+                "critical_discoveries": total_discoveries,
+                "key_findings": total_key_findings,
+                "concentration_metrics": total_concentration,
+                "action_items": total_action_items
+            }
+        )
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error deleting all alert instances: {str(e)}")
+        
+        audit_log(
+            db=db,
+            action="delete_all",
+            entity_type="alert_instance",
+            description="Failed to delete all alert instances",
+            status="error",
+            error_message=str(e)
+        )
+        
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error deleting all alert instances: {str(e)}"
+        )
+
+
+@router.delete("/discoveries/{discovery_id}", response_model=DeleteResponse)
+async def delete_critical_discovery(
+    discovery_id: int,
+    db: Session = Depends(get_db)
+):
+    """
+    Delete a single critical discovery.
+    
+    This removes only the discovery record, not the entire analysis.
+    Use this when you want to remove a specific discovery without deleting
+    the whole alert analysis.
+    """
+    discovery = db.query(CriticalDiscovery).filter(CriticalDiscovery.id == discovery_id).first()
+    if not discovery:
+        raise HTTPException(status_code=404, detail=f"Critical discovery {discovery_id} not found")
+    
+    try:
+        analysis_id = discovery.alert_analysis_id
+        title = discovery.title
+        
+        # Delete the discovery
+        db.delete(discovery)
+        db.commit()
+        
+        # Audit log
+        audit_log(
+            db=db,
+            action="delete",
+            entity_type="critical_discovery",
+            entity_id=discovery_id,
+            description=f"Deleted critical discovery {discovery_id}: {title}",
+            details={
+                "discovery_id": discovery_id,
+                "title": title,
+                "alert_analysis_id": analysis_id
+            },
+            status="success"
+        )
+        
+        return DeleteResponse(
+            success=True,
+            message=f"Critical discovery {discovery_id} deleted successfully",
+            deleted_records={
+                "critical_discovery": 1
+            }
+        )
+        
+    except Exception as e:
+        db.rollback()
+        logger.error(f"Error deleting critical discovery {discovery_id}: {str(e)}")
+        
+        audit_log(
+            db=db,
+            action="delete",
+            entity_type="critical_discovery",
+            entity_id=discovery_id,
+            description=f"Failed to delete critical discovery {discovery_id}",
+            status="error",
+            error_message=str(e)
+        )
+        
+        raise HTTPException(
+            status_code=500,
+            detail=f"Error deleting critical discovery: {str(e)}"
+        )

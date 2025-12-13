@@ -151,9 +151,17 @@ This workflow guide shows **which documents to use during each development phase
    ├── Add inline comments for complex logic
    └── Follow conventions from CLAUDE.md
 
-2. VERIFY CHANGES (Anti-Hallucination Rule 1-3)
+2. VERIFY DOCKER BUILD CONTEXT (Anti-Hallucination Rule 16 - CRITICAL FOR UI)
+   ├── ASK USER: "Where do you run docker compose commands from?" (this is build root)
+   ├── OR detect: Check terminal working directory
+   ├── Check current workspace path
+   ├── If workspace != build root: WARN USER and use build root for edits
+   ├── Use absolute path to build root for edits (NOT workspace path)
+   └── Verify change in build root (not workspace)
+
+3. VERIFY CHANGES (Anti-Hallucination Rule 1-3)
    ├── Execute change (search_replace, write, etc.)
-   ├── IMMEDIATELY run read_file to verify
+   ├── IMMEDIATELY run read_file to verify (from build root)
    ├── Compare actual vs intended result
    ├── If failed, try alternative method
    └── ONLY report success after verification
@@ -334,10 +342,25 @@ docs/frontend/app_entry/features/[entry-name]/
 After EVERY file edit:
 
 ```
-✅ Did I read_file to verify the change?
+✅ Did I identify Docker build root (where user runs docker compose commands)?
+✅ Did I edit file using absolute path to build root?
+✅ Did I read_file to verify the change (from build root)?
 ✅ Does the file actually contain what I claim?
 ✅ Am I reporting facts or assumptions?
 ✅ Can I prove this by showing actual file content?
+✅ Did I verify visually with Playwright (for UI changes)?
+```
+
+**Docker Build Context Checkpoints (CRITICAL FOR UI):**
+
+Before editing files for Docker projects:
+
+```
+✅ Where does user run docker compose commands? (This is build root, NOT where docker-compose.yml exists)
+✅ What is current workspace path?
+✅ Are they the same? If not, WARN USER
+✅ Am I using absolute path to build root?
+✅ Will Docker see my changes?
 ```
 
 **Preserve Code Checkpoints:**

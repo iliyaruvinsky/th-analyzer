@@ -518,38 +518,77 @@ def _populate_dashboard_tables(
             else:
                 return "NONE"
 
+        # Validate content_finding before proceeding
+        from app.services.content_analyzer.analyzer import ContentAnalyzer
+        analyzer = ContentAnalyzer(use_llm=False)
+        is_valid, validation_warnings = analyzer._validate_content_finding(content_finding)
+        
+        if validation_warnings:
+            logger.warning(f"Validation warnings for alert {content_finding.alert_id}: {', '.join(validation_warnings)}")
+        
         # 1. Create or get AlertInstance
         alert_instance = db.query(AlertInstance).filter(
             AlertInstance.alert_id == content_finding.alert_id
         ).first()
 
         if not alert_instance:
+            # Validate required fields with defaults
+            alert_id = content_finding.alert_id or f"UNKNOWN_{datetime.utcnow().timestamp()}"
+            alert_name = content_finding.alert_name or "Unnamed Alert"
+            focus_area = content_finding.focus_area or "BUSINESS_CONTROL"
+            
+            # Ensure business_purpose is not None
+            business_purpose = (
+                content_finding.business_impact or 
+                (content_finding.description[:500] if content_finding.description else None) or
+                f"Alert: {alert_name}"
+            )
+            
+            # Ensure parameters is a dict, not None
+            parameters = {
+                "directory_path": directory_path,
+                "module": module
+            }
+            
             alert_instance = AlertInstance(
-                alert_id=content_finding.alert_id,
-                alert_name=content_finding.alert_name,
-                focus_area=content_finding.focus_area,
+                alert_id=alert_id,
+                alert_name=alert_name,
+                focus_area=focus_area,
                 subcategory=module,
-                parameters={
-                    "directory_path": directory_path,
-                    "module": module
-                },
-                business_purpose=content_finding.business_impact or content_finding.description[:500] if content_finding.description else None
+                parameters=parameters,
+                business_purpose=business_purpose
             )
             db.add(alert_instance)
             db.flush()
             logger.info(f"Created AlertInstance: {alert_instance.alert_id}")
 
         # 2. Create AlertAnalysis
+        # Validate and set defaults for required fields
         severity = content_finding.severity.upper() if content_finding.severity else "MEDIUM"
-        fraud_indicator = get_fraud_indicator(content_finding.risk_score, severity)
+        risk_score = content_finding.risk_score if content_finding.risk_score is not None else 50
+        
+        fraud_indicator = get_fraud_indicator(risk_score, severity)
 
         # Convert money_loss_estimate to proper decimal
         financial_impact = content_finding.money_loss_estimate or 0.0
 
         # Cap records_affected to PostgreSQL Integer max (2,147,483,647)
-        records_affected = content_finding.total_count or 0
+        # Ensure records_affected is >= 0
+        records_affected = content_finding.total_count if content_finding.total_count is not None else 0
+        if records_affected < 0:
+            logger.warning(f"records_affected is negative ({records_affected}), setting to 0")
+            records_affected = 0
         if records_affected > 2147483647:
+            logger.warning(f"records_affected exceeds max INT ({records_affected}), capping to 2147483647")
             records_affected = 2147483647  # Cap to max INT value
+
+        # Ensure raw_summary_data is a dict, not None
+        raw_summary_data = {
+            "key_metrics": content_finding.key_metrics if content_finding.key_metrics else {},
+            "risk_factors": content_finding.risk_factors if content_finding.risk_factors else [],
+            "recommended_actions": content_finding.recommended_actions if content_finding.recommended_actions else [],
+            "finding_id": finding_id
+        }
 
         alert_analysis = AlertAnalysis(
             alert_instance_id=alert_instance.id,
@@ -557,17 +596,12 @@ def _populate_dashboard_tables(
             execution_date=datetime.utcnow().date(),
             records_affected=records_affected,
             severity=severity,
-            risk_score=content_finding.risk_score or 50,
+            risk_score=risk_score,
             fraud_indicator=fraud_indicator,
             financial_impact_usd=financial_impact,
             local_currency=content_finding.currency or "USD",
             report_path=directory_path,
-            raw_summary_data={
-                "key_metrics": content_finding.key_metrics,
-                "risk_factors": content_finding.risk_factors,
-                "recommended_actions": content_finding.recommended_actions,
-                "finding_id": finding_id
-            },
+            raw_summary_data=raw_summary_data,
             created_by="content_analyzer_pipeline"
         )
         db.add(alert_analysis)
@@ -606,17 +640,38 @@ def _populate_dashboard_tables(
                 discovery_count += 1
 
         # If no notable items, create one from the main finding
-        if discovery_count == 0 and content_finding.title:
+        # This ensures at least one CriticalDiscovery per analysis
+        if discovery_count == 0:
+            # Try to get title from various sources
+            title = (
+                content_finding.title or 
+                content_finding.alert_name or 
+                "Alert Analysis Finding"
+            )
+            
+            # Try to get description from various sources
+            description = (
+                content_finding.description or 
+                content_finding.business_impact or 
+                content_finding.what_happened or
+                f"Analysis of alert: {content_finding.alert_name}"
+            )
+            
             discovery = CriticalDiscovery(
                 alert_analysis_id=alert_analysis.id,
                 discovery_order=1,
-                title=content_finding.title[:255],
-                description=(content_finding.description or content_finding.business_impact or "")[:2000],
+                title=title[:255],
+                description=description[:2000],
                 metric_value=float(financial_impact) if financial_impact else None,
                 is_fraud_indicator=(fraud_indicator == "INVESTIGATE")
             )
             db.add(discovery)
             discovery_count = 1
+            logger.info(f"Created default CriticalDiscovery from main finding (no notable_items available)")
+
+        if discovery_count == 0:
+            logger.error(f"Failed to create any CriticalDiscovery records for alert_analysis {alert_analysis.id}")
+            raise ValueError("At least one CriticalDiscovery must be created per analysis")
 
         logger.info(f"Created {discovery_count} CriticalDiscovery records")
 
